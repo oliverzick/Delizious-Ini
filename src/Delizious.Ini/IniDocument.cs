@@ -45,20 +45,7 @@
 
             try
             {
-                var configuration = new IniParserConfiguration
-                {
-                    AllowCreateSectionsOnFly = false,
-                    AllowDuplicateKeys = false,
-                    AllowDuplicateSections = false,
-                    AllowKeysWithoutSection = false,
-                    AssigmentSpacer = string.Empty,
-                    CaseInsensitive = true,
-                    ConcatenateDuplicateKeys = false,
-                    SkipInvalidLines = true,
-                    ThrowExceptionsOnError = true
-                };
-
-                var parser = new IniDataParser(configuration);
+                var parser = new IniDataParser(MakeIniParserConfiguration());
                 var iniData = parser.Parse(textReader.ReadToEnd());
 
                 return new IniDocument(iniData);
@@ -68,6 +55,20 @@
                 throw new IniException(ExceptionMessages.CouldNotLoadIniDocument, exception);
             }
         }
+
+        private static IniParserConfiguration MakeIniParserConfiguration()
+            => new IniParserConfiguration
+            {
+                AllowCreateSectionsOnFly = false,
+                AllowDuplicateKeys = false,
+                AllowDuplicateSections = false,
+                AllowKeysWithoutSection = false,
+                AssigmentSpacer = string.Empty,
+                CaseInsensitive = true,
+                ConcatenateDuplicateKeys = false,
+                SkipInvalidLines = true,
+                ThrowExceptionsOnError = true
+            };
 
         /// <summary>
         /// Provides the names of all sections contained in the current <see cref="IniDocument"/>.
