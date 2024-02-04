@@ -1,6 +1,5 @@
 ﻿namespace Delizious.Ini.Test
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using System;
     using System.Collections.Generic;
 
