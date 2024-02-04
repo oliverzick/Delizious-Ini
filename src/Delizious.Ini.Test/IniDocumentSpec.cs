@@ -1,8 +1,11 @@
 namespace Delizious.Ini.Test
 {
     using System;
+    using System.Collections.Generic;
     using System.Collections.Immutable;
     using System.IO;
+    using System.Linq;
+    using System.Text;
 
     [TestClass]
     public sealed class IniDocumentSpec
@@ -34,14 +37,38 @@ namespace Delizious.Ini.Test
             {
                 var expected = ImmutableArray.Create<SectionName>("A", "B", "C");
 
-                var content = $"[A]{Environment.NewLine}[B]{Environment.NewLine}[C]{Environment.NewLine}";
-                using var stringReader = new StringReader(content);
-
-                var target = IniDocument.LoadFrom(stringReader);
+                var target = MakeTarget(expected);
 
                 var actual = target.SectionNames().ToImmutableArray();
 
                 CollectionAssert.AreEqual(expected, actual);
+            }
+
+            private static IniDocument MakeTarget(IEnumerable<SectionName> sectionNames)
+                => sectionNames.Aggregate(new IniDocumentBuilder(), (builder, sectionName) => builder.AppendSectionLine(sectionName)).Build();
+        }
+
+        private sealed class IniDocumentBuilder
+        {
+            private readonly StringBuilder stringBuilder = new();
+
+            public IniDocumentBuilder AppendSectionLine(SectionName sectionName)
+                => this.AppendSectionLine(sectionName.ToString());
+
+            public IniDocumentBuilder AppendSectionLine(string sectionName)
+            {
+                this.stringBuilder.AppendLine($"[{sectionName}]");
+
+                return this;
+            }
+
+            public override string ToString()
+                => this.stringBuilder.ToString();
+
+            public IniDocument Build()
+            {
+                using var stringReader = new StringReader(this.ToString());
+                return IniDocument.LoadFrom(stringReader);
             }
         }
     }
