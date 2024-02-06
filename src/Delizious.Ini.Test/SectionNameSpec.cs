@@ -9,7 +9,7 @@
         private const string Section = "Section";
 
         [TestMethod]
-        public void Throws_exception_when_encapsulated_section_name_is_null()
+        public void Throws_exception_on_creation_when_given_section_name_is_null()
         {
             Assert.ThrowsException<ArgumentNullException>(() => SectionName.Create(null));
         }
