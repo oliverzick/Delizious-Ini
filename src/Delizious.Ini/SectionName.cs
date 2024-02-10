@@ -5,6 +5,7 @@
     /// <summary>
     /// Represents the name of a section in an <see cref="IniDocument"/>.
     /// </summary>
+    [Serializable]
     public sealed class SectionName : IEquatable<SectionName>
     {
         private readonly string sectionName;
