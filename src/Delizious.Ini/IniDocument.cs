@@ -13,11 +13,11 @@
     /// </summary>
     public sealed class IniDocument
     {
-        private readonly IniData iniData;
+        private readonly Content content;
 
-        private IniDocument(IniData iniData)
+        private IniDocument(Content content)
         {
-            this.iniData = iniData;
+            this.content = content;
         }
 
         /// <summary>
@@ -43,32 +43,8 @@
                 throw new ArgumentNullException(nameof(textReader));
             }
 
-            try
-            {
-                var parser = new IniDataParser(MakeIniParserConfiguration());
-                var iniData = parser.Parse(textReader.ReadToEnd());
-
-                return new IniDocument(iniData);
-            }
-            catch (Exception exception)
-            {
-                throw new IniException(ExceptionMessages.CouldNotLoadIniDocument, exception);
-            }
+            return new IniDocument(Content.LoadFrom(textReader));
         }
-
-        private static IniParserConfiguration MakeIniParserConfiguration()
-            => new IniParserConfiguration
-            {
-                AllowCreateSectionsOnFly = false,
-                AllowDuplicateKeys = false,
-                AllowDuplicateSections = false,
-                AllowKeysWithoutSection = false,
-                AssigmentSpacer = string.Empty,
-                CaseInsensitive = true,
-                ConcatenateDuplicateKeys = false,
-                SkipInvalidLines = true,
-                ThrowExceptionsOnError = true
-            };
 
         /// <summary>
         /// Provides the names of all sections contained in the current <see cref="IniDocument"/>.
@@ -77,6 +53,48 @@
         /// The names of all sections contained in the current <see cref="IniDocument"/>
         /// </returns>
         public IEnumerable<SectionName> SectionNames()
-            => this.iniData.Sections.Select(section => SectionName.Create(section.SectionName));
+            => this.content.SectionNames();
+
+        private sealed class Content
+        {
+            private readonly IniData iniData;
+
+            private Content(IniData iniData)
+            {
+                this.iniData = iniData;
+            }
+
+            public static Content LoadFrom(TextReader textReader)
+            {
+                try
+                {
+                    var parser = new IniDataParser(MakeIniParserConfiguration());
+                    var iniData = parser.Parse(textReader.ReadToEnd());
+
+                    return new Content(iniData);
+                }
+                catch (Exception exception)
+                {
+                    throw new IniException(ExceptionMessages.CouldNotLoadIniDocument, exception);
+                }
+            }
+
+            private static IniParserConfiguration MakeIniParserConfiguration()
+                => new IniParserConfiguration
+                {
+                    AllowCreateSectionsOnFly = false,
+                    AllowDuplicateKeys = false,
+                    AllowDuplicateSections = false,
+                    AllowKeysWithoutSection = false,
+                    AssigmentSpacer = string.Empty,
+                    CaseInsensitive = true,
+                    ConcatenateDuplicateKeys = false,
+                    SkipInvalidLines = true,
+                    ThrowExceptionsOnError = true
+                };
+
+            public IEnumerable<SectionName> SectionNames()
+                => this.iniData.Sections.Select(section => SectionName.Create(section.SectionName));
+        }
     }
 }
