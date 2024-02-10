@@ -5,15 +5,20 @@
     using System.Runtime.Serialization;
 
     [Serializable]
-    public sealed class IniException : Exception
+    public class IniException : Exception
     {
+        internal IniException(string message)
+            : base(message)
+        {
+        }
+
         internal IniException(string message, Exception innerException)
             : base(message, innerException)
         {
         }
 
         [ExcludeFromCodeCoverage]
-        private IniException(SerializationInfo info, StreamingContext context)
+        internal IniException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
         }
