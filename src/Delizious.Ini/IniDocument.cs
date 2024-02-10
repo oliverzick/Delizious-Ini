@@ -95,6 +95,31 @@
 
             public IEnumerable<SectionName> SectionNames()
                 => this.iniData.Sections.Select(section => SectionName.Create(section.SectionName));
+
+            public Section FindSection(SectionName sectionName)
+            {
+                try
+                {
+                    return Section.Create(this.iniData.Sections[sectionName.ToString()]);
+                }
+                catch (Exception)
+                {
+                    throw new SectionNotFoundException(sectionName);
+                }
+            }
+        }
+
+        private sealed class Section
+        {
+            private readonly KeyDataCollection properties;
+
+            private Section(KeyDataCollection properties)
+            {
+                this.properties = properties;
+            }
+
+            public static Section Create(KeyDataCollection properties)
+                => new Section(properties);
         }
     }
 }
