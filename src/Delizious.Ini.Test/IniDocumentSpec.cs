@@ -140,22 +140,12 @@ namespace Delizious.Ini.Test
                 Assert.AreEqual(expected, actual);
             }
 
-            [TestMethod]
-            public void Provides_property_value_for_property_with_specified_section_name_and_property_key()
+            [DataTestMethod]
+            [DataRow("Property value", DisplayName = "Actual value")]
+            [DataRow(""              , DisplayName = "Empty string when property does exist but has no value")]
+            public void Provides_property_value_for_property_with_specified_section_name_and_property_key(string propertyValue)
             {
-                var expected = "Property value";
-
-                var target = MakeSinglePropertyTarget(expected);
-
-                var actual = target.ReadPropertyValue(DefaultSectionName, DefaultPropertyKey);
-
-                Assert.AreEqual(expected, actual);
-            }
-
-            [TestMethod]
-            public void Provides_empty_property_value_for_empty_property_with_specified_section_name_and_property_key()
-            {
-                var expected = string.Empty;
+                var expected = propertyValue;
 
                 var target = MakeSinglePropertyTarget(expected);
 
