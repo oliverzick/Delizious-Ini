@@ -14,6 +14,9 @@ namespace Delizious.Ini.Test
         private const string NonexistentSectionName = "NonexistentSection";
         private const string NonexistentPropertyKey = "NonexistentProperty";
 
+        private const string DefaultSectionName = "Section";
+        private const string DefaultPropertyKey = "Property";
+
         [TestClass]
         public sealed class LoadFrom
         {
@@ -140,13 +143,11 @@ namespace Delizious.Ini.Test
             [TestMethod]
             public void Provides_property_value_for_property_with_specified_section_name_and_property_key()
             {
-                var sectionName = "Section";
-                var propertyKey = "Property";
                 var expected = "Property value";
 
-                var target = MakeTarget(Section.Create(sectionName, Property.Create(propertyKey, expected)));
+                var target = MakeSinglePropertyTarget(expected);
 
-                var actual = target.ReadPropertyValue(sectionName, propertyKey);
+                var actual = target.ReadPropertyValue(DefaultSectionName, DefaultPropertyKey);
 
                 Assert.AreEqual(expected, actual);
             }
@@ -154,13 +155,11 @@ namespace Delizious.Ini.Test
             [TestMethod]
             public void Provides_empty_property_value_for_empty_property_with_specified_section_name_and_property_key()
             {
-                var sectionName = "Section";
-                var propertyKey = "Property";
                 var expected = string.Empty;
 
-                var target = MakeTarget(Section.Create(sectionName, Property.Create(propertyKey, expected)));
+                var target = MakeSinglePropertyTarget(expected);
 
-                var actual = target.ReadPropertyValue(sectionName, propertyKey);
+                var actual = target.ReadPropertyValue(DefaultSectionName, DefaultPropertyKey);
 
                 Assert.AreEqual(expected, actual);
             }
@@ -168,6 +167,9 @@ namespace Delizious.Ini.Test
 
         private static IniDocument MakeEmptyTarget()
             => new IniDocumentBuilder().Build();
+
+        private static IniDocument MakeSinglePropertyTarget(PropertyValue propertyValue)
+            => MakeTarget(Section.Create(DefaultSectionName, Property.Create(DefaultPropertyKey, propertyValue)));
 
         private static IniDocument MakeTarget(params Section[] sections)
             => sections.Aggregate(new IniDocumentBuilder(), (builder, section) => section.ApplyTo(builder)).Build();
