@@ -104,7 +104,7 @@ namespace Delizious.Ini.Test
                 return this;
             }
 
-            public IniDocumentBuilder AppendPropertyLine(PropertyKey propertyKey, string propertyValue)
+            public IniDocumentBuilder AppendPropertyLine(PropertyKey propertyKey, PropertyValue propertyValue)
             {
                 this.stringBuilder.AppendLine($"{propertyKey}={propertyValue}");
 
@@ -130,7 +130,7 @@ namespace Delizious.Ini.Test
                 => this.Properties.Aggregate(builder.AppendSectionLine(this.SectionName), (currentBuilder, property) => property.ApplyTo(currentBuilder));
         }
 
-        private sealed record Property(PropertyKey PropertyKey, string PropertyValue)
+        private sealed record Property(PropertyKey PropertyKey, PropertyValue PropertyValue)
         {
             public static Property Create(PropertyKey propertyKey)
                 => new(propertyKey, "Default");
