@@ -10,6 +10,10 @@ namespace Delizious.Ini.Test
     [TestClass]
     public sealed class IniDocumentSpec
     {
+        private const string Dummy = "Dummy";
+        private const string NonexistentSectionName = "NonexistentSection";
+        private const string NonexistentPropertyKey = "NonexistentProperty";
+
         [TestClass]
         public sealed class LoadFrom
         {
@@ -87,6 +91,81 @@ namespace Delizious.Ini.Test
             }
         }
 
+        [TestClass]
+        public sealed class ReadPropertyValue
+        {
+            [TestMethod]
+            public void Throws_argument_null_exception_when_section_name_is_null()
+            {
+                var target = MakeEmptyTarget();
+
+                Assert.ThrowsException<ArgumentNullException>(() => target.ReadPropertyValue(null, Dummy));
+            }
+
+            [TestMethod]
+            public void Throws_argument_null_exception_when_property_key_is_null()
+            {
+                var target = MakeEmptyTarget();
+
+                Assert.ThrowsException<ArgumentNullException>(() => target.ReadPropertyValue(Dummy, null));
+            }
+
+            [TestMethod]
+            public void Throws_section_not_found_exception_when_section_specified_by_its_section_name_does_not_exist()
+            {
+                const string sectionName = NonexistentSectionName;
+                var expected = new SectionNotFoundExceptionAssertion(sectionName);
+
+                var target = MakeEmptyTarget();
+
+                var actual = Assert.ThrowsException<SectionNotFoundException>(() => target.ReadPropertyValue(sectionName, Dummy));
+
+                Assert.AreEqual(expected, actual);
+            }
+
+            [TestMethod]
+            public void Throws_property_not_found_exception_when_property_specified_by_its_property_key_does_not_exist()
+            {
+                const string sectionName = "Section";
+                const string propertyKey = NonexistentPropertyKey;
+                var expected = new PropertyNotFoundExceptionAssertion(propertyKey);
+
+                var target = MakeTarget(Section.Create(sectionName));
+
+                var actual = Assert.ThrowsException<PropertyNotFoundException>(() => target.ReadPropertyValue(sectionName, propertyKey));
+
+                Assert.AreEqual(expected, actual);
+            }
+
+            [TestMethod]
+            public void Provides_property_value_for_property_with_specified_section_name_and_property_key()
+            {
+                var sectionName = "Section";
+                var propertyKey = "Property";
+                var expected = "Property value";
+
+                var target = MakeTarget(Section.Create(sectionName, Property.Create(propertyKey, expected)));
+
+                var actual = target.ReadPropertyValue(sectionName, propertyKey);
+
+                Assert.AreEqual(expected, actual);
+            }
+
+            [TestMethod]
+            public void Provides_empty_property_value_for_empty_property_with_specified_section_name_and_property_key()
+            {
+                var sectionName = "Section";
+                var propertyKey = "Property";
+                var expected = string.Empty;
+
+                var target = MakeTarget(Section.Create(sectionName, Property.Create(propertyKey, expected)));
+
+                var actual = target.ReadPropertyValue(sectionName, propertyKey);
+
+                Assert.AreEqual(expected, actual);
+            }
+        }
+
         private static IniDocument MakeEmptyTarget()
             => new IniDocumentBuilder().Build();
 
@@ -123,6 +202,9 @@ namespace Delizious.Ini.Test
 
         private sealed record Section(SectionName SectionName, ImmutableArray<Property> Properties)
         {
+            public static Section Create(SectionName sectionName, params Property[] properties)
+                => Create(sectionName, properties.AsEnumerable());
+
             public static Section Create(SectionName SectionName, IEnumerable<Property> properties)
                 => new(SectionName, properties.ToImmutableArray());
 
@@ -133,7 +215,10 @@ namespace Delizious.Ini.Test
         private sealed record Property(PropertyKey PropertyKey, PropertyValue PropertyValue)
         {
             public static Property Create(PropertyKey propertyKey)
-                => new(propertyKey, "Default");
+                => Create(propertyKey, "Default");
+
+            public static Property Create(PropertyKey propertyKey, PropertyValue propertyValue)
+                => new(propertyKey, propertyValue);
 
             public IniDocumentBuilder ApplyTo(IniDocumentBuilder builder)
                 => builder.AppendPropertyLine(this.PropertyKey, this.PropertyValue);
