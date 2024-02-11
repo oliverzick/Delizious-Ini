@@ -48,16 +48,65 @@ namespace Delizious.Ini.Test
                 => sectionNames.Aggregate(new IniDocumentBuilder(), (builder, sectionName) => builder.AppendSectionLine(sectionName)).Build();
         }
 
+        [TestClass]
+        public sealed class PropertyKeys
+        {
+            [TestMethod]
+            public void Throws_argument_null_exception_when_section_name_is_null()
+            {
+                var target = MakeEmptyTarget();
+
+                Assert.ThrowsException<ArgumentNullException>(() => target.PropertyKeys(null));
+            }
+
+            [TestMethod]
+            public void Throws_section_not_found_exception_when_section_specified_by_its_section_name_does_not_exist()
+            {
+                var sectionName = "NonExistingSection";
+                var expected = new SectionNotFoundExceptionAssertion(sectionName);
+
+                var target = MakeEmptyTarget();
+
+                var actual = Assert.ThrowsException<SectionNotFoundException>(() => target.PropertyKeys("NonExistingSection"));
+
+                Assert.AreEqual(expected, actual);
+            }
+
+            [TestMethod]
+            public void Provides_property_keys_for_section_specified_by_its_section_name()
+            {
+                var sectionName = "Section";
+                var propertyKeys = ImmutableArray.Create<PropertyKey>("PropertyA", "PropertyB", "PropertyC");
+                var expected = propertyKeys;
+
+                var target = MakeTarget(Section.Create(sectionName, propertyKeys.Select(Property.Create)));
+
+                var actual = target.PropertyKeys(sectionName).ToImmutableArray();
+
+                CollectionAssert.AreEqual(expected, actual);
+            }
+        }
+
+        private static IniDocument MakeEmptyTarget()
+            => new IniDocumentBuilder().Build();
+
+        private static IniDocument MakeTarget(params Section[] sections)
+            => sections.Aggregate(new IniDocumentBuilder(), (builder, section) => section.ApplyTo(builder)).Build();
+
         private sealed class IniDocumentBuilder
         {
             private readonly StringBuilder stringBuilder = new();
 
             public IniDocumentBuilder AppendSectionLine(SectionName sectionName)
-                => this.AppendSectionLine(sectionName.ToString());
-
-            public IniDocumentBuilder AppendSectionLine(string sectionName)
             {
                 this.stringBuilder.AppendLine($"[{sectionName}]");
+
+                return this;
+            }
+
+            public IniDocumentBuilder AppendPropertyLine(PropertyKey propertyKey, string propertyValue)
+            {
+                this.stringBuilder.AppendLine($"{propertyKey}={propertyValue}");
 
                 return this;
             }
@@ -70,6 +119,24 @@ namespace Delizious.Ini.Test
                 using var stringReader = new StringReader(this.ToString());
                 return IniDocument.LoadFrom(stringReader);
             }
+        }
+
+        private sealed record Section(SectionName SectionName, ImmutableArray<Property> Properties)
+        {
+            public static Section Create(SectionName SectionName, IEnumerable<Property> properties)
+                => new(SectionName, properties.ToImmutableArray());
+
+            public IniDocumentBuilder ApplyTo(IniDocumentBuilder builder)
+                => this.Properties.Aggregate(builder.AppendSectionLine(this.SectionName), (currentBuilder, property) => property.ApplyTo(currentBuilder));
+        }
+
+        private sealed record Property(PropertyKey PropertyKey, string PropertyValue)
+        {
+            public static Property Create(PropertyKey propertyKey)
+                => new(propertyKey, "Default");
+
+            public IniDocumentBuilder ApplyTo(IniDocumentBuilder builder)
+                => builder.AppendPropertyLine(this.PropertyKey, this.PropertyValue);
         }
     }
 }

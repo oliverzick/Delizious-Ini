@@ -55,6 +55,31 @@
         public IEnumerable<SectionName> SectionNames()
             => this.content.SectionNames();
 
+        /// <summary>
+        /// Provides the keys of all properties contained in a section given by the <paramref name="sectionName"/>.
+        /// </summary>
+        /// <param name="sectionName">
+        /// The name of the section.
+        /// </param>
+        /// <returns>
+        /// The keys of all properties contained in the specified section.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="sectionName"/> is <c>null</c>.
+        /// </exception>
+        /// <exception cref="SectionNotFoundException">
+        /// The section specified by the <paramref name="sectionName"/> does not exist.
+        /// </exception>
+        public IEnumerable<PropertyKey> PropertyKeys(SectionName sectionName)
+        {
+            if (sectionName is null)
+            {
+                throw new ArgumentNullException(nameof(sectionName));
+            }
+
+            return this.content.FindSection(sectionName).PropertyKeys();
+        }
+
         private sealed class Content
         {
             private readonly IniData iniData;
@@ -95,6 +120,29 @@
 
             public IEnumerable<SectionName> SectionNames()
                 => this.iniData.Sections.Select(section => SectionName.Create(section.SectionName));
+
+            public Section FindSection(SectionName sectionName)
+            {
+                var properties = this.iniData.Sections[sectionName.ToString()] ?? throw new SectionNotFoundException(sectionName);
+
+                return Section.Create(properties);
+            }
+        }
+
+        private sealed class Section
+        {
+            private readonly KeyDataCollection properties;
+
+            private Section(KeyDataCollection properties)
+            {
+                this.properties = properties;
+            }
+
+            public static Section Create(KeyDataCollection properties)
+                => new Section(properties);
+
+            public IEnumerable<PropertyKey> PropertyKeys()
+                => this.properties.Select(property => PropertyKey.Create(property.KeyName));
         }
     }
 }
