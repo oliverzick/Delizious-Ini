@@ -80,6 +80,42 @@
             return this.content.FindSection(sectionName).PropertyKeys();
         }
 
+        /// <summary>
+        /// Reads the value of the property contained in the section.
+        /// </summary>
+        /// <param name="sectionName">
+        /// The name of the section containing the property.
+        /// </param>
+        /// <param name="propertyKey">
+        /// The key of the property.
+        /// </param>
+        /// <returns>
+        /// The value of the property. If the property does exist but has no value, <see cref="string.Empty"/> is returned.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="sectionName"/> or <paramref name="propertyKey"/> is <c>null</c>.
+        /// </exception>
+        /// <exception cref="SectionNotFoundException">
+        /// The section specified by the <paramref name="sectionName"/> does not exist.
+        /// </exception>
+        /// <exception cref="PropertyNotFoundException">
+        /// The property specified by the <paramref name="propertyKey"/> does not exist.
+        /// </exception>
+        public PropertyValue ReadPropertyValue(SectionName sectionName, PropertyKey propertyKey)
+        {
+            if (sectionName is null)
+            {
+                throw new ArgumentNullException(nameof(sectionName));
+            }
+
+            if (propertyKey is null)
+            {
+                throw new ArgumentNullException(nameof(propertyKey));
+            }
+
+            return this.content.FindSection(sectionName).FindProperty(propertyKey).ReadValue();
+        }
+
         private sealed class Content
         {
             private readonly IniData iniData;
@@ -123,6 +159,7 @@
 
             public Section FindSection(SectionName sectionName)
             {
+                // Indexer returns a null reference when section does not exist, so we need to throw appropriate exception here
                 var properties = this.iniData.Sections[sectionName.ToString()] ?? throw new SectionNotFoundException(sectionName);
 
                 return Section.Create(properties);
@@ -143,6 +180,30 @@
 
             public IEnumerable<PropertyKey> PropertyKeys()
                 => this.properties.Select(property => PropertyKey.Create(property.KeyName));
+
+            public Property FindProperty(PropertyKey propertyKey)
+            {
+                // GetKeyData returns a null reference when property does not exist, so we need to throw appropriate exception here
+                var keyData = this.properties.GetKeyData(propertyKey.ToString()) ?? throw new PropertyNotFoundException(propertyKey.ToString());
+
+                return Property.Create(keyData);
+            }
+        }
+
+        private sealed class Property
+        {
+            private readonly KeyData property;
+
+            private Property(KeyData property)
+            {
+                this.property = property;
+            }
+
+            public static Property Create(KeyData keyData)
+                => new Property(keyData);
+
+            public PropertyValue ReadValue()
+                => this.property.Value;
         }
     }
 }
