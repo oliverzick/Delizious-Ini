@@ -69,12 +69,12 @@ namespace Delizious.Ini.Test
             [TestMethod]
             public void Throws_section_not_found_exception_when_section_specified_by_its_section_name_does_not_exist()
             {
-                var sectionName = "NonExistingSection";
+                var sectionName = NonexistentSectionName;
                 var expected = new SectionNotFoundExceptionAssertion(sectionName);
 
                 var target = MakeEmptyTarget();
 
-                var actual = Assert.ThrowsException<SectionNotFoundException>(() => target.PropertyKeys("NonExistingSection"));
+                var actual = Assert.ThrowsException<SectionNotFoundException>(() => target.PropertyKeys(sectionName));
 
                 Assert.AreEqual(expected, actual);
             }
