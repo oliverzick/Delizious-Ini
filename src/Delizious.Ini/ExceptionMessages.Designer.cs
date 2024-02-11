@@ -61,6 +61,15 @@ namespace Delizious.Ini {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not find property in INI document..
+        /// </summary>
+        internal static string CouldNotFindPropertyInIniDocument {
+            get {
+                return ResourceManager.GetString("CouldNotFindPropertyInIniDocument", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not find section in INI document..
         /// </summary>
         internal static string CouldNotFindSectionInIniDocument {
