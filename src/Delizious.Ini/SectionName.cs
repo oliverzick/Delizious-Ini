@@ -49,7 +49,7 @@
         /// <inheritdoc/>
         public bool Equals(SectionName other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
             {
                 return false;
             }
