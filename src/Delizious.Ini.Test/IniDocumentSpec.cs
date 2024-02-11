@@ -53,9 +53,6 @@ namespace Delizious.Ini.Test
             private readonly StringBuilder stringBuilder = new();
 
             public IniDocumentBuilder AppendSectionLine(SectionName sectionName)
-                => this.AppendSectionLine(sectionName.ToString());
-
-            public IniDocumentBuilder AppendSectionLine(string sectionName)
             {
                 this.stringBuilder.AppendLine($"[{sectionName}]");
 
