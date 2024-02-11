@@ -60,7 +60,7 @@ namespace Delizious.Ini.Test
             }
 
             [TestMethod]
-            public void Throws_section_not_found_exception_when_section_specified_by_given_section_name_does_not_exist()
+            public void Throws_section_not_found_exception_when_section_specified_by_its_section_name_does_not_exist()
             {
                 var sectionName = "NonExistingSection";
                 var expected = new SectionNotFoundExceptionAssertion(sectionName);
@@ -73,7 +73,7 @@ namespace Delizious.Ini.Test
             }
 
             [TestMethod]
-            public void Provides_property_keys_for_given_section_name()
+            public void Provides_property_keys_for_section_specified_by_its_section_name()
             {
                 var sectionName = "Section";
                 var propertyKeys = ImmutableArray.Create<PropertyKey>("PropertyA", "PropertyB", "PropertyC");
