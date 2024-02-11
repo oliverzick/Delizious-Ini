@@ -127,7 +127,7 @@ namespace Delizious.Ini.Test
                 => new(SectionName, properties.ToImmutableArray());
 
             public IniDocumentBuilder ApplyTo(IniDocumentBuilder builder)
-                => this.Properties.Aggregate(builder.AppendSectionLine(this.SectionName), (current, property) => property.ApplyTo(current));
+                => this.Properties.Aggregate(builder.AppendSectionLine(this.SectionName), (currentBuilder, property) => property.ApplyTo(currentBuilder));
         }
 
         private sealed record Property(PropertyKey PropertyKey, string PropertyValue)
