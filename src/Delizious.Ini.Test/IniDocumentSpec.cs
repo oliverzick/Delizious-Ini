@@ -62,6 +62,13 @@ namespace Delizious.Ini.Test
                 return this;
             }
 
+            public IniDocumentBuilder AppendPropertyLine(PropertyKey propertyKey, string propertyValue)
+            {
+                this.stringBuilder.AppendLine($"{propertyKey}={propertyValue}");
+
+                return this;
+            }
+
             public override string ToString()
                 => this.stringBuilder.ToString();
 
@@ -70,6 +77,24 @@ namespace Delizious.Ini.Test
                 using var stringReader = new StringReader(this.ToString());
                 return IniDocument.LoadFrom(stringReader);
             }
+        }
+
+        private sealed record Section(SectionName SectionName, ImmutableArray<Property> Properties)
+        {
+            public static Section Create(SectionName SectionName, IEnumerable<Property> properties)
+                => new(SectionName, properties.ToImmutableArray());
+
+            public IniDocumentBuilder ApplyTo(IniDocumentBuilder builder)
+                => this.Properties.Aggregate(builder.AppendSectionLine(this.SectionName), (current, property) => property.ApplyTo(current));
+        }
+
+        private sealed record Property(PropertyKey PropertyKey, string PropertyValue)
+        {
+            public static Property Create(PropertyKey propertyKey)
+                => new(propertyKey, "Default");
+
+            public IniDocumentBuilder ApplyTo(IniDocumentBuilder builder)
+                => builder.AppendPropertyLine(this.PropertyKey, this.PropertyValue);
         }
     }
 }
