@@ -87,7 +87,7 @@
         /// The name of the section containing the property.
         /// </param>
         /// <param name="propertyKey">
-        /// The name of the property.
+        /// The key of the property.
         /// </param>
         /// <returns>
         /// The value of the property. If the property does exist but has no value, <see cref="string.Empty"/> is returned.
