@@ -48,6 +48,51 @@ namespace Delizious.Ini.Test
                 => sectionNames.Aggregate(new IniDocumentBuilder(), (builder, sectionName) => builder.AppendSectionLine(sectionName)).Build();
         }
 
+        [TestClass]
+        public sealed class PropertyKeys
+        {
+            [TestMethod]
+            public void Throws_argument_null_exception_when_section_name_is_null()
+            {
+                var target = MakeEmptyTarget();
+
+                Assert.ThrowsException<ArgumentNullException>(() => target.PropertyKeys(null));
+            }
+
+            [TestMethod]
+            public void Throws_section_not_found_exception_when_section_specified_by_given_section_name_does_not_exist()
+            {
+                var sectionName = "NonExistingSection";
+                var expected = new SectionNotFoundExceptionAssertion(sectionName);
+
+                var target = MakeEmptyTarget();
+
+                var actual = Assert.ThrowsException<SectionNotFoundException>(() => target.PropertyKeys("NonExistingSection"));
+
+                Assert.AreEqual(expected, actual);
+            }
+
+            [TestMethod]
+            public void Provides_property_keys_for_given_section_name()
+            {
+                var sectionName = "Section";
+                var propertyKeys = ImmutableArray.Create<PropertyKey>("PropertyA", "PropertyB", "PropertyC");
+                var expected = propertyKeys;
+
+                var target = MakeTarget(Section.Create(sectionName, propertyKeys.Select(Property.Create)));
+
+                var actual = target.PropertyKeys(sectionName).ToImmutableArray();
+
+                CollectionAssert.AreEqual(expected, actual);
+            }
+        }
+
+        private static IniDocument MakeEmptyTarget()
+            => new IniDocumentBuilder().Build();
+
+        private static IniDocument MakeTarget(params Section[] sections)
+            => sections.Aggregate(new IniDocumentBuilder(), (builder, section) => section.ApplyTo(builder)).Build();
+
         private sealed class IniDocumentBuilder
         {
             private readonly StringBuilder stringBuilder = new();
