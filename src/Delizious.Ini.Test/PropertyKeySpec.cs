@@ -9,7 +9,7 @@
         private const string Key = "Key";
 
         [TestMethod]
-        public void Throws_exception_on_creation_when_given_property_key_is_null()
+        public void Throws_argument_null_exception_on_creation_when_given_property_key_is_null()
         {
             Assert.ThrowsException<ArgumentNullException>(() => PropertyKey.Create(null));
         }
