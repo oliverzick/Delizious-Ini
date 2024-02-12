@@ -155,6 +155,77 @@ namespace Delizious.Ini.Test
             }
         }
 
+        [TestClass]
+        public sealed class UpdatePropertyValue
+        {
+            [TestMethod]
+            public void Throws_argument_null_exception_when_section_name_is_null()
+            {
+                var target = MakeEmptyTarget();
+
+                Assert.ThrowsException<ArgumentNullException>(() => target.UpdatePropertyValue(null, Dummy, Dummy));
+            }
+
+            [TestMethod]
+            public void Throws_argument_null_exception_when_property_key_is_null()
+            {
+                var target = MakeEmptyTarget();
+
+                Assert.ThrowsException<ArgumentNullException>(() => target.UpdatePropertyValue(Dummy, null, Dummy));
+            }
+
+            [TestMethod]
+            public void Throws_argument_null_exception_when_new_property_value_is_null()
+            {
+                var target = MakeEmptyTarget();
+
+                Assert.ThrowsException<ArgumentNullException>(() => target.UpdatePropertyValue(Dummy, Dummy, null));
+            }
+
+            [TestMethod]
+            public void Throws_section_not_found_exception_when_section_specified_by_its_section_name_does_not_exist()
+            {
+                const string sectionName = NonexistentSectionName;
+                var expected = new SectionNotFoundExceptionAssertion(sectionName);
+
+                var target = MakeEmptyTarget();
+
+                var actual = Assert.ThrowsException<SectionNotFoundException>(() => target.UpdatePropertyValue(sectionName, Dummy, Dummy));
+
+                Assert.AreEqual(expected, actual);
+            }
+
+            [TestMethod]
+            public void Throws_property_not_found_exception_when_property_specified_by_its_property_key_does_not_exist()
+            {
+                const string sectionName = "Section";
+                const string propertyKey = NonexistentPropertyKey;
+                var expected = new PropertyNotFoundExceptionAssertion(propertyKey);
+
+                var target = MakeTarget(Section.Create(sectionName));
+
+                var actual = Assert.ThrowsException<PropertyNotFoundException>(() => target.UpdatePropertyValue(sectionName, propertyKey, Dummy));
+
+                Assert.AreEqual(expected, actual);
+            }
+
+            [TestMethod]
+            public void Updates_property_value_to_new_value_for_property_with_specified_section_name_and_property_key()
+            {
+                var oldValue = "Old value";
+                var newValue = "New value";
+                var expected = newValue;
+
+                var target = MakeSinglePropertyTarget(oldValue);
+
+                target.UpdatePropertyValue(DefaultSectionName, DefaultPropertyKey, newValue);
+
+                var actual = target.ReadPropertyValue(DefaultSectionName, DefaultPropertyKey);
+
+                Assert.AreEqual(expected, actual);
+            }
+        }
+
         private static IniDocument MakeEmptyTarget()
             => new IniDocumentBuilder().Build();
 
