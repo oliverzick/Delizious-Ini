@@ -51,9 +51,6 @@ namespace Delizious.Ini.Test
 
                 CollectionAssert.AreEqual(expected, actual);
             }
-
-            private static IniDocument MakeTarget(IEnumerable<SectionName> sectionNames)
-                => sectionNames.Aggregate(new IniDocumentBuilder(), (builder, sectionName) => builder.AppendSectionLine(sectionName)).Build();
         }
 
         [TestClass]
@@ -234,6 +231,9 @@ namespace Delizious.Ini.Test
 
         private static IniDocument MakeSinglePropertyTarget(PropertyValue propertyValue)
             => MakeTarget(Section.Create(DefaultSectionName, Property.Create(DefaultPropertyKey, propertyValue)));
+
+        private static IniDocument MakeTarget(IEnumerable<SectionName> sectionNames)
+            => MakeTarget(sectionNames.Select(sectionName => Section.Create(sectionName)).ToArray());
 
         private static IniDocument MakeTarget(params Section[] sections)
             => sections.Aggregate(new IniDocumentBuilder(), (builder, section) => section.ApplyTo(builder)).Build();
