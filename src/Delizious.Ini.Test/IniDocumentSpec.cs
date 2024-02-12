@@ -117,7 +117,7 @@ namespace Delizious.Ini.Test
             [TestMethod]
             public void Throws_section_not_found_exception_when_section_specified_by_its_section_name_does_not_exist()
             {
-                const string sectionName = NonexistentSectionName;
+                var sectionName = NonexistentSectionName;
                 var expected = new SectionNotFoundExceptionAssertion(sectionName);
 
                 var target = MakeEmptyTarget();
@@ -130,8 +130,8 @@ namespace Delizious.Ini.Test
             [TestMethod]
             public void Throws_property_not_found_exception_when_property_specified_by_its_property_key_does_not_exist()
             {
-                const string sectionName = DefaultSectionName;
-                const string propertyKey = NonexistentPropertyKey;
+                var sectionName = DefaultSectionName;
+                var propertyKey = NonexistentPropertyKey;
                 var expected = new PropertyNotFoundExceptionAssertion(propertyKey);
 
                 var target = MakeTarget(Section.Create(sectionName));
@@ -186,7 +186,7 @@ namespace Delizious.Ini.Test
             [TestMethod]
             public void Throws_section_not_found_exception_when_section_specified_by_its_section_name_does_not_exist()
             {
-                const string sectionName = NonexistentSectionName;
+                var sectionName = NonexistentSectionName;
                 var expected = new SectionNotFoundExceptionAssertion(sectionName);
 
                 var target = MakeEmptyTarget();
@@ -199,8 +199,8 @@ namespace Delizious.Ini.Test
             [TestMethod]
             public void Throws_property_not_found_exception_when_property_specified_by_its_property_key_does_not_exist()
             {
-                const string sectionName = DefaultSectionName;
-                const string propertyKey = NonexistentPropertyKey;
+                var sectionName = DefaultSectionName;
+                var propertyKey = NonexistentPropertyKey;
                 var expected = new PropertyNotFoundExceptionAssertion(propertyKey);
 
                 var target = MakeTarget(Section.Create(sectionName));
