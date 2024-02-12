@@ -42,9 +42,10 @@ namespace Delizious.Ini.Test
             [TestMethod]
             public void Provides_section_names()
             {
-                var expected = ImmutableArray.Create<SectionName>("A", "B", "C");
+                var sectionNames = ImmutableArray.Create<SectionName>("A", "B", "C");
+                var expected = sectionNames;
 
-                var target = MakeTarget(expected);
+                var target = MakeTarget(sectionNames);
 
                 var actual = target.SectionNames().ToImmutableArray();
 
@@ -82,7 +83,7 @@ namespace Delizious.Ini.Test
             [TestMethod]
             public void Provides_property_keys_for_section_specified_by_its_section_name()
             {
-                var sectionName = "Section";
+                var sectionName = DefaultSectionName;
                 var propertyKeys = ImmutableArray.Create<PropertyKey>("PropertyA", "PropertyB", "PropertyC");
                 var expected = propertyKeys;
 
@@ -129,7 +130,7 @@ namespace Delizious.Ini.Test
             [TestMethod]
             public void Throws_property_not_found_exception_when_property_specified_by_its_property_key_does_not_exist()
             {
-                const string sectionName = "Section";
+                const string sectionName = DefaultSectionName;
                 const string propertyKey = NonexistentPropertyKey;
                 var expected = new PropertyNotFoundExceptionAssertion(propertyKey);
 
@@ -198,7 +199,7 @@ namespace Delizious.Ini.Test
             [TestMethod]
             public void Throws_property_not_found_exception_when_property_specified_by_its_property_key_does_not_exist()
             {
-                const string sectionName = "Section";
+                const string sectionName = DefaultSectionName;
                 const string propertyKey = NonexistentPropertyKey;
                 var expected = new PropertyNotFoundExceptionAssertion(propertyKey);
 
@@ -212,15 +213,17 @@ namespace Delizious.Ini.Test
             [TestMethod]
             public void Updates_property_value_to_new_value_for_property_with_specified_section_name_and_property_key()
             {
+                var sectionName = DefaultSectionName;
+                var propertyKey = DefaultPropertyKey;
                 var oldValue = "Old value";
                 var newValue = "New value";
                 var expected = newValue;
 
                 var target = MakeSinglePropertyTarget(oldValue);
 
-                target.UpdatePropertyValue(DefaultSectionName, DefaultPropertyKey, newValue);
+                target.UpdatePropertyValue(sectionName, propertyKey, newValue);
 
-                var actual = target.ReadPropertyValue(DefaultSectionName, DefaultPropertyKey);
+                var actual = target.ReadPropertyValue(sectionName, propertyKey);
 
                 Assert.AreEqual(expected, actual);
             }
