@@ -86,5 +86,14 @@ namespace Delizious.Ini {
                 return ResourceManager.GetString("CouldNotLoadIniDocument", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Section name must not be empty or consist only of white-space characters..
+        /// </summary>
+        internal static string SectionNameMustNotBeEmptyOrConsistOnlyOfWhiteSpaceCharacters {
+            get {
+                return ResourceManager.GetString("SectionNameMustNotBeEmptyOrConsistOnlyOfWhiteSpaceCharacters", resourceCulture);
+            }
+        }
     }
 }

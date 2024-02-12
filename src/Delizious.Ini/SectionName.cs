@@ -27,11 +27,19 @@
         /// <exception cref="ArgumentNullException">
         /// <paramref name="sectionName"/> is <c>null</c>.
         /// </exception>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="sectionName"/> is either <see cref="string.Empty"/> or consists only of white-space characters.
+        /// </exception>
         public static SectionName Create(string sectionName)
         {
             if (sectionName is null)
             {
                 throw new ArgumentNullException(nameof(sectionName));
+            }
+
+            if (string.IsNullOrWhiteSpace(sectionName))
+            {
+                throw new ArgumentException(ExceptionMessages.SectionNameMustNotBeEmptyOrConsistOnlyOfWhiteSpaceCharacters, nameof(sectionName));
             }
 
             return new SectionName(sectionName);

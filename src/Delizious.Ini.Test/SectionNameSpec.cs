@@ -15,6 +15,18 @@
         }
 
         [TestMethod]
+        public void Throws_argument_exception_on_creation_when_given_section_name_is_empty()
+        {
+            Assert.ThrowsException<ArgumentException>(() => SectionName.Create(string.Empty));
+        }
+
+        [TestMethod]
+        public void Throws_argument_exception_on_creation_when_given_section_name_is_whitespace()
+        {
+            Assert.ThrowsException<ArgumentException>(() => SectionName.Create("   "));
+        }
+
+        [TestMethod]
         public void Represents_encapsulated_section_name()
         {
             const string expected = Section;

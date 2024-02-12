@@ -126,4 +126,7 @@
   <data name="CouldNotLoadIniDocument" xml:space="preserve">
     <value>Could not load INI document.</value>
   </data>
+  <data name="SectionNameMustNotBeEmptyOrConsistOnlyOfWhiteSpaceCharacters" xml:space="preserve">
+    <value>Section name must not be empty or consist only of white-space characters.</value>
+  </data>
 </root>
