@@ -28,11 +28,19 @@
         /// <exception cref="ArgumentNullException">
         /// <paramref name="propertyKey"/> is <c>null</c>.
         /// </exception>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="propertyKey"/> is either <see cref="string.Empty"/> or consists only of white-space characters.
+        /// </exception>
         public static PropertyKey Create(string propertyKey)
         {
             if (propertyKey is null)
             {
                 throw new ArgumentNullException(nameof(propertyKey));
+            }
+
+            if (string.IsNullOrWhiteSpace(propertyKey))
+            {
+                throw new ArgumentException(ExceptionMessages.PropertyKeyMustNotBeEmptyOrConsistOnlyOfWhiteSpaceCharacters, nameof(propertyKey));
             }
 
             return new PropertyKey(propertyKey);

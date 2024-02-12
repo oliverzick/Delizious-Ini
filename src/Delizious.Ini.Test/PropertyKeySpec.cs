@@ -15,6 +15,18 @@
         }
 
         [TestMethod]
+        public void Throws_argument_exception_on_creation_when_given_property_key_is_empty()
+        {
+            Assert.ThrowsException<ArgumentException>(() => PropertyKey.Create(string.Empty));
+        }
+
+        [TestMethod]
+        public void Throws_argument_exception_on_creation_when_given_property_key_consists_only_of_white_space_characters()
+        {
+            Assert.ThrowsException<ArgumentException>(() => PropertyKey.Create("   "));
+        }
+
+        [TestMethod]
         public void Represents_encapsulated_property_key()
         {
             const string expected = Key;
