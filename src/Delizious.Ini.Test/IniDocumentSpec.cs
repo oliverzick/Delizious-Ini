@@ -42,17 +42,15 @@ namespace Delizious.Ini.Test
             [TestMethod]
             public void Provides_section_names()
             {
-                var expected = ImmutableArray.Create<SectionName>("A", "B", "C");
+                var sectionNames = ImmutableArray.Create<SectionName>("A", "B", "C");
+                var expected = sectionNames;
 
-                var target = MakeTarget(expected);
+                var target = MakeTarget(sectionNames);
 
                 var actual = target.SectionNames().ToImmutableArray();
 
                 CollectionAssert.AreEqual(expected, actual);
             }
-
-            private static IniDocument MakeTarget(IEnumerable<SectionName> sectionNames)
-                => sectionNames.Aggregate(new IniDocumentBuilder(), (builder, sectionName) => builder.AppendSectionLine(sectionName)).Build();
         }
 
         [TestClass]
@@ -82,7 +80,7 @@ namespace Delizious.Ini.Test
             [TestMethod]
             public void Provides_property_keys_for_section_specified_by_its_section_name()
             {
-                var sectionName = "Section";
+                var sectionName = DefaultSectionName;
                 var propertyKeys = ImmutableArray.Create<PropertyKey>("PropertyA", "PropertyB", "PropertyC");
                 var expected = propertyKeys;
 
@@ -116,7 +114,7 @@ namespace Delizious.Ini.Test
             [TestMethod]
             public void Throws_section_not_found_exception_when_section_specified_by_its_section_name_does_not_exist()
             {
-                const string sectionName = NonexistentSectionName;
+                var sectionName = NonexistentSectionName;
                 var expected = new SectionNotFoundExceptionAssertion(sectionName);
 
                 var target = MakeEmptyTarget();
@@ -129,8 +127,8 @@ namespace Delizious.Ini.Test
             [TestMethod]
             public void Throws_property_not_found_exception_when_property_specified_by_its_property_key_does_not_exist()
             {
-                const string sectionName = "Section";
-                const string propertyKey = NonexistentPropertyKey;
+                var sectionName = DefaultSectionName;
+                var propertyKey = NonexistentPropertyKey;
                 var expected = new PropertyNotFoundExceptionAssertion(propertyKey);
 
                 var target = MakeTarget(Section.Create(sectionName));
@@ -185,7 +183,7 @@ namespace Delizious.Ini.Test
             [TestMethod]
             public void Throws_section_not_found_exception_when_section_specified_by_its_section_name_does_not_exist()
             {
-                const string sectionName = NonexistentSectionName;
+                var sectionName = NonexistentSectionName;
                 var expected = new SectionNotFoundExceptionAssertion(sectionName);
 
                 var target = MakeEmptyTarget();
@@ -198,8 +196,8 @@ namespace Delizious.Ini.Test
             [TestMethod]
             public void Throws_property_not_found_exception_when_property_specified_by_its_property_key_does_not_exist()
             {
-                const string sectionName = "Section";
-                const string propertyKey = NonexistentPropertyKey;
+                var sectionName = DefaultSectionName;
+                var propertyKey = NonexistentPropertyKey;
                 var expected = new PropertyNotFoundExceptionAssertion(propertyKey);
 
                 var target = MakeTarget(Section.Create(sectionName));
@@ -212,15 +210,17 @@ namespace Delizious.Ini.Test
             [TestMethod]
             public void Updates_property_value_to_new_value_for_property_with_specified_section_name_and_property_key()
             {
+                var sectionName = DefaultSectionName;
+                var propertyKey = DefaultPropertyKey;
                 var oldValue = "Old value";
                 var newValue = "New value";
                 var expected = newValue;
 
                 var target = MakeSinglePropertyTarget(oldValue);
 
-                target.UpdatePropertyValue(DefaultSectionName, DefaultPropertyKey, newValue);
+                target.UpdatePropertyValue(sectionName, propertyKey, newValue);
 
-                var actual = target.ReadPropertyValue(DefaultSectionName, DefaultPropertyKey);
+                var actual = target.ReadPropertyValue(sectionName, propertyKey);
 
                 Assert.AreEqual(expected, actual);
             }
@@ -231,6 +231,9 @@ namespace Delizious.Ini.Test
 
         private static IniDocument MakeSinglePropertyTarget(PropertyValue propertyValue)
             => MakeTarget(Section.Create(DefaultSectionName, Property.Create(DefaultPropertyKey, propertyValue)));
+
+        private static IniDocument MakeTarget(IEnumerable<SectionName> sectionNames)
+            => MakeTarget(sectionNames.Select(sectionName => Section.Create(sectionName)).ToArray());
 
         private static IniDocument MakeTarget(params Section[] sections)
             => sections.Aggregate(new IniDocumentBuilder(), (builder, section) => section.ApplyTo(builder)).Build();
