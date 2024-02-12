@@ -87,7 +87,7 @@
         /// The name of the section containing the property.
         /// </param>
         /// <param name="propertyKey">
-        /// The key of the property.
+        /// The key of the property to read the value.
         /// </param>
         /// <returns>
         /// The value of the property. If the property does exist but has no value, <see cref="string.Empty"/> is returned.
@@ -114,6 +114,47 @@
             }
 
             return this.content.FindSection(sectionName).FindProperty(propertyKey).ReadValue();
+        }
+
+        /// <summary>
+        /// Updates the value of the property contained in the section.
+        /// </summary>
+        /// <param name="sectionName">
+        /// The name of the section containing the property.
+        /// </param>
+        /// <param name="propertyKey">
+        /// The key of the property to update.
+        /// </param>
+        /// <param name="newPropertyValue">
+        /// The new value of the property.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="sectionName"/> or <paramref name="propertyKey"/> or <paramref name="newPropertyValue"/> is <c>null</c>.
+        /// </exception>
+        /// <exception cref="SectionNotFoundException">
+        /// The section specified by the <paramref name="sectionName"/> does not exist.
+        /// </exception>
+        /// <exception cref="PropertyNotFoundException">
+        /// The property specified by the <paramref name="propertyKey"/> does not exist.
+        /// </exception>
+        public void UpdatePropertyValue(SectionName sectionName, PropertyKey propertyKey, PropertyValue newPropertyValue)
+        {
+            if (sectionName is null)
+            {
+                throw new ArgumentNullException(nameof(sectionName));
+            }
+
+            if (propertyKey is null)
+            {
+                throw new ArgumentNullException(nameof(propertyKey));
+            }
+
+            if (newPropertyValue is null)
+            {
+                throw new ArgumentNullException(nameof(newPropertyValue));
+            }
+
+            this.content.FindSection(sectionName).FindProperty(propertyKey).UpdateValue(newPropertyValue);
         }
 
         private sealed class Content
@@ -204,6 +245,9 @@
 
             public PropertyValue ReadValue()
                 => this.property.Value;
+
+            public void UpdateValue(PropertyValue newPropertyValue)
+                => this.property.Value = newPropertyValue.ToString();
         }
     }
 }
