@@ -88,6 +88,15 @@ namespace Delizious.Ini {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Property key must not be empty or consist only of white-space characters..
+        /// </summary>
+        internal static string PropertyKeyMustNotBeEmptyOrConsistOnlyOfWhiteSpaceCharacters {
+            get {
+                return ResourceManager.GetString("PropertyKeyMustNotBeEmptyOrConsistOnlyOfWhiteSpaceCharacters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Section name must not be empty or consist only of white-space characters..
         /// </summary>
         internal static string SectionNameMustNotBeEmptyOrConsistOnlyOfWhiteSpaceCharacters {
