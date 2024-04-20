@@ -47,26 +47,26 @@
         }
 
         /// <summary>
-        /// Serializes the INI document to the given <paramref name="textWriter"/>.
+        /// Saves the INI document to the given <paramref name="textWriter"/>.
         /// </summary>
         /// <param name="textWriter">
-        /// The <see cref="TextWriter"/> to serialize the INI document to.
+        /// The <see cref="TextWriter"/> to save the INI document to.
         /// </param>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="textWriter"/> is <c>null</c>.
         /// </exception>
         /// <exception cref="SerializationException">
-        /// Failed to serialize the current INI document to the given <paramref name="textWriter"/>.
+        /// Failed to save the current INI document to the given <paramref name="textWriter"/>.
         /// Inspect <see cref="Exception.InnerException"/> for detailed error and the reason for the exception.
         /// </exception>
-        public void SerializeTo(TextWriter textWriter)
+        public void SaveTo(TextWriter textWriter)
         {
             if (textWriter is null)
             {
                 throw new ArgumentNullException(nameof(textWriter));
             }
 
-            this.content.SerializeTo(textWriter);
+            this.content.SaveTo(textWriter);
         }
 
         /// <summary>
@@ -218,7 +218,7 @@
                     ThrowExceptionsOnError = true
                 };
 
-            public void SerializeTo(TextWriter textWriter)
+            public void SaveTo(TextWriter textWriter)
             {
                 try
                 {

@@ -37,14 +37,14 @@ namespace Delizious.Ini.Test
         }
 
         [TestClass]
-        public sealed class SerializeTo
+        public sealed class SaveTo
         {
             [TestMethod]
             public void Throws_argument_null_exception_when_text_writer_is_null()
             {
                 var target = MakeEmptyTarget();
 
-                Assert.ThrowsException<ArgumentNullException>(() => target.SerializeTo(null));
+                Assert.ThrowsException<ArgumentNullException>(() => target.SaveTo(null));
             }
 
             [TestMethod]
@@ -56,13 +56,13 @@ namespace Delizious.Ini.Test
 
                 var target = MakeEmptyTarget();
 
-                var actual = Assert.ThrowsException<SerializationException>(() => target.SerializeTo(textWriter));
+                var actual = Assert.ThrowsException<SerializationException>(() => target.SaveTo(textWriter));
 
                 Assert.AreEqual(expected, actual);
             }
 
             [TestMethod]
-            public void Serializes_ini_document_to_text_writer()
+            public void Saves_the_ini_document_to_text_writer()
             {
                 var expected = MakeSampleString();
                 var stringBuilder = new StringBuilder();
@@ -70,7 +70,7 @@ namespace Delizious.Ini.Test
 
                 var target = MakeSampleTarget();
 
-                target.SerializeTo(textWriter);
+                target.SaveTo(textWriter);
                 textWriter.Flush();
 
                 var actual = stringBuilder.ToString();
