@@ -226,7 +226,7 @@
                 }
                 catch (Exception exception)
                 {
-                    throw PersistenceException.ForSerialization(exception);
+                    throw PersistenceException.SavingFailed(exception);
                 }
             }
 

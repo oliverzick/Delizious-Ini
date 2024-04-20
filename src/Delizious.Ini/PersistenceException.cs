@@ -15,7 +15,7 @@
         {
         }
 
-        internal static PersistenceException ForSerialization(Exception innerException)
+        internal static PersistenceException SavingFailed(Exception innerException)
             => new PersistenceException(ExceptionMessages.CouldNotSaveIniDocument, innerException);
 
         [ExcludeFromCodeCoverage]
