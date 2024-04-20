@@ -55,7 +55,7 @@
         /// <exception cref="ArgumentNullException">
         /// <paramref name="textWriter"/> is <c>null</c>.
         /// </exception>
-        /// <exception cref="SerializationException">
+        /// <exception cref="PersistenceException">
         /// Failed to save the current INI document to the given <paramref name="textWriter"/>.
         /// Inspect <see cref="Exception.InnerException"/> for detailed error and the reason for the exception.
         /// </exception>
@@ -226,7 +226,7 @@
                 }
                 catch (Exception exception)
                 {
-                    throw SerializationException.ForSerialization(exception);
+                    throw PersistenceException.ForSerialization(exception);
                 }
             }
 

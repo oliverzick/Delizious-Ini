@@ -48,15 +48,15 @@ namespace Delizious.Ini.Test
             }
 
             [TestMethod]
-            public void Throws_serialization_exception_containing_object_disposed_exception_when_text_writer_is_already_disposed()
+            public void Throws_persistence_exception_containing_object_disposed_exception_when_text_writer_is_already_disposed()
             {
-                var expected = SerializationExceptionAssertion.Create<ObjectDisposedException>();
+                var expected = PersistenceExceptionAssertion.Create<ObjectDisposedException>();
                 using var textWriter = new StringWriter();
                 textWriter.Dispose();
 
                 var target = MakeEmptyTarget();
 
-                var actual = Assert.ThrowsException<SerializationException>(() => target.SaveTo(textWriter));
+                var actual = Assert.ThrowsException<PersistenceException>(() => target.SaveTo(textWriter));
 
                 Assert.AreEqual(expected, actual);
             }
