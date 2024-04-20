@@ -88,11 +88,11 @@ namespace Delizious.Ini {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not serialize INI document..
+        ///   Looks up a localized string similar to Could not save INI document..
         /// </summary>
-        internal static string CouldNotSerializeIniDocument {
+        internal static string CouldNotSaveIniDocument {
             get {
-                return ResourceManager.GetString("CouldNotSerializeIniDocument", resourceCulture);
+                return ResourceManager.GetString("CouldNotSaveIniDocument", resourceCulture);
             }
         }
         

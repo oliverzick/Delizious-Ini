@@ -16,7 +16,7 @@
         }
 
         internal static PersistenceException ForSerialization(Exception innerException)
-            => new PersistenceException(ExceptionMessages.CouldNotSerializeIniDocument, innerException);
+            => new PersistenceException(ExceptionMessages.CouldNotSaveIniDocument, innerException);
 
         [ExcludeFromCodeCoverage]
         private PersistenceException(SerializationInfo info, StreamingContext context)
