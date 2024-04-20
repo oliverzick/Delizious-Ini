@@ -47,6 +47,29 @@
         }
 
         /// <summary>
+        /// Serializes the INI document to the given <paramref name="textWriter"/>.
+        /// </summary>
+        /// <param name="textWriter">
+        /// The <see cref="TextWriter"/> to serialize the INI document to.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="textWriter"/> is <c>null</c>.
+        /// </exception>
+        /// <exception cref="SerializationException">
+        /// Failed to serialize the current INI document to the given <paramref name="textWriter"/>.
+        /// Inspect <see cref="Exception.InnerException"/> for detailed error and the reason for the exception.
+        /// </exception>
+        public void SerializeTo(TextWriter textWriter)
+        {
+            if (textWriter is null)
+            {
+                throw new ArgumentNullException(nameof(textWriter));
+            }
+
+            this.content.SerializeTo(textWriter);
+        }
+
+        /// <summary>
         /// Provides the names of all sections contained in the current <see cref="IniDocument"/>.
         /// </summary>
         /// <returns>
@@ -194,6 +217,18 @@
                     SkipInvalidLines = true,
                     ThrowExceptionsOnError = true
                 };
+
+            public void SerializeTo(TextWriter textWriter)
+            {
+                try
+                {
+                    textWriter.Write(this.iniData.ToString());
+                }
+                catch (Exception exception)
+                {
+                    throw SerializationException.ForSerialization(exception);
+                }
+            }
 
             public IEnumerable<SectionName> SectionNames()
                 => this.iniData.Sections.Select(section => SectionName.Create(section.SectionName));

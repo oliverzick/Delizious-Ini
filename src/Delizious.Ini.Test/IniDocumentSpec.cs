@@ -37,6 +37,49 @@ namespace Delizious.Ini.Test
         }
 
         [TestClass]
+        public sealed class SerializeTo
+        {
+            [TestMethod]
+            public void Throws_argument_null_exception_when_text_writer_is_null()
+            {
+                var target = MakeEmptyTarget();
+
+                Assert.ThrowsException<ArgumentNullException>(() => target.SerializeTo(null));
+            }
+
+            [TestMethod]
+            public void Throws_serialization_exception_containing_object_disposed_exception_when_text_writer_is_already_disposed()
+            {
+                var expected = SerializationExceptionAssertion.Create<ObjectDisposedException>();
+                using var textWriter = new StringWriter();
+                textWriter.Dispose();
+
+                var target = MakeEmptyTarget();
+
+                var actual = Assert.ThrowsException<SerializationException>(() => target.SerializeTo(textWriter));
+
+                Assert.AreEqual(expected, actual);
+            }
+
+            [TestMethod]
+            public void Serializes_ini_document_to_text_writer()
+            {
+                var expected = MakeSampleString();
+                var stringBuilder = new StringBuilder();
+                using var textWriter = new StringWriter(stringBuilder);
+
+                var target = MakeSampleTarget();
+
+                target.SerializeTo(textWriter);
+                textWriter.Flush();
+
+                var actual = stringBuilder.ToString();
+
+                Assert.AreEqual(expected, actual);
+            }
+        }
+
+        [TestClass]
         public sealed class SectionNames
         {
             [TestMethod]
@@ -238,9 +281,28 @@ namespace Delizious.Ini.Test
         private static IniDocument MakeTarget(params Section[] sections)
             => sections.Aggregate(new IniDocumentBuilder(), (builder, section) => section.ApplyTo(builder)).Build();
 
+        private static IniDocument MakeSampleTarget()
+            => MakeTarget(Section.Create("Section1", Property.Create("PropertyA", "Value A")),
+                          Section.Create("Section2", Property.Create("PropertyB", "Value B")));
+
+        public static string MakeSampleString()
+            => new IniDocumentBuilder().AppendSectionLine("Section1")
+                                       .AppendPropertyLine("PropertyA", "Value A")
+                                       .AppendEmptyLine()
+                                       .AppendSectionLine("Section2")
+                                       .AppendPropertyLine("PropertyB", "Value B")
+                                       .ToString();
+
         private sealed class IniDocumentBuilder
         {
             private readonly StringBuilder stringBuilder = new();
+
+            public IniDocumentBuilder AppendEmptyLine()
+            {
+                this.stringBuilder.AppendLine();
+
+                return this;
+            }
 
             public IniDocumentBuilder AppendSectionLine(SectionName sectionName)
             {

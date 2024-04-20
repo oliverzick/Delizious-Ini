@@ -88,6 +88,15 @@ namespace Delizious.Ini {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not serialize INI document..
+        /// </summary>
+        internal static string CouldNotSerializeIniDocument {
+            get {
+                return ResourceManager.GetString("CouldNotSerializeIniDocument", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Property key must not be empty or consist only of white-space characters..
         /// </summary>
         internal static string PropertyKeyMustNotBeEmptyOrConsistOnlyOfWhiteSpaceCharacters {
