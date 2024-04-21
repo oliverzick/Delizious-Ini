@@ -57,7 +57,7 @@
         /// <paramref name="textWriter"/> is <c>null</c>.
         /// </exception>
         /// <exception cref="PersistenceException">
-        /// Failed to save the current INI document to the given <paramref name="textWriter"/>.
+        /// The INI document could not be saved to the given <paramref name="textWriter"/>.
         /// Inspect <see cref="Exception.InnerException"/> for detailed error and the reason for the exception.
         /// </exception>
         public void SaveTo(TextWriter textWriter)
