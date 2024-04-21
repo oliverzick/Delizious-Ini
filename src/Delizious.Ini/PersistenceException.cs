@@ -15,6 +15,9 @@
         {
         }
 
+        internal static PersistenceException LoadingFailed(Exception innerException)
+            => new PersistenceException(ExceptionMessages.CouldNotLoadIniDocument, innerException);
+
         internal static PersistenceException SavingFailed(Exception innerException)
             => new PersistenceException(ExceptionMessages.CouldNotSaveIniDocument, innerException);
 

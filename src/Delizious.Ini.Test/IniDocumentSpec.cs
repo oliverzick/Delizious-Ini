@@ -27,12 +27,15 @@ namespace Delizious.Ini.Test
             }
 
             [TestMethod]
-            public void Throws_ini_exception_when_text_reader_is_closed()
+            public void Throws_persistence_exception_containing_object_disposed_exception_when_text_writer_is_already_disposed()
             {
+                var expected = PersistenceExceptionAssertion.Create<ObjectDisposedException>();
                 using var textReader = new StringReader(string.Empty);
                 textReader.Close();
 
-                Assert.ThrowsException<IniException>(() => IniDocument.LoadFrom(textReader));
+                var actual = Assert.ThrowsException<PersistenceException>(() => IniDocument.LoadFrom(textReader));
+
+                Assert.AreEqual(expected, actual);
             }
         }
 

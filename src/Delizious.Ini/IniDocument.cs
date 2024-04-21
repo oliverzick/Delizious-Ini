@@ -33,8 +33,9 @@
         /// <exception cref="ArgumentNullException">
         /// <paramref name="textReader"/> is <c>null</c>.
         /// </exception>
-        /// <exception cref="IniException">
+        /// <exception cref="PersistenceException">
         /// The INI document could not be loaded from the given <paramref name="textReader"/>.
+        /// Inspect <see cref="Exception.InnerException"/> for detailed error and the reason for the exception.
         /// </exception>
         public static IniDocument LoadFrom(TextReader textReader)
         {
@@ -200,7 +201,7 @@
                 }
                 catch (Exception exception)
                 {
-                    throw new IniException(ExceptionMessages.CouldNotLoadIniDocument, exception);
+                    throw PersistenceException.LoadingFailed(exception);
                 }
             }
 
