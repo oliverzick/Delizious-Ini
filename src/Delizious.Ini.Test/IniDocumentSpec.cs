@@ -27,42 +27,45 @@ namespace Delizious.Ini.Test
             }
 
             [TestMethod]
-            public void Throws_ini_exception_when_text_reader_is_closed()
+            public void Throws_persistence_exception_containing_object_disposed_exception_when_text_reader_is_already_disposed()
             {
+                var expected = PersistenceExceptionAssertion.Create<ObjectDisposedException>();
                 using var textReader = new StringReader(string.Empty);
                 textReader.Close();
 
-                Assert.ThrowsException<IniException>(() => IniDocument.LoadFrom(textReader));
+                var actual = Assert.ThrowsException<PersistenceException>(() => IniDocument.LoadFrom(textReader));
+
+                Assert.AreEqual(expected, actual);
             }
         }
 
         [TestClass]
-        public sealed class SerializeTo
+        public sealed class SaveTo
         {
             [TestMethod]
             public void Throws_argument_null_exception_when_text_writer_is_null()
             {
                 var target = MakeEmptyTarget();
 
-                Assert.ThrowsException<ArgumentNullException>(() => target.SerializeTo(null));
+                Assert.ThrowsException<ArgumentNullException>(() => target.SaveTo(null));
             }
 
             [TestMethod]
-            public void Throws_serialization_exception_containing_object_disposed_exception_when_text_writer_is_already_disposed()
+            public void Throws_persistence_exception_containing_object_disposed_exception_when_text_writer_is_already_disposed()
             {
-                var expected = SerializationExceptionAssertion.Create<ObjectDisposedException>();
+                var expected = PersistenceExceptionAssertion.Create<ObjectDisposedException>();
                 using var textWriter = new StringWriter();
                 textWriter.Dispose();
 
                 var target = MakeEmptyTarget();
 
-                var actual = Assert.ThrowsException<SerializationException>(() => target.SerializeTo(textWriter));
+                var actual = Assert.ThrowsException<PersistenceException>(() => target.SaveTo(textWriter));
 
                 Assert.AreEqual(expected, actual);
             }
 
             [TestMethod]
-            public void Serializes_ini_document_to_text_writer()
+            public void Saves_the_ini_document_to_text_writer()
             {
                 var expected = MakeSampleString();
                 var stringBuilder = new StringBuilder();
@@ -70,7 +73,7 @@ namespace Delizious.Ini.Test
 
                 var target = MakeSampleTarget();
 
-                target.SerializeTo(textWriter);
+                target.SaveTo(textWriter);
                 textWriter.Flush();
 
                 var actual = stringBuilder.ToString();

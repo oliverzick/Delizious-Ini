@@ -126,8 +126,8 @@
   <data name="CouldNotLoadIniDocument" xml:space="preserve">
     <value>Could not load INI document.</value>
   </data>
-  <data name="CouldNotSerializeIniDocument" xml:space="preserve">
-    <value>Could not serialize INI document.</value>
+  <data name="CouldNotSaveIniDocument" xml:space="preserve">
+    <value>Could not save INI document.</value>
   </data>
   <data name="PropertyKeyMustNotBeEmptyOrConsistOnlyOfWhiteSpaceCharacters" xml:space="preserve">
     <value>Property key must not be empty or consist only of white-space characters.</value>

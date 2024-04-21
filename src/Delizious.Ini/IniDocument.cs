@@ -21,20 +21,21 @@
         }
 
         /// <summary>
-        /// Loads an INI document by reading the INI contents from the given <paramref name="textReader"/>. 
-        /// The <paramref name="textReader"/> is only used to read the INI contents from and not kept in the returned <see cref="IniDocument"/> instance.
+        /// Loads an INI document from the given <paramref name="textReader"/>.
+        /// The <paramref name="textReader"/> is only used to read the INI document from and is not kept in the returned <see cref="IniDocument"/> instance.
         /// </summary>
         /// <param name="textReader">
-        /// The <see cref="TextReader"/> to read the INI contents from.
+        /// The <see cref="TextReader"/> to read the INI document from.
         /// </param>
         /// <returns>
-        /// A new <see cref="IniDocument"/> instance that contains the INI contents read from the given <paramref name="textReader"/>.
+        /// A new <see cref="IniDocument"/> instance that represents the INI document read from the given <paramref name="textReader"/>.
         /// </returns>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="textReader"/> is <c>null</c>.
         /// </exception>
-        /// <exception cref="IniException">
+        /// <exception cref="PersistenceException">
         /// The INI document could not be loaded from the given <paramref name="textReader"/>.
+        /// Inspect <see cref="Exception.InnerException"/> for detailed error and the reason for the exception.
         /// </exception>
         public static IniDocument LoadFrom(TextReader textReader)
         {
@@ -47,26 +48,26 @@
         }
 
         /// <summary>
-        /// Serializes the INI document to the given <paramref name="textWriter"/>.
+        /// Saves the INI document to the given <paramref name="textWriter"/>.
         /// </summary>
         /// <param name="textWriter">
-        /// The <see cref="TextWriter"/> to serialize the INI document to.
+        /// The <see cref="TextWriter"/> to save the INI document to.
         /// </param>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="textWriter"/> is <c>null</c>.
         /// </exception>
-        /// <exception cref="SerializationException">
-        /// Failed to serialize the current INI document to the given <paramref name="textWriter"/>.
+        /// <exception cref="PersistenceException">
+        /// The INI document could not be saved to the given <paramref name="textWriter"/>.
         /// Inspect <see cref="Exception.InnerException"/> for detailed error and the reason for the exception.
         /// </exception>
-        public void SerializeTo(TextWriter textWriter)
+        public void SaveTo(TextWriter textWriter)
         {
             if (textWriter is null)
             {
                 throw new ArgumentNullException(nameof(textWriter));
             }
 
-            this.content.SerializeTo(textWriter);
+            this.content.SaveTo(textWriter);
         }
 
         /// <summary>
@@ -200,7 +201,7 @@
                 }
                 catch (Exception exception)
                 {
-                    throw new IniException(ExceptionMessages.CouldNotLoadIniDocument, exception);
+                    throw PersistenceException.LoadingFailed(exception);
                 }
             }
 
@@ -218,7 +219,7 @@
                     ThrowExceptionsOnError = true
                 };
 
-            public void SerializeTo(TextWriter textWriter)
+            public void SaveTo(TextWriter textWriter)
             {
                 try
                 {
@@ -226,7 +227,7 @@
                 }
                 catch (Exception exception)
                 {
-                    throw SerializationException.ForSerialization(exception);
+                    throw PersistenceException.SavingFailed(exception);
                 }
             }
 
