@@ -21,14 +21,14 @@
         }
 
         /// <summary>
-        /// Loads an INI document by reading the INI contents from the given <paramref name="textReader"/>. 
-        /// The <paramref name="textReader"/> is only used to read the INI contents from and not kept in the returned <see cref="IniDocument"/> instance.
+        /// Loads an INI document from the given <paramref name="textReader"/>.
+        /// The <paramref name="textReader"/> is only used to read the INI document from and is not kept in the returned <see cref="IniDocument"/> instance.
         /// </summary>
         /// <param name="textReader">
-        /// The <see cref="TextReader"/> to read the INI contents from.
+        /// The <see cref="TextReader"/> to read the INI document from.
         /// </param>
         /// <returns>
-        /// A new <see cref="IniDocument"/> instance that contains the INI contents read from the given <paramref name="textReader"/>.
+        /// A new <see cref="IniDocument"/> instance that represents the INI document read from the given <paramref name="textReader"/>.
         /// </returns>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="textReader"/> is <c>null</c>.
