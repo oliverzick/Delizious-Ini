@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.0] - 2024-04-21
+### Changed
+- Streamline persistence methods to load and save an INI document ([#18](https://github.com/oliverzick/Delizious-Ini/issues/18))
+  - Improve naming of persistence methods by streamline naming to `LoadFrom` and `SaveTo`
+  - Throw more specific persistence exception when loading or saving an INI document failed
+
 ## [0.5.0] - 2024-04-20
 ### Added
 - Enable serialization of an INI document to a text writer ([#16](https://github.com/oliverzick/Delizious-Ini/issues/16))
