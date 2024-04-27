@@ -246,6 +246,74 @@
             private Section SelectSection(SectionName sectionName, SectionSelectionMode mode)
                 => mode.Transform(SectionSelector.Create(this.iniData, sectionName));
 
+            private sealed class Section
+            {
+                private readonly KeyDataCollection properties;
+
+                private Section(KeyDataCollection properties)
+                {
+                    this.properties = properties;
+                }
+
+                public static Section Create(KeyDataCollection properties)
+                    => new Section(properties);
+
+                public IEnumerable<PropertyKey> PropertyKeys()
+                    => this.properties.Select(property => PropertyKey.Create(property.KeyName));
+
+                public PropertyValue ReadProperty(PropertyKey propertyKey, PropertySelectionMode mode)
+                    => this.SelectProperty(propertyKey, mode).ReadValue();
+
+                public void WriteProperty(PropertyKey propertyKey, PropertyValue propertyValue, PropertySelectionMode mode)
+                    => this.SelectProperty(propertyKey, mode).UpdateValue(propertyValue);
+
+                private Property SelectProperty(PropertyKey propertyKey, PropertySelectionMode mode)
+                    => mode.Transform(PropertySelector.Create(this.properties, propertyKey));
+
+                private sealed class Property
+                {
+                    private readonly KeyData property;
+
+                    private Property(KeyData property)
+                    {
+                        this.property = property;
+                    }
+
+                    public static Property Create(KeyData keyData)
+                        => new Property(keyData);
+
+                    public PropertyValue ReadValue()
+                        => this.property.Value;
+
+                    public void UpdateValue(PropertyValue newPropertyValue)
+                        => this.property.Value = newPropertyValue.ToString();
+                }
+
+                private sealed class PropertySelector : IPropertyModeTransformation<Property>
+                {
+                    private readonly KeyDataCollection properties;
+
+                    private readonly PropertyKey propertyKey;
+
+                    public PropertySelector(KeyDataCollection properties, PropertyKey propertyKey)
+                    {
+                        this.properties = properties;
+                        this.propertyKey = propertyKey;
+                    }
+
+                    public static PropertySelector Create(KeyDataCollection properties, PropertyKey propertyKey)
+                        => new PropertySelector(properties, propertyKey);
+
+                    public Property FailIfMissing()
+                    {
+                        // GetKeyData returns a null reference when property does not exist, so we need to throw appropriate exception here
+                        var keyData = this.properties.GetKeyData(propertyKey.ToString()) ?? throw new PropertyNotFoundException(propertyKey.ToString());
+
+                        return Property.Create(keyData);
+                    }
+                }
+            }
+
             private sealed class SectionSelector : ISectionSelectionModeTransformation<Section>
             {
                 private readonly IniData iniData;
@@ -267,74 +335,6 @@
                     var properties = this.iniData.Sections[this.sectionName.ToString()] ?? throw new SectionNotFoundException(this.sectionName);
 
                     return Section.Create(properties);
-                }
-            }
-        }
-
-        private sealed class Section
-        {
-            private readonly KeyDataCollection properties;
-
-            private Section(KeyDataCollection properties)
-            {
-                this.properties = properties;
-            }
-
-            public static Section Create(KeyDataCollection properties)
-                => new Section(properties);
-
-            public IEnumerable<PropertyKey> PropertyKeys()
-                => this.properties.Select(property => PropertyKey.Create(property.KeyName));
-
-            public PropertyValue ReadProperty(PropertyKey propertyKey, PropertySelectionMode mode)
-                => this.SelectProperty(propertyKey, mode).ReadValue();
-
-            public void WriteProperty(PropertyKey propertyKey, PropertyValue propertyValue, PropertySelectionMode mode)
-                => this.SelectProperty(propertyKey, mode).UpdateValue(propertyValue);
-
-            private Property SelectProperty(PropertyKey propertyKey, PropertySelectionMode mode)
-                => mode.Transform(PropertySelector.Create(this.properties, propertyKey));
-
-            private sealed class Property
-            {
-                private readonly KeyData property;
-
-                private Property(KeyData property)
-                {
-                    this.property = property;
-                }
-
-                public static Property Create(KeyData keyData)
-                    => new Property(keyData);
-
-                public PropertyValue ReadValue()
-                    => this.property.Value;
-
-                public void UpdateValue(PropertyValue newPropertyValue)
-                    => this.property.Value = newPropertyValue.ToString();
-            }
-
-            private sealed class PropertySelector : IPropertyModeTransformation<Property>
-            {
-                private readonly KeyDataCollection properties;
-
-                private readonly PropertyKey propertyKey;
-
-                public PropertySelector(KeyDataCollection properties, PropertyKey propertyKey)
-                {
-                    this.properties = properties;
-                    this.propertyKey = propertyKey;
-                }
-
-                public static PropertySelector Create(KeyDataCollection properties, PropertyKey propertyKey)
-                    => new PropertySelector(properties, propertyKey);
-
-                public Property FailIfMissing()
-                {
-                    // GetKeyData returns a null reference when property does not exist, so we need to throw appropriate exception here
-                    var keyData = this.properties.GetKeyData(propertyKey.ToString()) ?? throw new PropertyNotFoundException(propertyKey.ToString());
-
-                    return Property.Create(keyData);
                 }
             }
         }
