@@ -101,7 +101,7 @@
                 throw new ArgumentNullException(nameof(sectionName));
             }
 
-            return this.content.FindSection(sectionName).PropertyKeys();
+            return this.content.PropertyKeys(sectionName, SectionSelectionMode.FailIfMissing());
         }
 
         /// <summary>
@@ -234,14 +234,14 @@
             public IEnumerable<SectionName> SectionNames()
                 => this.iniData.Sections.Select(section => SectionName.Create(section.SectionName));
 
+            public IEnumerable<PropertyKey> PropertyKeys(SectionName sectionName, SectionSelectionMode sectionSelectionMode)
+                => this.SelectSection(sectionName, sectionSelectionMode).PropertyKeys();
+
             public PropertyValue ReadProperty(SectionName sectionName, PropertyKey propertyKey, SectionSelectionMode sectionSelectionMode, PropertySelectionMode propertySelectionMode)
                 => this.SelectSection(sectionName, sectionSelectionMode).ReadProperty(propertyKey, propertySelectionMode);
 
             public void WriteProperty(SectionName sectionName, PropertyKey propertyKey, PropertyValue propertyValue, SectionSelectionMode sectionSelectionMode, PropertySelectionMode propertySelectionMode)
                 => this.SelectSection(sectionName, sectionSelectionMode).WriteProperty(propertyKey, propertyValue, propertySelectionMode);
-
-            public Section FindSection(SectionName sectionName)
-                => this.SelectSection(sectionName, SectionSelectionMode.FailIfMissing());
 
             private Section SelectSection(SectionName sectionName, SectionSelectionMode mode)
                 => mode.Transform(SectionSelector.Create(this.iniData, sectionName));
