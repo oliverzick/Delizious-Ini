@@ -295,6 +295,25 @@
             private Property SelectProperty(PropertyKey propertyKey, PropertySelectionMode mode)
                 => mode.Transform(PropertySelector.Create(this.properties, propertyKey));
 
+            private sealed class Property
+            {
+                private readonly KeyData property;
+
+                private Property(KeyData property)
+                {
+                    this.property = property;
+                }
+
+                public static Property Create(KeyData keyData)
+                    => new Property(keyData);
+
+                public PropertyValue ReadValue()
+                    => this.property.Value;
+
+                public void UpdateValue(PropertyValue newPropertyValue)
+                    => this.property.Value = newPropertyValue.ToString();
+            }
+
             private sealed class PropertySelector : IPropertyModeTransformation<Property>
             {
                 private readonly KeyDataCollection properties;
@@ -318,25 +337,6 @@
                     return Property.Create(keyData);
                 }
             }
-        }
-
-        private sealed class Property
-        {
-            private readonly KeyData property;
-
-            private Property(KeyData property)
-            {
-                this.property = property;
-            }
-
-            public static Property Create(KeyData keyData)
-                => new Property(keyData);
-
-            public PropertyValue ReadValue()
-                => this.property.Value;
-
-            public void UpdateValue(PropertyValue newPropertyValue)
-                => this.property.Value = newPropertyValue.ToString();
         }
     }
 }
