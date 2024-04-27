@@ -178,7 +178,7 @@
                 throw new ArgumentNullException(nameof(newPropertyValue));
             }
 
-            this.content.FindSection(sectionName).FindProperty(propertyKey).UpdateValue(newPropertyValue);
+            this.content.WriteProperty(sectionName, propertyKey, newPropertyValue, SectionSelectionMode.FailIfMissing(), PropertySelectionMode.FailIfMissing());
         }
 
         private sealed class Content
@@ -234,10 +234,13 @@
             public IEnumerable<SectionName> SectionNames()
                 => this.iniData.Sections.Select(section => SectionName.Create(section.SectionName));
 
+            public void WriteProperty(SectionName sectionName, PropertyKey propertyKey, PropertyValue propertyValue, SectionSelectionMode sectionSelectionMode, PropertySelectionMode propertySelectionMode)
+                => this.SelectSection(sectionName, sectionSelectionMode).WriteProperty(propertyKey, propertyValue, propertySelectionMode);
+
             public Section FindSection(SectionName sectionName)
                 => this.SelectSection(sectionName, SectionSelectionMode.FailIfMissing());
 
-            public Section SelectSection(SectionName sectionName, SectionSelectionMode mode)
+            private Section SelectSection(SectionName sectionName, SectionSelectionMode mode)
                 => mode.Transform(SectionSelector.Create(this.iniData, sectionName));
 
             private sealed class SectionSelector : ISectionSelectionModeTransformation<Section>
@@ -280,10 +283,13 @@
             public IEnumerable<PropertyKey> PropertyKeys()
                 => this.properties.Select(property => PropertyKey.Create(property.KeyName));
 
+            public void WriteProperty(PropertyKey propertyKey, PropertyValue propertyValue, PropertySelectionMode mode)
+                => this.SelectProperty(propertyKey, mode).UpdateValue(propertyValue);
+
             public Property FindProperty(PropertyKey propertyKey)
                 => this.SelectProperty(propertyKey, PropertySelectionMode.FailIfMissing());
 
-            public Property SelectProperty(PropertyKey propertyKey, PropertySelectionMode mode)
+            private Property SelectProperty(PropertyKey propertyKey, PropertySelectionMode mode)
                 => mode.Transform(PropertySelector.Create(this.properties, propertyKey));
 
             private sealed class PropertySelector : IPropertyModeTransformation<Property>
