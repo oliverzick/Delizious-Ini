@@ -137,7 +137,7 @@
                 throw new ArgumentNullException(nameof(propertyKey));
             }
 
-            return this.content.FindSection(sectionName).FindProperty(propertyKey).ReadValue();
+            return this.content.ReadProperty(sectionName, propertyKey, SectionSelectionMode.FailIfMissing(), PropertySelectionMode.FailIfMissing());
         }
 
         /// <summary>
@@ -234,6 +234,9 @@
             public IEnumerable<SectionName> SectionNames()
                 => this.iniData.Sections.Select(section => SectionName.Create(section.SectionName));
 
+            public PropertyValue ReadProperty(SectionName sectionName, PropertyKey propertyKey, SectionSelectionMode sectionSelectionMode, PropertySelectionMode propertySelectionMode)
+                => this.SelectSection(sectionName, sectionSelectionMode).ReadProperty(propertyKey, propertySelectionMode);
+
             public void WriteProperty(SectionName sectionName, PropertyKey propertyKey, PropertyValue propertyValue, SectionSelectionMode sectionSelectionMode, PropertySelectionMode propertySelectionMode)
                 => this.SelectSection(sectionName, sectionSelectionMode).WriteProperty(propertyKey, propertyValue, propertySelectionMode);
 
@@ -283,11 +286,11 @@
             public IEnumerable<PropertyKey> PropertyKeys()
                 => this.properties.Select(property => PropertyKey.Create(property.KeyName));
 
+            public PropertyValue ReadProperty(PropertyKey propertyKey, PropertySelectionMode mode)
+                => this.SelectProperty(propertyKey, mode).ReadValue();
+
             public void WriteProperty(PropertyKey propertyKey, PropertyValue propertyValue, PropertySelectionMode mode)
                 => this.SelectProperty(propertyKey, mode).UpdateValue(propertyValue);
-
-            public Property FindProperty(PropertyKey propertyKey)
-                => this.SelectProperty(propertyKey, PropertySelectionMode.FailIfMissing());
 
             private Property SelectProperty(PropertyKey propertyKey, PropertySelectionMode mode)
                 => mode.Transform(PropertySelector.Create(this.properties, propertyKey));
