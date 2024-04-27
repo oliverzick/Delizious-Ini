@@ -281,11 +281,33 @@
                 => this.properties.Select(property => PropertyKey.Create(property.KeyName));
 
             public Property FindProperty(PropertyKey propertyKey)
-            {
-                // GetKeyData returns a null reference when property does not exist, so we need to throw appropriate exception here
-                var keyData = this.properties.GetKeyData(propertyKey.ToString()) ?? throw new PropertyNotFoundException(propertyKey.ToString());
+                => this.SelectProperty(propertyKey, PropertySelectionMode.FailIfMissing());
 
-                return Property.Create(keyData);
+            public Property SelectProperty(PropertyKey propertyKey, PropertySelectionMode mode)
+                => mode.Transform(PropertySelector.Create(this.properties, propertyKey));
+
+            private sealed class PropertySelector : IPropertyModeTransformation<Property>
+            {
+                private readonly KeyDataCollection properties;
+
+                private readonly PropertyKey propertyKey;
+
+                public PropertySelector(KeyDataCollection properties, PropertyKey propertyKey)
+                {
+                    this.properties = properties;
+                    this.propertyKey = propertyKey;
+                }
+
+                public static PropertySelector Create(KeyDataCollection properties, PropertyKey propertyKey)
+                    => new PropertySelector(properties, propertyKey);
+
+                public Property FailIfMissing()
+                {
+                    // GetKeyData returns a null reference when property does not exist, so we need to throw appropriate exception here
+                    var keyData = this.properties.GetKeyData(propertyKey.ToString()) ?? throw new PropertyNotFoundException(propertyKey.ToString());
+
+                    return Property.Create(keyData);
+                }
             }
         }
 
