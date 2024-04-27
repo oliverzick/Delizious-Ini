@@ -235,11 +235,33 @@
                 => this.iniData.Sections.Select(section => SectionName.Create(section.SectionName));
 
             public Section FindSection(SectionName sectionName)
-            {
-                // Indexer returns a null reference when section does not exist, so we need to throw appropriate exception here
-                var properties = this.iniData.Sections[sectionName.ToString()] ?? throw new SectionNotFoundException(sectionName);
+                => this.SelectSection(sectionName, SectionSelectionMode.FailIfMissing());
 
-                return Section.Create(properties);
+            public Section SelectSection(SectionName sectionName, SectionSelectionMode mode)
+                => mode.Transform(SectionSelector.Create(this.iniData, sectionName));
+
+            private sealed class SectionSelector : ISectionSelectionModeTransformation<Section>
+            {
+                private readonly IniData iniData;
+
+                private readonly SectionName sectionName;
+
+                private SectionSelector(IniData iniData, SectionName sectionName)
+                {
+                    this.iniData = iniData;
+                    this.sectionName = sectionName;
+                }
+
+                public static SectionSelector Create(IniData iniData, SectionName sectionName)
+                    => new SectionSelector(iniData, sectionName);
+
+                public Section FailIfMissing()
+                {
+                    // Indexer returns a null reference when section does not exist, so we need to throw appropriate exception here
+                    var properties = this.iniData.Sections[this.sectionName.ToString()] ?? throw new SectionNotFoundException(this.sectionName);
+
+                    return Section.Create(properties);
+                }
             }
         }
 
