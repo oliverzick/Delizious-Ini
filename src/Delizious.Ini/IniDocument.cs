@@ -289,7 +289,7 @@
                         => this.property.Value = newPropertyValue.ToString();
                 }
 
-                private sealed class PropertySelector : IPropertyModeTransformation<Property>
+                private sealed class PropertySelector : IMissingPropertyModeTransformation<Property>
                 {
                     private readonly KeyDataCollection properties;
 
