@@ -101,7 +101,7 @@
                 throw new ArgumentNullException(nameof(sectionName));
             }
 
-            return this.content.PropertyKeys(sectionName, SectionSelectionMode.FailIfMissing());
+            return this.content.PropertyKeys(sectionName, MissingSectionMode.Fail());
         }
 
         /// <summary>
@@ -137,7 +137,7 @@
                 throw new ArgumentNullException(nameof(propertyKey));
             }
 
-            return this.content.ReadProperty(sectionName, propertyKey, SectionSelectionMode.FailIfMissing(), PropertySelectionMode.FailIfMissing());
+            return this.content.ReadProperty(sectionName, propertyKey, MissingSectionMode.Fail(), PropertySelectionMode.FailIfMissing());
         }
 
         /// <summary>
@@ -178,7 +178,7 @@
                 throw new ArgumentNullException(nameof(newPropertyValue));
             }
 
-            this.content.WriteProperty(sectionName, propertyKey, newPropertyValue, SectionSelectionMode.FailIfMissing(), PropertySelectionMode.FailIfMissing());
+            this.content.WriteProperty(sectionName, propertyKey, newPropertyValue, MissingSectionMode.Fail(), PropertySelectionMode.FailIfMissing());
         }
 
         private sealed class Content
@@ -234,17 +234,17 @@
             public IEnumerable<SectionName> SectionNames()
                 => this.iniData.Sections.Select(section => SectionName.Create(section.SectionName));
 
-            public IEnumerable<PropertyKey> PropertyKeys(SectionName sectionName, SectionSelectionMode sectionSelectionMode)
-                => this.SelectSection(sectionName, sectionSelectionMode).PropertyKeys();
+            public IEnumerable<PropertyKey> PropertyKeys(SectionName sectionName, MissingSectionMode missingSectionMode)
+                => this.SelectSection(sectionName, missingSectionMode).PropertyKeys();
 
-            public PropertyValue ReadProperty(SectionName sectionName, PropertyKey propertyKey, SectionSelectionMode sectionSelectionMode, PropertySelectionMode propertySelectionMode)
-                => this.SelectSection(sectionName, sectionSelectionMode).ReadProperty(propertyKey, propertySelectionMode);
+            public PropertyValue ReadProperty(SectionName sectionName, PropertyKey propertyKey, MissingSectionMode missingSectionMode, PropertySelectionMode propertySelectionMode)
+                => this.SelectSection(sectionName, missingSectionMode).ReadProperty(propertyKey, propertySelectionMode);
 
-            public void WriteProperty(SectionName sectionName, PropertyKey propertyKey, PropertyValue propertyValue, SectionSelectionMode sectionSelectionMode, PropertySelectionMode propertySelectionMode)
-                => this.SelectSection(sectionName, sectionSelectionMode).WriteProperty(propertyKey, propertyValue, propertySelectionMode);
+            public void WriteProperty(SectionName sectionName, PropertyKey propertyKey, PropertyValue propertyValue, MissingSectionMode missingSectionMode, PropertySelectionMode propertySelectionMode)
+                => this.SelectSection(sectionName, missingSectionMode).WriteProperty(propertyKey, propertyValue, propertySelectionMode);
 
-            private Section SelectSection(SectionName sectionName, SectionSelectionMode mode)
-                => mode.Transform(SectionSelector.Create(this.iniData, sectionName));
+            private Section SelectSection(SectionName sectionName, MissingSectionMode missingSectionMode)
+                => missingSectionMode.Transform(SectionSelector.Create(this.iniData, sectionName));
 
             private sealed class Section
             {
@@ -314,7 +314,7 @@
                 }
             }
 
-            private sealed class SectionSelector : ISectionSelectionModeTransformation<Section>
+            private sealed class SectionSelector : IMissingSectionModeTransformation<Section>
             {
                 private readonly IniData iniData;
 
@@ -329,7 +329,7 @@
                 public static SectionSelector Create(IniData iniData, SectionName sectionName)
                     => new SectionSelector(iniData, sectionName);
 
-                public Section FailIfMissing()
+                public Section Fail()
                 {
                     // Indexer returns a null reference when section does not exist, so we need to throw appropriate exception here
                     var properties = this.iniData.Sections[this.sectionName.ToString()] ?? throw new SectionNotFoundException(this.sectionName);
