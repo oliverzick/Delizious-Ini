@@ -1,17 +1,17 @@
 ﻿namespace Delizious.Ini
 {
-    // ToDo: PropertySelectionMode - Implement value semantics
-    internal sealed class PropertySelectionMode
+    // ToDo: MissingPropertyMode - Implement value semantics
+    internal sealed class MissingPropertyMode
     {
         private readonly IStrategy strategy;
 
-        private PropertySelectionMode(IStrategy strategy)
+        private MissingPropertyMode(IStrategy strategy)
         {
             this.strategy = strategy;
         }
 
-        public static PropertySelectionMode FailIfMissing()
-            => new PropertySelectionMode(new FailIfMissingStrategy());
+        public static MissingPropertyMode Fail()
+            => new MissingPropertyMode(new FailStrategy());
 
         internal T Transform<T>(IPropertyModeTransformation<T> transformation)
             => this.strategy.Transform(transformation);
@@ -21,15 +21,15 @@
             T Transform<T>(IPropertyModeTransformation<T> transformation);
         }
 
-        private readonly struct FailIfMissingStrategy : IStrategy
+        private readonly struct FailStrategy : IStrategy
         {
             public T Transform<T>(IPropertyModeTransformation<T> transformation)
-                => transformation.FailIfMissing();
+                => transformation.Fail();
         }
     }
 
     internal interface IPropertyModeTransformation<T>
     {
-        T FailIfMissing();
+        T Fail();
     }
 }

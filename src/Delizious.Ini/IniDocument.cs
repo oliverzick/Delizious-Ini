@@ -137,7 +137,7 @@
                 throw new ArgumentNullException(nameof(propertyKey));
             }
 
-            return this.content.ReadProperty(sectionName, propertyKey, MissingSectionMode.Fail(), PropertySelectionMode.FailIfMissing());
+            return this.content.ReadProperty(sectionName, propertyKey, MissingSectionMode.Fail(), MissingPropertyMode.Fail());
         }
 
         /// <summary>
@@ -178,7 +178,7 @@
                 throw new ArgumentNullException(nameof(newPropertyValue));
             }
 
-            this.content.WriteProperty(sectionName, propertyKey, newPropertyValue, MissingSectionMode.Fail(), PropertySelectionMode.FailIfMissing());
+            this.content.WriteProperty(sectionName, propertyKey, newPropertyValue, MissingSectionMode.Fail(), MissingPropertyMode.Fail());
         }
 
         private sealed class Content
@@ -237,11 +237,11 @@
             public IEnumerable<PropertyKey> PropertyKeys(SectionName sectionName, MissingSectionMode missingSectionMode)
                 => this.SelectSection(sectionName, missingSectionMode).PropertyKeys();
 
-            public PropertyValue ReadProperty(SectionName sectionName, PropertyKey propertyKey, MissingSectionMode missingSectionMode, PropertySelectionMode propertySelectionMode)
-                => this.SelectSection(sectionName, missingSectionMode).ReadProperty(propertyKey, propertySelectionMode);
+            public PropertyValue ReadProperty(SectionName sectionName, PropertyKey propertyKey, MissingSectionMode missingSectionMode, MissingPropertyMode missingPropertyMode)
+                => this.SelectSection(sectionName, missingSectionMode).ReadProperty(propertyKey, missingPropertyMode);
 
-            public void WriteProperty(SectionName sectionName, PropertyKey propertyKey, PropertyValue propertyValue, MissingSectionMode missingSectionMode, PropertySelectionMode propertySelectionMode)
-                => this.SelectSection(sectionName, missingSectionMode).WriteProperty(propertyKey, propertyValue, propertySelectionMode);
+            public void WriteProperty(SectionName sectionName, PropertyKey propertyKey, PropertyValue propertyValue, MissingSectionMode missingSectionMode, MissingPropertyMode missingPropertyMode)
+                => this.SelectSection(sectionName, missingSectionMode).WriteProperty(propertyKey, propertyValue, missingPropertyMode);
 
             private Section SelectSection(SectionName sectionName, MissingSectionMode missingSectionMode)
                 => missingSectionMode.Transform(SectionSelector.Create(this.iniData, sectionName));
@@ -261,14 +261,14 @@
                 public IEnumerable<PropertyKey> PropertyKeys()
                     => this.properties.Select(property => PropertyKey.Create(property.KeyName));
 
-                public PropertyValue ReadProperty(PropertyKey propertyKey, PropertySelectionMode mode)
-                    => this.SelectProperty(propertyKey, mode).ReadValue();
+                public PropertyValue ReadProperty(PropertyKey propertyKey, MissingPropertyMode missingPropertyMode)
+                    => this.SelectProperty(propertyKey, missingPropertyMode).ReadValue();
 
-                public void WriteProperty(PropertyKey propertyKey, PropertyValue propertyValue, PropertySelectionMode mode)
-                    => this.SelectProperty(propertyKey, mode).UpdateValue(propertyValue);
+                public void WriteProperty(PropertyKey propertyKey, PropertyValue propertyValue, MissingPropertyMode missingPropertyMode)
+                    => this.SelectProperty(propertyKey, missingPropertyMode).UpdateValue(propertyValue);
 
-                private Property SelectProperty(PropertyKey propertyKey, PropertySelectionMode mode)
-                    => mode.Transform(PropertySelector.Create(this.properties, propertyKey));
+                private Property SelectProperty(PropertyKey propertyKey, MissingPropertyMode missingPropertyMode)
+                    => missingPropertyMode.Transform(PropertySelector.Create(this.properties, propertyKey));
 
                 private sealed class Property
                 {
@@ -304,7 +304,7 @@
                     public static PropertySelector Create(KeyDataCollection properties, PropertyKey propertyKey)
                         => new PropertySelector(properties, propertyKey);
 
-                    public Property FailIfMissing()
+                    public Property Fail()
                     {
                         // GetKeyData returns a null reference when property does not exist, so we need to throw appropriate exception here
                         var keyData = this.properties.GetKeyData(propertyKey.ToString()) ?? throw new PropertyNotFoundException(propertyKey.ToString());
