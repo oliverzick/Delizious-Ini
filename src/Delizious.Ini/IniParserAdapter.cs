@@ -61,7 +61,7 @@
         public IEnumerable<SectionName> EnumerateSections()
             => this.iniData.Sections.Select(section => SectionName.Create(section.SectionName));
 
-        public IEnumerable<PropertyKey> PropertyKeys(SectionName sectionName)
+        public IEnumerable<PropertyKey> EnumerateProperties(SectionName sectionName)
             => this.SelectSection(sectionName).PropertyKeys();
 
         public PropertyValue ReadProperty(SectionName sectionName, PropertyKey propertyKey)

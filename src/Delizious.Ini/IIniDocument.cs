@@ -7,7 +7,7 @@
     {
         IEnumerable<SectionName> EnumerateSections();
 
-        IEnumerable<PropertyKey> PropertyKeys(SectionName sectionName);
+        IEnumerable<PropertyKey> EnumerateProperties(SectionName sectionName);
 
         PropertyValue ReadProperty(SectionName sectionName, PropertyKey propertyKey);
 

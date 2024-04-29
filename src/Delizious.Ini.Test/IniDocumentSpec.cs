@@ -107,7 +107,7 @@ namespace Delizious.Ini.Test
             {
                 var target = MakeEmptyTarget();
 
-                Assert.ThrowsException<ArgumentNullException>(() => target.PropertyKeys(null));
+                Assert.ThrowsException<ArgumentNullException>(() => target.EnumerateProperties(null));
             }
 
             [TestMethod]
@@ -118,13 +118,13 @@ namespace Delizious.Ini.Test
 
                 var target = MakeEmptyTarget();
 
-                var actual = Assert.ThrowsException<SectionNotFoundException>(() => target.PropertyKeys(sectionName));
+                var actual = Assert.ThrowsException<SectionNotFoundException>(() => target.EnumerateProperties(sectionName));
 
                 Assert.AreEqual(expected, actual);
             }
 
             [TestMethod]
-            public void Provides_property_keys_for_section_specified_by_its_section_name()
+            public void Enumerates_the_keys_of_all_properties_contained_in_the_specified_section()
             {
                 var sectionName = DefaultSectionName;
                 var propertyKeys = ImmutableArray.Create<PropertyKey>("PropertyA", "PropertyB", "PropertyC");
@@ -132,7 +132,7 @@ namespace Delizious.Ini.Test
 
                 var target = MakeTarget(Section.Create(sectionName, propertyKeys.Select(Property.Create)));
 
-                var actual = target.PropertyKeys(sectionName).ToImmutableArray();
+                var actual = target.EnumerateProperties(sectionName).ToImmutableArray();
 
                 CollectionAssert.AreEqual(expected, actual);
             }
