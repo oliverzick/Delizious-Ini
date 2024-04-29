@@ -181,19 +181,6 @@
             this.iniDocument.WriteProperty(sectionName, propertyKey, newPropertyValue);
         }
 
-        private interface IIniDocument
-        {
-            IEnumerable<SectionName> SectionNames();
-
-            IEnumerable<PropertyKey> PropertyKeys(SectionName sectionName);
-
-            PropertyValue ReadProperty(SectionName sectionName, PropertyKey propertyKey);
-
-            void WriteProperty(SectionName sectionName, PropertyKey propertyKey, PropertyValue propertyValue);
-
-            void SaveTo(TextWriter textWriter);
-        }
-
         private sealed class IniParserAdapter : IIniDocument
         {
             private readonly IniData iniData;
