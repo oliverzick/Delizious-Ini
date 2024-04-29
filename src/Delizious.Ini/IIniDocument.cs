@@ -5,7 +5,7 @@
 
     internal interface IIniDocument
     {
-        IEnumerable<SectionName> SectionNames();
+        IEnumerable<SectionName> EnumerateSections();
 
         IEnumerable<PropertyKey> PropertyKeys(SectionName sectionName);
 
