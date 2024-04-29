@@ -13,11 +13,11 @@
     /// </summary>
     public sealed class IniDocument
     {
-        private readonly IniParserAdapter content;
+        private readonly IIniDocument iniDocument;
 
-        private IniDocument(IniParserAdapter content)
+        private IniDocument(IIniDocument iniDocument)
         {
-            this.content = content;
+            this.iniDocument = iniDocument;
         }
 
         /// <summary>
@@ -67,7 +67,7 @@
                 throw new ArgumentNullException(nameof(textWriter));
             }
 
-            this.content.SaveTo(textWriter);
+            this.iniDocument.SaveTo(textWriter);
         }
 
         /// <summary>
@@ -77,7 +77,7 @@
         /// The names of all sections contained in the current <see cref="IniDocument"/>
         /// </returns>
         public IEnumerable<SectionName> SectionNames()
-            => this.content.SectionNames();
+            => this.iniDocument.SectionNames();
 
         /// <summary>
         /// Provides the keys of all properties contained in a section given by the <paramref name="sectionName"/>.
@@ -101,7 +101,7 @@
                 throw new ArgumentNullException(nameof(sectionName));
             }
 
-            return this.content.PropertyKeys(sectionName);
+            return this.iniDocument.PropertyKeys(sectionName);
         }
 
         /// <summary>
@@ -137,7 +137,7 @@
                 throw new ArgumentNullException(nameof(propertyKey));
             }
 
-            return this.content.ReadProperty(sectionName, propertyKey);
+            return this.iniDocument.ReadProperty(sectionName, propertyKey);
         }
 
         /// <summary>
@@ -178,7 +178,7 @@
                 throw new ArgumentNullException(nameof(newPropertyValue));
             }
 
-            this.content.WriteProperty(sectionName, propertyKey, newPropertyValue);
+            this.iniDocument.WriteProperty(sectionName, propertyKey, newPropertyValue);
         }
 
         private interface IIniDocument
