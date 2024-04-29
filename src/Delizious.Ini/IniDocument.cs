@@ -76,13 +76,13 @@
             => this.iniDocument.EnumerateSections();
 
         /// <summary>
-        /// Provides the keys of all properties contained in a section given by the <paramref name="sectionName"/>.
+        /// Enumerates the keys of all properties contained in the specified section.
         /// </summary>
         /// <param name="sectionName">
-        /// The name of the section.
+        /// The name of the section to enumerate the contained properties.
         /// </param>
         /// <returns>
-        /// The keys of all properties contained in the specified section.
+        /// An enumerable collection of property keys for all the properties contained within the specified section of the current <see cref="IniDocument"/>.
         /// </returns>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="sectionName"/> is <c>null</c>.
@@ -90,14 +90,14 @@
         /// <exception cref="SectionNotFoundException">
         /// The section specified by the <paramref name="sectionName"/> does not exist.
         /// </exception>
-        public IEnumerable<PropertyKey> PropertyKeys(SectionName sectionName)
+        public IEnumerable<PropertyKey> EnumerateProperties(SectionName sectionName)
         {
             if (sectionName is null)
             {
                 throw new ArgumentNullException(nameof(sectionName));
             }
 
-            return this.iniDocument.PropertyKeys(sectionName);
+            return this.iniDocument.EnumerateProperties(sectionName);
         }
 
         /// <summary>
