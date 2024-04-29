@@ -13,9 +13,9 @@
     /// </summary>
     public sealed class IniDocument
     {
-        private readonly Content content;
+        private readonly IniParserAdapter content;
 
-        private IniDocument(Content content)
+        private IniDocument(IniParserAdapter content)
         {
             this.content = content;
         }
@@ -44,7 +44,7 @@
                 throw new ArgumentNullException(nameof(textReader));
             }
 
-            return new IniDocument(Content.LoadFrom(textReader));
+            return new IniDocument(IniParserAdapter.LoadFrom(textReader));
         }
 
         /// <summary>
@@ -181,23 +181,23 @@
             this.content.WriteProperty(sectionName, propertyKey, newPropertyValue);
         }
 
-        private sealed class Content
+        private sealed class IniParserAdapter
         {
             private readonly IniData iniData;
 
-            private Content(IniData iniData)
+            private IniParserAdapter(IniData iniData)
             {
                 this.iniData = iniData;
             }
 
-            public static Content LoadFrom(TextReader textReader)
+            public static IniParserAdapter LoadFrom(TextReader textReader)
             {
                 try
                 {
                     var parser = new IniDataParser(MakeIniParserConfiguration());
                     var iniData = parser.Parse(textReader.ReadToEnd());
 
-                    return new Content(iniData);
+                    return new IniParserAdapter(iniData);
                 }
                 catch (Exception exception)
                 {
