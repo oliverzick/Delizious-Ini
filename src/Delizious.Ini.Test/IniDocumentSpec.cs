@@ -100,7 +100,7 @@ namespace Delizious.Ini.Test
         }
 
         [TestClass]
-        public sealed class PropertyKeys
+        public sealed class EnumerateProperties
         {
             [TestMethod]
             public void Throws_argument_null_exception_when_section_name_is_null()
