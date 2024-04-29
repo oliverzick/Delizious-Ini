@@ -67,13 +67,13 @@
         }
 
         /// <summary>
-        /// Provides the names of all sections contained in the current <see cref="IniDocument"/>.
+        /// Enumerates the names of all contained sections.
         /// </summary>
         /// <returns>
-        /// The names of all sections contained in the current <see cref="IniDocument"/>
+        /// An enumerable collection of section names for all the sections contained in the current <see cref="IniDocument"/>.
         /// </returns>
-        public IEnumerable<SectionName> SectionNames()
-            => this.iniDocument.SectionNames();
+        public IEnumerable<SectionName> EnumerateSections()
+            => this.iniDocument.EnumerateSections();
 
         /// <summary>
         /// Provides the keys of all properties contained in a section given by the <paramref name="sectionName"/>.

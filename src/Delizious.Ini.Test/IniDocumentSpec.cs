@@ -83,17 +83,17 @@ namespace Delizious.Ini.Test
         }
 
         [TestClass]
-        public sealed class SectionNames
+        public sealed class EnumerateSections
         {
             [TestMethod]
-            public void Provides_section_names()
+            public void Enumerates_the_names_of_all_contained_sections()
             {
                 var sectionNames = ImmutableArray.Create<SectionName>("A", "B", "C");
                 var expected = sectionNames;
 
                 var target = MakeTarget(sectionNames);
 
-                var actual = target.SectionNames().ToImmutableArray();
+                var actual = target.EnumerateSections().ToImmutableArray();
 
                 CollectionAssert.AreEqual(expected, actual);
             }
