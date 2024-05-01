@@ -10,15 +10,15 @@ namespace Delizious.Ini.Test
     [TestClass]
     public sealed class IniDocumentSpec
     {
-        private const string NonexistentSectionName = "NonexistentSection";
-        private const string NonexistentPropertyKey = "NonexistentProperty";
-
-        private const string DefaultSectionName = "Section";
-        private const string DefaultPropertyKey = "Property";
-
         private static readonly SectionName DummySectionName = "Dummy";
         private static readonly PropertyKey DummyPropertyKey = "Dummy";
         private static readonly PropertyValue DummyPropertyValue = "Dummy";
+
+        private static readonly SectionName NonexistentSectionName = "NonexistentSection";
+        private static readonly PropertyKey NonexistentPropertyKey = "NonexistentProperty";
+
+        private static readonly SectionName DefaultSectionName = "Section";
+        private static readonly PropertyKey DefaultPropertyKey = "Property";
 
         [TestClass]
         public sealed class LoadFrom
