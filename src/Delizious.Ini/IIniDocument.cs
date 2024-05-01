@@ -3,11 +3,9 @@
     using System.Collections.Generic;
     using System.IO;
 
-    internal interface IIniDocument
+    internal interface IIniDocument : IPropertyEnumerator
     {
         IEnumerable<SectionName> EnumerateSections();
-
-        IEnumerable<PropertyKey> EnumerateProperties(SectionName sectionName);
 
         PropertyValue ReadProperty(SectionName sectionName, PropertyKey propertyKey);
 

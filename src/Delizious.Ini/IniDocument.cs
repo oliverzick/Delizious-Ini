@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
 
     /// <summary>
     /// Represents an INI document.
@@ -76,13 +77,13 @@
             => this.iniDocument.EnumerateSections();
 
         /// <summary>
-        /// Enumerates the keys of all properties contained in the specified section.
+        /// Enumerates all the properties contained in the specified section.
         /// </summary>
         /// <param name="sectionName">
         /// The name of the section to enumerate the contained properties.
         /// </param>
         /// <returns>
-        /// An enumerable collection of property keys for all the properties contained within the specified section of the current <see cref="IniDocument"/>.
+        /// An enumerable collection of property keys for all the properties contained in the specified section of the current <see cref="IniDocument"/>.
         /// </returns>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="sectionName"/> is <c>null</c>.
@@ -97,7 +98,90 @@
                 throw new ArgumentNullException(nameof(sectionName));
             }
 
-            return this.iniDocument.EnumerateProperties(sectionName);
+            return this.EnumerateProperties(sectionName, PropertyEnumerationMode.Fail());
+        }
+
+        /// <summary>
+        /// <para>
+        /// Enumerates all the properties contained in the specified section. The mode specifies the behavior in case the section does not exist.
+        /// </para>
+        /// <para>
+        /// When mode is <see cref="PropertyEnumerationMode.Fail"/> and the section does not exist,
+        /// throws a <see cref="SectionNotFoundException"/> 
+        /// </para>
+        /// <para>
+        /// When mode is <see cref="PropertyEnumerationMode.Fallback"/> and the section does not exist,
+        /// returns an empty collection of property keys.
+        /// </para>
+        /// </summary>
+        /// <param name="sectionName">
+        /// The name of the section to enumerate the contained properties.
+        /// </param>
+        /// <param name="mode">
+        /// The mode that specifies how to enumerate when the section does not exist.
+        /// </param>
+        /// <returns>
+        /// An enumerable collection of property keys for all the properties contained in the specified section of the current <see cref="IniDocument"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <para><paramref name="sectionName"/> is <c>null</c>.</para>
+        /// <para>- or -</para>
+        /// <para><paramref name="mode"/> is <c>null</c>.</para>
+        /// </exception>
+        /// <exception cref="SectionNotFoundException">
+        /// <paramref name="mode"/> is <see cref="PropertyEnumerationMode.Fail"/> and the specified section does not exist.
+        /// </exception>
+        public IEnumerable<PropertyKey> EnumerateProperties(SectionName sectionName, PropertyEnumerationMode mode)
+        {
+            if (sectionName is null)
+            {
+                throw new ArgumentNullException(nameof(sectionName));
+            }
+
+            if (mode is null)
+            {
+                throw new ArgumentNullException(nameof(mode));
+            }
+
+            return mode.Transform(new PropertyEnumerationModeTransformation(this.iniDocument)).EnumerateProperties(sectionName);
+        }
+
+        private sealed class PropertyEnumerationModeTransformation : IPropertyEnumerationModeTransformation<IPropertyEnumerator>
+        {
+            private readonly IPropertyEnumerator propertyEnumerator;
+
+            public PropertyEnumerationModeTransformation(IPropertyEnumerator propertyEnumerator)
+            {
+                this.propertyEnumerator = propertyEnumerator;
+            }
+
+            public IPropertyEnumerator Fail()
+                => this.propertyEnumerator;
+
+            public IPropertyEnumerator Fallback()
+                => new FallbackPropertyEnumerator(this.propertyEnumerator);
+
+            private sealed class FallbackPropertyEnumerator : IPropertyEnumerator
+            {
+                private readonly IPropertyEnumerator propertyEnumerator;
+
+                public FallbackPropertyEnumerator(IPropertyEnumerator propertyEnumerator)
+                {
+                    this.propertyEnumerator = propertyEnumerator;
+                }
+
+                public IEnumerable<PropertyKey> EnumerateProperties(SectionName sectionName)
+                {
+                    try
+                    {
+                        return this.propertyEnumerator.EnumerateProperties(sectionName);
+                    }
+                    catch (SectionNotFoundException)
+                    {
+                        return Enumerable.Empty<PropertyKey>();
+                    }
+                }
+            }
         }
 
         /// <summary>
