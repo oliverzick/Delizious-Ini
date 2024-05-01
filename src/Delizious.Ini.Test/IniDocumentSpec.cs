@@ -10,7 +10,6 @@ namespace Delizious.Ini.Test
     [TestClass]
     public sealed class IniDocumentSpec
     {
-        private const string Dummy = "Dummy";
         private const string NonexistentSectionName = "NonexistentSection";
         private const string NonexistentPropertyKey = "NonexistentProperty";
 
@@ -18,6 +17,8 @@ namespace Delizious.Ini.Test
         private const string DefaultPropertyKey = "Property";
 
         private static readonly SectionName DummySectionName = "Dummy";
+        private static readonly PropertyKey DummyPropertyKey = "Dummy";
+        private static readonly PropertyValue DummyPropertyValue = "Dummy";
 
         [TestClass]
         public sealed class LoadFrom
@@ -227,7 +228,7 @@ namespace Delizious.Ini.Test
             {
                 var target = MakeEmptyTarget();
 
-                Assert.ThrowsException<ArgumentNullException>(() => target.ReadPropertyValue(null, Dummy));
+                Assert.ThrowsException<ArgumentNullException>(() => target.ReadPropertyValue(null, DummyPropertyKey));
             }
 
             [TestMethod]
@@ -235,7 +236,7 @@ namespace Delizious.Ini.Test
             {
                 var target = MakeEmptyTarget();
 
-                Assert.ThrowsException<ArgumentNullException>(() => target.ReadPropertyValue(Dummy, null));
+                Assert.ThrowsException<ArgumentNullException>(() => target.ReadPropertyValue(DummySectionName, null));
             }
 
             [TestMethod]
@@ -246,7 +247,7 @@ namespace Delizious.Ini.Test
 
                 var target = MakeEmptyTarget();
 
-                var actual = Assert.ThrowsException<SectionNotFoundException>(() => target.ReadPropertyValue(sectionName, Dummy));
+                var actual = Assert.ThrowsException<SectionNotFoundException>(() => target.ReadPropertyValue(sectionName, DummyPropertyKey));
 
                 Assert.AreEqual(expected, actual);
             }
@@ -288,7 +289,7 @@ namespace Delizious.Ini.Test
             {
                 var target = MakeEmptyTarget();
 
-                Assert.ThrowsException<ArgumentNullException>(() => target.UpdatePropertyValue(null, Dummy, Dummy));
+                Assert.ThrowsException<ArgumentNullException>(() => target.UpdatePropertyValue(null, DummyPropertyKey, DummyPropertyValue));
             }
 
             [TestMethod]
@@ -296,7 +297,7 @@ namespace Delizious.Ini.Test
             {
                 var target = MakeEmptyTarget();
 
-                Assert.ThrowsException<ArgumentNullException>(() => target.UpdatePropertyValue(Dummy, null, Dummy));
+                Assert.ThrowsException<ArgumentNullException>(() => target.UpdatePropertyValue(DummySectionName, null, DummyPropertyValue));
             }
 
             [TestMethod]
@@ -304,7 +305,7 @@ namespace Delizious.Ini.Test
             {
                 var target = MakeEmptyTarget();
 
-                Assert.ThrowsException<ArgumentNullException>(() => target.UpdatePropertyValue(Dummy, Dummy, null));
+                Assert.ThrowsException<ArgumentNullException>(() => target.UpdatePropertyValue(DummySectionName, DummyPropertyKey, null));
             }
 
             [TestMethod]
@@ -315,7 +316,7 @@ namespace Delizious.Ini.Test
 
                 var target = MakeEmptyTarget();
 
-                var actual = Assert.ThrowsException<SectionNotFoundException>(() => target.UpdatePropertyValue(sectionName, Dummy, Dummy));
+                var actual = Assert.ThrowsException<SectionNotFoundException>(() => target.UpdatePropertyValue(sectionName, DummyPropertyKey, DummyPropertyValue));
 
                 Assert.AreEqual(expected, actual);
             }
@@ -329,7 +330,7 @@ namespace Delizious.Ini.Test
 
                 var target = MakeTarget(Section.Create(sectionName));
 
-                var actual = Assert.ThrowsException<PropertyNotFoundException>(() => target.UpdatePropertyValue(sectionName, propertyKey, Dummy));
+                var actual = Assert.ThrowsException<PropertyNotFoundException>(() => target.UpdatePropertyValue(sectionName, propertyKey, DummyPropertyValue));
 
                 Assert.AreEqual(expected, actual);
             }
