@@ -17,6 +17,8 @@ namespace Delizious.Ini.Test
         private const string DefaultSectionName = "Section";
         private const string DefaultPropertyKey = "Property";
 
+        private static readonly SectionName DummySectionName = "Dummy";
+
         [TestClass]
         public sealed class LoadFrom
         {
@@ -138,6 +140,81 @@ namespace Delizious.Ini.Test
                     var actual = target.EnumerateProperties(sectionName).ToImmutableArray();
 
                     CollectionAssert.AreEqual(expected, actual);
+                }
+            }
+
+            [TestClass]
+            public sealed class With_sectionName_and_mode
+            {
+                private static readonly PropertyEnumerationMode DummyMode = PropertyEnumerationMode.Fail();
+
+                [TestMethod]
+                public void Throws_argument_null_exception_when_section_name_is_null()
+                {
+                    var target = MakeEmptyTarget();
+
+                    Assert.ThrowsException<ArgumentNullException>(() => target.EnumerateProperties(null, DummyMode));
+                }
+
+                [TestMethod]
+                public void Throws_argument_null_exception_when_mode_is_null()
+                {
+                    var target = MakeEmptyTarget();
+
+                    Assert.ThrowsException<ArgumentNullException>(() => target.EnumerateProperties(DummySectionName, null));
+                }
+
+                [DataTestMethod]
+                [DynamicData(nameof(Modes), DynamicDataSourceType.Method)]
+                public void Enumerates_the_keys_of_all_properties_contained_in_the_specified_section(PropertyEnumerationMode mode)
+                {
+                    var sectionName = DefaultSectionName;
+                    var propertyKeys = ImmutableArray.Create<PropertyKey>("PropertyA", "PropertyB", "PropertyC");
+                    var expected = propertyKeys;
+
+                    var target = MakeTarget(Section.Create(sectionName, propertyKeys.Select(Property.Create)));
+
+                    var actual = target.EnumerateProperties(sectionName, mode).ToImmutableArray();
+
+                    CollectionAssert.AreEqual(expected, actual);
+                }
+
+                public static IEnumerable<object[]> Modes()
+                {
+                    yield return new object[] { PropertyEnumerationMode.Fail() };
+                    yield return new object[] { PropertyEnumerationMode.Fallback() };
+                }
+
+                [TestClass]
+                public sealed class When_fail_mode
+                {
+                    private static readonly PropertyEnumerationMode Mode = PropertyEnumerationMode.Fail();
+
+                    [TestMethod]
+                    public void Throws_section_not_found_exception_when_section_does_not_exist()
+                    {
+                        var target = MakeEmptyTarget();
+
+                        Assert.ThrowsException<SectionNotFoundException>(() => target.EnumerateProperties(NonexistentSectionName, Mode));
+                    }
+                }
+
+                [TestClass]
+                public sealed class When_fallback_mode
+                {
+                    private static readonly PropertyEnumerationMode Mode = PropertyEnumerationMode.Fallback();
+
+                    [TestMethod]
+                    public void Enumerates_an_empty_collection_when_section_does_not_exist()
+                    {
+                        var expected = Enumerable.Empty<PropertyKey>().ToImmutableArray();
+
+                        var target = MakeEmptyTarget();
+
+                        var actual = target.EnumerateProperties(NonexistentSectionName, Mode).ToImmutableArray();
+
+                        CollectionAssert.AreEqual(expected, actual);
+                    }
                 }
             }
         }
