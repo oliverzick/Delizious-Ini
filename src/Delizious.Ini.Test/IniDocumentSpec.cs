@@ -102,39 +102,43 @@ namespace Delizious.Ini.Test
         [TestClass]
         public sealed class EnumerateProperties
         {
-            [TestMethod]
-            public void Throws_argument_null_exception_when_section_name_is_null()
+            [TestClass]
+            public sealed class With_sectionName
             {
-                var target = MakeEmptyTarget();
+                [TestMethod]
+                public void Throws_argument_null_exception_when_section_name_is_null()
+                {
+                    var target = MakeEmptyTarget();
 
-                Assert.ThrowsException<ArgumentNullException>(() => target.EnumerateProperties(null));
-            }
+                    Assert.ThrowsException<ArgumentNullException>(() => target.EnumerateProperties(null));
+                }
 
-            [TestMethod]
-            public void Throws_section_not_found_exception_when_section_specified_by_its_section_name_does_not_exist()
-            {
-                var sectionName = NonexistentSectionName;
-                var expected = new SectionNotFoundExceptionAssertion(sectionName);
+                [TestMethod]
+                public void Throws_section_not_found_exception_when_section_specified_by_its_section_name_does_not_exist()
+                {
+                    var sectionName = NonexistentSectionName;
+                    var expected = new SectionNotFoundExceptionAssertion(sectionName);
 
-                var target = MakeEmptyTarget();
+                    var target = MakeEmptyTarget();
 
-                var actual = Assert.ThrowsException<SectionNotFoundException>(() => target.EnumerateProperties(sectionName));
+                    var actual = Assert.ThrowsException<SectionNotFoundException>(() => target.EnumerateProperties(sectionName));
 
-                Assert.AreEqual(expected, actual);
-            }
+                    Assert.AreEqual(expected, actual);
+                }
 
-            [TestMethod]
-            public void Enumerates_the_keys_of_all_properties_contained_in_the_specified_section()
-            {
-                var sectionName = DefaultSectionName;
-                var propertyKeys = ImmutableArray.Create<PropertyKey>("PropertyA", "PropertyB", "PropertyC");
-                var expected = propertyKeys;
+                [TestMethod]
+                public void Enumerates_the_keys_of_all_properties_contained_in_the_specified_section()
+                {
+                    var sectionName = DefaultSectionName;
+                    var propertyKeys = ImmutableArray.Create<PropertyKey>("PropertyA", "PropertyB", "PropertyC");
+                    var expected = propertyKeys;
 
-                var target = MakeTarget(Section.Create(sectionName, propertyKeys.Select(Property.Create)));
+                    var target = MakeTarget(Section.Create(sectionName, propertyKeys.Select(Property.Create)));
 
-                var actual = target.EnumerateProperties(sectionName).ToImmutableArray();
+                    var actual = target.EnumerateProperties(sectionName).ToImmutableArray();
 
-                CollectionAssert.AreEqual(expected, actual);
+                    CollectionAssert.AreEqual(expected, actual);
+                }
             }
         }
 
