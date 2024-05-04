@@ -106,9 +106,6 @@ namespace Delizious.Ini.Test
         {
             private static ImmutableArray<PropertyKey> PropertyKeys { get; } = ImmutableArray.Create<PropertyKey>("Property1", "AnotherProperty2", "SomePropertyA");
 
-            private static IniDocument Target
-                => MakeTarget(Section.Create(DefaultSectionName, PropertyKeys.Select(Property.Create)));
-
             [TestClass]
             public sealed class With_sectionName
             {
@@ -137,7 +134,7 @@ namespace Delizious.Ini.Test
                 public void Enumerates_the_keys_of_all_properties_contained_in_the_specified_section()
                 {
                     var expected = PropertyKeys;
-                    var target = Target;
+                    var target = Make.SingleDefaultSectionTarget(expected);
 
                     var actual = target.EnumerateProperties(DefaultSectionName).ToImmutableArray();
 
@@ -171,7 +168,7 @@ namespace Delizious.Ini.Test
                 public void Enumerates_the_keys_of_all_properties_contained_in_the_specified_section(PropertyEnumerationMode mode)
                 {
                     var expected = PropertyKeys;
-                    var target = Target;
+                    var target = Make.SingleDefaultSectionTarget(expected);
 
                     var actual = target.EnumerateProperties(DefaultSectionName, mode).ToImmutableArray();
 
@@ -356,6 +353,12 @@ namespace Delizious.Ini.Test
         {
             public static IniDocument EmptyTarget()
                 => new IniDocumentBuilder().Build();
+
+            public static IniDocument SingleDefaultSectionTarget(IEnumerable<PropertyKey> propertyKeys)
+                => SingleDefaultSectionTarget(propertyKeys.Select(Property.Create));
+
+            private static IniDocument SingleDefaultSectionTarget(IEnumerable<Property> properties)
+                => MakeTarget(Section.Create(DefaultSectionName, properties));
         }
 
         private static IniDocument MakeSinglePropertyTarget(PropertyValue propertyValue)
