@@ -309,7 +309,7 @@ namespace Delizious.Ini.Test
             }
 
             [TestMethod]
-            public void Throws_section_not_found_exception_when_section_specified_by_its_section_name_does_not_exist()
+            public void Throws_section_not_found_exception_when_section_does_not_exist()
             {
                 var sectionName = NonexistentSectionName;
                 var expected = new SectionNotFoundExceptionAssertion(sectionName);
@@ -322,7 +322,7 @@ namespace Delizious.Ini.Test
             }
 
             [TestMethod]
-            public void Throws_property_not_found_exception_when_property_specified_by_its_property_key_does_not_exist()
+            public void Throws_property_not_found_exception_when_property_does_not_exist()
             {
                 var sectionName = DefaultSectionName;
                 var propertyKey = NonexistentPropertyKey;
@@ -336,7 +336,7 @@ namespace Delizious.Ini.Test
             }
 
             [TestMethod]
-            public void Updates_property_value_to_new_value_for_property_with_specified_section_name_and_property_key()
+            public void Updates_the_value_of_the_property_contained_in_the_section()
             {
                 var sectionName = DefaultSectionName;
                 var propertyKey = DefaultPropertyKey;
