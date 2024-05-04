@@ -74,7 +74,7 @@ namespace Delizious.Ini.Test
                 var stringBuilder = new StringBuilder();
                 using var textWriter = new StringWriter(stringBuilder);
 
-                var target = Sample;
+                var target = SampleTarget;
 
                 target.SaveTo(textWriter);
                 textWriter.Flush();
@@ -93,7 +93,7 @@ namespace Delizious.Ini.Test
             {
                 var expected = SampleSections;
 
-                var target = Sample;
+                var target = SampleTarget;
 
                 var actual = target.EnumerateSections().ToImmutableArray();
 
@@ -361,7 +361,7 @@ namespace Delizious.Ini.Test
         private static IniDocument MakeTarget(params Section[] sections)
             => sections.Aggregate(new IniDocumentBuilder(), (builder, section) => section.ApplyTo(builder)).Build();
 
-        private static IniDocument Sample
+        private static IniDocument SampleTarget
             => MakeTarget(Section.Create("Section1", Property.Create("PropertyA", "Value A")),
                           Section.Create("Section2", Property.Create("PropertyB", "Value B")));
 
