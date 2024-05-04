@@ -91,10 +91,9 @@ namespace Delizious.Ini.Test
             [TestMethod]
             public void Enumerates_the_names_of_all_contained_sections()
             {
-                var sectionNames = ImmutableArray.Create<SectionName>("A", "B", "C");
-                var expected = sectionNames;
+                var expected = SampleSections;
 
-                var target = MakeTarget(sectionNames);
+                var target = Sample;
 
                 var actual = target.EnumerateSections().ToImmutableArray();
 
@@ -360,15 +359,15 @@ namespace Delizious.Ini.Test
         private static IniDocument MakeSinglePropertyTarget(PropertyValue propertyValue)
             => MakeTarget(Section.Create(DefaultSectionName, Property.Create(DefaultPropertyKey, propertyValue)));
 
-        private static IniDocument MakeTarget(IEnumerable<SectionName> sectionNames)
-            => MakeTarget(sectionNames.Select(sectionName => Section.Create(sectionName)).ToArray());
-
         private static IniDocument MakeTarget(params Section[] sections)
             => sections.Aggregate(new IniDocumentBuilder(), (builder, section) => section.ApplyTo(builder)).Build();
 
         private static IniDocument Sample
             => MakeTarget(Section.Create("Section1", Property.Create("PropertyA", "Value A")),
                           Section.Create("Section2", Property.Create("PropertyB", "Value B")));
+
+        private static ImmutableArray<SectionName> SampleSections
+            => ImmutableArray.Create<SectionName>("Section1", "Section2");
 
         private static string SampleString
             => new IniDocumentBuilder().AppendSectionLine("Section1")
