@@ -241,7 +241,7 @@
         /// <exception cref="PropertyNotFoundException">
         /// The property specified by the <paramref name="propertyKey"/> does not exist.
         /// </exception>
-        public void UpdatePropertyValue(SectionName sectionName, PropertyKey propertyKey, PropertyValue newPropertyValue)
+        public void UpdateProperty(SectionName sectionName, PropertyKey propertyKey, PropertyValue newPropertyValue)
         {
             if (sectionName is null)
             {

@@ -282,14 +282,14 @@ namespace Delizious.Ini.Test
         }
 
         [TestClass]
-        public sealed class UpdatePropertyValue
+        public sealed class UpdateProperty
         {
             [TestMethod]
             public void Throws_argument_null_exception_when_section_name_is_null()
             {
                 var target = MakeEmptyTarget();
 
-                Assert.ThrowsException<ArgumentNullException>(() => target.UpdatePropertyValue(null, DummyPropertyKey, DummyPropertyValue));
+                Assert.ThrowsException<ArgumentNullException>(() => target.UpdateProperty(null, DummyPropertyKey, DummyPropertyValue));
             }
 
             [TestMethod]
@@ -297,7 +297,7 @@ namespace Delizious.Ini.Test
             {
                 var target = MakeEmptyTarget();
 
-                Assert.ThrowsException<ArgumentNullException>(() => target.UpdatePropertyValue(DummySectionName, null, DummyPropertyValue));
+                Assert.ThrowsException<ArgumentNullException>(() => target.UpdateProperty(DummySectionName, null, DummyPropertyValue));
             }
 
             [TestMethod]
@@ -305,7 +305,7 @@ namespace Delizious.Ini.Test
             {
                 var target = MakeEmptyTarget();
 
-                Assert.ThrowsException<ArgumentNullException>(() => target.UpdatePropertyValue(DummySectionName, DummyPropertyKey, null));
+                Assert.ThrowsException<ArgumentNullException>(() => target.UpdateProperty(DummySectionName, DummyPropertyKey, null));
             }
 
             [TestMethod]
@@ -316,7 +316,7 @@ namespace Delizious.Ini.Test
 
                 var target = MakeEmptyTarget();
 
-                var actual = Assert.ThrowsException<SectionNotFoundException>(() => target.UpdatePropertyValue(sectionName, DummyPropertyKey, DummyPropertyValue));
+                var actual = Assert.ThrowsException<SectionNotFoundException>(() => target.UpdateProperty(sectionName, DummyPropertyKey, DummyPropertyValue));
 
                 Assert.AreEqual(expected, actual);
             }
@@ -330,7 +330,7 @@ namespace Delizious.Ini.Test
 
                 var target = MakeTarget(Section.Create(sectionName));
 
-                var actual = Assert.ThrowsException<PropertyNotFoundException>(() => target.UpdatePropertyValue(sectionName, propertyKey, DummyPropertyValue));
+                var actual = Assert.ThrowsException<PropertyNotFoundException>(() => target.UpdateProperty(sectionName, propertyKey, DummyPropertyValue));
 
                 Assert.AreEqual(expected, actual);
             }
@@ -346,7 +346,7 @@ namespace Delizious.Ini.Test
 
                 var target = MakeSinglePropertyTarget(oldValue);
 
-                target.UpdatePropertyValue(sectionName, propertyKey, newValue);
+                target.UpdateProperty(sectionName, propertyKey, newValue);
 
                 var actual = target.ReadProperty(sectionName, propertyKey);
 
