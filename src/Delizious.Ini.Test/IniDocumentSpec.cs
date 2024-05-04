@@ -19,6 +19,7 @@ namespace Delizious.Ini.Test
 
         private static readonly SectionName DefaultSectionName = "Section";
         private static readonly PropertyKey DefaultPropertyKey = "Property";
+        private static readonly PropertyValue DefaultPropertyValue = "Value";
 
         [TestClass]
         public sealed class LoadFrom
@@ -48,7 +49,7 @@ namespace Delizious.Ini.Test
             [TestMethod]
             public void Throws_argument_null_exception_when_text_writer_is_null()
             {
-                var target = MakeEmptyTarget();
+                var target = Make.EmptyTarget();
 
                 Assert.ThrowsException<ArgumentNullException>(() => target.SaveTo(null));
             }
@@ -60,7 +61,7 @@ namespace Delizious.Ini.Test
                 using var textWriter = new StringWriter();
                 textWriter.Dispose();
 
-                var target = MakeEmptyTarget();
+                var target = Make.EmptyTarget();
 
                 var actual = Assert.ThrowsException<PersistenceException>(() => target.SaveTo(textWriter));
 
@@ -70,11 +71,11 @@ namespace Delizious.Ini.Test
             [TestMethod]
             public void Saves_the_ini_document_to_text_writer()
             {
-                var expected = MakeSampleString();
+                var expected = Make.SampleString();
                 var stringBuilder = new StringBuilder();
                 using var textWriter = new StringWriter(stringBuilder);
 
-                var target = MakeSampleTarget();
+                var target = Make.SampleTarget();
 
                 target.SaveTo(textWriter);
                 textWriter.Flush();
@@ -88,13 +89,14 @@ namespace Delizious.Ini.Test
         [TestClass]
         public sealed class EnumerateSections
         {
+            private static ImmutableArray<SectionName> SectionNames => ImmutableArray.Create<SectionName>("Section1", "AnotherSection2", "SomeSectionA");
+
             [TestMethod]
             public void Enumerates_the_names_of_all_contained_sections()
             {
-                var sectionNames = ImmutableArray.Create<SectionName>("A", "B", "C");
-                var expected = sectionNames;
+                var expected = SectionNames;
 
-                var target = MakeTarget(sectionNames);
+                var target = Make.EmptySectionsTarget(expected);
 
                 var actual = target.EnumerateSections().ToImmutableArray();
 
@@ -105,13 +107,15 @@ namespace Delizious.Ini.Test
         [TestClass]
         public sealed class EnumerateProperties
         {
+            private static ImmutableArray<PropertyKey> PropertyKeys { get; } = ImmutableArray.Create<PropertyKey>("Property1", "AnotherProperty2", "SomePropertyA");
+
             [TestClass]
             public sealed class With_sectionName
             {
                 [TestMethod]
                 public void Throws_argument_null_exception_when_section_name_is_null()
                 {
-                    var target = MakeEmptyTarget();
+                    var target = Make.EmptyTarget();
 
                     Assert.ThrowsException<ArgumentNullException>(() => target.EnumerateProperties(null));
                 }
@@ -122,7 +126,7 @@ namespace Delizious.Ini.Test
                     var sectionName = NonexistentSectionName;
                     var expected = new SectionNotFoundExceptionAssertion(sectionName);
 
-                    var target = MakeEmptyTarget();
+                    var target = Make.EmptyTarget();
 
                     var actual = Assert.ThrowsException<SectionNotFoundException>(() => target.EnumerateProperties(sectionName));
 
@@ -132,13 +136,10 @@ namespace Delizious.Ini.Test
                 [TestMethod]
                 public void Enumerates_the_keys_of_all_properties_contained_in_the_specified_section()
                 {
-                    var sectionName = DefaultSectionName;
-                    var propertyKeys = ImmutableArray.Create<PropertyKey>("PropertyA", "PropertyB", "PropertyC");
-                    var expected = propertyKeys;
+                    var expected = PropertyKeys;
+                    var target = Make.SingleDefaultSectionTarget(expected);
 
-                    var target = MakeTarget(Section.Create(sectionName, propertyKeys.Select(Property.Create)));
-
-                    var actual = target.EnumerateProperties(sectionName).ToImmutableArray();
+                    var actual = target.EnumerateProperties(DefaultSectionName).ToImmutableArray();
 
                     CollectionAssert.AreEqual(expected, actual);
                 }
@@ -152,7 +153,7 @@ namespace Delizious.Ini.Test
                 [TestMethod]
                 public void Throws_argument_null_exception_when_section_name_is_null()
                 {
-                    var target = MakeEmptyTarget();
+                    var target = Make.EmptyTarget();
 
                     Assert.ThrowsException<ArgumentNullException>(() => target.EnumerateProperties(null, DummyMode));
                 }
@@ -160,7 +161,7 @@ namespace Delizious.Ini.Test
                 [TestMethod]
                 public void Throws_argument_null_exception_when_mode_is_null()
                 {
-                    var target = MakeEmptyTarget();
+                    var target = Make.EmptyTarget();
 
                     Assert.ThrowsException<ArgumentNullException>(() => target.EnumerateProperties(DummySectionName, null));
                 }
@@ -169,13 +170,10 @@ namespace Delizious.Ini.Test
                 [DynamicData(nameof(Modes), DynamicDataSourceType.Method)]
                 public void Enumerates_the_keys_of_all_properties_contained_in_the_specified_section(PropertyEnumerationMode mode)
                 {
-                    var sectionName = DefaultSectionName;
-                    var propertyKeys = ImmutableArray.Create<PropertyKey>("PropertyA", "PropertyB", "PropertyC");
-                    var expected = propertyKeys;
+                    var expected = PropertyKeys;
+                    var target = Make.SingleDefaultSectionTarget(expected);
 
-                    var target = MakeTarget(Section.Create(sectionName, propertyKeys.Select(Property.Create)));
-
-                    var actual = target.EnumerateProperties(sectionName, mode).ToImmutableArray();
+                    var actual = target.EnumerateProperties(DefaultSectionName, mode).ToImmutableArray();
 
                     CollectionAssert.AreEqual(expected, actual);
                 }
@@ -194,7 +192,7 @@ namespace Delizious.Ini.Test
                     [TestMethod]
                     public void Throws_section_not_found_exception_when_section_does_not_exist()
                     {
-                        var target = MakeEmptyTarget();
+                        var target = Make.EmptyTarget();
 
                         Assert.ThrowsException<SectionNotFoundException>(() => target.EnumerateProperties(NonexistentSectionName, Mode));
                     }
@@ -210,7 +208,7 @@ namespace Delizious.Ini.Test
                     {
                         var expected = Enumerable.Empty<PropertyKey>().ToImmutableArray();
 
-                        var target = MakeEmptyTarget();
+                        var target = Make.EmptyTarget();
 
                         var actual = target.EnumerateProperties(NonexistentSectionName, Mode).ToImmutableArray();
 
@@ -226,7 +224,7 @@ namespace Delizious.Ini.Test
             [TestMethod]
             public void Throws_argument_null_exception_when_section_name_is_null()
             {
-                var target = MakeEmptyTarget();
+                var target = Make.EmptyTarget();
 
                 Assert.ThrowsException<ArgumentNullException>(() => target.ReadProperty(null, DummyPropertyKey));
             }
@@ -234,7 +232,7 @@ namespace Delizious.Ini.Test
             [TestMethod]
             public void Throws_argument_null_exception_when_property_key_is_null()
             {
-                var target = MakeEmptyTarget();
+                var target = Make.EmptyTarget();
 
                 Assert.ThrowsException<ArgumentNullException>(() => target.ReadProperty(DummySectionName, null));
             }
@@ -245,7 +243,7 @@ namespace Delizious.Ini.Test
                 var sectionName = NonexistentSectionName;
                 var expected = new SectionNotFoundExceptionAssertion(sectionName);
 
-                var target = MakeEmptyTarget();
+                var target = Make.EmptyTarget();
 
                 var actual = Assert.ThrowsException<SectionNotFoundException>(() => target.ReadProperty(sectionName, DummyPropertyKey));
 
@@ -259,7 +257,7 @@ namespace Delizious.Ini.Test
                 var propertyKey = NonexistentPropertyKey;
                 var expected = new PropertyNotFoundExceptionAssertion(propertyKey);
 
-                var target = MakeTarget(Section.Create(sectionName));
+                var target = Make.SingleDefaultPropertyTarget(DefaultPropertyValue);
 
                 var actual = Assert.ThrowsException<PropertyNotFoundException>(() => target.ReadProperty(sectionName, propertyKey));
 
@@ -273,7 +271,7 @@ namespace Delizious.Ini.Test
             {
                 var expected = propertyValue;
 
-                var target = MakeSinglePropertyTarget(expected);
+                var target = Make.SingleDefaultPropertyTarget(expected);
 
                 var actual = target.ReadProperty(DefaultSectionName, DefaultPropertyKey);
 
@@ -287,7 +285,7 @@ namespace Delizious.Ini.Test
             [TestMethod]
             public void Throws_argument_null_exception_when_section_name_is_null()
             {
-                var target = MakeEmptyTarget();
+                var target = Make.EmptyTarget();
 
                 Assert.ThrowsException<ArgumentNullException>(() => target.UpdateProperty(null, DummyPropertyKey, DummyPropertyValue));
             }
@@ -295,7 +293,7 @@ namespace Delizious.Ini.Test
             [TestMethod]
             public void Throws_argument_null_exception_when_property_key_is_null()
             {
-                var target = MakeEmptyTarget();
+                var target = Make.EmptyTarget();
 
                 Assert.ThrowsException<ArgumentNullException>(() => target.UpdateProperty(DummySectionName, null, DummyPropertyValue));
             }
@@ -303,7 +301,7 @@ namespace Delizious.Ini.Test
             [TestMethod]
             public void Throws_argument_null_exception_when_new_property_value_is_null()
             {
-                var target = MakeEmptyTarget();
+                var target = Make.EmptyTarget();
 
                 Assert.ThrowsException<ArgumentNullException>(() => target.UpdateProperty(DummySectionName, DummyPropertyKey, null));
             }
@@ -314,7 +312,7 @@ namespace Delizious.Ini.Test
                 var sectionName = NonexistentSectionName;
                 var expected = new SectionNotFoundExceptionAssertion(sectionName);
 
-                var target = MakeEmptyTarget();
+                var target = Make.EmptyTarget();
 
                 var actual = Assert.ThrowsException<SectionNotFoundException>(() => target.UpdateProperty(sectionName, DummyPropertyKey, DummyPropertyValue));
 
@@ -328,7 +326,7 @@ namespace Delizious.Ini.Test
                 var propertyKey = NonexistentPropertyKey;
                 var expected = new PropertyNotFoundExceptionAssertion(propertyKey);
 
-                var target = MakeTarget(Section.Create(sectionName));
+                var target = Make.SingleDefaultPropertyTarget(DefaultPropertyValue);
 
                 var actual = Assert.ThrowsException<PropertyNotFoundException>(() => target.UpdateProperty(sectionName, propertyKey, DummyPropertyValue));
 
@@ -344,7 +342,7 @@ namespace Delizious.Ini.Test
                 var newValue = "New value";
                 var expected = newValue;
 
-                var target = MakeSinglePropertyTarget(oldValue);
+                var target = Make.SingleDefaultPropertyTarget(oldValue);
 
                 target.UpdateProperty(sectionName, propertyKey, newValue);
 
@@ -354,87 +352,99 @@ namespace Delizious.Ini.Test
             }
         }
 
-        private static IniDocument MakeEmptyTarget()
-            => new IniDocumentBuilder().Build();
+        private static class Make
+        {
+            public static IniDocument EmptyTarget()
+                => new IniDocumentBuilder().Build();
 
-        private static IniDocument MakeSinglePropertyTarget(PropertyValue propertyValue)
-            => MakeTarget(Section.Create(DefaultSectionName, Property.Create(DefaultPropertyKey, propertyValue)));
+            public static IniDocument SingleDefaultSectionTarget(IEnumerable<PropertyKey> propertyKeys)
+                => Target(Section.Create(DefaultSectionName, propertyKeys.Select(Property.Create)));
 
-        private static IniDocument MakeTarget(IEnumerable<SectionName> sectionNames)
-            => MakeTarget(sectionNames.Select(sectionName => Section.Create(sectionName)).ToArray());
+            public static IniDocument SingleDefaultPropertyTarget(PropertyValue propertyValue)
+                => Target(Section.Create(DefaultSectionName, Property.Create(DefaultPropertyKey, propertyValue)));
 
-        private static IniDocument MakeTarget(params Section[] sections)
-            => sections.Aggregate(new IniDocumentBuilder(), (builder, section) => section.ApplyTo(builder)).Build();
+            public static IniDocument EmptySectionsTarget(IEnumerable<SectionName> sectionNames)
+                => Target(sectionNames.Select(Section.CreateEmpty));
 
-        private static IniDocument MakeSampleTarget()
-            => MakeTarget(Section.Create("Section1", Property.Create("PropertyA", "Value A")),
+            public static IniDocument SampleTarget()
+                => Target(Section.Create("Section1", Property.Create("PropertyA", "Value A")),
                           Section.Create("Section2", Property.Create("PropertyB", "Value B")));
 
-        public static string MakeSampleString()
-            => new IniDocumentBuilder().AppendSectionLine("Section1")
-                                       .AppendPropertyLine("PropertyA", "Value A")
-                                       .AppendEmptyLine()
-                                       .AppendSectionLine("Section2")
-                                       .AppendPropertyLine("PropertyB", "Value B")
-                                       .ToString();
+            public static string SampleString()
+                => new IniDocumentBuilder().AppendSectionLine("Section1")
+                                           .AppendPropertyLine("PropertyA", "Value A")
+                                           .AppendEmptyLine()
+                                           .AppendSectionLine("Section2")
+                                           .AppendPropertyLine("PropertyB", "Value B")
+                                           .ToString();
 
-        private sealed class IniDocumentBuilder
-        {
-            private readonly StringBuilder stringBuilder = new();
+            private static IniDocument Target(params Section[] sections)
+                => Target(sections.AsEnumerable());
 
-            public IniDocumentBuilder AppendEmptyLine()
+            private static IniDocument Target(IEnumerable<Section> sections)
+                => sections.Aggregate(new IniDocumentBuilder(), (builder, section) => section.ApplyTo(builder)).Build();
+
+            private sealed class IniDocumentBuilder
             {
-                this.stringBuilder.AppendLine();
+                private readonly StringBuilder stringBuilder = new();
 
-                return this;
+                public IniDocumentBuilder AppendEmptyLine()
+                {
+                    this.stringBuilder.AppendLine();
+
+                    return this;
+                }
+
+                public IniDocumentBuilder AppendSectionLine(SectionName sectionName)
+                {
+                    this.stringBuilder.AppendLine($"[{sectionName}]");
+
+                    return this;
+                }
+
+                public IniDocumentBuilder AppendPropertyLine(PropertyKey propertyKey, PropertyValue propertyValue)
+                {
+                    this.stringBuilder.AppendLine($"{propertyKey}={propertyValue}");
+
+                    return this;
+                }
+
+                public override string ToString()
+                    => this.stringBuilder.ToString();
+
+                public IniDocument Build()
+                {
+                    using var stringReader = new StringReader(this.ToString());
+                    return IniDocument.LoadFrom(stringReader);
+                }
             }
 
-            public IniDocumentBuilder AppendSectionLine(SectionName sectionName)
+            private sealed record Section(SectionName SectionName, ImmutableArray<Property> Properties)
             {
-                this.stringBuilder.AppendLine($"[{sectionName}]");
+                public static Section CreateEmpty(SectionName sectionName)
+                    => Create(sectionName);
 
-                return this;
+                public static Section Create(SectionName sectionName, params Property[] properties)
+                    => Create(sectionName, properties.AsEnumerable());
+
+                public static Section Create(SectionName SectionName, IEnumerable<Property> properties)
+                    => new(SectionName, properties.ToImmutableArray());
+
+                public IniDocumentBuilder ApplyTo(IniDocumentBuilder builder)
+                    => this.Properties.Aggregate(builder.AppendSectionLine(this.SectionName), (currentBuilder, property) => property.ApplyTo(currentBuilder));
             }
 
-            public IniDocumentBuilder AppendPropertyLine(PropertyKey propertyKey, PropertyValue propertyValue)
+            private sealed record Property(PropertyKey PropertyKey, PropertyValue PropertyValue)
             {
-                this.stringBuilder.AppendLine($"{propertyKey}={propertyValue}");
+                public static Property Create(PropertyKey propertyKey)
+                    => Create(propertyKey, "Default");
 
-                return this;
+                public static Property Create(PropertyKey propertyKey, PropertyValue propertyValue)
+                    => new(propertyKey, propertyValue);
+
+                public IniDocumentBuilder ApplyTo(IniDocumentBuilder builder)
+                    => builder.AppendPropertyLine(this.PropertyKey, this.PropertyValue);
             }
-
-            public override string ToString()
-                => this.stringBuilder.ToString();
-
-            public IniDocument Build()
-            {
-                using var stringReader = new StringReader(this.ToString());
-                return IniDocument.LoadFrom(stringReader);
-            }
-        }
-
-        private sealed record Section(SectionName SectionName, ImmutableArray<Property> Properties)
-        {
-            public static Section Create(SectionName sectionName, params Property[] properties)
-                => Create(sectionName, properties.AsEnumerable());
-
-            public static Section Create(SectionName SectionName, IEnumerable<Property> properties)
-                => new(SectionName, properties.ToImmutableArray());
-
-            public IniDocumentBuilder ApplyTo(IniDocumentBuilder builder)
-                => this.Properties.Aggregate(builder.AppendSectionLine(this.SectionName), (currentBuilder, property) => property.ApplyTo(currentBuilder));
-        }
-
-        private sealed record Property(PropertyKey PropertyKey, PropertyValue PropertyValue)
-        {
-            public static Property Create(PropertyKey propertyKey)
-                => Create(propertyKey, "Default");
-
-            public static Property Create(PropertyKey propertyKey, PropertyValue propertyValue)
-                => new(propertyKey, propertyValue);
-
-            public IniDocumentBuilder ApplyTo(IniDocumentBuilder builder)
-                => builder.AppendPropertyLine(this.PropertyKey, this.PropertyValue);
         }
     }
 }
