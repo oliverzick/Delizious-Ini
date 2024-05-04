@@ -185,7 +185,7 @@
         }
 
         /// <summary>
-        /// Reads the value of the property contained in the section.
+        /// Reads the property contained in the specified section.
         /// </summary>
         /// <param name="sectionName">
         /// The name of the section containing the property.
@@ -205,7 +205,7 @@
         /// <exception cref="PropertyNotFoundException">
         /// The property specified by the <paramref name="propertyKey"/> does not exist.
         /// </exception>
-        public PropertyValue ReadPropertyValue(SectionName sectionName, PropertyKey propertyKey)
+        public PropertyValue ReadProperty(SectionName sectionName, PropertyKey propertyKey)
         {
             if (sectionName is null)
             {
