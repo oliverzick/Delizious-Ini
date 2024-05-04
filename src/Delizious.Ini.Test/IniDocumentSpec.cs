@@ -221,14 +221,14 @@ namespace Delizious.Ini.Test
         }
 
         [TestClass]
-        public sealed class ReadPropertyValue
+        public sealed class ReadProperty
         {
             [TestMethod]
             public void Throws_argument_null_exception_when_section_name_is_null()
             {
                 var target = MakeEmptyTarget();
 
-                Assert.ThrowsException<ArgumentNullException>(() => target.ReadPropertyValue(null, DummyPropertyKey));
+                Assert.ThrowsException<ArgumentNullException>(() => target.ReadProperty(null, DummyPropertyKey));
             }
 
             [TestMethod]
@@ -236,24 +236,24 @@ namespace Delizious.Ini.Test
             {
                 var target = MakeEmptyTarget();
 
-                Assert.ThrowsException<ArgumentNullException>(() => target.ReadPropertyValue(DummySectionName, null));
+                Assert.ThrowsException<ArgumentNullException>(() => target.ReadProperty(DummySectionName, null));
             }
 
             [TestMethod]
-            public void Throws_section_not_found_exception_when_section_specified_by_its_section_name_does_not_exist()
+            public void Throws_section_not_found_exception_when_section_does_not_exist()
             {
                 var sectionName = NonexistentSectionName;
                 var expected = new SectionNotFoundExceptionAssertion(sectionName);
 
                 var target = MakeEmptyTarget();
 
-                var actual = Assert.ThrowsException<SectionNotFoundException>(() => target.ReadPropertyValue(sectionName, DummyPropertyKey));
+                var actual = Assert.ThrowsException<SectionNotFoundException>(() => target.ReadProperty(sectionName, DummyPropertyKey));
 
                 Assert.AreEqual(expected, actual);
             }
 
             [TestMethod]
-            public void Throws_property_not_found_exception_when_property_specified_by_its_property_key_does_not_exist()
+            public void Throws_property_not_found_exception_when_property_does_not_exist()
             {
                 var sectionName = DefaultSectionName;
                 var propertyKey = NonexistentPropertyKey;
@@ -261,7 +261,7 @@ namespace Delizious.Ini.Test
 
                 var target = MakeTarget(Section.Create(sectionName));
 
-                var actual = Assert.ThrowsException<PropertyNotFoundException>(() => target.ReadPropertyValue(sectionName, propertyKey));
+                var actual = Assert.ThrowsException<PropertyNotFoundException>(() => target.ReadProperty(sectionName, propertyKey));
 
                 Assert.AreEqual(expected, actual);
             }
@@ -269,13 +269,13 @@ namespace Delizious.Ini.Test
             [DataTestMethod]
             [DataRow("Property value", DisplayName = "Actual value")]
             [DataRow(""              , DisplayName = "Empty string when property does exist but has no value")]
-            public void Provides_property_value_for_property_with_specified_section_name_and_property_key(string propertyValue)
+            public void Reads_the_property_contained_in_the_specified_section(string propertyValue)
             {
                 var expected = propertyValue;
 
                 var target = MakeSinglePropertyTarget(expected);
 
-                var actual = target.ReadPropertyValue(DefaultSectionName, DefaultPropertyKey);
+                var actual = target.ReadProperty(DefaultSectionName, DefaultPropertyKey);
 
                 Assert.AreEqual(expected, actual);
             }
@@ -348,7 +348,7 @@ namespace Delizious.Ini.Test
 
                 target.UpdatePropertyValue(sectionName, propertyKey, newValue);
 
-                var actual = target.ReadPropertyValue(sectionName, propertyKey);
+                var actual = target.ReadProperty(sectionName, propertyKey);
 
                 Assert.AreEqual(expected, actual);
             }
