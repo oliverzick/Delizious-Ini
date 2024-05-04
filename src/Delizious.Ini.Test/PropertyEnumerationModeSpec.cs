@@ -5,6 +5,9 @@
     [TestClass]
     public sealed class PropertyEnumerationModeSpec
     {
+        private static PropertyEnumerationMode Fail => PropertyEnumerationMode.Fail();
+        private static PropertyEnumerationMode Fallback => PropertyEnumerationMode.Fallback();
+
         [DataTestMethod]
         [DynamicData(nameof(Provides_string_representation_test_cases), DynamicDataSourceType.Method)]
         public void Provides_string_representation(PropertyEnumerationMode target, string expected)
@@ -16,8 +19,8 @@
 
         public static IEnumerable<object[]> Provides_string_representation_test_cases()
         {
-            yield return new object[] { PropertyEnumerationMode.Fail(), "Fail" };
-            yield return new object[] { PropertyEnumerationMode.Fallback(), "Fallback" };
+            yield return new object[] { Fail, "Fail" };
+            yield return new object[] { Fallback, "Fallback" };
         }
 
         [DataTestMethod]
@@ -77,27 +80,27 @@
         public static IEnumerable<object[]> Equality_operator_test_cases()
         {
             yield return new object[] { null!, null!, true };
-            yield return new object[] { null!, PropertyEnumerationMode.Fail(), false };
-            yield return new object[] { null!, PropertyEnumerationMode.Fallback(), false };
+            yield return new object[] { null!, Fail, false };
+            yield return new object[] { null!, Fallback, false };
         }
         public static IEnumerable<object[]> Equals_null_test_cases()
         {
-            yield return new object[] { PropertyEnumerationMode.Fail(), null!, false };
-            yield return new object[] { PropertyEnumerationMode.Fallback(), null!, false };
+            yield return new object[] { Fail, null!, false };
+            yield return new object[] { Fallback, null!, false };
         }
 
         public static IEnumerable<object[]> Equals_test_cases()
         {
-            yield return new object[] { PropertyEnumerationMode.Fail(), PropertyEnumerationMode.Fail(), true };
-            yield return new object[] { PropertyEnumerationMode.Fail(), PropertyEnumerationMode.Fallback(), false };
-            yield return new object[] { PropertyEnumerationMode.Fallback(), PropertyEnumerationMode.Fallback(), true };
-            yield return new object[] { PropertyEnumerationMode.Fallback(), PropertyEnumerationMode.Fail(), false };
+            yield return new object[] { Fail, Fail, true };
+            yield return new object[] { Fail, Fallback, false };
+            yield return new object[] { Fallback, Fallback, true };
+            yield return new object[] { Fallback, Fail, false };
         }
 
         public static IEnumerable<object[]> General_equals_test_cases()
         {
-            yield return new object[] { PropertyEnumerationMode.Fail(), string.Empty, false };
-            yield return new object[] { PropertyEnumerationMode.Fallback(), string.Empty, false };
+            yield return new object[] { Fail, string.Empty, false };
+            yield return new object[] { Fallback, string.Empty, false };
         }
     }
 }
