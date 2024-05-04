@@ -5,6 +5,7 @@
     [TestClass]
     public sealed class PropertyEnumerationModeSpec
     {
+        private static PropertyEnumerationMode Null => null!;
         private static PropertyEnumerationMode Fail => PropertyEnumerationMode.Fail();
         private static PropertyEnumerationMode Fallback => PropertyEnumerationMode.Fallback();
 
@@ -79,14 +80,14 @@
 
         public static IEnumerable<object[]> Equality_operator_test_cases()
         {
-            yield return new object[] { null!, null!, true };
-            yield return new object[] { null!, Fail, false };
-            yield return new object[] { null!, Fallback, false };
+            yield return new object[] { Null, Null, true };
+            yield return new object[] { Null, Fail, false };
+            yield return new object[] { Null, Fallback, false };
         }
         public static IEnumerable<object[]> Equals_null_test_cases()
         {
-            yield return new object[] { Fail, null!, false };
-            yield return new object[] { Fallback, null!, false };
+            yield return new object[] { Fail, Null, false };
+            yield return new object[] { Fallback, Null, false };
         }
 
         public static IEnumerable<object[]> Equals_test_cases()
@@ -99,8 +100,8 @@
 
         public static IEnumerable<object[]> General_equals_test_cases()
         {
-            yield return new object[] { Fail, string.Empty, false };
-            yield return new object[] { Fallback, string.Empty, false };
+            yield return new object[] { Fail, new(), false };
+            yield return new object[] { Fallback, new(), false };
         }
     }
 }
