@@ -358,10 +358,7 @@ namespace Delizious.Ini.Test
                 => new IniDocumentBuilder().Build();
 
             public static IniDocument SingleDefaultSectionTarget(IEnumerable<PropertyKey> propertyKeys)
-                => SingleDefaultSectionTarget(propertyKeys.Select(Property.Create));
-
-            private static IniDocument SingleDefaultSectionTarget(IEnumerable<Property> properties)
-                => Target(Section.Create(DefaultSectionName, properties));
+                => Target(Section.Create(DefaultSectionName, propertyKeys.Select(Property.Create)));
 
             public static IniDocument SingleDefaultPropertyTarget(PropertyValue propertyValue)
                 => Target(Section.Create(DefaultSectionName, Property.Create(DefaultPropertyKey, propertyValue)));
