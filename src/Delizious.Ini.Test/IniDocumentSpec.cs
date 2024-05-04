@@ -383,68 +383,68 @@ namespace Delizious.Ini.Test
 
             private static IniDocument Target(IEnumerable<Section> sections)
                 => sections.Aggregate(new IniDocumentBuilder(), (builder, section) => section.ApplyTo(builder)).Build();
-        }
 
-        private sealed class IniDocumentBuilder
-        {
-            private readonly StringBuilder stringBuilder = new();
-
-            public IniDocumentBuilder AppendEmptyLine()
+            private sealed class IniDocumentBuilder
             {
-                this.stringBuilder.AppendLine();
+                private readonly StringBuilder stringBuilder = new();
 
-                return this;
+                public IniDocumentBuilder AppendEmptyLine()
+                {
+                    this.stringBuilder.AppendLine();
+
+                    return this;
+                }
+
+                public IniDocumentBuilder AppendSectionLine(SectionName sectionName)
+                {
+                    this.stringBuilder.AppendLine($"[{sectionName}]");
+
+                    return this;
+                }
+
+                public IniDocumentBuilder AppendPropertyLine(PropertyKey propertyKey, PropertyValue propertyValue)
+                {
+                    this.stringBuilder.AppendLine($"{propertyKey}={propertyValue}");
+
+                    return this;
+                }
+
+                public override string ToString()
+                    => this.stringBuilder.ToString();
+
+                public IniDocument Build()
+                {
+                    using var stringReader = new StringReader(this.ToString());
+                    return IniDocument.LoadFrom(stringReader);
+                }
             }
 
-            public IniDocumentBuilder AppendSectionLine(SectionName sectionName)
+            private sealed record Section(SectionName SectionName, ImmutableArray<Property> Properties)
             {
-                this.stringBuilder.AppendLine($"[{sectionName}]");
+                public static Section CreateEmpty(SectionName sectionName)
+                    => Create(sectionName);
 
-                return this;
+                public static Section Create(SectionName sectionName, params Property[] properties)
+                    => Create(sectionName, properties.AsEnumerable());
+
+                public static Section Create(SectionName SectionName, IEnumerable<Property> properties)
+                    => new(SectionName, properties.ToImmutableArray());
+
+                public IniDocumentBuilder ApplyTo(IniDocumentBuilder builder)
+                    => this.Properties.Aggregate(builder.AppendSectionLine(this.SectionName), (currentBuilder, property) => property.ApplyTo(currentBuilder));
             }
 
-            public IniDocumentBuilder AppendPropertyLine(PropertyKey propertyKey, PropertyValue propertyValue)
+            private sealed record Property(PropertyKey PropertyKey, PropertyValue PropertyValue)
             {
-                this.stringBuilder.AppendLine($"{propertyKey}={propertyValue}");
+                public static Property Create(PropertyKey propertyKey)
+                    => Create(propertyKey, "Default");
 
-                return this;
+                public static Property Create(PropertyKey propertyKey, PropertyValue propertyValue)
+                    => new(propertyKey, propertyValue);
+
+                public IniDocumentBuilder ApplyTo(IniDocumentBuilder builder)
+                    => builder.AppendPropertyLine(this.PropertyKey, this.PropertyValue);
             }
-
-            public override string ToString()
-                => this.stringBuilder.ToString();
-
-            public IniDocument Build()
-            {
-                using var stringReader = new StringReader(this.ToString());
-                return IniDocument.LoadFrom(stringReader);
-            }
-        }
-
-        private sealed record Section(SectionName SectionName, ImmutableArray<Property> Properties)
-        {
-            public static Section CreateEmpty(SectionName sectionName)
-                => Create(sectionName);
-
-            public static Section Create(SectionName sectionName, params Property[] properties)
-                => Create(sectionName, properties.AsEnumerable());
-
-            public static Section Create(SectionName SectionName, IEnumerable<Property> properties)
-                => new(SectionName, properties.ToImmutableArray());
-
-            public IniDocumentBuilder ApplyTo(IniDocumentBuilder builder)
-                => this.Properties.Aggregate(builder.AppendSectionLine(this.SectionName), (currentBuilder, property) => property.ApplyTo(currentBuilder));
-        }
-
-        private sealed record Property(PropertyKey PropertyKey, PropertyValue PropertyValue)
-        {
-            public static Property Create(PropertyKey propertyKey)
-                => Create(propertyKey, "Default");
-
-            public static Property Create(PropertyKey propertyKey, PropertyValue propertyValue)
-                => new(propertyKey, propertyValue);
-
-            public IniDocumentBuilder ApplyTo(IniDocumentBuilder builder)
-                => builder.AppendPropertyLine(this.PropertyKey, this.PropertyValue);
         }
     }
 }
