@@ -104,6 +104,11 @@ namespace Delizious.Ini.Test
         [TestClass]
         public sealed class EnumerateProperties
         {
+            private static ImmutableArray<PropertyKey> PropertyKeys { get; } = ImmutableArray.Create<PropertyKey>("Property1", "AnotherProperty2", "SomePropertyA");
+
+            private static IniDocument Target
+                => MakeTarget(Section.Create(DefaultSectionName, PropertyKeys.Select(Property.Create)));
+
             [TestClass]
             public sealed class With_sectionName
             {
@@ -131,13 +136,10 @@ namespace Delizious.Ini.Test
                 [TestMethod]
                 public void Enumerates_the_keys_of_all_properties_contained_in_the_specified_section()
                 {
-                    var sectionName = DefaultSectionName;
-                    var propertyKeys = ImmutableArray.Create<PropertyKey>("PropertyA", "PropertyB", "PropertyC");
-                    var expected = propertyKeys;
+                    var expected = PropertyKeys;
+                    var target = Target;
 
-                    var target = MakeTarget(Section.Create(sectionName, propertyKeys.Select(Property.Create)));
-
-                    var actual = target.EnumerateProperties(sectionName).ToImmutableArray();
+                    var actual = target.EnumerateProperties(DefaultSectionName).ToImmutableArray();
 
                     CollectionAssert.AreEqual(expected, actual);
                 }
@@ -168,13 +170,10 @@ namespace Delizious.Ini.Test
                 [DynamicData(nameof(Modes), DynamicDataSourceType.Method)]
                 public void Enumerates_the_keys_of_all_properties_contained_in_the_specified_section(PropertyEnumerationMode mode)
                 {
-                    var sectionName = DefaultSectionName;
-                    var propertyKeys = ImmutableArray.Create<PropertyKey>("PropertyA", "PropertyB", "PropertyC");
-                    var expected = propertyKeys;
+                    var expected = PropertyKeys;
+                    var target = Target;
 
-                    var target = MakeTarget(Section.Create(sectionName, propertyKeys.Select(Property.Create)));
-
-                    var actual = target.EnumerateProperties(sectionName, mode).ToImmutableArray();
+                    var actual = target.EnumerateProperties(DefaultSectionName, mode).ToImmutableArray();
 
                     CollectionAssert.AreEqual(expected, actual);
                 }
