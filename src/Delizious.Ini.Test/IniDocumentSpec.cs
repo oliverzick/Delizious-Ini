@@ -48,7 +48,7 @@ namespace Delizious.Ini.Test
             [TestMethod]
             public void Throws_argument_null_exception_when_text_writer_is_null()
             {
-                var target = MakeEmptyTarget();
+                var target = EmptyTarget;
 
                 Assert.ThrowsException<ArgumentNullException>(() => target.SaveTo(null));
             }
@@ -60,7 +60,7 @@ namespace Delizious.Ini.Test
                 using var textWriter = new StringWriter();
                 textWriter.Dispose();
 
-                var target = MakeEmptyTarget();
+                var target = EmptyTarget;
 
                 var actual = Assert.ThrowsException<PersistenceException>(() => target.SaveTo(textWriter));
 
@@ -111,7 +111,7 @@ namespace Delizious.Ini.Test
                 [TestMethod]
                 public void Throws_argument_null_exception_when_section_name_is_null()
                 {
-                    var target = MakeEmptyTarget();
+                    var target = EmptyTarget;
 
                     Assert.ThrowsException<ArgumentNullException>(() => target.EnumerateProperties(null));
                 }
@@ -122,7 +122,7 @@ namespace Delizious.Ini.Test
                     var sectionName = NonexistentSectionName;
                     var expected = new SectionNotFoundExceptionAssertion(sectionName);
 
-                    var target = MakeEmptyTarget();
+                    var target = EmptyTarget;
 
                     var actual = Assert.ThrowsException<SectionNotFoundException>(() => target.EnumerateProperties(sectionName));
 
@@ -152,7 +152,7 @@ namespace Delizious.Ini.Test
                 [TestMethod]
                 public void Throws_argument_null_exception_when_section_name_is_null()
                 {
-                    var target = MakeEmptyTarget();
+                    var target = EmptyTarget;
 
                     Assert.ThrowsException<ArgumentNullException>(() => target.EnumerateProperties(null, DummyMode));
                 }
@@ -160,7 +160,7 @@ namespace Delizious.Ini.Test
                 [TestMethod]
                 public void Throws_argument_null_exception_when_mode_is_null()
                 {
-                    var target = MakeEmptyTarget();
+                    var target = EmptyTarget;
 
                     Assert.ThrowsException<ArgumentNullException>(() => target.EnumerateProperties(DummySectionName, null));
                 }
@@ -194,7 +194,7 @@ namespace Delizious.Ini.Test
                     [TestMethod]
                     public void Throws_section_not_found_exception_when_section_does_not_exist()
                     {
-                        var target = MakeEmptyTarget();
+                        var target = EmptyTarget;
 
                         Assert.ThrowsException<SectionNotFoundException>(() => target.EnumerateProperties(NonexistentSectionName, Mode));
                     }
@@ -210,7 +210,7 @@ namespace Delizious.Ini.Test
                     {
                         var expected = Enumerable.Empty<PropertyKey>().ToImmutableArray();
 
-                        var target = MakeEmptyTarget();
+                        var target = EmptyTarget;
 
                         var actual = target.EnumerateProperties(NonexistentSectionName, Mode).ToImmutableArray();
 
@@ -226,7 +226,7 @@ namespace Delizious.Ini.Test
             [TestMethod]
             public void Throws_argument_null_exception_when_section_name_is_null()
             {
-                var target = MakeEmptyTarget();
+                var target = EmptyTarget;
 
                 Assert.ThrowsException<ArgumentNullException>(() => target.ReadProperty(null, DummyPropertyKey));
             }
@@ -234,7 +234,7 @@ namespace Delizious.Ini.Test
             [TestMethod]
             public void Throws_argument_null_exception_when_property_key_is_null()
             {
-                var target = MakeEmptyTarget();
+                var target = EmptyTarget;
 
                 Assert.ThrowsException<ArgumentNullException>(() => target.ReadProperty(DummySectionName, null));
             }
@@ -245,7 +245,7 @@ namespace Delizious.Ini.Test
                 var sectionName = NonexistentSectionName;
                 var expected = new SectionNotFoundExceptionAssertion(sectionName);
 
-                var target = MakeEmptyTarget();
+                var target = EmptyTarget;
 
                 var actual = Assert.ThrowsException<SectionNotFoundException>(() => target.ReadProperty(sectionName, DummyPropertyKey));
 
@@ -287,7 +287,7 @@ namespace Delizious.Ini.Test
             [TestMethod]
             public void Throws_argument_null_exception_when_section_name_is_null()
             {
-                var target = MakeEmptyTarget();
+                var target = EmptyTarget;
 
                 Assert.ThrowsException<ArgumentNullException>(() => target.UpdateProperty(null, DummyPropertyKey, DummyPropertyValue));
             }
@@ -295,7 +295,7 @@ namespace Delizious.Ini.Test
             [TestMethod]
             public void Throws_argument_null_exception_when_property_key_is_null()
             {
-                var target = MakeEmptyTarget();
+                var target = EmptyTarget;
 
                 Assert.ThrowsException<ArgumentNullException>(() => target.UpdateProperty(DummySectionName, null, DummyPropertyValue));
             }
@@ -303,7 +303,7 @@ namespace Delizious.Ini.Test
             [TestMethod]
             public void Throws_argument_null_exception_when_new_property_value_is_null()
             {
-                var target = MakeEmptyTarget();
+                var target = EmptyTarget;
 
                 Assert.ThrowsException<ArgumentNullException>(() => target.UpdateProperty(DummySectionName, DummyPropertyKey, null));
             }
@@ -314,7 +314,7 @@ namespace Delizious.Ini.Test
                 var sectionName = NonexistentSectionName;
                 var expected = new SectionNotFoundExceptionAssertion(sectionName);
 
-                var target = MakeEmptyTarget();
+                var target = EmptyTarget;
 
                 var actual = Assert.ThrowsException<SectionNotFoundException>(() => target.UpdateProperty(sectionName, DummyPropertyKey, DummyPropertyValue));
 
@@ -354,7 +354,7 @@ namespace Delizious.Ini.Test
             }
         }
 
-        private static IniDocument MakeEmptyTarget()
+        private static IniDocument EmptyTarget
             => new IniDocumentBuilder().Build();
 
         private static IniDocument MakeSinglePropertyTarget(PropertyValue propertyValue)
