@@ -70,7 +70,7 @@ namespace Delizious.Ini.Test
             [TestMethod]
             public void Saves_the_ini_document_to_text_writer()
             {
-                var expected = MakeSampleString();
+                var expected = SampleString;
                 var stringBuilder = new StringBuilder();
                 using var textWriter = new StringWriter(stringBuilder);
 
@@ -370,7 +370,7 @@ namespace Delizious.Ini.Test
             => MakeTarget(Section.Create("Section1", Property.Create("PropertyA", "Value A")),
                           Section.Create("Section2", Property.Create("PropertyB", "Value B")));
 
-        public static string MakeSampleString()
+        private static string SampleString
             => new IniDocumentBuilder().AppendSectionLine("Section1")
                                        .AppendPropertyLine("PropertyA", "Value A")
                                        .AppendEmptyLine()
