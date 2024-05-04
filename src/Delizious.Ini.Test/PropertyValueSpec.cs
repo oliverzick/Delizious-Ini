@@ -8,6 +8,11 @@
     {
         private const string Value = "Value";
 
+        private static PropertyValue Null => null!;
+        private static PropertyValue A => "A";
+        private static PropertyValue AnotherA => "A";
+        private static PropertyValue B => "B";
+
         [TestMethod]
         public void Throws_argument_null_exception_on_creation_when_given_property_value_is_null()
         {
@@ -60,12 +65,12 @@
 
         public static IEnumerable<object[]> Equality_operator_test_cases()
         {
-            yield return new object[] { PropertyValues.Null, PropertyValues.Null, true };
-            yield return new object[] { PropertyValues.A, PropertyValues.Null, false };
-            yield return new object[] { PropertyValues.Null, PropertyValues.A, false };
-            yield return new object[] { PropertyValues.A, PropertyValues.B, false };
-            yield return new object[] { PropertyValues.B, PropertyValues.A, false };
-            yield return new object[] { PropertyValues.A, PropertyValues.A, true };
+            yield return new object[] { Null, Null, true };
+            yield return new object[] { A, Null, false };
+            yield return new object[] { Null, A, false };
+            yield return new object[] { A, B, false };
+            yield return new object[] { B, A, false };
+            yield return new object[] { A, A, true };
         }
 
         [DataTestMethod]
@@ -79,10 +84,10 @@
 
         public static IEnumerable<object[]> Equals_method_test_cases()
         {
-            yield return new object[] { PropertyValues.A, PropertyValues.Null, false };
-            yield return new object[] { PropertyValues.A, PropertyValues.B, false };
-            yield return new object[] { PropertyValues.A, PropertyValues.A, true };
-            yield return new object[] { PropertyValues.A, PropertyValues.AnotherA, true };
+            yield return new object[] { A, Null, false };
+            yield return new object[] { A, B, false };
+            yield return new object[] { A, A, true };
+            yield return new object[] { A, AnotherA, true };
         }
 
         [DataTestMethod]
@@ -97,15 +102,7 @@
 
         public static IEnumerable<object[]> General_equals_method_test_cases()
         {
-            yield return new object[] { PropertyValues.A, string.Empty, false };
-        }
-
-        private static class PropertyValues
-        {
-            public static readonly PropertyValue Null = null!;
-            public static readonly PropertyValue A = "A";
-            public static readonly PropertyValue AnotherA = "A";
-            public static readonly PropertyValue B = "B";
+            yield return new object[] { A, string.Empty, false };
         }
     }
 }
