@@ -8,6 +8,11 @@
     {
         private const string Section = "Section";
 
+        private static SectionName Null => null!;
+        private static SectionName A => "A";
+        private static SectionName AnotherA => "A";
+        private static SectionName B => "B";
+
         [TestMethod]
         public void Throws_argument_null_exception_on_creation_when_given_section_name_is_null()
         {
@@ -72,12 +77,12 @@
 
         public static IEnumerable<object[]> Equality_operator_test_cases()
         {
-            yield return new object[] { SectionNames.Null, SectionNames.Null, true };
-            yield return new object[] { SectionNames.A, SectionNames.Null, false };
-            yield return new object[] { SectionNames.Null, SectionNames.A, false };
-            yield return new object[] { SectionNames.A, SectionNames.B, false };
-            yield return new object[] { SectionNames.B, SectionNames.A, false };
-            yield return new object[] { SectionNames.A, SectionNames.A, true };
+            yield return new object[] { Null, Null, true };
+            yield return new object[] { A, Null, false };
+            yield return new object[] { Null, A, false };
+            yield return new object[] { A, B, false };
+            yield return new object[] { B, A, false };
+            yield return new object[] { A, A, true };
         }
 
         [DataTestMethod]
@@ -91,10 +96,10 @@
 
         public static IEnumerable<object[]> Equals_method_test_cases()
         {
-            yield return new object[] { SectionNames.A, SectionNames.Null, false };
-            yield return new object[] { SectionNames.A, SectionNames.B, false };
-            yield return new object[] { SectionNames.A, SectionNames.A, true };
-            yield return new object[] { SectionNames.A, SectionNames.AnotherA, true };
+            yield return new object[] { A, Null, false };
+            yield return new object[] { A, B, false };
+            yield return new object[] { A, A, true };
+            yield return new object[] { A, AnotherA, true };
         }
 
         [DataTestMethod]
@@ -109,15 +114,7 @@
 
         public static IEnumerable<object[]> General_equals_method_test_cases()
         {
-            yield return new object[] { SectionNames.A, string.Empty, false };
-        }
-
-        private static class SectionNames
-        {
-            public static readonly SectionName Null = null!;
-            public static readonly SectionName A = "A";
-            public static readonly SectionName AnotherA = "A";
-            public static readonly SectionName B = "B";
+            yield return new object[] { A, string.Empty, false };
         }
     }
 }
