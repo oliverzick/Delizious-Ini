@@ -89,12 +89,14 @@ namespace Delizious.Ini.Test
         [TestClass]
         public sealed class EnumerateSections
         {
+            private static ImmutableArray<SectionName> SectionNames => ImmutableArray.Create<SectionName>("Section1", "AnotherSection2", "SomeSectionA");
+
             [TestMethod]
             public void Enumerates_the_names_of_all_contained_sections()
             {
-                var expected = SampleSections;
+                var expected = SectionNames;
 
-                var target = SampleTarget;
+                var target = Make.EmptySectionsTarget(expected);
 
                 var actual = target.EnumerateSections().ToImmutableArray();
 
@@ -363,17 +365,20 @@ namespace Delizious.Ini.Test
 
             public static IniDocument SingleDefaultPropertyTarget(PropertyValue propertyValue)
                 => MakeTarget(Section.Create(DefaultSectionName, Property.Create(DefaultPropertyKey, propertyValue)));
+
+            public static IniDocument EmptySectionsTarget(IEnumerable<SectionName> sectionNames)
+                => Target(sectionNames.Select(Section.CreateEmpty));
+
+            public static IniDocument Target(IEnumerable<Section> sections)
+                => sections.Aggregate(new IniDocumentBuilder(), (builder, section) => section.ApplyTo(builder)).Build();
         }
 
         private static IniDocument MakeTarget(params Section[] sections)
-            => sections.Aggregate(new IniDocumentBuilder(), (builder, section) => section.ApplyTo(builder)).Build();
+            => Make.Target(sections);
 
         private static IniDocument SampleTarget
             => MakeTarget(Section.Create("Section1", Property.Create("PropertyA", "Value A")),
                           Section.Create("Section2", Property.Create("PropertyB", "Value B")));
-
-        private static ImmutableArray<SectionName> SampleSections
-            => ImmutableArray.Create<SectionName>("Section1", "Section2");
 
         private static string SampleString
             => new IniDocumentBuilder().AppendSectionLine("Section1")
@@ -420,6 +425,9 @@ namespace Delizious.Ini.Test
 
         private sealed record Section(SectionName SectionName, ImmutableArray<Property> Properties)
         {
+            public static Section CreateEmpty(SectionName sectionName)
+                => Create(sectionName);
+
             public static Section Create(SectionName sectionName, params Property[] properties)
                 => Create(sectionName, properties.AsEnumerable());
 
