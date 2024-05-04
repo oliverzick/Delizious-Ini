@@ -71,11 +71,11 @@ namespace Delizious.Ini.Test
             [TestMethod]
             public void Saves_the_ini_document_to_text_writer()
             {
-                var expected = SampleString;
+                var expected = Make.SampleString();
                 var stringBuilder = new StringBuilder();
                 using var textWriter = new StringWriter(stringBuilder);
 
-                var target = SampleTarget;
+                var target = Make.SampleTarget();
 
                 target.SaveTo(textWriter);
                 textWriter.Flush();
@@ -369,24 +369,24 @@ namespace Delizious.Ini.Test
             public static IniDocument EmptySectionsTarget(IEnumerable<SectionName> sectionNames)
                 => Target(sectionNames.Select(Section.CreateEmpty));
 
-            public static IniDocument Target(params Section[] sections)
+            public static IniDocument SampleTarget()
+                => Target(Section.Create("Section1", Property.Create("PropertyA", "Value A")),
+                          Section.Create("Section2", Property.Create("PropertyB", "Value B")));
+
+            public static string SampleString()
+                => new IniDocumentBuilder().AppendSectionLine("Section1")
+                                           .AppendPropertyLine("PropertyA", "Value A")
+                                           .AppendEmptyLine()
+                                           .AppendSectionLine("Section2")
+                                           .AppendPropertyLine("PropertyB", "Value B")
+                                           .ToString();
+
+            private static IniDocument Target(params Section[] sections)
                 => Target(sections.AsEnumerable());
 
             private static IniDocument Target(IEnumerable<Section> sections)
                 => sections.Aggregate(new IniDocumentBuilder(), (builder, section) => section.ApplyTo(builder)).Build();
         }
-
-        private static IniDocument SampleTarget
-            => Make.Target(Section.Create("Section1", Property.Create("PropertyA", "Value A")),
-                           Section.Create("Section2", Property.Create("PropertyB", "Value B")));
-
-        private static string SampleString
-            => new IniDocumentBuilder().AppendSectionLine("Section1")
-                                       .AppendPropertyLine("PropertyA", "Value A")
-                                       .AppendEmptyLine()
-                                       .AppendSectionLine("Section2")
-                                       .AppendPropertyLine("PropertyB", "Value B")
-                                       .ToString();
 
         private sealed class IniDocumentBuilder
         {
