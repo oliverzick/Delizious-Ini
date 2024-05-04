@@ -10,7 +10,6 @@
 
         private static PropertyValue Null => null!;
         private static PropertyValue A => "A";
-        private static PropertyValue AnotherA => "A";
         private static PropertyValue B => "B";
 
         [TestMethod]
@@ -45,6 +44,8 @@
 
         [DataTestMethod]
         [DynamicData(nameof(Equality_operator_test_cases), DynamicDataSourceType.Method)]
+        [DynamicData(nameof(Equals_test_cases), DynamicDataSourceType.Method)]
+        [DynamicData(nameof(Equals_null_test_cases), DynamicDataSourceType.Method)]
         public void Properly_implements_equality_operator(PropertyValue left, PropertyValue right, bool expected)
         {
             var actual = left == right;
@@ -54,6 +55,8 @@
 
         [DataTestMethod]
         [DynamicData(nameof(Equality_operator_test_cases), DynamicDataSourceType.Method)]
+        [DynamicData(nameof(Equals_test_cases), DynamicDataSourceType.Method)]
+        [DynamicData(nameof(Equals_null_test_cases), DynamicDataSourceType.Method)]
         public void Properly_implements_inequality_operator(PropertyValue left, PropertyValue right, bool inverse_expected)
         {
             var expected = !inverse_expected;
@@ -63,18 +66,9 @@
             Assert.AreEqual(expected, actual);
         }
 
-        public static IEnumerable<object[]> Equality_operator_test_cases()
-        {
-            yield return new object[] { Null, Null, true };
-            yield return new object[] { A, Null, false };
-            yield return new object[] { Null, A, false };
-            yield return new object[] { A, B, false };
-            yield return new object[] { B, A, false };
-            yield return new object[] { A, A, true };
-        }
-
         [DataTestMethod]
-        [DynamicData(nameof(Equals_method_test_cases), DynamicDataSourceType.Method)]
+        [DynamicData(nameof(Equals_test_cases), DynamicDataSourceType.Method)]
+        [DynamicData(nameof(Equals_null_test_cases), DynamicDataSourceType.Method)]
         public void Properly_implements_equals_method(PropertyValue target, object other, bool expected)
         {
             var actual = target.Equals(other);
@@ -82,17 +76,10 @@
             Assert.AreEqual(expected, actual);
         }
 
-        public static IEnumerable<object[]> Equals_method_test_cases()
-        {
-            yield return new object[] { A, Null, false };
-            yield return new object[] { A, B, false };
-            yield return new object[] { A, A, true };
-            yield return new object[] { A, AnotherA, true };
-        }
-
         [DataTestMethod]
-        [DynamicData(nameof(General_equals_method_test_cases), DynamicDataSourceType.Method)]
-        [DynamicData(nameof(Equals_method_test_cases), DynamicDataSourceType.Method)]
+        [DynamicData(nameof(General_equals_test_cases), DynamicDataSourceType.Method)]
+        [DynamicData(nameof(Equals_test_cases), DynamicDataSourceType.Method)]
+        [DynamicData(nameof(Equals_null_test_cases), DynamicDataSourceType.Method)]
         public void Properly_implements_general_equals_method(PropertyValue target, object other, bool expected)
         {
             var actual = target.Equals(other);
@@ -100,9 +87,41 @@
             Assert.AreEqual(expected, actual);
         }
 
-        public static IEnumerable<object[]> General_equals_method_test_cases()
+        [DataTestMethod]
+        [DynamicData(nameof(Equals_test_cases), DynamicDataSourceType.Method)]
+        public void Properly_implements_get_hash_code_method(PropertyValue target, PropertyValue other, bool expected)
         {
-            yield return new object[] { A, string.Empty, false };
+            var actual = target.GetHashCode() == other.GetHashCode();
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        public static IEnumerable<object[]> Equality_operator_test_cases()
+        {
+            yield return new object[] { Null, Null, true };
+            yield return new object[] { Null, A, false };
+            yield return new object[] { Null, B, false };
+        }
+
+        public static IEnumerable<object[]> Equals_null_test_cases()
+        {
+            yield return new object[] { A, Null, false };
+            yield return new object[] { B, Null, false };
+        }
+
+        public static IEnumerable<object[]> Equals_test_cases()
+        {
+            yield return new object[] { A, A, true };
+            yield return new object[] { A, B, false };
+
+            yield return new object[] { B, B, true };
+            yield return new object[] { B, A, false };
+        }
+
+        public static IEnumerable<object[]> General_equals_test_cases()
+        {
+            yield return new object[] { A, new(), false };
+            yield return new object[] { B, new(), false };
         }
     }
 }
