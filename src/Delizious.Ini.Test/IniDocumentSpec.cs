@@ -19,6 +19,7 @@ namespace Delizious.Ini.Test
 
         private static readonly SectionName DefaultSectionName = "Section";
         private static readonly PropertyKey DefaultPropertyKey = "Property";
+        private static readonly PropertyValue DefaultPropertyValue = "Value";
 
         [TestClass]
         public sealed class LoadFrom
@@ -254,7 +255,7 @@ namespace Delizious.Ini.Test
                 var propertyKey = NonexistentPropertyKey;
                 var expected = new PropertyNotFoundExceptionAssertion(propertyKey);
 
-                var target = MakeTarget(Section.Create(sectionName));
+                var target = Make.SingleDefaultPropertyTarget(DefaultPropertyValue);
 
                 var actual = Assert.ThrowsException<PropertyNotFoundException>(() => target.ReadProperty(sectionName, propertyKey));
 
@@ -268,7 +269,7 @@ namespace Delizious.Ini.Test
             {
                 var expected = propertyValue;
 
-                var target = MakeSinglePropertyTarget(expected);
+                var target = Make.SingleDefaultPropertyTarget(expected);
 
                 var actual = target.ReadProperty(DefaultSectionName, DefaultPropertyKey);
 
@@ -323,7 +324,7 @@ namespace Delizious.Ini.Test
                 var propertyKey = NonexistentPropertyKey;
                 var expected = new PropertyNotFoundExceptionAssertion(propertyKey);
 
-                var target = MakeTarget(Section.Create(sectionName));
+                var target = Make.SingleDefaultPropertyTarget(DefaultPropertyValue);
 
                 var actual = Assert.ThrowsException<PropertyNotFoundException>(() => target.UpdateProperty(sectionName, propertyKey, DummyPropertyValue));
 
@@ -339,7 +340,7 @@ namespace Delizious.Ini.Test
                 var newValue = "New value";
                 var expected = newValue;
 
-                var target = MakeSinglePropertyTarget(oldValue);
+                var target = Make.SingleDefaultPropertyTarget(oldValue);
 
                 target.UpdateProperty(sectionName, propertyKey, newValue);
 
@@ -359,10 +360,10 @@ namespace Delizious.Ini.Test
 
             private static IniDocument SingleDefaultSectionTarget(IEnumerable<Property> properties)
                 => MakeTarget(Section.Create(DefaultSectionName, properties));
-        }
 
-        private static IniDocument MakeSinglePropertyTarget(PropertyValue propertyValue)
-            => MakeTarget(Section.Create(DefaultSectionName, Property.Create(DefaultPropertyKey, propertyValue)));
+            public static IniDocument SingleDefaultPropertyTarget(PropertyValue propertyValue)
+                => MakeTarget(Section.Create(DefaultSectionName, Property.Create(DefaultPropertyKey, propertyValue)));
+        }
 
         private static IniDocument MakeTarget(params Section[] sections)
             => sections.Aggregate(new IniDocumentBuilder(), (builder, section) => section.ApplyTo(builder)).Build();
