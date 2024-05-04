@@ -361,24 +361,24 @@ namespace Delizious.Ini.Test
                 => SingleDefaultSectionTarget(propertyKeys.Select(Property.Create));
 
             private static IniDocument SingleDefaultSectionTarget(IEnumerable<Property> properties)
-                => MakeTarget(Section.Create(DefaultSectionName, properties));
+                => Target(Section.Create(DefaultSectionName, properties));
 
             public static IniDocument SingleDefaultPropertyTarget(PropertyValue propertyValue)
-                => MakeTarget(Section.Create(DefaultSectionName, Property.Create(DefaultPropertyKey, propertyValue)));
+                => Target(Section.Create(DefaultSectionName, Property.Create(DefaultPropertyKey, propertyValue)));
 
             public static IniDocument EmptySectionsTarget(IEnumerable<SectionName> sectionNames)
                 => Target(sectionNames.Select(Section.CreateEmpty));
 
-            public static IniDocument Target(IEnumerable<Section> sections)
+            public static IniDocument Target(params Section[] sections)
+                => Target(sections.AsEnumerable());
+
+            private static IniDocument Target(IEnumerable<Section> sections)
                 => sections.Aggregate(new IniDocumentBuilder(), (builder, section) => section.ApplyTo(builder)).Build();
         }
 
-        private static IniDocument MakeTarget(params Section[] sections)
-            => Make.Target(sections);
-
         private static IniDocument SampleTarget
-            => MakeTarget(Section.Create("Section1", Property.Create("PropertyA", "Value A")),
-                          Section.Create("Section2", Property.Create("PropertyB", "Value B")));
+            => Make.Target(Section.Create("Section1", Property.Create("PropertyA", "Value A")),
+                           Section.Create("Section2", Property.Create("PropertyB", "Value B")));
 
         private static string SampleString
             => new IniDocumentBuilder().AppendSectionLine("Section1")
