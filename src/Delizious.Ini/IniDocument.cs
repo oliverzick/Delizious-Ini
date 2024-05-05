@@ -185,7 +185,7 @@
         }
 
         /// <summary>
-        /// Reads the property contained in the specified section.
+        /// Reads the value of the property contained in the specified section.
         /// </summary>
         /// <param name="sectionName">
         /// The name of the section containing the property.
@@ -194,10 +194,13 @@
         /// The key of the property to read the value.
         /// </param>
         /// <returns>
-        /// The value of the property. If the property does exist but has no value, <see cref="string.Empty"/> is returned.
+        /// The value of the property.
+        /// In case the property exists but has no value, an empty property value is returned.
         /// </returns>
         /// <exception cref="ArgumentNullException">
-        /// <paramref name="sectionName"/> or <paramref name="propertyKey"/> is <c>null</c>.
+        /// <para><paramref name="sectionName"/> is <c>null</c>.</para>
+        /// <para>- or -</para>
+        /// <para><paramref name="propertyKey"/> is <c>null</c>.</para>
         /// </exception>
         /// <exception cref="SectionNotFoundException">
         /// The section specified by the <paramref name="sectionName"/> does not exist.
