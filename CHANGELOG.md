@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.12.0] - 2024-05-05
+### Added
+- Enable specification of mode when reading a property contained in a section ([#55](https://github.com/oliverzick/Delizious-Ini/issues/55))
+  - Fail mode: Throw section not found exception when section does not exist, throw property not found exception when property does not exist.
+  - Fallback mode: Return fallback property value given by the mode when the section or property does not exist.
+
 ## [0.11.0] - 2024-05-04
 ### Changed
 - Improve name of method to update property ([#52](https://github.com/oliverzick/Delizious-Ini/issues/52))
