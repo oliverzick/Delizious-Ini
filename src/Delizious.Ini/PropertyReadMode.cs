@@ -29,6 +29,9 @@
         /// Specifies that reading a property should fall back to an empty fallback value
         /// when the section or property does not exist.
         /// </summary>
+        /// <remarks>
+        /// This is a convenience method that forwards calls <see cref="Fallback(PropertyValue)"/> with an empty fallback value.
+        /// </remarks>
         /// <returns>
         /// A <see cref="PropertyReadMode"/> instance that represents the fallback mode with an empty fallback value.
         /// </returns>
