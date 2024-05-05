@@ -206,6 +206,49 @@
         /// The property specified by the <paramref name="propertyKey"/> does not exist.
         /// </exception>
         public PropertyValue ReadProperty(SectionName sectionName, PropertyKey propertyKey)
+            => this.ReadProperty(sectionName, propertyKey, PropertyReadMode.Fail());
+
+        /// <summary>
+        /// <para>
+        /// Reads the value of the property contained in the specified section.
+        /// The mode specifies the behavior in case the section or property does not exist.
+        /// </para>
+        /// <para>
+        /// When mode is <see cref="PropertyReadMode.Fail"/> and the section does not exist,
+        /// throws a <see cref="SectionNotFoundException"/> 
+        /// </para>
+        /// <para>
+        /// When mode is <see cref="PropertyReadMode.Fail"/> and the property does not exist,
+        /// throws a <see cref="PropertyNotFoundException"/> 
+        /// </para>
+        /// </summary>
+        /// <param name="sectionName">
+        /// The name of the section containing the property.
+        /// </param>
+        /// <param name="propertyKey">
+        /// The key of the property to read the value.
+        /// </param>
+        /// <param name="mode">
+        /// The mode that specifies how to read the property when the section or property does not exist.
+        /// </param>
+        /// <returns>
+        /// The value of the property.
+        /// When mode is <see cref="PropertyReadMode.Fallback(PropertyValue)"/> and the section or property does not exist, the fallback property value given by the mode is returned.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <para><paramref name="sectionName"/> is <c>null</c>.</para>
+        /// <para>- or -</para>
+        /// <para><paramref name="propertyKey"/> is <c>null</c>.</para>
+        /// <para>- or -</para>
+        /// <para><paramref name="mode"/> is <c>null</c>.</para>
+        /// </exception>
+        /// <exception cref="SectionNotFoundException">
+        /// <paramref name="mode"/> is <see cref="PropertyReadMode.Fail"/> and the specified section does not exist.
+        /// </exception>
+        /// <exception cref="PropertyNotFoundException">
+        /// <paramref name="mode"/> is <see cref="PropertyReadMode.Fail"/> and the specified property does not exist.
+        /// </exception>
+        public PropertyValue ReadProperty(SectionName sectionName, PropertyKey propertyKey, PropertyReadMode mode)
         {
             if (sectionName is null)
             {
@@ -217,7 +260,57 @@
                 throw new ArgumentNullException(nameof(propertyKey));
             }
 
-            return this.iniDocument.ReadProperty(sectionName, propertyKey);
+            if (mode is null)
+            {
+                throw new ArgumentNullException(nameof(mode));
+            }
+
+            return mode.Transform(new PropertyReadModeTransformation(this.iniDocument)).ReadProperty(sectionName, propertyKey);
+        }
+
+        private sealed class PropertyReadModeTransformation : IPropertyReadModeTransformation<IPropertyReader>
+        {
+            private readonly IPropertyReader propertyReader;
+
+            public PropertyReadModeTransformation(IPropertyReader propertyReader)
+            {
+                this.propertyReader = propertyReader;
+            }
+
+            public IPropertyReader Fail()
+                => this.propertyReader;
+
+            public IPropertyReader Fallback(PropertyValue fallbackPropertyValue)
+                => new FallbackPropertyReader(this.propertyReader, fallbackPropertyValue);
+
+            private sealed class FallbackPropertyReader : IPropertyReader
+            {
+                private readonly IPropertyReader propertyReader;
+
+                private readonly PropertyValue fallbackPropertyValue;
+
+                public FallbackPropertyReader(IPropertyReader propertyReader, PropertyValue fallbackPropertyValue)
+                {
+                    this.propertyReader = propertyReader;
+                    this.fallbackPropertyValue = fallbackPropertyValue;
+                }
+
+                public PropertyValue ReadProperty(SectionName sectionName, PropertyKey propertyKey)
+                {
+                    try
+                    {
+                        return this.propertyReader.ReadProperty(sectionName, propertyKey);
+                    }
+                    catch (SectionNotFoundException)
+                    {
+                        return this.fallbackPropertyValue;
+                    }
+                    catch (PropertyNotFoundException)
+                    {
+                        return this.fallbackPropertyValue;
+                    }
+                }
+            }
         }
 
         /// <summary>
