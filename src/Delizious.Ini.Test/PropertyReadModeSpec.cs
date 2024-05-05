@@ -1,5 +1,6 @@
 ﻿namespace Delizious.Ini.Test
 {
+    using System;
     using System.Collections.Generic;
 
     [TestClass]
@@ -9,6 +10,12 @@
         private static PropertyReadMode Fallback => PropertyReadMode.Fallback();
         private static PropertyReadMode FallbackCustom => PropertyReadMode.Fallback("Fallback");
         private static PropertyReadMode FallbackCustomDefault => PropertyReadMode.Fallback(string.Empty);
+
+        [TestMethod]
+        public void Throws_argument_null_exception_when_fallback_property_value_is_null()
+        {
+            Assert.ThrowsException<ArgumentNullException>(() => PropertyReadMode.Fallback(null));
+        }
 
         [DataTestMethod]
         [DynamicData(nameof(Provides_string_representation_test_cases), DynamicDataSourceType.Method)]
