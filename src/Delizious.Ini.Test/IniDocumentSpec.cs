@@ -21,6 +21,8 @@ namespace Delizious.Ini.Test
         private static readonly PropertyKey DefaultPropertyKey = "Property";
         private static readonly PropertyValue DefaultPropertyValue = "Value";
 
+        private static readonly PropertyValue EmptyPropertyValue = string.Empty;
+
         [TestClass]
         public sealed class LoadFrom
         {
@@ -221,61 +223,169 @@ namespace Delizious.Ini.Test
         [TestClass]
         public sealed class ReadProperty
         {
-            [TestMethod]
-            public void Throws_argument_null_exception_when_section_name_is_null()
+            [TestClass]
+            public sealed class With_sectionName_and_propertyKey
             {
-                var target = Make.EmptyTarget();
+                [TestMethod]
+                public void Throws_argument_null_exception_when_section_name_is_null()
+                {
+                    var target = Make.EmptyTarget();
 
-                Assert.ThrowsException<ArgumentNullException>(() => target.ReadProperty(null, DummyPropertyKey));
+                    Assert.ThrowsException<ArgumentNullException>(() => target.ReadProperty(null, DummyPropertyKey));
+                }
+
+                [TestMethod]
+                public void Throws_argument_null_exception_when_property_key_is_null()
+                {
+                    var target = Make.EmptyTarget();
+
+                    Assert.ThrowsException<ArgumentNullException>(() => target.ReadProperty(DummySectionName, null));
+                }
+
+                [TestMethod]
+                public void Throws_section_not_found_exception_when_section_does_not_exist()
+                {
+                    var sectionName = NonexistentSectionName;
+                    var expected = new SectionNotFoundExceptionAssertion(sectionName);
+
+                    var target = Make.EmptyTarget();
+
+                    var actual = Assert.ThrowsException<SectionNotFoundException>(() => target.ReadProperty(sectionName, DummyPropertyKey));
+
+                    Assert.AreEqual(expected, actual);
+                }
+
+                [TestMethod]
+                public void Throws_property_not_found_exception_when_property_does_not_exist()
+                {
+                    var sectionName = DefaultSectionName;
+                    var propertyKey = NonexistentPropertyKey;
+                    var expected = new PropertyNotFoundExceptionAssertion(propertyKey);
+
+                    var target = Make.SingleDefaultPropertyTarget(DefaultPropertyValue);
+
+                    var actual = Assert.ThrowsException<PropertyNotFoundException>(() => target.ReadProperty(sectionName, propertyKey));
+
+                    Assert.AreEqual(expected, actual);
+                }
+
+                [DataTestMethod]
+                [DataRow("Property value", DisplayName = "Actual value")]
+                [DataRow(""              , DisplayName = "Empty string when property does exist but has no value")]
+                public void Reads_the_value_of_the_property_contained_in_the_specified_section(string propertyValue)
+                {
+                    var expected = propertyValue;
+
+                    var target = Make.SingleDefaultPropertyTarget(expected);
+
+                    var actual = target.ReadProperty(DefaultSectionName, DefaultPropertyKey);
+
+                    Assert.AreEqual(expected, actual);
+                }
             }
 
-            [TestMethod]
-            public void Throws_argument_null_exception_when_property_key_is_null()
+            [TestClass]
+            public sealed class With_sectionName_and_propertyKey_and_mode
             {
-                var target = Make.EmptyTarget();
+                private static PropertyReadMode DummyMode => PropertyReadMode.Fail();
 
-                Assert.ThrowsException<ArgumentNullException>(() => target.ReadProperty(DummySectionName, null));
-            }
+                [TestMethod]
+                public void Throws_argument_null_exception_when_section_name_is_null()
+                {
+                    var target = Make.EmptyTarget();
 
-            [TestMethod]
-            public void Throws_section_not_found_exception_when_section_does_not_exist()
-            {
-                var sectionName = NonexistentSectionName;
-                var expected = new SectionNotFoundExceptionAssertion(sectionName);
+                    Assert.ThrowsException<ArgumentNullException>(() => target.ReadProperty(null, DummyPropertyKey, DummyMode));
+                }
 
-                var target = Make.EmptyTarget();
+                [TestMethod]
+                public void Throws_argument_null_exception_when_property_key_is_null()
+                {
+                    var target = Make.EmptyTarget();
 
-                var actual = Assert.ThrowsException<SectionNotFoundException>(() => target.ReadProperty(sectionName, DummyPropertyKey));
+                    Assert.ThrowsException<ArgumentNullException>(() => target.ReadProperty(DummySectionName, null, DummyMode));
+                }
 
-                Assert.AreEqual(expected, actual);
-            }
+                [TestMethod]
+                public void Throws_argument_null_exception_when_mode_is_null()
+                {
+                    var target = Make.EmptyTarget();
 
-            [TestMethod]
-            public void Throws_property_not_found_exception_when_property_does_not_exist()
-            {
-                var sectionName = DefaultSectionName;
-                var propertyKey = NonexistentPropertyKey;
-                var expected = new PropertyNotFoundExceptionAssertion(propertyKey);
+                    Assert.ThrowsException<ArgumentNullException>(() => target.ReadProperty(DummySectionName, DummyPropertyKey, null));
+                }
 
-                var target = Make.SingleDefaultPropertyTarget(DefaultPropertyValue);
+                [DataTestMethod]
+                [DynamicData(nameof(Modes), DynamicDataSourceType.Method)]
+                public void Reads_the_value_of_the_property_contained_in_the_specified_section(PropertyValue expected, PropertyReadMode mode)
+                {
+                    var target = Make.SingleDefaultPropertyTarget(expected);
 
-                var actual = Assert.ThrowsException<PropertyNotFoundException>(() => target.ReadProperty(sectionName, propertyKey));
+                    var actual = target.ReadProperty(DefaultSectionName, DefaultPropertyKey, mode);
 
-                Assert.AreEqual(expected, actual);
-            }
+                    Assert.AreEqual(expected, actual);
+                }
 
-            [DataTestMethod]
-            [DataRow("Property value", DisplayName = "Actual value")]
-            [DataRow(""              , DisplayName = "Empty string when property does exist but has no value")]
-            public void Reads_the_property_contained_in_the_specified_section(string propertyValue)
-            {
-                var expected = propertyValue;
+                public static IEnumerable<object[]> Modes()
+                {
+                    yield return new object[] { EmptyPropertyValue, PropertyReadMode.Fallback() };
+                    yield return new object[] { EmptyPropertyValue, PropertyReadMode.Fail() };
 
-                var target = Make.SingleDefaultPropertyTarget(expected);
+                    yield return new object[] { DefaultPropertyValue, PropertyReadMode.Fallback() };
+                    yield return new object[] { DefaultPropertyValue, PropertyReadMode.Fail() };
+                }
 
-                var actual = target.ReadProperty(DefaultSectionName, DefaultPropertyKey);
+                [TestClass]
+                public sealed class When_fail_mode
+                {
+                    private static readonly PropertyReadMode Mode = PropertyReadMode.Fail();
 
-                Assert.AreEqual(expected, actual);
+                    [TestMethod]
+                    public void Throws_section_not_found_exception_when_section_does_not_exist()
+                    {
+                        var target = Make.EmptyTarget();
+
+                        Assert.ThrowsException<SectionNotFoundException>(() => target.ReadProperty(NonexistentSectionName, DefaultPropertyKey, Mode));
+                    }
+
+                    [TestMethod]
+                    public void Throws_property_not_found_exception_when_section_exists_but_property_does_not_exist()
+                    {
+                        var target = Make.SingleDefaultPropertyTarget(DefaultPropertyValue);
+
+                        Assert.ThrowsException<PropertyNotFoundException>(() => target.ReadProperty(DefaultSectionName, NonexistentPropertyKey, Mode));
+                    }
+                }
+
+                [TestClass]
+                public sealed class When_fallback_mode
+                {
+                    private static PropertyValue FallbackPropertyValue => "Fallback";
+
+                    private static PropertyReadMode Mode => PropertyReadMode.Fallback(FallbackPropertyValue);
+
+                    [TestMethod]
+                    public void Returns_the_fallback_property_value_when_section_does_not_exist()
+                    {
+                        var expected = FallbackPropertyValue;
+
+                        var target = Make.EmptyTarget();
+
+                        var actual = target.ReadProperty(NonexistentSectionName, DefaultPropertyKey, Mode);
+
+                        Assert.AreEqual(expected, actual);
+                    }
+
+                    [TestMethod]
+                    public void Returns_the_fallback_property_value_when_section_exists_but_property_does_not_exist()
+                    {
+                        var expected = FallbackPropertyValue;
+
+                        var target = Make.SingleDefaultPropertyTarget(DefaultPropertyValue);
+
+                        var actual = target.ReadProperty(DefaultSectionName, NonexistentPropertyKey, Mode);
+
+                        Assert.AreEqual(expected, actual);
+                    }
+                }
             }
         }
 
