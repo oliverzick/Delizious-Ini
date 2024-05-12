@@ -67,7 +67,7 @@
         public PropertyValue ReadProperty(SectionName sectionName, PropertyKey propertyKey)
             => this.SelectSection(sectionName).ReadProperty(propertyKey);
 
-        public void WriteProperty(SectionName sectionName, PropertyKey propertyKey, PropertyValue propertyValue)
+        public void UpdateProperty(SectionName sectionName, PropertyKey propertyKey, PropertyValue propertyValue)
             => this.SelectSection(sectionName).WriteProperty(propertyKey, propertyValue);
 
         private Section SelectSection(SectionName sectionName)

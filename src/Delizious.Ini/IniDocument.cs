@@ -354,7 +354,7 @@
                 throw new ArgumentNullException(nameof(newPropertyValue));
             }
 
-            this.iniDocument.WriteProperty(sectionName, propertyKey, newPropertyValue);
+            this.iniDocument.UpdateProperty(sectionName, propertyKey, newPropertyValue);
         }
     }
 }
