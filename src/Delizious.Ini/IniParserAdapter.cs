@@ -67,8 +67,25 @@
         public PropertyValue ReadProperty(SectionName sectionName, PropertyKey propertyKey)
             => this.SelectSection(sectionName).ReadProperty(propertyKey);
 
-        public void UpdateProperty(SectionName sectionName, PropertyKey propertyKey, PropertyValue propertyValue)
-            => this.SelectSection(sectionName).WriteProperty(propertyKey, propertyValue);
+        public void WriteProperty(SectionName sectionName, PropertyKey propertyKey, PropertyValue propertyValue, PropertyWriteMode mode)
+            => mode.Transform(new PropertyWriterSelector()).WriteProperty(this, sectionName, propertyKey, propertyValue);
+
+        private interface IPropertyWriter
+        {
+            void WriteProperty(IniParserAdapter target, SectionName sectionName, PropertyKey propertyKey, PropertyValue propertyValue);
+        }
+
+        private sealed class PropertyWriterSelector : IPropertyWriteModeTransformation<IPropertyWriter>
+        {
+            public IPropertyWriter Update()
+                => new UpdatePropertyWriter();
+
+            private sealed class UpdatePropertyWriter : IPropertyWriter
+            {
+                public void WriteProperty(IniParserAdapter target, SectionName sectionName, PropertyKey propertyKey, PropertyValue propertyValue)
+                    => target.SelectSection(sectionName).UpdateProperty(propertyKey, propertyValue);
+            }
+        }
 
         private Section SelectSection(SectionName sectionName)
         {
@@ -96,7 +113,7 @@
             public PropertyValue ReadProperty(PropertyKey propertyKey)
                 => this.SelectProperty(propertyKey).ReadValue();
 
-            public void WriteProperty(PropertyKey propertyKey, PropertyValue propertyValue)
+            public void UpdateProperty(PropertyKey propertyKey, PropertyValue propertyValue)
                 => this.SelectProperty(propertyKey).UpdateValue(propertyValue);
 
             private Property SelectProperty(PropertyKey propertyKey)

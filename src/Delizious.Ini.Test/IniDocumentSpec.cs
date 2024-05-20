@@ -462,6 +462,92 @@ namespace Delizious.Ini.Test
             }
         }
 
+
+        [TestClass]
+        public sealed class WriteProperty
+        {
+            [TestClass]
+            public sealed class With_sectionName_and_propertyKey_and_propertyValue_and_mode
+            {
+                private static PropertyReadMode ReadMode => PropertyReadMode.Fail();
+
+                private static PropertyWriteMode DummyMode => PropertyWriteMode.Update;
+
+                [TestMethod]
+                public void Throws_argument_null_exception_when_section_name_is_null()
+                {
+                    var target = Make.EmptyTarget();
+
+                    Assert.ThrowsException<ArgumentNullException>(() => target.WriteProperty(null, DummyPropertyKey, DummyPropertyValue, DummyMode));
+                }
+
+                [TestMethod]
+                public void Throws_argument_null_exception_when_property_key_is_null()
+                {
+                    var target = Make.EmptyTarget();
+
+                    Assert.ThrowsException<ArgumentNullException>(() => target.WriteProperty(DummySectionName, null, DummyPropertyValue, DummyMode));
+                }
+
+                [TestMethod]
+                public void Throws_argument_null_exception_when_property_value_is_null()
+                {
+                    var target = Make.EmptyTarget();
+
+                    Assert.ThrowsException<ArgumentNullException>(() => target.WriteProperty(DummySectionName, DummyPropertyKey, null, DummyMode));
+                }
+
+                [TestMethod]
+                public void Throws_argument_null_exception_when_mode_is_null()
+                {
+                    var target = Make.EmptyTarget();
+
+                    Assert.ThrowsException<ArgumentNullException>(() => target.WriteProperty(DummySectionName, DummyPropertyKey, DummyPropertyValue, null));
+                }
+
+                [TestClass]
+                public sealed class When_update_mode
+                {
+                    private static readonly PropertyWriteMode Mode = PropertyWriteMode.Update;
+
+                    [TestMethod]
+                    public void Throws_section_not_found_exception_when_section_does_not_exist()
+                    {
+                        var expected = new SectionNotFoundExceptionAssertion(NonexistentSectionName);
+                        var target = Make.EmptyTarget();
+
+                        var actual = Assert.ThrowsException<SectionNotFoundException>(() => target.WriteProperty(NonexistentSectionName, DefaultPropertyKey, DefaultPropertyValue, Mode));
+
+                        Assert.AreEqual(expected, actual);
+                    }
+
+                    [TestMethod]
+                    public void Throws_property_not_found_exception_when_property_does_not_exist()
+                    {
+                        var expected = new PropertyNotFoundExceptionAssertion(NonexistentPropertyKey);
+                        var target = Make.SingleDefaultPropertyTarget(DefaultPropertyValue);
+
+                        var actual = Assert.ThrowsException<PropertyNotFoundException>(() => target.WriteProperty(DefaultSectionName, NonexistentPropertyKey, DefaultPropertyValue, Mode));
+
+                        Assert.AreEqual(expected, actual);
+                    }
+
+                    [TestMethod]
+                    public void Updates_existing_property_to_given_property_value()
+                    {
+                        var expected = DefaultPropertyValue;
+                        var target = Make.SingleDefaultPropertyTarget(EmptyPropertyValue);
+
+                        target.WriteProperty(DefaultSectionName, DefaultPropertyKey, expected, Mode);
+
+                        var actual = target.ReadProperty(DefaultSectionName, DefaultPropertyKey, ReadMode);
+
+                        Assert.AreEqual(expected, actual);
+                    }
+                }
+            }
+        }
+
         private static class Make
         {
             public static IniDocument EmptyTarget()

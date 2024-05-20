@@ -338,6 +338,49 @@
         /// The property specified by the <paramref name="propertyKey"/> does not exist.
         /// </exception>
         public void UpdateProperty(SectionName sectionName, PropertyKey propertyKey, PropertyValue newPropertyValue)
+            => this.WriteProperty(sectionName, propertyKey, newPropertyValue, PropertyWriteMode.Update);
+
+        /// <summary>
+        /// <para>
+        /// Writes the value of the property contained in the section, according to the given mode.
+        /// </para>
+        /// <para>
+        /// When mode is <see cref="PropertyWriteMode.Update"/> and the section does not exist,
+        /// a <see cref="SectionNotFoundException"/> is thrown.
+        /// </para>
+        /// <para>
+        /// When mode is <see cref="PropertyWriteMode.Update"/> and the property does not exist,
+        /// a <see cref="PropertyNotFoundException"/> is thrown.
+        /// </para>
+        /// </summary>
+        /// <param name="sectionName">
+        /// The name of the section containing the property.
+        /// </param>
+        /// <param name="propertyKey">
+        /// The key of the property to write the value.
+        /// </param>
+        /// <param name="propertyValue">
+        /// The value of the property.
+        /// </param>
+        /// <param name="mode">
+        /// The mode that specifies how to write the property.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// <para><paramref name="sectionName"/> is <c>null</c>.</para>
+        /// <para>- or -</para>
+        /// <para><paramref name="propertyKey"/> is <c>null</c>.</para>
+        /// <para>- or -</para>
+        /// <para><paramref name="propertyValue"/> is <c>null</c>.</para>
+        /// <para>- or -</para>
+        /// <para><paramref name="mode"/> is <c>null</c>.</para>
+        /// </exception>
+        /// <exception cref="SectionNotFoundException">
+        /// <paramref name="mode"/> is <see cref="PropertyWriteMode.Update"/> and the specified section does not exist.
+        /// </exception>
+        /// <exception cref="PropertyNotFoundException">
+        /// <paramref name="mode"/> is <see cref="PropertyWriteMode.Update"/> and the specified property does not exist.
+        /// </exception>
+        public void WriteProperty(SectionName sectionName, PropertyKey propertyKey, PropertyValue propertyValue, PropertyWriteMode mode)
         {
             if (sectionName is null)
             {
@@ -349,12 +392,17 @@
                 throw new ArgumentNullException(nameof(propertyKey));
             }
 
-            if (newPropertyValue is null)
+            if (propertyValue is null)
             {
-                throw new ArgumentNullException(nameof(newPropertyValue));
+                throw new ArgumentNullException(nameof(propertyValue));
             }
 
-            this.iniDocument.UpdateProperty(sectionName, propertyKey, newPropertyValue);
+            if (mode is null)
+            {
+                throw new ArgumentNullException(nameof(mode));
+            }
+
+            this.iniDocument.WriteProperty(sectionName, propertyKey, propertyValue, mode);
         }
     }
 }
