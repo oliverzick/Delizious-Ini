@@ -338,24 +338,7 @@
         /// The property specified by the <paramref name="propertyKey"/> does not exist.
         /// </exception>
         public void UpdateProperty(SectionName sectionName, PropertyKey propertyKey, PropertyValue newPropertyValue)
-        {
-            if (sectionName is null)
-            {
-                throw new ArgumentNullException(nameof(sectionName));
-            }
-
-            if (propertyKey is null)
-            {
-                throw new ArgumentNullException(nameof(propertyKey));
-            }
-
-            if (newPropertyValue is null)
-            {
-                throw new ArgumentNullException(nameof(newPropertyValue));
-            }
-
-            this.iniDocument.WriteProperty(sectionName, propertyKey, newPropertyValue, PropertyWriteMode.Update);
-        }
+            => this.WriteProperty(sectionName, propertyKey, newPropertyValue, PropertyWriteMode.Update);
 
         /// <summary>
         /// <para>
