@@ -72,7 +72,7 @@
 
         private interface IPropertyWriter
         {
-            void WriteProperty(IniParserAdapter owner, SectionName sectionName, PropertyKey propertyKey, PropertyValue propertyValue);
+            void WriteProperty(IniParserAdapter target, SectionName sectionName, PropertyKey propertyKey, PropertyValue propertyValue);
         }
 
         private sealed class PropertyWriterSelector : IPropertyWriteModeTransformation<IPropertyWriter>
@@ -82,8 +82,8 @@
 
             private sealed class UpdatePropertyWriter : IPropertyWriter
             {
-                public void WriteProperty(IniParserAdapter owner, SectionName sectionName, PropertyKey propertyKey, PropertyValue propertyValue)
-                    => owner.SelectSection(sectionName).UpdateProperty(propertyKey, propertyValue);
+                public void WriteProperty(IniParserAdapter target, SectionName sectionName, PropertyKey propertyKey, PropertyValue propertyValue)
+                    => target.SelectSection(sectionName).UpdateProperty(propertyKey, propertyValue);
             }
         }
 
