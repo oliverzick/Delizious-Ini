@@ -7,7 +7,7 @@
     {
         IEnumerable<SectionName> EnumerateSections();
 
-        void UpdateProperty(SectionName sectionName, PropertyKey propertyKey, PropertyValue propertyValue);
+        void WriteProperty(SectionName sectionName, PropertyKey propertyKey, PropertyValue propertyValue, PropertyWriteMode mode);
 
         void SaveTo(TextWriter textWriter);
     }
