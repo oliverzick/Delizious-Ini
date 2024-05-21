@@ -30,7 +30,7 @@
         /// when the section or property does not exist.
         /// </summary>
         /// <remarks>
-        /// This is a convenience method that forwards calls <see cref="CustomFallback(PropertyValue)"/> with an empty fallback value.
+        /// This is a convenience property that calls <see cref="CustomFallback(PropertyValue)"/> with an empty fallback value.
         /// </remarks>
         /// <returns>
         /// A <see cref="PropertyReadMode"/> instance that represents the fallback mode with an empty fallback value.
