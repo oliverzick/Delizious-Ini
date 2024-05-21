@@ -183,7 +183,7 @@ namespace Delizious.Ini.Test
                 public static IEnumerable<object[]> Modes()
                 {
                     yield return new object[] { PropertyEnumerationMode.Fail() };
-                    yield return new object[] { PropertyEnumerationMode.Fallback() };
+                    yield return new object[] { PropertyEnumerationMode.Fallback };
                 }
 
                 [TestClass]
@@ -203,7 +203,7 @@ namespace Delizious.Ini.Test
                 [TestClass]
                 public sealed class When_fallback_mode
                 {
-                    private static readonly PropertyEnumerationMode Mode = PropertyEnumerationMode.Fallback();
+                    private static readonly PropertyEnumerationMode Mode = PropertyEnumerationMode.Fallback;
 
                     [TestMethod]
                     public void Enumerates_an_empty_collection_when_section_does_not_exist()
