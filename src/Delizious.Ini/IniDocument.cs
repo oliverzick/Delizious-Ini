@@ -98,7 +98,7 @@
                 throw new ArgumentNullException(nameof(sectionName));
             }
 
-            return this.EnumerateProperties(sectionName, PropertyEnumerationMode.Fail());
+            return this.EnumerateProperties(sectionName, PropertyEnumerationMode.Fail);
         }
 
         /// <summary>

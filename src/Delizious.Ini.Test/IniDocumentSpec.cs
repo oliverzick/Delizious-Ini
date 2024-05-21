@@ -150,7 +150,7 @@ namespace Delizious.Ini.Test
             [TestClass]
             public sealed class With_sectionName_and_mode
             {
-                private static readonly PropertyEnumerationMode DummyMode = PropertyEnumerationMode.Fail();
+                private static readonly PropertyEnumerationMode DummyMode = PropertyEnumerationMode.Fail;
 
                 [TestMethod]
                 public void Throws_argument_null_exception_when_section_name_is_null()
@@ -182,14 +182,14 @@ namespace Delizious.Ini.Test
 
                 public static IEnumerable<object[]> Modes()
                 {
-                    yield return new object[] { PropertyEnumerationMode.Fail() };
+                    yield return new object[] { PropertyEnumerationMode.Fail };
                     yield return new object[] { PropertyEnumerationMode.Fallback };
                 }
 
                 [TestClass]
                 public sealed class When_fail_mode
                 {
-                    private static readonly PropertyEnumerationMode Mode = PropertyEnumerationMode.Fail();
+                    private static readonly PropertyEnumerationMode Mode = PropertyEnumerationMode.Fail;
 
                     [TestMethod]
                     public void Throws_section_not_found_exception_when_section_does_not_exist()

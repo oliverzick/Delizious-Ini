@@ -21,7 +21,7 @@
         /// <returns>
         /// A <see cref="PropertyEnumerationMode"/> instance that represents the fail mode.
         /// </returns>
-        public static PropertyEnumerationMode Fail()
+        public static PropertyEnumerationMode Fail
             => new PropertyEnumerationMode(new FailMode());
 
         /// <summary>

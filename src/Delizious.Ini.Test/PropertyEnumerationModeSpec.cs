@@ -6,7 +6,7 @@
     public sealed class PropertyEnumerationModeSpec
     {
         private static PropertyEnumerationMode Null => null!;
-        private static PropertyEnumerationMode Fail => PropertyEnumerationMode.Fail();
+        private static PropertyEnumerationMode Fail => PropertyEnumerationMode.Fail;
         private static PropertyEnumerationMode Fallback => PropertyEnumerationMode.Fallback;
 
         [DataTestMethod]
