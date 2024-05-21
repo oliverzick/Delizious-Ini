@@ -98,7 +98,7 @@
                 throw new ArgumentNullException(nameof(sectionName));
             }
 
-            return this.EnumerateProperties(sectionName, PropertyEnumerationMode.Fail());
+            return this.EnumerateProperties(sectionName, PropertyEnumerationMode.Fail);
         }
 
         /// <summary>
@@ -209,7 +209,7 @@
         /// The property specified by the <paramref name="propertyKey"/> does not exist.
         /// </exception>
         public PropertyValue ReadProperty(SectionName sectionName, PropertyKey propertyKey)
-            => this.ReadProperty(sectionName, propertyKey, PropertyReadMode.Fail());
+            => this.ReadProperty(sectionName, propertyKey, PropertyReadMode.Fail);
 
         /// <summary>
         /// <para>
@@ -236,7 +236,7 @@
         /// </param>
         /// <returns>
         /// The value of the property.
-        /// When mode is <see cref="PropertyReadMode.Fallback(PropertyValue)"/> and the section or property does not exist, the fallback property value given by the mode is returned.
+        /// When mode is <see cref="PropertyReadMode.CustomFallback(PropertyValue)"/> and the section or property does not exist, the fallback property value given by the mode is returned.
         /// </returns>
         /// <exception cref="ArgumentNullException">
         /// <para><paramref name="sectionName"/> is <c>null</c>.</para>

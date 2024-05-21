@@ -21,7 +21,7 @@
         /// <returns>
         /// A <see cref="PropertyEnumerationMode"/> instance that represents the fail mode.
         /// </returns>
-        public static PropertyEnumerationMode Fail()
+        public static PropertyEnumerationMode Fail
             => new PropertyEnumerationMode(new FailMode());
 
         /// <summary>
@@ -31,7 +31,7 @@
         /// <returns>
         /// A <see cref="PropertyEnumerationMode"/> instance that represents the fallback mode.
         /// </returns>
-        public static PropertyEnumerationMode Fallback()
+        public static PropertyEnumerationMode Fallback
             => new PropertyEnumerationMode(new FallbackMode());
 
         public static bool operator ==(PropertyEnumerationMode left, PropertyEnumerationMode right)

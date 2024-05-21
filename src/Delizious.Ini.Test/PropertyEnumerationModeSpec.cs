@@ -6,8 +6,8 @@
     public sealed class PropertyEnumerationModeSpec
     {
         private static PropertyEnumerationMode Null => null!;
-        private static PropertyEnumerationMode Fail => PropertyEnumerationMode.Fail();
-        private static PropertyEnumerationMode Fallback => PropertyEnumerationMode.Fallback();
+        private static PropertyEnumerationMode Fail => PropertyEnumerationMode.Fail;
+        private static PropertyEnumerationMode Fallback => PropertyEnumerationMode.Fallback;
 
         [DataTestMethod]
         [DynamicData(nameof(Provides_string_representation_test_cases), DynamicDataSourceType.Method)]
