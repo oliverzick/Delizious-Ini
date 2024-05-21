@@ -7,7 +7,7 @@
     public sealed class PropertyReadModeSpec
     {
         private static PropertyReadMode Fail => PropertyReadMode.Fail;
-        private static PropertyReadMode Fallback => PropertyReadMode.Fallback();
+        private static PropertyReadMode Fallback => PropertyReadMode.Fallback;
         private static PropertyReadMode FallbackCustom => PropertyReadMode.CustomFallback("Fallback");
         private static PropertyReadMode FallbackCustomDefault => PropertyReadMode.CustomFallback(string.Empty);
 

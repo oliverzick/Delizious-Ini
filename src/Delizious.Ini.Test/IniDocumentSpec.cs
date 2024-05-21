@@ -326,10 +326,10 @@ namespace Delizious.Ini.Test
 
                 public static IEnumerable<object[]> Modes()
                 {
-                    yield return new object[] { EmptyPropertyValue, PropertyReadMode.Fallback() };
+                    yield return new object[] { EmptyPropertyValue, PropertyReadMode.Fallback };
                     yield return new object[] { EmptyPropertyValue, PropertyReadMode.Fail };
 
-                    yield return new object[] { DefaultPropertyValue, PropertyReadMode.Fallback() };
+                    yield return new object[] { DefaultPropertyValue, PropertyReadMode.Fallback };
                     yield return new object[] { DefaultPropertyValue, PropertyReadMode.Fail };
                 }
 

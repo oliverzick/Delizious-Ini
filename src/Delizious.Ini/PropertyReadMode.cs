@@ -35,7 +35,7 @@
         /// <returns>
         /// A <see cref="PropertyReadMode"/> instance that represents the fallback mode with an empty fallback value.
         /// </returns>
-        public static PropertyReadMode Fallback()
+        public static PropertyReadMode Fallback
             => CustomFallback(string.Empty);
 
         /// <summary>
