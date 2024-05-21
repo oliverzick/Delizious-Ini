@@ -8,13 +8,13 @@
     {
         private static PropertyReadMode Fail => PropertyReadMode.Fail;
         private static PropertyReadMode Fallback => PropertyReadMode.Fallback();
-        private static PropertyReadMode FallbackCustom => PropertyReadMode.Fallback("Fallback");
-        private static PropertyReadMode FallbackCustomDefault => PropertyReadMode.Fallback(string.Empty);
+        private static PropertyReadMode FallbackCustom => PropertyReadMode.CustomFallback("Fallback");
+        private static PropertyReadMode FallbackCustomDefault => PropertyReadMode.CustomFallback(string.Empty);
 
         [TestMethod]
         public void Throws_argument_null_exception_when_fallback_property_value_is_null()
         {
-            Assert.ThrowsException<ArgumentNullException>(() => PropertyReadMode.Fallback(null));
+            Assert.ThrowsException<ArgumentNullException>(() => PropertyReadMode.CustomFallback(null));
         }
 
         [DataTestMethod]

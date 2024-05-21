@@ -236,7 +236,7 @@
         /// </param>
         /// <returns>
         /// The value of the property.
-        /// When mode is <see cref="PropertyReadMode.Fallback(PropertyValue)"/> and the section or property does not exist, the fallback property value given by the mode is returned.
+        /// When mode is <see cref="PropertyReadMode.CustomFallback(PropertyValue)"/> and the section or property does not exist, the fallback property value given by the mode is returned.
         /// </returns>
         /// <exception cref="ArgumentNullException">
         /// <para><paramref name="sectionName"/> is <c>null</c>.</para>

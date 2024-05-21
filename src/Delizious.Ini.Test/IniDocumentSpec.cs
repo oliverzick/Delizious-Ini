@@ -360,7 +360,7 @@ namespace Delizious.Ini.Test
                 {
                     private static PropertyValue FallbackPropertyValue => "Fallback";
 
-                    private static PropertyReadMode Mode => PropertyReadMode.Fallback(FallbackPropertyValue);
+                    private static PropertyReadMode Mode => PropertyReadMode.CustomFallback(FallbackPropertyValue);
 
                     [TestMethod]
                     public void Returns_the_fallback_property_value_when_section_does_not_exist()
