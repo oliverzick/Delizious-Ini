@@ -22,7 +22,7 @@
         /// <returns>
         /// A <see cref="PropertyReadMode"/> instance that represents the fail mode.
         /// </returns>
-        public static PropertyReadMode Fail()
+        public static PropertyReadMode Fail
             => new PropertyReadMode(new FailMode());
 
         /// <summary>

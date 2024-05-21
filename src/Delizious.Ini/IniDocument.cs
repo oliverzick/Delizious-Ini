@@ -209,7 +209,7 @@
         /// The property specified by the <paramref name="propertyKey"/> does not exist.
         /// </exception>
         public PropertyValue ReadProperty(SectionName sectionName, PropertyKey propertyKey)
-            => this.ReadProperty(sectionName, propertyKey, PropertyReadMode.Fail());
+            => this.ReadProperty(sectionName, propertyKey, PropertyReadMode.Fail);
 
         /// <summary>
         /// <para>

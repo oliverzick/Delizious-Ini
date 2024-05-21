@@ -287,7 +287,7 @@ namespace Delizious.Ini.Test
             [TestClass]
             public sealed class With_sectionName_and_propertyKey_and_mode
             {
-                private static PropertyReadMode DummyMode => PropertyReadMode.Fail();
+                private static PropertyReadMode DummyMode => PropertyReadMode.Fail;
 
                 [TestMethod]
                 public void Throws_argument_null_exception_when_section_name_is_null()
@@ -327,16 +327,16 @@ namespace Delizious.Ini.Test
                 public static IEnumerable<object[]> Modes()
                 {
                     yield return new object[] { EmptyPropertyValue, PropertyReadMode.Fallback() };
-                    yield return new object[] { EmptyPropertyValue, PropertyReadMode.Fail() };
+                    yield return new object[] { EmptyPropertyValue, PropertyReadMode.Fail };
 
                     yield return new object[] { DefaultPropertyValue, PropertyReadMode.Fallback() };
-                    yield return new object[] { DefaultPropertyValue, PropertyReadMode.Fail() };
+                    yield return new object[] { DefaultPropertyValue, PropertyReadMode.Fail };
                 }
 
                 [TestClass]
                 public sealed class When_fail_mode
                 {
-                    private static readonly PropertyReadMode Mode = PropertyReadMode.Fail();
+                    private static readonly PropertyReadMode Mode = PropertyReadMode.Fail;
 
                     [TestMethod]
                     public void Throws_section_not_found_exception_when_section_does_not_exist()
@@ -469,7 +469,7 @@ namespace Delizious.Ini.Test
             [TestClass]
             public sealed class With_sectionName_and_propertyKey_and_propertyValue_and_mode
             {
-                private static PropertyReadMode ReadMode => PropertyReadMode.Fail();
+                private static PropertyReadMode ReadMode => PropertyReadMode.Fail;
 
                 private static PropertyWriteMode DummyMode => PropertyWriteMode.Update;
 
