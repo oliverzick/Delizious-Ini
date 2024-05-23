@@ -2,6 +2,6 @@
 {
     internal interface IPropertyReader
     {
-        PropertyValue ReadProperty(SectionName sectionName, PropertyKey propertyKey);
+        PropertyValue ReadProperty(SectionName sectionName, PropertyKey propertyKey, PropertyReadMode mode);
     }
 }
