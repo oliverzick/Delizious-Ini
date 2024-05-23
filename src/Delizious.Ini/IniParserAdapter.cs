@@ -158,6 +158,15 @@
 
         private sealed class PropertyWriterSelector : IPropertyWriteModeTransformation<IPropertyWriter>
         {
+            public IPropertyWriter Create()
+                => new CreatePropertyWriter();
+
+            private sealed class CreatePropertyWriter : IPropertyWriter
+            {
+                public void WriteProperty(IniParserAdapter target, SectionName sectionName, PropertyKey propertyKey, PropertyValue propertyValue)
+                    => throw new NotImplementedException();
+            }
+
             public IPropertyWriter Update()
                 => new UpdatePropertyWriter();
 
