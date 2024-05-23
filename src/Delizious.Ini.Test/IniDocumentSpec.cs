@@ -506,6 +506,51 @@ namespace Delizious.Ini.Test
                 }
 
                 [TestClass]
+                public sealed class When_create_mode
+                {
+                    private static readonly PropertyWriteMode Mode = PropertyWriteMode.Create;
+
+                    [TestMethod]
+                    public void Creates_property_with_given_property_value_when_section_does_not_exist()
+                    {
+                        var expected = DefaultPropertyValue;
+                        var target = Make.EmptyTarget();
+
+                        target.WriteProperty(DefaultSectionName, DefaultPropertyKey, expected, Mode);
+
+                        var actual = target.ReadProperty(DefaultSectionName, DefaultPropertyKey);
+
+                        Assert.AreEqual(expected, actual);
+                    }
+
+                    [TestMethod]
+                    public void Creates_property_with_given_property_value_when_property_does_not_exist()
+                    {
+                        var expected = DefaultPropertyValue;
+                        var target = Make.EmptySectionsTarget(DefaultSectionName);
+
+                        target.WriteProperty(DefaultSectionName, DefaultPropertyKey, expected, Mode);
+
+                        var actual = target.ReadProperty(DefaultSectionName, DefaultPropertyKey);
+
+                        Assert.AreEqual(expected, actual);
+                    }
+
+                    [TestMethod]
+                    public void Overwrites_existing_property_with_given_property_value()
+                    {
+                        var expected = DefaultPropertyValue;
+                        var target = Make.SingleDefaultPropertyTarget(EmptyPropertyValue);
+
+                        target.WriteProperty(DefaultSectionName, DefaultPropertyKey, expected, Mode);
+
+                        var actual = target.ReadProperty(DefaultSectionName, DefaultPropertyKey, ReadMode);
+
+                        Assert.AreEqual(expected, actual);
+                    }
+                }
+
+                [TestClass]
                 public sealed class When_update_mode
                 {
                     private static readonly PropertyWriteMode Mode = PropertyWriteMode.Update;
@@ -558,6 +603,9 @@ namespace Delizious.Ini.Test
 
             public static IniDocument SingleDefaultPropertyTarget(PropertyValue propertyValue)
                 => Target(Section.Create(DefaultSectionName, Property.Create(DefaultPropertyKey, propertyValue)));
+
+            public static IniDocument EmptySectionsTarget(params SectionName[] sectionNames)
+                => EmptySectionsTarget(sectionNames.AsEnumerable());
 
             public static IniDocument EmptySectionsTarget(IEnumerable<SectionName> sectionNames)
                 => Target(sectionNames.Select(Section.CreateEmpty));
