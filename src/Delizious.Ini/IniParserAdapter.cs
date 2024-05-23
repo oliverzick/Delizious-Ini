@@ -99,8 +99,54 @@
             }
         }
 
-        public PropertyValue ReadProperty(SectionName sectionName, PropertyKey propertyKey)
-            => this.SelectSection(sectionName).ReadProperty(propertyKey);
+        public PropertyValue ReadProperty(SectionName sectionName, PropertyKey propertyKey, PropertyReadMode mode)
+            => mode.Transform(new PropertyReaderSelector()).ReadProperty(this, sectionName, propertyKey);
+
+        private interface IPropertyReader
+        {
+            PropertyValue ReadProperty(IniParserAdapter target, SectionName sectionName, PropertyKey propertyKey);
+        }
+
+        private sealed class PropertyReaderSelector : IPropertyReadModeTransformation<IPropertyReader>
+        {
+            public IPropertyReader Fail()
+                => new FailPropertyReader();
+
+            private sealed class FailPropertyReader : IPropertyReader
+            {
+                public PropertyValue ReadProperty(IniParserAdapter target, SectionName sectionName, PropertyKey propertyKey)
+                    => target.SelectSection(sectionName).ReadProperty(propertyKey);
+            }
+
+            public IPropertyReader Fallback(PropertyValue fallbackPropertyValue)
+                => new FallbackPropertyReader(fallbackPropertyValue);
+
+            private sealed class FallbackPropertyReader : IPropertyReader
+            {
+                private readonly PropertyValue fallbackPropertyValue;
+
+                public FallbackPropertyReader(PropertyValue fallbackPropertyValue)
+                {
+                    this.fallbackPropertyValue = fallbackPropertyValue;
+                }
+
+                public PropertyValue ReadProperty(IniParserAdapter target, SectionName sectionName, PropertyKey propertyKey)
+                {
+                    try
+                    {
+                        return target.SelectSection(sectionName).ReadProperty(propertyKey);
+                    }
+                    catch (SectionNotFoundException)
+                    {
+                        return this.fallbackPropertyValue;
+                    }
+                    catch (PropertyNotFoundException)
+                    {
+                        return this.fallbackPropertyValue;
+                    }
+                }
+            }
+        }
 
         public void WriteProperty(SectionName sectionName, PropertyKey propertyKey, PropertyValue propertyValue, PropertyWriteMode mode)
             => mode.Transform(new PropertyWriterSelector()).WriteProperty(this, sectionName, propertyKey, propertyValue);

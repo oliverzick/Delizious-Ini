@@ -230,52 +230,7 @@
                 throw new ArgumentNullException(nameof(mode));
             }
 
-            return mode.Transform(new PropertyReadModeTransformation(this.iniDocument)).ReadProperty(sectionName, propertyKey);
-        }
-
-        private sealed class PropertyReadModeTransformation : IPropertyReadModeTransformation<IPropertyReader>
-        {
-            private readonly IPropertyReader propertyReader;
-
-            public PropertyReadModeTransformation(IPropertyReader propertyReader)
-            {
-                this.propertyReader = propertyReader;
-            }
-
-            public IPropertyReader Fail()
-                => this.propertyReader;
-
-            public IPropertyReader Fallback(PropertyValue fallbackPropertyValue)
-                => new FallbackPropertyReader(this.propertyReader, fallbackPropertyValue);
-
-            private sealed class FallbackPropertyReader : IPropertyReader
-            {
-                private readonly IPropertyReader propertyReader;
-
-                private readonly PropertyValue fallbackPropertyValue;
-
-                public FallbackPropertyReader(IPropertyReader propertyReader, PropertyValue fallbackPropertyValue)
-                {
-                    this.propertyReader = propertyReader;
-                    this.fallbackPropertyValue = fallbackPropertyValue;
-                }
-
-                public PropertyValue ReadProperty(SectionName sectionName, PropertyKey propertyKey)
-                {
-                    try
-                    {
-                        return this.propertyReader.ReadProperty(sectionName, propertyKey);
-                    }
-                    catch (SectionNotFoundException)
-                    {
-                        return this.fallbackPropertyValue;
-                    }
-                    catch (PropertyNotFoundException)
-                    {
-                        return this.fallbackPropertyValue;
-                    }
-                }
-            }
+            return this.iniDocument.ReadProperty(sectionName, propertyKey, mode);
         }
 
         /// <summary>
