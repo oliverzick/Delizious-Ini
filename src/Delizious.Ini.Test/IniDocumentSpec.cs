@@ -505,6 +505,35 @@ namespace Delizious.Ini.Test
                     Assert.ThrowsException<ArgumentNullException>(() => target.WriteProperty(DummySectionName, DummyPropertyKey, DummyPropertyValue, null));
                 }
 
+                private static void Writes_property(IniDocument target, PropertyWriteMode mode)
+                {
+                    var expected = DefaultPropertyValue;
+
+                    target.WriteProperty(DefaultSectionName, DefaultPropertyKey, expected, mode);
+
+                    var actual = target.ReadProperty(DefaultSectionName, DefaultPropertyKey, ReadMode);
+
+                    Assert.AreEqual(expected, actual);
+                }
+
+                [TestClass]
+                public sealed class When_create_mode
+                {
+                    private static readonly PropertyWriteMode Mode = PropertyWriteMode.Create;
+
+                    [TestMethod]
+                    public void Creates_property_with_given_property_value_when_section_does_not_exist()
+                        => Writes_property(Make.EmptyTarget(), Mode);
+
+                    [TestMethod]
+                    public void Creates_property_with_given_property_value_when_section_exists_but_property_does_not_exist()
+                        => Writes_property(Make.EmptySectionsTarget(DefaultSectionName), Mode);
+
+                    [TestMethod]
+                    public void Overwrites_existing_property_with_given_property_value()
+                        => Writes_property(Make.SingleDefaultPropertyTarget(EmptyPropertyValue), Mode);
+                }
+
                 [TestClass]
                 public sealed class When_update_mode
                 {
@@ -534,16 +563,7 @@ namespace Delizious.Ini.Test
 
                     [TestMethod]
                     public void Updates_existing_property_to_given_property_value()
-                    {
-                        var expected = DefaultPropertyValue;
-                        var target = Make.SingleDefaultPropertyTarget(EmptyPropertyValue);
-
-                        target.WriteProperty(DefaultSectionName, DefaultPropertyKey, expected, Mode);
-
-                        var actual = target.ReadProperty(DefaultSectionName, DefaultPropertyKey, ReadMode);
-
-                        Assert.AreEqual(expected, actual);
-                    }
+                        => Writes_property(Make.SingleDefaultPropertyTarget(EmptyPropertyValue), Mode);
                 }
             }
         }
@@ -558,6 +578,9 @@ namespace Delizious.Ini.Test
 
             public static IniDocument SingleDefaultPropertyTarget(PropertyValue propertyValue)
                 => Target(Section.Create(DefaultSectionName, Property.Create(DefaultPropertyKey, propertyValue)));
+
+            public static IniDocument EmptySectionsTarget(params SectionName[] sectionNames)
+                => EmptySectionsTarget(sectionNames.AsEnumerable());
 
             public static IniDocument EmptySectionsTarget(IEnumerable<SectionName> sectionNames)
                 => Target(sectionNames.Select(Section.CreateEmpty));

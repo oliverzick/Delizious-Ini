@@ -158,6 +158,18 @@
 
         private sealed class PropertyWriterSelector : IPropertyWriteModeTransformation<IPropertyWriter>
         {
+            public IPropertyWriter Create()
+                => new CreatePropertyWriter();
+
+            private sealed class CreatePropertyWriter : IPropertyWriter
+            {
+                public void WriteProperty(IniParserAdapter target, SectionName sectionName, PropertyKey propertyKey, PropertyValue propertyValue)
+                    => target.CreateSection(sectionName)
+                             .SelectSection(sectionName)
+                             .CreateProperty(propertyKey)
+                             .UpdateProperty(propertyKey, propertyValue);
+            }
+
             public IPropertyWriter Update()
                 => new UpdatePropertyWriter();
 
@@ -166,6 +178,13 @@
                 public void WriteProperty(IniParserAdapter target, SectionName sectionName, PropertyKey propertyKey, PropertyValue propertyValue)
                     => target.SelectSection(sectionName).UpdateProperty(propertyKey, propertyValue);
             }
+        }
+
+        private IniParserAdapter CreateSection(SectionName sectionName)
+        {
+            this.iniData.Sections.AddSection(sectionName.ToString());
+
+            return this;
         }
 
         private Section SelectSection(SectionName sectionName)
@@ -190,6 +209,13 @@
 
             public IEnumerable<PropertyKey> PropertyKeys()
                 => this.properties.Select(property => PropertyKey.Create(property.KeyName));
+
+            public Section CreateProperty(PropertyKey propertyKey)
+            {
+                this.properties.AddKey(propertyKey.ToString());
+
+                return this;
+            }
 
             public PropertyValue ReadProperty(PropertyKey propertyKey)
                 => this.SelectProperty(propertyKey).ReadValue();

@@ -4,8 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.14.0] - 2024-05-21
+## [0.15.0] - 2024-05-23
 ### Added
+- Introduce property write mode to create a new property with the given value ([#65](https://github.com/oliverzick/Delizious-Ini/issues/65))
+
+## [0.14.0] - 2024-05-21
+### Changed
 - Expose factory properties instead of factory methods for predefined modes ([#61](https://github.com/oliverzick/Delizious-Ini/issues/61))
 
 ## [0.13.0] - 2024-05-20
