@@ -143,45 +143,7 @@
                 throw new ArgumentNullException(nameof(mode));
             }
 
-            return mode.Transform(new PropertyEnumerationModeTransformation(this.iniDocument)).EnumerateProperties(sectionName);
-        }
-
-        private sealed class PropertyEnumerationModeTransformation : IPropertyEnumerationModeTransformation<IPropertyEnumerator>
-        {
-            private readonly IPropertyEnumerator propertyEnumerator;
-
-            public PropertyEnumerationModeTransformation(IPropertyEnumerator propertyEnumerator)
-            {
-                this.propertyEnumerator = propertyEnumerator;
-            }
-
-            public IPropertyEnumerator Fail()
-                => this.propertyEnumerator;
-
-            public IPropertyEnumerator Fallback()
-                => new FallbackPropertyEnumerator(this.propertyEnumerator);
-
-            private sealed class FallbackPropertyEnumerator : IPropertyEnumerator
-            {
-                private readonly IPropertyEnumerator propertyEnumerator;
-
-                public FallbackPropertyEnumerator(IPropertyEnumerator propertyEnumerator)
-                {
-                    this.propertyEnumerator = propertyEnumerator;
-                }
-
-                public IEnumerable<PropertyKey> EnumerateProperties(SectionName sectionName)
-                {
-                    try
-                    {
-                        return this.propertyEnumerator.EnumerateProperties(sectionName);
-                    }
-                    catch (SectionNotFoundException)
-                    {
-                        return Enumerable.Empty<PropertyKey>();
-                    }
-                }
-            }
+            return this.iniDocument.EnumerateProperties(sectionName, mode);
         }
 
         /// <summary>

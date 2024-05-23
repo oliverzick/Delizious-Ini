@@ -61,8 +61,43 @@
         public IEnumerable<SectionName> EnumerateSections()
             => this.iniData.Sections.Select(section => SectionName.Create(section.SectionName));
 
-        public IEnumerable<PropertyKey> EnumerateProperties(SectionName sectionName)
-            => this.SelectSection(sectionName).PropertyKeys();
+        public IEnumerable<PropertyKey> EnumerateProperties(SectionName sectionName, PropertyEnumerationMode mode)
+            => mode.Transform(new PropertyEnumeratorSelector()).EnumerateProperties(this, sectionName);
+
+        private interface IPropertyEnumerator
+        {
+            IEnumerable<PropertyKey> EnumerateProperties(IniParserAdapter target, SectionName sectionName);
+        }
+
+        private sealed class PropertyEnumeratorSelector : IPropertyEnumerationModeTransformation<IPropertyEnumerator>
+        {
+            public IPropertyEnumerator Fail()
+                => new FailPropertyEnumerator();
+
+            private sealed class FailPropertyEnumerator : IPropertyEnumerator
+            {
+                public IEnumerable<PropertyKey> EnumerateProperties(IniParserAdapter target, SectionName sectionName)
+                    => target.SelectSection(sectionName).PropertyKeys();
+            }
+
+            public IPropertyEnumerator Fallback()
+                => new FallbackPropertyEnumerator();
+
+            private sealed class FallbackPropertyEnumerator : IPropertyEnumerator
+            {
+                public IEnumerable<PropertyKey> EnumerateProperties(IniParserAdapter target, SectionName sectionName)
+                {
+                    try
+                    {
+                        return target.SelectSection(sectionName).PropertyKeys();
+                    }
+                    catch (SectionNotFoundException)
+                    {
+                        return Enumerable.Empty<PropertyKey>();
+                    }
+                }
+            }
+        }
 
         public PropertyValue ReadProperty(SectionName sectionName, PropertyKey propertyKey)
             => this.SelectSection(sectionName).ReadProperty(propertyKey);
