@@ -4,6 +4,6 @@
 
     internal interface IPropertyEnumerator
     {
-        IEnumerable<PropertyKey> EnumerateProperties(SectionName sectionName);
+        IEnumerable<PropertyKey> EnumerateProperties(SectionName sectionName, PropertyEnumerationMode mode);
     }
 }
