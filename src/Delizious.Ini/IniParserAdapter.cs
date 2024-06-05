@@ -180,6 +180,38 @@
             }
         }
 
+        public void DeleteSection(SectionName sectionName, SectionDeletionMode mode)
+            => mode.Transform(new SectionDeleterSelector()).DeleteSection(this, sectionName);
+
+        private interface ISectionDeleter
+        {
+            void DeleteSection(IniParserAdapter target, SectionName sectionName);
+        }
+
+        private sealed class SectionDeleterSelector : ISectionDeletionModeTransformation<ISectionDeleter>
+        {
+            public ISectionDeleter Fail()
+                => new FailSectionDeleter();
+
+            private sealed class FailSectionDeleter : ISectionDeleter
+            {
+                // ToDo: Rework!
+                public void DeleteSection(IniParserAdapter target, SectionName sectionName)
+                {
+                    if (!target.iniData.Sections.RemoveSection(sectionName.ToString())) throw new SectionNotFoundException(sectionName);
+                }
+            }
+
+            public ISectionDeleter Ignore()
+                => new IgnoreSectionDeleter();
+
+            private sealed class IgnoreSectionDeleter : ISectionDeleter
+            {
+                public void DeleteSection(IniParserAdapter target, SectionName sectionName)
+                    => target.iniData.Sections.RemoveSection(sectionName.ToString());
+            }
+        }
+
         private IniParserAdapter CreateSection(SectionName sectionName)
         {
             this.iniData.Sections.AddSection(sectionName.ToString());

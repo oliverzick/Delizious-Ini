@@ -568,6 +568,83 @@ namespace Delizious.Ini.Test
             }
         }
 
+        [TestClass]
+        public sealed class DeleteSection
+        {
+            [TestClass]
+            public sealed class With_sectionName_and_mode
+            {
+                private static SectionDeletionMode DummyMode => SectionDeletionMode.Fail;
+
+                [TestMethod]
+                public void Throws_argument_null_exception_when_section_name_is_null()
+                {
+                    var target = Make.EmptyTarget();
+
+                    Assert.ThrowsException<ArgumentNullException>(() => target.DeleteSection(null, DummyMode));
+                }
+
+                [TestMethod]
+                public void Throws_argument_null_exception_when_mode_is_null()
+                {
+                    var target = Make.EmptyTarget();
+
+                    Assert.ThrowsException<ArgumentNullException>(() => target.DeleteSection(DummySectionName, null));
+                }
+
+                private static void DeletesSection(SectionDeletionMode mode)
+                {
+                    var expected = new[] { DummySectionName };
+                    var target = Make.EmptySectionsTarget(DummySectionName, DefaultSectionName);
+
+                    target.DeleteSection(DefaultSectionName, mode);
+
+                    var actual = target.EnumerateSections().ToArray();
+
+                    CollectionAssert.AreEqual(expected, actual);
+                }
+
+                [TestClass]
+                public sealed class When_fail_mode
+                {
+                    private static SectionDeletionMode Mode => SectionDeletionMode.Fail;
+
+                    [TestMethod]
+                    public void Throws_section_not_found_exception_when_section_does_not_exist()
+                    {
+                        var expected = new SectionNotFoundExceptionAssertion(NonexistentSectionName);
+                        var target = Make.EmptyTarget();
+
+                        var actual = Assert.ThrowsException<SectionNotFoundException>(() => target.DeleteSection(NonexistentSectionName, Mode));
+
+                        Assert.AreEqual(expected, actual);
+                    }
+
+                    [TestMethod]
+                    public void Deletes_section()
+                        => DeletesSection(Mode);
+                }
+
+                [TestClass]
+                public sealed class When_ignore_mode
+                {
+                    private static SectionDeletionMode Mode => SectionDeletionMode.Ignore;
+
+                    [TestMethod]
+                    public void Ignores_when_section_does_not_exist()
+                    {
+                        var target = Make.EmptyTarget();
+
+                        target.DeleteSection(NonexistentSectionName, Mode);
+                    }
+
+                    [TestMethod]
+                    public void Deletes_section()
+                        => DeletesSection(Mode);
+                }
+            }
+        }
+
         private static class Make
         {
             public static IniDocument EmptyTarget()
