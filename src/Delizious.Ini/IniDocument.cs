@@ -320,5 +320,46 @@
 
             this.iniDocument.WriteProperty(sectionName, propertyKey, propertyValue, mode);
         }
+
+        /// <summary>
+        /// <para>
+        /// Deletes the section according to the given mode.
+        /// </para>
+        /// <para>
+        /// When mode is <see cref="SectionDeletionMode.Fail"/> and the section does not exist,
+        /// a <see cref="SectionNotFoundException"/> is thrown.
+        /// </para>
+        /// <para>
+        /// When mode is <see cref="SectionDeletionMode.Ignore"/>, it is silently ignored if the section does not exist.
+        /// </para>
+        /// </summary>
+        /// <param name="sectionName">
+        /// The name of the section to delete.
+        /// </param>
+        /// <param name="mode">
+        /// The mode that specifies how to delete the section.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// <para><paramref name="sectionName"/> is <c>null</c>.</para>
+        /// <para>- or -</para>
+        /// <para><paramref name="mode"/> is <c>null</c>.</para>
+        /// </exception>
+        /// <exception cref="SectionNotFoundException">
+        /// <paramref name="mode"/> is <see cref="SectionDeletionMode.Fail"/> and the specified section does not exist.
+        /// </exception>
+        public void DeleteSection(SectionName sectionName, SectionDeletionMode mode)
+        {
+            if (sectionName is null)
+            {
+                throw new ArgumentNullException(nameof(sectionName));
+            }
+
+            if (mode is null)
+            {
+                throw new ArgumentNullException(nameof(mode));
+            }
+
+            this.iniDocument.DeleteSection(sectionName, mode);
+        }
     }
 }

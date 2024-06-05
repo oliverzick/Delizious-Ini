@@ -13,6 +13,8 @@
 
         void WriteProperty(SectionName sectionName, PropertyKey propertyKey, PropertyValue propertyValue, PropertyWriteMode mode);
 
+        void DeleteSection(SectionName sectionName, SectionDeletionMode mode);
+
         void SaveTo(TextWriter textWriter);
     }
 }
