@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.16.0] - 2024-06-05
+### Added
+- Enable deletion of a section in an INI document with a given mode ([#67](https://github.com/oliverzick/Delizious-Ini/issues/67))
+  - Fail mode: Throw section not found exception if the section to delete does not exist
+  - Ignore mode: Silently ignore if the section to delete does not exist
+
 ## [0.15.0] - 2024-05-23
 ### Added
 - Introduce property write mode to create a new property with the given value ([#65](https://github.com/oliverzick/Delizious-Ini/issues/65))
