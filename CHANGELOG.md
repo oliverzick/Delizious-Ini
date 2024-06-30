@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.17.0] - 2024-06-30
+### Changed
+- Improve performance by superseding exception-based approach by strategy-based approach ([#70](https://github.com/oliverzick/Delizious-Ini/issues/70))
+
 ## [0.16.0] - 2024-06-05
 ### Added
 - Enable deletion of a section in an INI document with a given mode ([#67](https://github.com/oliverzick/Delizious-Ini/issues/67))
