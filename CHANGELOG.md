@@ -7,7 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ## [0.18.0] - 2024-07-05
 ### Added
 - Enable deletion of a property in an INI document with a given mode ([#69](https://github.com/oliverzick/Delizious-Ini/issues/69))
-  - Fail mode: Throw section not found exception if the section to delete does not exist, throw property not found exception if the section exists but the property to delete does not exist
+  - Fail mode: Throw section not found exception if the section does not exist, throw property not found exception if the section exists but the property to delete does not exist
   - Ignore mode: Silently ignore if the section or the property to delete does not exist
 
 ## [0.17.0] - 2024-06-30
