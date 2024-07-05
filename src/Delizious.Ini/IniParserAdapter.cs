@@ -75,6 +75,11 @@
             => mode.Transform(new WritePropertySelector(this, sectionName, propertyKey))
                    .WriteValue(propertyValue);
 
+        public void DeleteProperty(SectionName sectionName, PropertyKey propertyKey, PropertyDeletionMode mode)
+            => this.SelectSection(sectionName, mode.Transform(new FallbackSectionProvider(sectionName)))
+                   .SelectProperty(propertyKey, mode.Transform(new FallbackPropertyProvider(propertyKey)))
+                   .Delete();
+
         public void DeleteSection(SectionName sectionName, SectionDeletionMode mode)
             => this.SelectSection(sectionName, mode.Transform(new FallbackSectionProvider(sectionName)))
                    .Delete();
@@ -176,7 +181,7 @@
             {
                 var keyData = this.keyDataCollection.GetKeyData(propertyKey.ToString());
 
-                return keyData is null ? fallbackProperty : new ExistentProperty(keyData);
+                return keyData is null ? fallbackProperty : new ExistentProperty(this.keyDataCollection, propertyKey, keyData);
             }
         }
 
@@ -185,6 +190,8 @@
             PropertyValue ReadValue();
 
             void WriteValue(PropertyValue value);
+
+            void Delete();
         }
 
         private sealed class NullProperty : IProperty
@@ -203,6 +210,10 @@
             public void WriteValue(PropertyValue value)
             {
             }
+
+            public void Delete()
+            {
+            }
         }
 
         private sealed class NonexistentProperty : IProperty
@@ -219,14 +230,23 @@
 
             public void WriteValue(PropertyValue value)
                 => throw new PropertyNotFoundException(this.propertyKey);
+
+            public void Delete()
+                => throw new PropertyNotFoundException(this.propertyKey);
         }
 
         private sealed class ExistentProperty : IProperty
         {
+            private readonly KeyDataCollection owner;
+
+            private readonly PropertyKey propertyKey;
+
             private readonly KeyData keyData;
 
-            public ExistentProperty(KeyData keyData)
+            public ExistentProperty(KeyDataCollection owner, PropertyKey propertyKey, KeyData keyData)
             {
+                this.owner = owner;
+                this.propertyKey = propertyKey;
                 this.keyData = keyData;
             }
 
@@ -235,9 +255,12 @@
 
             public void WriteValue(PropertyValue value)
                 => this.keyData.Value = value.ToString();
+
+            public void Delete()
+                => this.owner.RemoveKey(this.propertyKey.ToString());
         }
 
-        private sealed class FallbackSectionProvider : ISectionDeletionModeTransformation<ISection>, IPropertyEnumerationModeTransformation<ISection>, IPropertyReadModeTransformation<ISection>
+        private sealed class FallbackSectionProvider : ISectionDeletionModeTransformation<ISection>, IPropertyEnumerationModeTransformation<ISection>, IPropertyReadModeTransformation<ISection>, IPropertyDeletionModeTransformation<ISection>
         {
             private readonly SectionName sectionName;
 
@@ -259,7 +282,7 @@
                 => new NullSection();
         }
 
-        private sealed class FallbackPropertyProvider : IPropertyReadModeTransformation<IProperty>
+        private sealed class FallbackPropertyProvider : IPropertyReadModeTransformation<IProperty>, IPropertyDeletionModeTransformation<IProperty>
         {
             private readonly PropertyKey propertyKey;
 
@@ -273,6 +296,9 @@
 
             public IProperty Fallback(PropertyValue fallbackPropertyValue)
                 => new NullProperty(fallbackPropertyValue);
+
+            public IProperty Ignore()
+                => new NullProperty(string.Empty);
         }
 
         private sealed class WritePropertySelector : IPropertyWriteModeTransformation<IProperty>

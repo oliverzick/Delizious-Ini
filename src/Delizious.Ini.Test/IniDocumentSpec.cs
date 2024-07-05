@@ -569,6 +569,110 @@ namespace Delizious.Ini.Test
         }
 
         [TestClass]
+        public sealed class DeleteProperty
+        {
+            [TestClass]
+            public sealed class With_sectionName_and_propertyKey_and_mode
+            {
+                private static PropertyDeletionMode DummyMode => PropertyDeletionMode.Fail;
+
+                [TestMethod]
+                public void Throws_argument_null_exception_when_section_name_is_null()
+                {
+                    var target = Make.EmptyTarget();
+
+                    Assert.ThrowsException<ArgumentNullException>(() => target.DeleteProperty(null, DummyPropertyKey, DummyMode));
+                }
+
+                [TestMethod]
+                public void Throws_argument_null_exception_when_property_key_is_null()
+                {
+                    var target = Make.EmptyTarget();
+
+                    Assert.ThrowsException<ArgumentNullException>(() => target.DeleteProperty(DummySectionName, null, DummyMode));
+                }
+
+                [TestMethod]
+                public void Throws_argument_null_exception_when_mode_is_null()
+                {
+                    var target = Make.EmptyTarget();
+
+                    Assert.ThrowsException<ArgumentNullException>(() => target.DeleteProperty(DummySectionName, DummyPropertyKey, null));
+                }
+
+                private static void DeletesProperty(PropertyDeletionMode mode)
+                {
+                    var expected = new[] { DummyPropertyKey };
+                    var target = Make.SingleDefaultSectionTarget(DummyPropertyKey, DefaultPropertyKey);
+
+                    target.DeleteProperty(DefaultSectionName, DefaultPropertyKey, mode);
+
+                    var actual = target.EnumerateProperties(DefaultSectionName).ToArray();
+
+                    CollectionAssert.AreEqual(expected, actual);
+                }
+
+                [TestClass]
+                public sealed class When_fail_mode
+                {
+                    private static PropertyDeletionMode Mode => PropertyDeletionMode.Fail;
+
+                    [TestMethod]
+                    public void Throws_section_not_found_exception_when_section_does_not_exist()
+                    {
+                        var expected = new SectionNotFoundExceptionAssertion(NonexistentSectionName);
+                        var target = Make.EmptyTarget();
+
+                        var actual = Assert.ThrowsException<SectionNotFoundException>(() => target.DeleteProperty(NonexistentSectionName, DummyPropertyKey, Mode));
+
+                        Assert.AreEqual(expected, actual);
+                    }
+
+                    [TestMethod]
+                    public void Throws_property_not_found_exception_when_property_does_not_exist()
+                    {
+                        var expected = new PropertyNotFoundExceptionAssertion(NonexistentPropertyKey);
+                        var target = Make.EmptySectionsTarget(DefaultSectionName);
+
+                        var actual = Assert.ThrowsException<PropertyNotFoundException>(() => target.DeleteProperty(DefaultSectionName, NonexistentPropertyKey, Mode));
+
+                        Assert.AreEqual(expected, actual);
+                    }
+
+                    [TestMethod]
+                    public void Deletes_section()
+                        => DeletesProperty(Mode);
+                }
+
+                [TestClass]
+                public sealed class When_ignore_mode
+                {
+                    private static PropertyDeletionMode Mode => PropertyDeletionMode.Ignore;
+
+                    [TestMethod]
+                    public void Ignores_when_section_does_not_exist()
+                    {
+                        var target = Make.EmptyTarget();
+
+                        target.DeleteProperty(NonexistentSectionName, DummyPropertyKey, Mode);
+                    }
+
+                    [TestMethod]
+                    public void Ignores_when_property_does_not_exist()
+                    {
+                        var target = Make.EmptySectionsTarget(DefaultSectionName);
+
+                        target.DeleteProperty(DefaultSectionName, NonexistentPropertyKey, Mode);
+                    }
+
+                    [TestMethod]
+                    public void Deletes_section()
+                        => DeletesProperty(Mode);
+                }
+            }
+        }
+
+        [TestClass]
         public sealed class DeleteSection
         {
             [TestClass]
@@ -649,6 +753,9 @@ namespace Delizious.Ini.Test
         {
             public static IniDocument EmptyTarget()
                 => new IniDocumentBuilder().Build();
+
+            public static IniDocument SingleDefaultSectionTarget(params PropertyKey[] propertyKeys)
+                => SingleDefaultSectionTarget(propertyKeys.AsEnumerable());
 
             public static IniDocument SingleDefaultSectionTarget(IEnumerable<PropertyKey> propertyKeys)
                 => Target(Section.Create(DefaultSectionName, propertyKeys.Select(Property.Create)));
