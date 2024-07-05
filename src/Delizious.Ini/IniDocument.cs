@@ -323,6 +323,60 @@
 
         /// <summary>
         /// <para>
+        /// Deletes the property according to the given mode.
+        /// </para>
+        /// <para>
+        /// When mode is <see cref="PropertyDeletionMode.Fail"/> and the section does not exist, a <see cref="SectionNotFoundException"/> is thrown.
+        /// If the section exists but the property to delete does not exist, a <see cref="PropertyNotFoundException"/> is thrown.
+        /// </para>
+        /// <para>
+        /// When mode is <see cref="PropertyDeletionMode.Ignore"/>, it is silently ignored if the section or the property does not exist.
+        /// </para>
+        /// </summary>
+        /// <param name="sectionName">
+        /// The name of the section containing the property.
+        /// </param>
+        /// <param name="propertyKey">
+        /// The key of the property to delete.
+        /// </param>
+        /// <param name="mode">
+        /// The mode that specifies how the delete to property.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// <para><paramref name="sectionName"/> is <c>null</c>.</para>
+        /// <para>- or -</para>
+        /// <para><paramref name="propertyKey"/> is <c>null</c>.</para>
+        /// <para>- or -</para>
+        /// <para><paramref name="mode"/> is <c>null</c>.</para>
+        /// </exception>
+        /// <exception cref="SectionNotFoundException">
+        /// <paramref name="mode"/> is <see cref="PropertyDeletionMode.Fail"/> and the specified section does not exist.
+        /// </exception>
+        /// <exception cref="PropertyNotFoundException">
+        /// <paramref name="mode"/> is <see cref="PropertyDeletionMode.Fail"/> and the specified property does not exist.
+        /// </exception>
+        public void DeleteProperty(SectionName sectionName, PropertyKey propertyKey, PropertyDeletionMode mode)
+        {
+            if (sectionName is null)
+            {
+                throw new ArgumentNullException(nameof(sectionName));
+            }
+
+            if (propertyKey is null)
+            {
+                throw new ArgumentNullException(nameof(propertyKey));
+            }
+
+            if (mode is null)
+            {
+                throw new ArgumentNullException(nameof(mode));
+            }
+
+            this.iniDocument.DeleteProperty(sectionName, propertyKey, mode);
+        }
+
+        /// <summary>
+        /// <para>
         /// Deletes the section according to the given mode.
         /// </para>
         /// <para>
