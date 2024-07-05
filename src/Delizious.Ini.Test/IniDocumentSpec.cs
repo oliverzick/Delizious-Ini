@@ -572,7 +572,7 @@ namespace Delizious.Ini.Test
         public sealed class DeleteProperty
         {
             [TestClass]
-            public sealed class With_sectionName_and_mode
+            public sealed class With_sectionName_and_propertyKey_and_mode
             {
                 private static PropertyDeletionMode DummyMode => PropertyDeletionMode.Fail;
 
@@ -753,6 +753,7 @@ namespace Delizious.Ini.Test
         {
             public static IniDocument EmptyTarget()
                 => new IniDocumentBuilder().Build();
+
             public static IniDocument SingleDefaultSectionTarget(params PropertyKey[] propertyKeys)
                 => SingleDefaultSectionTarget(propertyKeys.AsEnumerable());
 
