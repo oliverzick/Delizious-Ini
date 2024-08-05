@@ -17,6 +17,15 @@
         }
 
         /// <summary>
+        /// Creates a new empty INI document.
+        /// </summary>
+        /// <returns>
+        /// A new empty <see cref="IniDocument"/> instance.
+        /// </returns>
+        public static IniDocument CreateEmpty()
+            => new IniDocument(IniParserAdapter.CreateEmpty());
+
+        /// <summary>
         /// Loads an INI document from the given <paramref name="textReader"/>.
         /// The <paramref name="textReader"/> is only used to read the INI document from and is not kept in the returned <see cref="IniDocument"/> instance.
         /// </summary>

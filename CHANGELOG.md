@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.19.0] - 2024-08-05
+### Added
+- Enable creating a new empty INI document ([#73](https://github.com/oliverzick/Delizious-Ini/issues/73))
+
 ## [0.18.0] - 2024-07-05
 ### Added
 - Enable deletion of a property in an INI document with a given mode ([#69](https://github.com/oliverzick/Delizious-Ini/issues/69))
