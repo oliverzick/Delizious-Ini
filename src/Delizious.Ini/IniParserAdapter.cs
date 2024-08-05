@@ -18,6 +18,14 @@
             this.iniData = iniData;
         }
 
+        public static IniParserAdapter CreateEmpty()
+        {
+            using (var textReader = new StringReader(string.Empty))
+            {
+                return LoadFrom(textReader);
+            }
+        }
+
         public static IniParserAdapter LoadFrom(TextReader textReader)
         {
             try

@@ -24,6 +24,18 @@ namespace Delizious.Ini.Test
         private static readonly PropertyValue EmptyPropertyValue = string.Empty;
 
         [TestClass]
+        public sealed class CreateEmpty
+        {
+            [TestMethod]
+            public void Creates_empty_ini_document()
+            {
+                var target = IniDocument.CreateEmpty();
+
+                Assert.IsFalse(target.EnumerateSections().Any());
+            }
+        }
+
+        [TestClass]
         public sealed class LoadFrom
         {
             [TestMethod]
