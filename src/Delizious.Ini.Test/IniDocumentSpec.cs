@@ -764,7 +764,7 @@ namespace Delizious.Ini.Test
         private static class Make
         {
             public static IniDocument EmptyTarget()
-                => new IniDocumentBuilder().Build();
+                => IniDocument.CreateEmpty();
 
             public static IniDocument SingleDefaultSectionTarget(params PropertyKey[] propertyKeys)
                 => SingleDefaultSectionTarget(propertyKeys.AsEnumerable());
