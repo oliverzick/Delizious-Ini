@@ -21,7 +21,7 @@
         public PropertyEnumerationMode PropertyEnumerationMode { get; } = PropertyEnumerationMode.Fail;
 
         /// <summary>
-        /// The mode that specifies how to read a property when the section or property does not exist.
+        /// The mode that specifies how to read a property.
         /// </summary>
         public PropertyReadMode PropertyReadMode { get; } = PropertyReadMode.Fail;
 
