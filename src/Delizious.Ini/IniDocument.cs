@@ -11,45 +11,71 @@
     {
         private readonly IIniDocument iniDocument;
 
-        private IniDocument(IIniDocument iniDocument)
+        private readonly IniDocumentConfiguration configuration;
+
+        private IniDocument(IIniDocument iniDocument, IniDocumentConfiguration configuration)
         {
             this.iniDocument = iniDocument;
+            this.configuration = configuration;
         }
 
         /// <summary>
-        /// Creates a new empty INI document.
+        /// Creates a new empty INI document with the given <paramref name="configuration"/>.
         /// </summary>
+        /// <param name="configuration">
+        /// The configuration of the new empty INI document.
+        /// </param>
         /// <returns>
         /// A new empty <see cref="IniDocument"/> instance.
         /// </returns>
-        public static IniDocument CreateEmpty()
-            => new IniDocument(IniParserAdapter.CreateEmpty());
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="configuration"/> is <c>null</c>.
+        /// </exception>
+        public static IniDocument CreateEmpty(IniDocumentConfiguration configuration)
+        {
+            if (configuration is null)
+            {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+
+            return new IniDocument(IniParserAdapter.CreateEmpty(), configuration);
+        }
 
         /// <summary>
-        /// Loads an INI document from the given <paramref name="textReader"/>.
+        /// Loads an INI document from the given <paramref name="textReader"/> using the given <paramref name="configuration"/>.
         /// The <paramref name="textReader"/> is only used to read the INI document from and is not kept in the returned <see cref="IniDocument"/> instance.
         /// </summary>
         /// <param name="textReader">
         /// The <see cref="TextReader"/> to read the INI document from.
         /// </param>
+        /// <param name="configuration">
+        /// The configuration of the INI document.
+        /// </param>
         /// <returns>
         /// A new <see cref="IniDocument"/> instance that represents the INI document read from the given <paramref name="textReader"/>.
         /// </returns>
         /// <exception cref="ArgumentNullException">
-        /// <paramref name="textReader"/> is <c>null</c>.
+        /// <para><paramref name="textReader"/> is <c>null</c>.</para>
+        /// <para>- or -</para>
+        /// <para><paramref name="configuration"/> is <c>null</c>.</para>
         /// </exception>
         /// <exception cref="PersistenceException">
         /// The INI document could not be loaded from the given <paramref name="textReader"/>.
         /// Inspect <see cref="Exception.InnerException"/> for detailed error and the reason for the exception.
         /// </exception>
-        public static IniDocument LoadFrom(TextReader textReader)
+        public static IniDocument LoadFrom(TextReader textReader, IniDocumentConfiguration configuration)
         {
             if (textReader is null)
             {
                 throw new ArgumentNullException(nameof(textReader));
             }
 
-            return new IniDocument(IniParserAdapter.LoadFrom(textReader));
+            if (configuration is null)
+            {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+
+            return new IniDocument(IniParserAdapter.LoadFrom(textReader), configuration);
         }
 
         /// <summary>
@@ -106,7 +132,7 @@
                 throw new ArgumentNullException(nameof(sectionName));
             }
 
-            return this.EnumerateProperties(sectionName, PropertyEnumerationMode.Fail);
+            return this.EnumerateProperties(sectionName, this.configuration.PropertyEnumerationMode);
         }
 
         /// <summary>
@@ -179,7 +205,7 @@
         /// The property specified by the <paramref name="propertyKey"/> does not exist.
         /// </exception>
         public PropertyValue ReadProperty(SectionName sectionName, PropertyKey propertyKey)
-            => this.ReadProperty(sectionName, propertyKey, PropertyReadMode.Fail);
+            => this.ReadProperty(sectionName, propertyKey, this.configuration.PropertyReadMode);
 
         /// <summary>
         /// <para>
@@ -263,7 +289,7 @@
         /// The property specified by the <paramref name="propertyKey"/> does not exist.
         /// </exception>
         public void UpdateProperty(SectionName sectionName, PropertyKey propertyKey, PropertyValue newPropertyValue)
-            => this.WriteProperty(sectionName, propertyKey, newPropertyValue, PropertyWriteMode.Update);
+            => this.WriteProperty(sectionName, propertyKey, newPropertyValue, this.configuration.PropertyWriteMode);
 
         /// <summary>
         /// <para>

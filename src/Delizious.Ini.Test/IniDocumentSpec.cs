@@ -10,6 +10,8 @@ namespace Delizious.Ini.Test
     [TestClass]
     public sealed class IniDocumentSpec
     {
+        private static IniDocumentConfiguration DefaultConfiguration => IniDocumentConfiguration.Default;
+
         private static readonly SectionName DummySectionName = "Dummy";
         private static readonly PropertyKey DummyPropertyKey = "Dummy";
         private static readonly PropertyValue DummyPropertyValue = "Dummy";
@@ -27,9 +29,15 @@ namespace Delizious.Ini.Test
         public sealed class CreateEmpty
         {
             [TestMethod]
+            public void Throws_argument_null_exception_when_configuration_is_null()
+            {
+                Assert.ThrowsException<ArgumentNullException>(() => IniDocument.CreateEmpty(null));
+            }
+
+            [TestMethod]
             public void Creates_empty_ini_document()
             {
-                var target = IniDocument.CreateEmpty();
+                var target = IniDocument.CreateEmpty(DefaultConfiguration);
 
                 Assert.IsFalse(target.EnumerateSections().Any());
             }
@@ -41,7 +49,15 @@ namespace Delizious.Ini.Test
             [TestMethod]
             public void Throws_argument_null_exception_when_text_reader_is_null()
             {
-                Assert.ThrowsException<ArgumentNullException>(() => IniDocument.LoadFrom(null));
+                Assert.ThrowsException<ArgumentNullException>(() => IniDocument.LoadFrom(null, DefaultConfiguration));
+            }
+
+            [TestMethod]
+            public void Throws_argument_null_exception_when_configuration_is_null()
+            {
+                using var textReader = new StringReader(string.Empty);
+
+                Assert.ThrowsException<ArgumentNullException>(() => IniDocument.LoadFrom(textReader, null));
             }
 
             [TestMethod]
@@ -51,7 +67,7 @@ namespace Delizious.Ini.Test
                 using var textReader = new StringReader(string.Empty);
                 textReader.Close();
 
-                var actual = Assert.ThrowsException<PersistenceException>(() => IniDocument.LoadFrom(textReader));
+                var actual = Assert.ThrowsException<PersistenceException>(() => IniDocument.LoadFrom(textReader, DefaultConfiguration));
 
                 Assert.AreEqual(expected, actual);
             }
@@ -764,7 +780,7 @@ namespace Delizious.Ini.Test
         private static class Make
         {
             public static IniDocument EmptyTarget()
-                => IniDocument.CreateEmpty();
+                => IniDocument.CreateEmpty(DefaultConfiguration);
 
             public static IniDocument SingleDefaultSectionTarget(params PropertyKey[] propertyKeys)
                 => SingleDefaultSectionTarget(propertyKeys.AsEnumerable());
@@ -830,7 +846,7 @@ namespace Delizious.Ini.Test
                 public IniDocument Build()
                 {
                     using var stringReader = new StringReader(this.ToString());
-                    return IniDocument.LoadFrom(stringReader);
+                    return IniDocument.LoadFrom(stringReader, DefaultConfiguration);
                 }
             }
 
