@@ -32,11 +32,14 @@
             => new IniDocument(IniParserAdapter.CreateEmpty(), configuration);
 
         /// <summary>
-        /// Loads an INI document from the given <paramref name="textReader"/>.
+        /// Loads an INI document from the given <paramref name="textReader"/> using the given <paramref name="configuration"/>.
         /// The <paramref name="textReader"/> is only used to read the INI document from and is not kept in the returned <see cref="IniDocument"/> instance.
         /// </summary>
         /// <param name="textReader">
         /// The <see cref="TextReader"/> to read the INI document from.
+        /// </param>
+        /// <param name="configuration">
+        /// The configuration of the INI document.
         /// </param>
         /// <returns>
         /// A new <see cref="IniDocument"/> instance that represents the INI document read from the given <paramref name="textReader"/>.
@@ -48,14 +51,14 @@
         /// The INI document could not be loaded from the given <paramref name="textReader"/>.
         /// Inspect <see cref="Exception.InnerException"/> for detailed error and the reason for the exception.
         /// </exception>
-        public static IniDocument LoadFrom(TextReader textReader)
+        public static IniDocument LoadFrom(TextReader textReader, IniDocumentConfiguration configuration)
         {
             if (textReader is null)
             {
                 throw new ArgumentNullException(nameof(textReader));
             }
 
-            return new IniDocument(IniParserAdapter.LoadFrom(textReader), IniDocumentConfiguration.Default);
+            return new IniDocument(IniParserAdapter.LoadFrom(textReader), configuration);
         }
 
         /// <summary>

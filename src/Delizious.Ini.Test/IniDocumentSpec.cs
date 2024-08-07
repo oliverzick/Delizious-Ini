@@ -43,7 +43,7 @@ namespace Delizious.Ini.Test
             [TestMethod]
             public void Throws_argument_null_exception_when_text_reader_is_null()
             {
-                Assert.ThrowsException<ArgumentNullException>(() => IniDocument.LoadFrom(null));
+                Assert.ThrowsException<ArgumentNullException>(() => IniDocument.LoadFrom(null, DefaultConfiguration));
             }
 
             [TestMethod]
@@ -53,7 +53,7 @@ namespace Delizious.Ini.Test
                 using var textReader = new StringReader(string.Empty);
                 textReader.Close();
 
-                var actual = Assert.ThrowsException<PersistenceException>(() => IniDocument.LoadFrom(textReader));
+                var actual = Assert.ThrowsException<PersistenceException>(() => IniDocument.LoadFrom(textReader, DefaultConfiguration));
 
                 Assert.AreEqual(expected, actual);
             }
@@ -832,7 +832,7 @@ namespace Delizious.Ini.Test
                 public IniDocument Build()
                 {
                     using var stringReader = new StringReader(this.ToString());
-                    return IniDocument.LoadFrom(stringReader);
+                    return IniDocument.LoadFrom(stringReader, DefaultConfiguration);
                 }
             }
 
