@@ -53,6 +53,14 @@ namespace Delizious.Ini.Test
             }
 
             [TestMethod]
+            public void Throws_argument_null_exception_when_configuration_is_null()
+            {
+                using var textReader = new StringReader(string.Empty);
+
+                Assert.ThrowsException<ArgumentNullException>(() => IniDocument.LoadFrom(textReader, null));
+            }
+
+            [TestMethod]
             public void Throws_persistence_exception_containing_object_disposed_exception_when_text_reader_is_already_disposed()
             {
                 var expected = PersistenceExceptionAssertion.Create<ObjectDisposedException>();

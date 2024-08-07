@@ -55,7 +55,9 @@
         /// A new <see cref="IniDocument"/> instance that represents the INI document read from the given <paramref name="textReader"/>.
         /// </returns>
         /// <exception cref="ArgumentNullException">
-        /// <paramref name="textReader"/> is <c>null</c>.
+        /// <para><paramref name="textReader"/> is <c>null</c>.</para>
+        /// <para>- or -</para>
+        /// <para><paramref name="configuration"/> is <c>null</c>.</para>
         /// </exception>
         /// <exception cref="PersistenceException">
         /// The INI document could not be loaded from the given <paramref name="textReader"/>.
@@ -66,6 +68,11 @@
             if (textReader is null)
             {
                 throw new ArgumentNullException(nameof(textReader));
+            }
+
+            if (configuration is null)
+            {
+                throw new ArgumentNullException(nameof(configuration));
             }
 
             return new IniDocument(IniParserAdapter.LoadFrom(textReader), configuration);
