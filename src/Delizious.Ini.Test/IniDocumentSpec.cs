@@ -29,6 +29,12 @@ namespace Delizious.Ini.Test
         public sealed class CreateEmpty
         {
             [TestMethod]
+            public void Throws_argument_null_exception_when_configuration_is_null()
+            {
+                Assert.ThrowsException<ArgumentNullException>(() => IniDocument.CreateEmpty(null));
+            }
+
+            [TestMethod]
             public void Creates_empty_ini_document()
             {
                 var target = IniDocument.CreateEmpty(DefaultConfiguration);

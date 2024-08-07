@@ -28,8 +28,18 @@
         /// <returns>
         /// A new empty <see cref="IniDocument"/> instance.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="configuration"/> is <c>null</c>.
+        /// </exception>
         public static IniDocument CreateEmpty(IniDocumentConfiguration configuration)
-            => new IniDocument(IniParserAdapter.CreateEmpty(), configuration);
+        {
+            if (configuration is null)
+            {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+
+            return new IniDocument(IniParserAdapter.CreateEmpty(), configuration);
+        }
 
         /// <summary>
         /// Loads an INI document from the given <paramref name="textReader"/> using the given <paramref name="configuration"/>.
