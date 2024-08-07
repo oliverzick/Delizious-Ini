@@ -20,13 +20,16 @@
         }
 
         /// <summary>
-        /// Creates a new empty INI document.
+        /// Creates a new empty INI document with the given <paramref name="configuration"/>.
         /// </summary>
+        /// <param name="configuration">
+        /// The configuration of the new empty INI document.
+        /// </param>
         /// <returns>
         /// A new empty <see cref="IniDocument"/> instance.
         /// </returns>
-        public static IniDocument CreateEmpty()
-            => new IniDocument(IniParserAdapter.CreateEmpty(), IniDocumentConfiguration.Default);
+        public static IniDocument CreateEmpty(IniDocumentConfiguration configuration)
+            => new IniDocument(IniParserAdapter.CreateEmpty(), configuration);
 
         /// <summary>
         /// Loads an INI document from the given <paramref name="textReader"/>.

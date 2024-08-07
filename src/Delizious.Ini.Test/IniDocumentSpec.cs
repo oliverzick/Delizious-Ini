@@ -10,6 +10,8 @@ namespace Delizious.Ini.Test
     [TestClass]
     public sealed class IniDocumentSpec
     {
+        private static IniDocumentConfiguration DefaultConfiguration => IniDocumentConfiguration.Default;
+
         private static readonly SectionName DummySectionName = "Dummy";
         private static readonly PropertyKey DummyPropertyKey = "Dummy";
         private static readonly PropertyValue DummyPropertyValue = "Dummy";
@@ -29,7 +31,7 @@ namespace Delizious.Ini.Test
             [TestMethod]
             public void Creates_empty_ini_document()
             {
-                var target = IniDocument.CreateEmpty();
+                var target = IniDocument.CreateEmpty(DefaultConfiguration);
 
                 Assert.IsFalse(target.EnumerateSections().Any());
             }
@@ -764,7 +766,7 @@ namespace Delizious.Ini.Test
         private static class Make
         {
             public static IniDocument EmptyTarget()
-                => IniDocument.CreateEmpty();
+                => IniDocument.CreateEmpty(DefaultConfiguration);
 
             public static IniDocument SingleDefaultSectionTarget(params PropertyKey[] propertyKeys)
                 => SingleDefaultSectionTarget(propertyKeys.AsEnumerable());
