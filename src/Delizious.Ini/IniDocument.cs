@@ -109,7 +109,7 @@
                 throw new ArgumentNullException(nameof(sectionName));
             }
 
-            return this.EnumerateProperties(sectionName, PropertyEnumerationMode.Fail);
+            return this.EnumerateProperties(sectionName, this.configuration.PropertyEnumerationMode);
         }
 
         /// <summary>
@@ -182,7 +182,7 @@
         /// The property specified by the <paramref name="propertyKey"/> does not exist.
         /// </exception>
         public PropertyValue ReadProperty(SectionName sectionName, PropertyKey propertyKey)
-            => this.ReadProperty(sectionName, propertyKey, PropertyReadMode.Fail);
+            => this.ReadProperty(sectionName, propertyKey, this.configuration.PropertyReadMode);
 
         /// <summary>
         /// <para>
@@ -266,7 +266,7 @@
         /// The property specified by the <paramref name="propertyKey"/> does not exist.
         /// </exception>
         public void UpdateProperty(SectionName sectionName, PropertyKey propertyKey, PropertyValue newPropertyValue)
-            => this.WriteProperty(sectionName, propertyKey, newPropertyValue, PropertyWriteMode.Update);
+            => this.WriteProperty(sectionName, propertyKey, newPropertyValue, this.configuration.PropertyWriteMode);
 
         /// <summary>
         /// <para>
