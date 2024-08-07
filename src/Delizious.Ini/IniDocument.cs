@@ -11,9 +11,12 @@
     {
         private readonly IIniDocument iniDocument;
 
-        private IniDocument(IIniDocument iniDocument)
+        private readonly IniDocumentConfiguration configuration;
+
+        private IniDocument(IIniDocument iniDocument, IniDocumentConfiguration configuration)
         {
             this.iniDocument = iniDocument;
+            this.configuration = configuration;
         }
 
         /// <summary>
@@ -23,7 +26,7 @@
         /// A new empty <see cref="IniDocument"/> instance.
         /// </returns>
         public static IniDocument CreateEmpty()
-            => new IniDocument(IniParserAdapter.CreateEmpty());
+            => new IniDocument(IniParserAdapter.CreateEmpty(), IniDocumentConfiguration.Default);
 
         /// <summary>
         /// Loads an INI document from the given <paramref name="textReader"/>.
@@ -49,7 +52,7 @@
                 throw new ArgumentNullException(nameof(textReader));
             }
 
-            return new IniDocument(IniParserAdapter.LoadFrom(textReader));
+            return new IniDocument(IniParserAdapter.LoadFrom(textReader), IniDocumentConfiguration.Default);
         }
 
         /// <summary>
