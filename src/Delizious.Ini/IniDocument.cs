@@ -111,7 +111,13 @@
             => this.iniDocument.EnumerateSections();
 
         /// <summary>
-        /// Enumerates all the properties contained in the specified section.
+        /// <para>
+        /// Enumerates all the properties contained in the specified section using the <see cref="IniDocumentConfiguration.PropertyEnumerationMode"/>.
+        /// </para>
+        /// <para>
+        /// When <see cref="IniDocumentConfiguration.PropertyEnumerationMode"/> is <see cref="PropertyReadMode.Fail"/> and the specified section does not exist,
+        /// throws a <see cref="SectionNotFoundException"/>
+        /// </para>
         /// </summary>
         /// <param name="sectionName">
         /// The name of the section to enumerate the contained properties.
@@ -123,7 +129,7 @@
         /// <paramref name="sectionName"/> is <c>null</c>.
         /// </exception>
         /// <exception cref="SectionNotFoundException">
-        /// The section specified by the <paramref name="sectionName"/> does not exist.
+        /// <see cref="IniDocumentConfiguration.PropertyEnumerationMode"/> is <see cref="PropertyEnumerationMode.Fail"/> and the specified section does not exist.
         /// </exception>
         public IEnumerable<PropertyKey> EnumerateProperties(SectionName sectionName)
         {
