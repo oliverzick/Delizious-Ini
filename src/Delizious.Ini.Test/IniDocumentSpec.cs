@@ -151,19 +151,6 @@ namespace Delizious.Ini.Test
                 }
 
                 [TestMethod]
-                public void Throws_section_not_found_exception_when_section_specified_by_its_section_name_does_not_exist()
-                {
-                    var sectionName = NonexistentSectionName;
-                    var expected = new SectionNotFoundExceptionAssertion(sectionName);
-
-                    var target = Make.EmptyTarget();
-
-                    var actual = Assert.ThrowsException<SectionNotFoundException>(() => target.EnumerateProperties(sectionName));
-
-                    Assert.AreEqual(expected, actual);
-                }
-
-                [TestMethod]
                 public void Enumerates_the_keys_of_all_properties_contained_in_the_specified_section()
                 {
                     var expected = PropertyKeys;
@@ -172,6 +159,43 @@ namespace Delizious.Ini.Test
                     var actual = target.EnumerateProperties(DefaultSectionName).ToImmutableArray();
 
                     CollectionAssert.AreEqual(expected, actual);
+                }
+
+                [TestClass]
+                public sealed class When_fail_mode
+                {
+                    private static IniDocumentConfiguration Configuration => IniDocumentConfiguration.Default.WithPropertyEnumerationMode(PropertyEnumerationMode.Fail);
+
+                    [TestMethod]
+                    public void Throws_section_not_found_exception_when_section_does_not_exist()
+                    {
+                        var sectionName = NonexistentSectionName;
+                        var expected = new SectionNotFoundExceptionAssertion(sectionName);
+
+                        var target = Make.EmptyTarget(Configuration);
+
+                        var actual = Assert.ThrowsException<SectionNotFoundException>(() => target.EnumerateProperties(sectionName));
+
+                        Assert.AreEqual(expected, actual);
+                    }
+                }
+
+                [TestClass]
+                public sealed class When_fallback_mode
+                {
+                    private static IniDocumentConfiguration Configuration => IniDocumentConfiguration.Default.WithPropertyEnumerationMode(PropertyEnumerationMode.Fallback);
+
+                    [TestMethod]
+                    public void Enumerates_an_empty_collection_when_section_does_not_exist()
+                    {
+                        var expected = Enumerable.Empty<PropertyKey>().ToImmutableArray();
+
+                        var target = Make.EmptyTarget(Configuration);
+
+                        var actual = target.EnumerateProperties(NonexistentSectionName).ToImmutableArray();
+
+                        CollectionAssert.AreEqual(expected, actual);
+                    }
                 }
             }
 
@@ -780,7 +804,10 @@ namespace Delizious.Ini.Test
         private static class Make
         {
             public static IniDocument EmptyTarget()
-                => IniDocument.CreateEmpty(DefaultConfiguration);
+                => EmptyTarget(DefaultConfiguration);
+
+            public static IniDocument EmptyTarget(IniDocumentConfiguration configuration)
+                => IniDocument.CreateEmpty(configuration);
 
             public static IniDocument SingleDefaultSectionTarget(params PropertyKey[] propertyKeys)
                 => SingleDefaultSectionTarget(propertyKeys.AsEnumerable());
