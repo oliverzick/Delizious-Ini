@@ -116,7 +116,7 @@
         /// </para>
         /// <para>
         /// When <see cref="IniDocumentConfiguration.PropertyEnumerationMode"/> is <see cref="PropertyEnumerationMode.Fail"/> and the specified section does not exist,
-        /// throws a <see cref="SectionNotFoundException"/>
+        /// throws a <see cref="SectionNotFoundException"/>.
         /// </para>
         /// </summary>
         /// <param name="sectionName">
