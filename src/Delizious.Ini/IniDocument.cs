@@ -115,8 +115,8 @@
         /// Enumerates all the properties contained in the specified section using the <see cref="IniDocumentConfiguration.PropertyEnumerationMode"/>.
         /// </para>
         /// <para>
-        /// When <see cref="IniDocumentConfiguration.PropertyEnumerationMode"/> is <see cref="PropertyReadMode.Fail"/> and the specified section does not exist,
-        /// throws a <see cref="SectionNotFoundException"/>
+        /// When <see cref="IniDocumentConfiguration.PropertyEnumerationMode"/> is <see cref="PropertyEnumerationMode.Fail"/> and the specified section does not exist,
+        /// throws a <see cref="SectionNotFoundException"/>.
         /// </para>
         /// </summary>
         /// <param name="sectionName">
@@ -187,7 +187,17 @@
         }
 
         /// <summary>
-        /// Reads the value of the property contained in the specified section.
+        /// <para>
+        /// Reads the value of the property contained in the specified section using the <see cref="IniDocumentConfiguration.PropertyReadMode"/>.
+        /// </para>
+        /// <para>
+        /// When <see cref="IniDocumentConfiguration.PropertyReadMode"/> is <see cref="PropertyReadMode.Fail"/> and the specified section does not exist,
+        /// throws a <see cref="SectionNotFoundException"/>.
+        /// </para>
+        /// <para>
+        /// When <see cref="IniDocumentConfiguration.PropertyReadMode"/> is <see cref="PropertyReadMode.Fail"/> and the specified property does not exist,
+        /// throws a <see cref="PropertyNotFoundException"/>.
+        /// </para>
         /// </summary>
         /// <param name="sectionName">
         /// The name of the section containing the property.
@@ -205,10 +215,10 @@
         /// <para><paramref name="propertyKey"/> is <c>null</c>.</para>
         /// </exception>
         /// <exception cref="SectionNotFoundException">
-        /// The section specified by the <paramref name="sectionName"/> does not exist.
+        /// <see cref="IniDocumentConfiguration.PropertyReadMode"/> is <see cref="PropertyReadMode.Fail"/> and the section specified by the <paramref name="sectionName"/> does not exist.
         /// </exception>
         /// <exception cref="PropertyNotFoundException">
-        /// The property specified by the <paramref name="propertyKey"/> does not exist.
+        /// <see cref="IniDocumentConfiguration.PropertyReadMode"/> is <see cref="PropertyReadMode.Fail"/> and the property specified by the <paramref name="propertyKey"/> does not exist.
         /// </exception>
         public PropertyValue ReadProperty(SectionName sectionName, PropertyKey propertyKey)
             => this.ReadProperty(sectionName, propertyKey, this.configuration.PropertyReadMode);

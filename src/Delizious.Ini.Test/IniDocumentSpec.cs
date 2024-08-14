@@ -294,33 +294,6 @@ namespace Delizious.Ini.Test
                     Assert.ThrowsException<ArgumentNullException>(() => target.ReadProperty(DummySectionName, null));
                 }
 
-                [TestMethod]
-                public void Throws_section_not_found_exception_when_section_does_not_exist()
-                {
-                    var sectionName = NonexistentSectionName;
-                    var expected = new SectionNotFoundExceptionAssertion(sectionName);
-
-                    var target = Make.EmptyTarget();
-
-                    var actual = Assert.ThrowsException<SectionNotFoundException>(() => target.ReadProperty(sectionName, DummyPropertyKey));
-
-                    Assert.AreEqual(expected, actual);
-                }
-
-                [TestMethod]
-                public void Throws_property_not_found_exception_when_property_does_not_exist()
-                {
-                    var sectionName = DefaultSectionName;
-                    var propertyKey = NonexistentPropertyKey;
-                    var expected = new PropertyNotFoundExceptionAssertion(propertyKey);
-
-                    var target = Make.SingleDefaultPropertyTarget(DefaultPropertyValue);
-
-                    var actual = Assert.ThrowsException<PropertyNotFoundException>(() => target.ReadProperty(sectionName, propertyKey));
-
-                    Assert.AreEqual(expected, actual);
-                }
-
                 [DataTestMethod]
                 [DataRow("Property value", DisplayName = "Actual value")]
                 [DataRow(""              , DisplayName = "Empty string when property does exist but has no value")]
@@ -333,6 +306,70 @@ namespace Delizious.Ini.Test
                     var actual = target.ReadProperty(DefaultSectionName, DefaultPropertyKey);
 
                     Assert.AreEqual(expected, actual);
+                }
+
+                [TestClass]
+                public sealed class When_fail_mode
+                {
+                    private static IniDocumentConfiguration Configuration => IniDocumentConfiguration.Default.WithPropertyReadMode(PropertyReadMode.Fail);
+
+                    [TestMethod]
+                    public void Throws_section_not_found_exception_when_section_does_not_exist()
+                    {
+                        var sectionName = NonexistentSectionName;
+                        var expected = new SectionNotFoundExceptionAssertion(sectionName);
+
+                        var target = Make.EmptyTarget(Configuration);
+
+                        var actual = Assert.ThrowsException<SectionNotFoundException>(() => target.ReadProperty(sectionName, DefaultPropertyKey));
+
+                        Assert.AreEqual(expected, actual);
+                    }
+
+                    [TestMethod]
+                    public void Throws_property_not_found_exception_when_section_exists_but_property_does_not_exist()
+                    {
+                        var propertyKey = NonexistentPropertyKey;
+                        var expected = new PropertyNotFoundExceptionAssertion(propertyKey);
+
+                        var target = Make.SingleDefaultPropertyTarget(Configuration, DefaultPropertyValue);
+
+                        var actual = Assert.ThrowsException<PropertyNotFoundException>(() => target.ReadProperty(DefaultSectionName, propertyKey));
+
+                        Assert.AreEqual(expected, actual);
+                    }
+                }
+
+                [TestClass]
+                public sealed class When_fallback_mode
+                {
+                    private static PropertyValue FallbackPropertyValue => "Fallback";
+
+                    private static IniDocumentConfiguration Configuration => IniDocumentConfiguration.Default.WithPropertyReadMode(PropertyReadMode.CustomFallback(FallbackPropertyValue));
+
+                    [TestMethod]
+                    public void Returns_the_fallback_property_value_when_section_does_not_exist()
+                    {
+                        var expected = FallbackPropertyValue;
+
+                        var target = Make.EmptyTarget(Configuration);
+
+                        var actual = target.ReadProperty(NonexistentSectionName, DefaultPropertyKey);
+
+                        Assert.AreEqual(expected, actual);
+                    }
+
+                    [TestMethod]
+                    public void Returns_the_fallback_property_value_when_section_exists_but_property_does_not_exist()
+                    {
+                        var expected = FallbackPropertyValue;
+
+                        var target = Make.SingleDefaultPropertyTarget(Configuration, DefaultPropertyValue);
+
+                        var actual = target.ReadProperty(DefaultSectionName, NonexistentPropertyKey);
+
+                        Assert.AreEqual(expected, actual);
+                    }
                 }
             }
 
@@ -813,19 +850,23 @@ namespace Delizious.Ini.Test
                 => SingleDefaultSectionTarget(propertyKeys.AsEnumerable());
 
             public static IniDocument SingleDefaultSectionTarget(IEnumerable<PropertyKey> propertyKeys)
-                => Target(Section.Create(DefaultSectionName, propertyKeys.Select(Property.Create)));
+                => Target(DefaultConfiguration, Section.Create(DefaultSectionName, propertyKeys.Select(Property.Create)));
 
             public static IniDocument SingleDefaultPropertyTarget(PropertyValue propertyValue)
-                => Target(Section.Create(DefaultSectionName, Property.Create(DefaultPropertyKey, propertyValue)));
+                => SingleDefaultPropertyTarget(DefaultConfiguration, propertyValue);
+
+            public static IniDocument SingleDefaultPropertyTarget(IniDocumentConfiguration configuration, PropertyValue propertyValue)
+                => Target(configuration, Section.Create(DefaultSectionName, Property.Create(DefaultPropertyKey, propertyValue)));
 
             public static IniDocument EmptySectionsTarget(params SectionName[] sectionNames)
                 => EmptySectionsTarget(sectionNames.AsEnumerable());
 
             public static IniDocument EmptySectionsTarget(IEnumerable<SectionName> sectionNames)
-                => Target(sectionNames.Select(Section.CreateEmpty));
+                => Target(DefaultConfiguration,  sectionNames.Select(Section.CreateEmpty));
 
             public static IniDocument SampleTarget()
-                => Target(Section.Create("Section1", Property.Create("PropertyA", "Value A")),
+                => Target(DefaultConfiguration,
+                          Section.Create("Section1", Property.Create("PropertyA", "Value A")),
                           Section.Create("Section2", Property.Create("PropertyB", "Value B")));
 
             public static string SampleString()
@@ -836,15 +877,26 @@ namespace Delizious.Ini.Test
                                            .AppendPropertyLine("PropertyB", "Value B")
                                            .ToString();
 
-            private static IniDocument Target(params Section[] sections)
-                => Target(sections.AsEnumerable());
+            private static IniDocument Target(IniDocumentConfiguration configuration, params Section[] sections)
+                => Target(configuration, sections.AsEnumerable());
 
-            private static IniDocument Target(IEnumerable<Section> sections)
-                => sections.Aggregate(new IniDocumentBuilder(), (builder, section) => section.ApplyTo(builder)).Build();
+            private static IniDocument Target(IniDocumentConfiguration configuration, IEnumerable<Section> sections)
+                => sections.Aggregate(new IniDocumentBuilder(configuration), (builder, section) => section.ApplyTo(builder)).Build();
 
             private sealed class IniDocumentBuilder
             {
                 private readonly StringBuilder stringBuilder = new();
+
+                private readonly IniDocumentConfiguration configuration = DefaultConfiguration;
+
+                public IniDocumentBuilder()
+                {
+                }
+
+                public IniDocumentBuilder(IniDocumentConfiguration configuration)
+                {
+                    this.configuration = configuration;
+                }
 
                 public IniDocumentBuilder AppendEmptyLine()
                 {
@@ -873,7 +925,7 @@ namespace Delizious.Ini.Test
                 public IniDocument Build()
                 {
                     using var stringReader = new StringReader(this.ToString());
-                    return IniDocument.LoadFrom(stringReader, DefaultConfiguration);
+                    return IniDocument.LoadFrom(stringReader, this.configuration);
                 }
             }
 
