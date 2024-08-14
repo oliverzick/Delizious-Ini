@@ -51,6 +51,24 @@
         public PropertyReadMode PropertyReadMode { get; } = PropertyReadMode.Fail;
 
         /// <summary>
+        /// Creates a copy of the current <see cref="IniDocumentConfiguration"/> instance and defines the mode that specifies how to read a property.
+        /// </summary>
+        /// <param name="propertyReadMode">
+        /// The mode that specifies how to read a property.
+        /// </param>
+        /// <returns>
+        /// A new <see cref="IniDocumentConfiguration"/> instance with the given <paramref name="propertyReadMode"/>.
+        /// </returns>
+        public IniDocumentConfiguration WithPropertyReadMode(PropertyReadMode propertyReadMode)
+            => new IniDocumentConfiguration(this, propertyReadMode);
+
+        private IniDocumentConfiguration(IniDocumentConfiguration other, PropertyReadMode propertyReadMode)
+            : this(other)
+        {
+            this.PropertyReadMode = propertyReadMode;
+        }
+
+        /// <summary>
         /// The mode that specifies how to write a property.
         /// </summary>
         public PropertyWriteMode PropertyWriteMode { get; } = PropertyWriteMode.Update;
