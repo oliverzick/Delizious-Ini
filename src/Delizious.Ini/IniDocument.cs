@@ -284,28 +284,42 @@
         }
 
         /// <summary>
-        /// Updates the value of the property contained in the section.
+        /// <para>
+        /// Writes the value of the property contained in the section using the <see cref="IniDocumentConfiguration.PropertyWriteMode"/>.
+        /// </para>
+        /// <para>
+        /// When <see cref="IniDocumentConfiguration.PropertyWriteMode"/> is <see cref="PropertyWriteMode.Update"/> and the section does not exist,
+        /// a <see cref="SectionNotFoundException"/> is thrown.
+        /// </para>
+        /// <para>
+        /// When <see cref="IniDocumentConfiguration.PropertyWriteMode"/> is <see cref="PropertyWriteMode.Update"/> and the property does not exist,
+        /// a <see cref="PropertyNotFoundException"/> is thrown.
+        /// </para>
         /// </summary>
         /// <param name="sectionName">
         /// The name of the section containing the property.
         /// </param>
         /// <param name="propertyKey">
-        /// The key of the property to update.
+        /// The key of the property to write the value.
         /// </param>
-        /// <param name="newPropertyValue">
-        /// The new value of the property.
+        /// <param name="propertyValue">
+        /// The value of the property.
         /// </param>
         /// <exception cref="ArgumentNullException">
-        /// <paramref name="sectionName"/> or <paramref name="propertyKey"/> or <paramref name="newPropertyValue"/> is <c>null</c>.
+        /// <para><paramref name="sectionName"/> is <c>null</c>.</para>
+        /// <para>- or -</para>
+        /// <para><paramref name="propertyKey"/> is <c>null</c>.</para>
+        /// <para>- or -</para>
+        /// <para><paramref name="propertyValue"/> is <c>null</c>.</para>
         /// </exception>
         /// <exception cref="SectionNotFoundException">
-        /// The section specified by the <paramref name="sectionName"/> does not exist.
+        /// <see cref="IniDocumentConfiguration.PropertyWriteMode"/> is <see cref="PropertyWriteMode.Update"/> and the section specified by the <paramref name="sectionName"/> does not exist.
         /// </exception>
         /// <exception cref="PropertyNotFoundException">
-        /// The property specified by the <paramref name="propertyKey"/> does not exist.
+        /// <see cref="IniDocumentConfiguration.PropertyWriteMode"/> is <see cref="PropertyWriteMode.Update"/> and the property specified by the <paramref name="propertyKey"/> does not exist.
         /// </exception>
-        public void WriteProperty(SectionName sectionName, PropertyKey propertyKey, PropertyValue newPropertyValue)
-            => this.WriteProperty(sectionName, propertyKey, newPropertyValue, this.configuration.PropertyWriteMode);
+        public void WriteProperty(SectionName sectionName, PropertyKey propertyKey, PropertyValue propertyValue)
+            => this.WriteProperty(sectionName, propertyKey, propertyValue, this.configuration.PropertyWriteMode);
 
         /// <summary>
         /// <para>

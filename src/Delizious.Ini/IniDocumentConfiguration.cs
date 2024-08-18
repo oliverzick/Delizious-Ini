@@ -72,5 +72,23 @@
         /// The mode that specifies how to write a property.
         /// </summary>
         public PropertyWriteMode PropertyWriteMode { get; } = PropertyWriteMode.Update;
+
+        /// <summary>
+        /// Creates a copy of the current <see cref="IniDocumentConfiguration"/> instance and defines the mode that specifies how to write a property.
+        /// </summary>
+        /// <param name="propertyWriteMode">
+        /// The mode that specifies how to write a property.
+        /// </param>
+        /// <returns>
+        /// A new <see cref="IniDocumentConfiguration"/> instance with the given <paramref name="propertyWriteMode"/>.
+        /// </returns>
+        public IniDocumentConfiguration WithPropertyWriteMode(PropertyWriteMode propertyWriteMode)
+            => new IniDocumentConfiguration(this, propertyWriteMode);
+
+        private IniDocumentConfiguration(IniDocumentConfiguration other, PropertyWriteMode propertyWriteMode)
+            : this(other)
+        {
+            this.PropertyWriteMode = propertyWriteMode;
+        }
     }
 }
