@@ -304,7 +304,7 @@
         /// <exception cref="PropertyNotFoundException">
         /// The property specified by the <paramref name="propertyKey"/> does not exist.
         /// </exception>
-        public void UpdateProperty(SectionName sectionName, PropertyKey propertyKey, PropertyValue newPropertyValue)
+        public void WriteProperty(SectionName sectionName, PropertyKey propertyKey, PropertyValue newPropertyValue)
             => this.WriteProperty(sectionName, propertyKey, newPropertyValue, this.configuration.PropertyWriteMode);
 
         /// <summary>
