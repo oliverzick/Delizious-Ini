@@ -479,87 +479,102 @@ namespace Delizious.Ini.Test
         }
 
         [TestClass]
-        public sealed class UpdateProperty
-        {
-            [TestMethod]
-            public void Throws_argument_null_exception_when_section_name_is_null()
-            {
-                var target = Make.EmptyTarget();
-
-                Assert.ThrowsException<ArgumentNullException>(() => target.UpdateProperty(null, DummyPropertyKey, DummyPropertyValue));
-            }
-
-            [TestMethod]
-            public void Throws_argument_null_exception_when_property_key_is_null()
-            {
-                var target = Make.EmptyTarget();
-
-                Assert.ThrowsException<ArgumentNullException>(() => target.UpdateProperty(DummySectionName, null, DummyPropertyValue));
-            }
-
-            [TestMethod]
-            public void Throws_argument_null_exception_when_new_property_value_is_null()
-            {
-                var target = Make.EmptyTarget();
-
-                Assert.ThrowsException<ArgumentNullException>(() => target.UpdateProperty(DummySectionName, DummyPropertyKey, null));
-            }
-
-            [TestMethod]
-            public void Throws_section_not_found_exception_when_section_does_not_exist()
-            {
-                var sectionName = NonexistentSectionName;
-                var expected = new SectionNotFoundExceptionAssertion(sectionName);
-
-                var target = Make.EmptyTarget();
-
-                var actual = Assert.ThrowsException<SectionNotFoundException>(() => target.UpdateProperty(sectionName, DummyPropertyKey, DummyPropertyValue));
-
-                Assert.AreEqual(expected, actual);
-            }
-
-            [TestMethod]
-            public void Throws_property_not_found_exception_when_property_does_not_exist()
-            {
-                var sectionName = DefaultSectionName;
-                var propertyKey = NonexistentPropertyKey;
-                var expected = new PropertyNotFoundExceptionAssertion(propertyKey);
-
-                var target = Make.SingleDefaultPropertyTarget(DefaultPropertyValue);
-
-                var actual = Assert.ThrowsException<PropertyNotFoundException>(() => target.UpdateProperty(sectionName, propertyKey, DummyPropertyValue));
-
-                Assert.AreEqual(expected, actual);
-            }
-
-            [TestMethod]
-            public void Updates_the_value_of_the_property_contained_in_the_section()
-            {
-                var sectionName = DefaultSectionName;
-                var propertyKey = DefaultPropertyKey;
-                var oldValue = "Old value";
-                var newValue = "New value";
-                var expected = newValue;
-
-                var target = Make.SingleDefaultPropertyTarget(oldValue);
-
-                target.UpdateProperty(sectionName, propertyKey, newValue);
-
-                var actual = target.ReadProperty(sectionName, propertyKey);
-
-                Assert.AreEqual(expected, actual);
-            }
-        }
-
-
-        [TestClass]
         public sealed class WriteProperty
         {
+            private static PropertyReadMode ReadMode => PropertyReadMode.Fail;
+
+            [TestClass]
+            public sealed class With_sectionName_and_propertyKey_and_propertyValue
+            {
+                [TestMethod]
+                public void Throws_argument_null_exception_when_section_name_is_null()
+                {
+                    var target = Make.EmptyTarget();
+
+                    Assert.ThrowsException<ArgumentNullException>(() => target.WriteProperty(null, DummyPropertyKey, DummyPropertyValue));
+                }
+
+                [TestMethod]
+                public void Throws_argument_null_exception_when_property_key_is_null()
+                {
+                    var target = Make.EmptyTarget();
+
+                    Assert.ThrowsException<ArgumentNullException>(() => target.WriteProperty(DummySectionName, null, DummyPropertyValue));
+                }
+
+                [TestMethod]
+                public void Throws_argument_null_exception_when_property_value_is_null()
+                {
+                    var target = Make.EmptyTarget();
+
+                    Assert.ThrowsException<ArgumentNullException>(() => target.WriteProperty(DummySectionName, DummyPropertyKey, null));
+                }
+
+                private static void Writes_property(IniDocument target)
+                {
+                    var expected = DefaultPropertyValue;
+
+                    target.WriteProperty(DefaultSectionName, DefaultPropertyKey, expected);
+
+                    var actual = target.ReadProperty(DefaultSectionName, DefaultPropertyKey, ReadMode);
+
+                    Assert.AreEqual(expected, actual);
+                }
+
+                [TestClass]
+                public sealed class When_create_mode
+                {
+                    private static IniDocumentConfiguration Configuration => IniDocumentConfiguration.Default.WithPropertyWriteMode(PropertyWriteMode.Create);
+
+                    [TestMethod]
+                    public void Creates_property_with_given_property_value_when_section_does_not_exist()
+                        => Writes_property(Make.EmptyTarget(Configuration));
+
+                    [TestMethod]
+                    public void Creates_property_with_given_property_value_when_section_exists_but_property_does_not_exist()
+                        => Writes_property(Make.EmptySectionsTarget(Configuration, DefaultSectionName));
+
+                    [TestMethod]
+                    public void Overwrites_existing_property_with_given_property_value()
+                        => Writes_property(Make.SingleDefaultPropertyTarget(Configuration, EmptyPropertyValue));
+                }
+
+                [TestClass]
+                public sealed class When_update_mode
+                {
+                    private static IniDocumentConfiguration Configuration => IniDocumentConfiguration.Default.WithPropertyWriteMode(PropertyWriteMode.Update);
+
+                    [TestMethod]
+                    public void Throws_section_not_found_exception_when_section_does_not_exist()
+                    {
+                        var expected = new SectionNotFoundExceptionAssertion(NonexistentSectionName);
+                        var target = Make.EmptyTarget(Configuration);
+
+                        var actual = Assert.ThrowsException<SectionNotFoundException>(() => target.WriteProperty(NonexistentSectionName, DefaultPropertyKey, DefaultPropertyValue));
+
+                        Assert.AreEqual(expected, actual);
+                    }
+
+                    [TestMethod]
+                    public void Throws_property_not_found_exception_when_property_does_not_exist()
+                    {
+                        var expected = new PropertyNotFoundExceptionAssertion(NonexistentPropertyKey);
+                        var target = Make.SingleDefaultPropertyTarget(Configuration, DefaultPropertyValue);
+
+                        var actual = Assert.ThrowsException<PropertyNotFoundException>(() => target.WriteProperty(DefaultSectionName, NonexistentPropertyKey, DefaultPropertyValue));
+
+                        Assert.AreEqual(expected, actual);
+                    }
+
+                    [TestMethod]
+                    public void Updates_existing_property_to_given_property_value()
+                        => Writes_property(Make.SingleDefaultPropertyTarget(Configuration, EmptyPropertyValue));
+                }
+            }
+
             [TestClass]
             public sealed class With_sectionName_and_propertyKey_and_propertyValue_and_mode
             {
-                private static PropertyReadMode ReadMode => PropertyReadMode.Fail;
-
                 private static PropertyWriteMode DummyMode => PropertyWriteMode.Update;
 
                 [TestMethod]
@@ -859,7 +874,10 @@ namespace Delizious.Ini.Test
                 => Target(configuration, Section.Create(DefaultSectionName, Property.Create(DefaultPropertyKey, propertyValue)));
 
             public static IniDocument EmptySectionsTarget(params SectionName[] sectionNames)
-                => EmptySectionsTarget(sectionNames.AsEnumerable());
+                => EmptySectionsTarget(DefaultConfiguration, sectionNames);
+
+            public static IniDocument EmptySectionsTarget(IniDocumentConfiguration configuration, params SectionName[] sectionNames)
+                => Target(configuration, sectionNames.Select(Section.CreateEmpty));
 
             public static IniDocument EmptySectionsTarget(IEnumerable<SectionName> sectionNames)
                 => Target(DefaultConfiguration,  sectionNames.Select(Section.CreateEmpty));
