@@ -296,7 +296,7 @@ namespace Delizious.Ini.Test
 
                 [DataTestMethod]
                 [DataRow("Property value", DisplayName = "Actual value")]
-                [DataRow(""              , DisplayName = "Empty string when property does exist but has no value")]
+                [DataRow("",               DisplayName = "Empty string when property does exist but has no value")]
                 public void Reads_the_value_of_the_property_contained_in_the_specified_section(string propertyValue)
                 {
                     var expected = propertyValue;

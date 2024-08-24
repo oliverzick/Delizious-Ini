@@ -43,17 +43,17 @@
 
         private static IniParserConfiguration MakeIniParserConfiguration()
             => new IniParserConfiguration
-            {
-                AllowCreateSectionsOnFly = false,
-                AllowDuplicateKeys = false,
-                AllowDuplicateSections = false,
-                AllowKeysWithoutSection = false,
-                AssigmentSpacer = string.Empty,
-                CaseInsensitive = true,
-                ConcatenateDuplicateKeys = false,
-                SkipInvalidLines = true,
-                ThrowExceptionsOnError = true
-            };
+               {
+                   AllowCreateSectionsOnFly = false,
+                   AllowDuplicateKeys = false,
+                   AllowDuplicateSections = false,
+                   AllowKeysWithoutSection = false,
+                   AssigmentSpacer = string.Empty,
+                   CaseInsensitive = true,
+                   ConcatenateDuplicateKeys = false,
+                   SkipInvalidLines = true,
+                   ThrowExceptionsOnError = true
+               };
 
         public void SaveTo(TextWriter textWriter)
         {

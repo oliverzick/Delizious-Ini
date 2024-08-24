@@ -44,8 +44,8 @@
 
         [DataTestMethod]
         [DynamicData(nameof(Equality_operator_test_cases), DynamicDataSourceType.Method)]
-        [DynamicData(nameof(Equals_test_cases), DynamicDataSourceType.Method)]
-        [DynamicData(nameof(Equals_null_test_cases), DynamicDataSourceType.Method)]
+        [DynamicData(nameof(Equals_test_cases),            DynamicDataSourceType.Method)]
+        [DynamicData(nameof(Equals_null_test_cases),       DynamicDataSourceType.Method)]
         public void Properly_implements_equality_operator(PropertyValue left, PropertyValue right, bool expected)
         {
             var actual = left == right;
@@ -55,8 +55,8 @@
 
         [DataTestMethod]
         [DynamicData(nameof(Equality_operator_test_cases), DynamicDataSourceType.Method)]
-        [DynamicData(nameof(Equals_test_cases), DynamicDataSourceType.Method)]
-        [DynamicData(nameof(Equals_null_test_cases), DynamicDataSourceType.Method)]
+        [DynamicData(nameof(Equals_test_cases),            DynamicDataSourceType.Method)]
+        [DynamicData(nameof(Equals_null_test_cases),       DynamicDataSourceType.Method)]
         public void Properly_implements_inequality_operator(PropertyValue left, PropertyValue right, bool inverse_expected)
         {
             var expected = !inverse_expected;
@@ -67,7 +67,7 @@
         }
 
         [DataTestMethod]
-        [DynamicData(nameof(Equals_test_cases), DynamicDataSourceType.Method)]
+        [DynamicData(nameof(Equals_test_cases),      DynamicDataSourceType.Method)]
         [DynamicData(nameof(Equals_null_test_cases), DynamicDataSourceType.Method)]
         public void Properly_implements_equals_method(PropertyValue target, object other, bool expected)
         {
@@ -78,8 +78,8 @@
 
         [DataTestMethod]
         [DynamicData(nameof(General_equals_test_cases), DynamicDataSourceType.Method)]
-        [DynamicData(nameof(Equals_test_cases), DynamicDataSourceType.Method)]
-        [DynamicData(nameof(Equals_null_test_cases), DynamicDataSourceType.Method)]
+        [DynamicData(nameof(Equals_test_cases),         DynamicDataSourceType.Method)]
+        [DynamicData(nameof(Equals_null_test_cases),    DynamicDataSourceType.Method)]
         public void Properly_implements_general_equals_method(PropertyValue target, object other, bool expected)
         {
             var actual = target.Equals(other);

@@ -26,8 +26,8 @@
 
         [DataTestMethod]
         [DynamicData(nameof(Equality_operator_test_cases), DynamicDataSourceType.Method)]
-        [DynamicData(nameof(Equals_test_cases), DynamicDataSourceType.Method)]
-        [DynamicData(nameof(Equals_null_test_cases), DynamicDataSourceType.Method)]
+        [DynamicData(nameof(Equals_test_cases),            DynamicDataSourceType.Method)]
+        [DynamicData(nameof(Equals_null_test_cases),       DynamicDataSourceType.Method)]
         public void Properly_implements_equality_operator(PropertyEnumerationMode left, PropertyEnumerationMode right, bool expected)
         {
             var actual = left == right;
@@ -37,8 +37,8 @@
 
         [DataTestMethod]
         [DynamicData(nameof(Equality_operator_test_cases), DynamicDataSourceType.Method)]
-        [DynamicData(nameof(Equals_test_cases), DynamicDataSourceType.Method)]
-        [DynamicData(nameof(Equals_null_test_cases), DynamicDataSourceType.Method)]
+        [DynamicData(nameof(Equals_test_cases),            DynamicDataSourceType.Method)]
+        [DynamicData(nameof(Equals_null_test_cases),       DynamicDataSourceType.Method)]
         public void Properly_implements_inequality_operator(PropertyEnumerationMode left, PropertyEnumerationMode right, bool inverse_expected)
         {
             var expected = !inverse_expected;
@@ -49,7 +49,7 @@
         }
 
         [DataTestMethod]
-        [DynamicData(nameof(Equals_test_cases), DynamicDataSourceType.Method)]
+        [DynamicData(nameof(Equals_test_cases),      DynamicDataSourceType.Method)]
         [DynamicData(nameof(Equals_null_test_cases), DynamicDataSourceType.Method)]
         public void Properly_implements_equals_method(PropertyEnumerationMode target, object other, bool expected)
         {
@@ -60,8 +60,8 @@
 
         [DataTestMethod]
         [DynamicData(nameof(General_equals_test_cases), DynamicDataSourceType.Method)]
-        [DynamicData(nameof(Equals_test_cases), DynamicDataSourceType.Method)]
-        [DynamicData(nameof(Equals_null_test_cases), DynamicDataSourceType.Method)]
+        [DynamicData(nameof(Equals_test_cases),         DynamicDataSourceType.Method)]
+        [DynamicData(nameof(Equals_null_test_cases),    DynamicDataSourceType.Method)]
         public void Properly_implements_general_equals_method(PropertyEnumerationMode target, object other, bool expected)
         {
             var actual = target.Equals(other);
@@ -84,6 +84,7 @@
             yield return new object[] { Null, Fail, false };
             yield return new object[] { Null, Fallback, false };
         }
+
         public static IEnumerable<object[]> Equals_null_test_cases()
         {
             yield return new object[] { Fail, Null, false };
