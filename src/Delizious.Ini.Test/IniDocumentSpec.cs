@@ -137,7 +137,7 @@ namespace Delizious.Ini.Test
         [TestClass]
         public sealed class EnumerateProperties
         {
-            private static ImmutableArray<PropertyKey> PropertyKeys { get; } = ImmutableArray.Create<PropertyKey>("Property1", "AnotherProperty2", "SomePropertyA");
+            private static PropertyKey[] PropertyKeys => new PropertyKey[] { "Property1", "AnotherProperty2", "SomePropertyA" };
 
             [TestClass]
             public sealed class With_sectionName
@@ -862,9 +862,6 @@ namespace Delizious.Ini.Test
                 => IniDocument.CreateEmpty(configuration);
 
             public static IniDocument SingleDefaultSectionTarget(params PropertyKey[] propertyKeys)
-                => SingleDefaultSectionTarget(propertyKeys.AsEnumerable());
-
-            public static IniDocument SingleDefaultSectionTarget(IEnumerable<PropertyKey> propertyKeys)
                 => Target(DefaultConfiguration, Section.Create(DefaultSectionName, propertyKeys.Select(Property.Create)));
 
             public static IniDocument SingleDefaultPropertyTarget(PropertyValue propertyValue)
