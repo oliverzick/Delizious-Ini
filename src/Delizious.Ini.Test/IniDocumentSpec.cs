@@ -12,18 +12,18 @@ namespace Delizious.Ini.Test
     {
         private static IniDocumentConfiguration DefaultConfiguration => IniDocumentConfiguration.Default;
 
-        private static readonly SectionName DummySectionName = "Dummy";
-        private static readonly PropertyKey DummyPropertyKey = "Dummy";
-        private static readonly PropertyValue DummyPropertyValue = "Dummy";
+        private static SectionName DummySectionName => "Dummy";
+        private static PropertyKey DummyPropertyKey => "Dummy";
+        private static PropertyValue DummyPropertyValue => "Dummy";
 
-        private static readonly SectionName NonexistentSectionName = "NonexistentSection";
-        private static readonly PropertyKey NonexistentPropertyKey = "NonexistentProperty";
+        private static SectionName NonexistentSectionName => "NonexistentSection";
+        private static PropertyKey NonexistentPropertyKey => "NonexistentProperty";
 
-        private static readonly SectionName DefaultSectionName = "Section";
-        private static readonly PropertyKey DefaultPropertyKey = "Property";
-        private static readonly PropertyValue DefaultPropertyValue = "Value";
+        private static SectionName DefaultSectionName => "Section";
+        private static PropertyKey DefaultPropertyKey => "Property";
+        private static PropertyValue DefaultPropertyValue => "Value";
 
-        private static readonly PropertyValue EmptyPropertyValue = string.Empty;
+        private static PropertyValue EmptyPropertyValue => string.Empty;
 
         [TestClass]
         public sealed class CreateEmpty
@@ -202,7 +202,7 @@ namespace Delizious.Ini.Test
             [TestClass]
             public sealed class With_sectionName_and_mode
             {
-                private static readonly PropertyEnumerationMode DummyMode = PropertyEnumerationMode.Fail;
+                private static PropertyEnumerationMode DummyMode => PropertyEnumerationMode.Fail;
 
                 [TestMethod]
                 public void Throws_argument_null_exception_when_section_name_is_null()
@@ -241,7 +241,7 @@ namespace Delizious.Ini.Test
                 [TestClass]
                 public sealed class When_fail_mode
                 {
-                    private static readonly PropertyEnumerationMode Mode = PropertyEnumerationMode.Fail;
+                    private static PropertyEnumerationMode Mode => PropertyEnumerationMode.Fail;
 
                     [TestMethod]
                     public void Throws_section_not_found_exception_when_section_does_not_exist()
@@ -255,7 +255,7 @@ namespace Delizious.Ini.Test
                 [TestClass]
                 public sealed class When_fallback_mode
                 {
-                    private static readonly PropertyEnumerationMode Mode = PropertyEnumerationMode.Fallback;
+                    private static PropertyEnumerationMode Mode => PropertyEnumerationMode.Fallback;
 
                     [TestMethod]
                     public void Enumerates_an_empty_collection_when_section_does_not_exist()
@@ -425,7 +425,7 @@ namespace Delizious.Ini.Test
                 [TestClass]
                 public sealed class When_fail_mode
                 {
-                    private static readonly PropertyReadMode Mode = PropertyReadMode.Fail;
+                    private static PropertyReadMode Mode => PropertyReadMode.Fail;
 
                     [TestMethod]
                     public void Throws_section_not_found_exception_when_section_does_not_exist()
@@ -623,7 +623,7 @@ namespace Delizious.Ini.Test
                 [TestClass]
                 public sealed class When_create_mode
                 {
-                    private static readonly PropertyWriteMode Mode = PropertyWriteMode.Create;
+                    private static PropertyWriteMode Mode => PropertyWriteMode.Create;
 
                     [TestMethod]
                     public void Creates_property_with_given_property_value_when_section_does_not_exist()
@@ -641,7 +641,7 @@ namespace Delizious.Ini.Test
                 [TestClass]
                 public sealed class When_update_mode
                 {
-                    private static readonly PropertyWriteMode Mode = PropertyWriteMode.Update;
+                    private static PropertyWriteMode Mode => PropertyWriteMode.Update;
 
                     [TestMethod]
                     public void Throws_section_not_found_exception_when_section_does_not_exist()
