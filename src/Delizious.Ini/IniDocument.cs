@@ -442,6 +442,30 @@
 
         /// <summary>
         /// <para>
+        /// Deletes the section using the <see cref="IniDocumentConfiguration.SectionDeletionMode"/>.
+        /// </para>
+        /// <para>
+        /// When <see cref="IniDocumentConfiguration.SectionDeletionMode"/> is <see cref="SectionDeletionMode.Fail"/> and the section does not exist,
+        /// a <see cref="SectionNotFoundException"/> is thrown.
+        /// </para>
+        /// <para>
+        /// When <see cref="IniDocumentConfiguration.SectionDeletionMode"/> is <see cref="SectionDeletionMode.Ignore"/>, it is silently ignored if the section does not exist.
+        /// </para>
+        /// </summary>
+        /// <param name="sectionName">
+        /// The name of the section to delete.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="sectionName"/> is <c>null</c>.
+        /// </exception>
+        /// <exception cref="SectionNotFoundException">
+        /// <see cref="IniDocumentConfiguration.SectionDeletionMode"/> is <see cref="SectionDeletionMode.Fail"/> and the specified section does not exist.
+        /// </exception>
+        public void DeleteSection(SectionName sectionName)
+            => this.DeleteSection(sectionName, this.configuration.SectionDeletionMode);
+
+        /// <summary>
+        /// <para>
         /// Deletes the section according to the given mode.
         /// </para>
         /// <para>
