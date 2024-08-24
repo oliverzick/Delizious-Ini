@@ -90,5 +90,28 @@
         {
             this.PropertyWriteMode = propertyWriteMode;
         }
+
+        /// <summary>
+        /// The mode that specifies how to delete a section.
+        /// </summary>
+        public SectionDeletionMode SectionDeletionMode { get; } = SectionDeletionMode.Fail;
+
+        /// <summary>
+        /// Creates a copy of the current <see cref="IniDocumentConfiguration"/> instance and defines the mode that specifies how to delete a section.
+        /// </summary>
+        /// <param name="sectionDeletionMode">
+        /// The mode that specifies how to delete a section.
+        /// </param>
+        /// <returns>
+        /// A new <see cref="IniDocumentConfiguration"/> instance with the given <paramref name="sectionDeletionMode"/>.
+        /// </returns>
+        public IniDocumentConfiguration WithSectionDeletionMode(SectionDeletionMode sectionDeletionMode)
+            => new IniDocumentConfiguration(this, sectionDeletionMode);
+
+        private IniDocumentConfiguration(IniDocumentConfiguration other, SectionDeletionMode sectionDeletionMode)
+            : this(other)
+        {
+            this.SectionDeletionMode = sectionDeletionMode;
+        }
     }
 }
