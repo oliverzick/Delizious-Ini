@@ -955,8 +955,8 @@ namespace Delizious.Ini.Test
                 public static Section Create(SectionName sectionName, params Property[] properties)
                     => Create(sectionName, properties.AsEnumerable());
 
-                public static Section Create(SectionName SectionName, IEnumerable<Property> properties)
-                    => new(SectionName, properties.ToImmutableArray());
+                public static Section Create(SectionName sectionName, IEnumerable<Property> properties)
+                    => new(sectionName, properties.ToImmutableArray());
 
                 public IniDocumentBuilder ApplyTo(IniDocumentBuilder builder)
                     => this.Properties.Aggregate(builder.AppendSectionLine(this.SectionName), (currentBuilder, property) => property.ApplyTo(currentBuilder));
