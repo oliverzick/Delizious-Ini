@@ -1,139 +1,138 @@
-﻿namespace Delizious.Ini.Test
+﻿namespace Delizious.Ini.Test;
+
+using System;
+using System.Collections.Generic;
+
+[TestClass]
+public sealed class SectionNameSpec
 {
-    using System;
-    using System.Collections.Generic;
+    private const string Section = "Section";
 
-    [TestClass]
-    public sealed class SectionNameSpec
+    private static SectionName Null => null!;
+    private static SectionName A => "A";
+    private static SectionName B => "B";
+
+    [TestMethod]
+    public void Throws_argument_null_exception_on_creation_when_given_section_name_is_null()
     {
-        private const string Section = "Section";
+        Assert.ThrowsException<ArgumentNullException>(() => SectionName.Create(null));
+    }
 
-        private static SectionName Null => null!;
-        private static SectionName A => "A";
-        private static SectionName B => "B";
+    [TestMethod]
+    public void Throws_argument_exception_on_creation_when_given_section_name_is_empty()
+    {
+        Assert.ThrowsException<ArgumentException>(() => SectionName.Create(string.Empty));
+    }
 
-        [TestMethod]
-        public void Throws_argument_null_exception_on_creation_when_given_section_name_is_null()
-        {
-            Assert.ThrowsException<ArgumentNullException>(() => SectionName.Create(null));
-        }
+    [TestMethod]
+    public void Throws_argument_exception_on_creation_when_given_section_name_consists_only_of_white_space_characters()
+    {
+        Assert.ThrowsException<ArgumentException>(() => SectionName.Create("   "));
+    }
 
-        [TestMethod]
-        public void Throws_argument_exception_on_creation_when_given_section_name_is_empty()
-        {
-            Assert.ThrowsException<ArgumentException>(() => SectionName.Create(string.Empty));
-        }
+    [TestMethod]
+    public void Represents_encapsulated_section_name()
+    {
+        const string expected = Section;
 
-        [TestMethod]
-        public void Throws_argument_exception_on_creation_when_given_section_name_consists_only_of_white_space_characters()
-        {
-            Assert.ThrowsException<ArgumentException>(() => SectionName.Create("   "));
-        }
+        SectionName target = expected;
 
-        [TestMethod]
-        public void Represents_encapsulated_section_name()
-        {
-            const string expected = Section;
+        var actual = target.ToString();
 
-            SectionName target = expected;
+        Assert.AreEqual(expected, actual);
+    }
 
-            var actual = target.ToString();
+    [TestMethod]
+    public void Provides_hash_code_of_encapsulated_section_name()
+    {
+        var expected = Section.GetHashCode();
 
-            Assert.AreEqual(expected, actual);
-        }
+        SectionName target = Section;
 
-        [TestMethod]
-        public void Provides_hash_code_of_encapsulated_section_name()
-        {
-            var expected = Section.GetHashCode();
+        var actual = target.GetHashCode();
 
-            SectionName target = Section;
+        Assert.AreEqual(expected, actual);
+    }
 
-            var actual = target.GetHashCode();
+    [DataTestMethod]
+    [DynamicData(nameof(Equality_operator_test_cases), DynamicDataSourceType.Method)]
+    [DynamicData(nameof(Equals_test_cases),            DynamicDataSourceType.Method)]
+    [DynamicData(nameof(Equals_null_test_cases),       DynamicDataSourceType.Method)]
+    public void Properly_implements_equality_operator(SectionName left, SectionName right, bool expected)
+    {
+        var actual = left == right;
 
-            Assert.AreEqual(expected, actual);
-        }
+        Assert.AreEqual(expected, actual);
+    }
 
-        [DataTestMethod]
-        [DynamicData(nameof(Equality_operator_test_cases), DynamicDataSourceType.Method)]
-        [DynamicData(nameof(Equals_test_cases), DynamicDataSourceType.Method)]
-        [DynamicData(nameof(Equals_null_test_cases), DynamicDataSourceType.Method)]
-        public void Properly_implements_equality_operator(SectionName left, SectionName right, bool expected)
-        {
-            var actual = left == right;
+    [DataTestMethod]
+    [DynamicData(nameof(Equality_operator_test_cases), DynamicDataSourceType.Method)]
+    [DynamicData(nameof(Equals_test_cases),            DynamicDataSourceType.Method)]
+    [DynamicData(nameof(Equals_null_test_cases),       DynamicDataSourceType.Method)]
+    public void Properly_implements_inequality_operator(SectionName left, SectionName right, bool inverse_expected)
+    {
+        var expected = !inverse_expected;
 
-            Assert.AreEqual(expected, actual);
-        }
+        var actual = left != right;
 
-        [DataTestMethod]
-        [DynamicData(nameof(Equality_operator_test_cases), DynamicDataSourceType.Method)]
-        [DynamicData(nameof(Equals_test_cases), DynamicDataSourceType.Method)]
-        [DynamicData(nameof(Equals_null_test_cases), DynamicDataSourceType.Method)]
-        public void Properly_implements_inequality_operator(SectionName left, SectionName right, bool inverse_expected)
-        {
-            var expected = !inverse_expected;
+        Assert.AreEqual(expected, actual);
+    }
 
-            var actual = left != right;
+    [DataTestMethod]
+    [DynamicData(nameof(Equals_test_cases),      DynamicDataSourceType.Method)]
+    [DynamicData(nameof(Equals_null_test_cases), DynamicDataSourceType.Method)]
+    public void Properly_implements_equals_method(SectionName target, object other, bool expected)
+    {
+        var actual = target.Equals(other);
 
-            Assert.AreEqual(expected, actual);
-        }
+        Assert.AreEqual(expected, actual);
+    }
 
-        [DataTestMethod]
-        [DynamicData(nameof(Equals_test_cases), DynamicDataSourceType.Method)]
-        [DynamicData(nameof(Equals_null_test_cases), DynamicDataSourceType.Method)]
-        public void Properly_implements_equals_method(SectionName target, object other, bool expected)
-        {
-            var actual = target.Equals(other);
+    [DataTestMethod]
+    [DynamicData(nameof(General_equals_test_cases), DynamicDataSourceType.Method)]
+    [DynamicData(nameof(Equals_test_cases),         DynamicDataSourceType.Method)]
+    [DynamicData(nameof(Equals_null_test_cases),    DynamicDataSourceType.Method)]
+    public void Properly_implements_general_equals_method(SectionName target, object other, bool expected)
+    {
+        var actual = target.Equals(other);
 
-            Assert.AreEqual(expected, actual);
-        }
+        Assert.AreEqual(expected, actual);
+    }
 
-        [DataTestMethod]
-        [DynamicData(nameof(General_equals_test_cases), DynamicDataSourceType.Method)]
-        [DynamicData(nameof(Equals_test_cases), DynamicDataSourceType.Method)]
-        [DynamicData(nameof(Equals_null_test_cases), DynamicDataSourceType.Method)]
-        public void Properly_implements_general_equals_method(SectionName target, object other, bool expected)
-        {
-            var actual = target.Equals(other);
+    [DataTestMethod]
+    [DynamicData(nameof(Equals_test_cases), DynamicDataSourceType.Method)]
+    public void Properly_implements_get_hash_code_method(SectionName target, SectionName other, bool expected)
+    {
+        var actual = target.GetHashCode() == other.GetHashCode();
 
-            Assert.AreEqual(expected, actual);
-        }
+        Assert.AreEqual(expected, actual);
+    }
 
-        [DataTestMethod]
-        [DynamicData(nameof(Equals_test_cases), DynamicDataSourceType.Method)]
-        public void Properly_implements_get_hash_code_method(SectionName target, SectionName other, bool expected)
-        {
-            var actual = target.GetHashCode() == other.GetHashCode();
+    public static IEnumerable<object[]> Equality_operator_test_cases()
+    {
+        yield return new object[] { Null, Null, true };
+        yield return new object[] { Null, A, false };
+        yield return new object[] { Null, B, false };
+    }
 
-            Assert.AreEqual(expected, actual);
-        }
+    public static IEnumerable<object[]> Equals_null_test_cases()
+    {
+        yield return new object[] { A, Null, false };
+        yield return new object[] { B, Null, false };
+    }
 
-        public static IEnumerable<object[]> Equality_operator_test_cases()
-        {
-            yield return new object[] { Null, Null, true };
-            yield return new object[] { Null, A, false };
-            yield return new object[] { Null, B, false };
-        }
+    public static IEnumerable<object[]> Equals_test_cases()
+    {
+        yield return new object[] { A, A, true };
+        yield return new object[] { A, B, false };
 
-        public static IEnumerable<object[]> Equals_null_test_cases()
-        {
-            yield return new object[] { A, Null, false };
-            yield return new object[] { B, Null, false };
-        }
+        yield return new object[] { B, B, true };
+        yield return new object[] { B, A, false };
+    }
 
-        public static IEnumerable<object[]> Equals_test_cases()
-        {
-            yield return new object[] { A, A, true };
-            yield return new object[] { A, B, false };
-
-            yield return new object[] { B, B, true };
-            yield return new object[] { B, A, false };
-        }
-
-        public static IEnumerable<object[]> General_equals_test_cases()
-        {
-            yield return new object[] { A, new(), false };
-            yield return new object[] { B, new(), false };
-        }
+    public static IEnumerable<object[]> General_equals_test_cases()
+    {
+        yield return new object[] { A, new(), false };
+        yield return new object[] { B, new(), false };
     }
 }
