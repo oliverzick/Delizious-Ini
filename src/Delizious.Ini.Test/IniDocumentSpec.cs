@@ -119,7 +119,7 @@ namespace Delizious.Ini.Test
         [TestClass]
         public sealed class EnumerateSections
         {
-            private static ImmutableArray<SectionName> SectionNames => ImmutableArray.Create<SectionName>("Section1", "AnotherSection2", "SomeSectionA");
+            private static SectionName[] SectionNames => new SectionName[] { "Section1", "AnotherSection2", "SomeSectionA" };
 
             [TestMethod]
             public void Enumerates_the_names_of_all_contained_sections()
@@ -875,9 +875,6 @@ namespace Delizious.Ini.Test
 
             public static IniDocument EmptySectionsTarget(IniDocumentConfiguration configuration, params SectionName[] sectionNames)
                 => Target(configuration, sectionNames.Select(Section.CreateEmpty));
-
-            public static IniDocument EmptySectionsTarget(IEnumerable<SectionName> sectionNames)
-                => Target(DefaultConfiguration,  sectionNames.Select(Section.CreateEmpty));
 
             public static IniDocument SampleTarget()
                 => Target(DefaultConfiguration,
