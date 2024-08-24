@@ -1,8 +1,7 @@
-﻿namespace Delizious.Ini.Test
+﻿namespace Delizious.Ini.Test;
+
+internal sealed record PropertyNotFoundExceptionAssertion(PropertyKey PropertyKey)
 {
-    internal sealed record PropertyNotFoundExceptionAssertion(PropertyKey PropertyKey)
-    {
-        public static implicit operator PropertyNotFoundExceptionAssertion(PropertyNotFoundException exception)
-            => new(exception.PropertyKey);
-    }
+    public static implicit operator PropertyNotFoundExceptionAssertion(PropertyNotFoundException exception)
+        => new(exception.PropertyKey);
 }
