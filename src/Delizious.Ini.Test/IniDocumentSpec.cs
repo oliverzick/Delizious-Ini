@@ -676,6 +676,96 @@ public sealed class IniDocumentSpec
     public sealed class DeleteProperty
     {
         [TestClass]
+        public sealed class With_sectionName_and_propertyKey
+        {
+            [TestMethod]
+            public void Throws_argument_null_exception_when_section_name_is_null()
+            {
+                var target = Make.EmptyTarget();
+
+                Assert.ThrowsException<ArgumentNullException>(() => target.DeleteProperty(null, DummyPropertyKey));
+            }
+
+            [TestMethod]
+            public void Throws_argument_null_exception_when_property_key_is_null()
+            {
+                var target = Make.EmptyTarget();
+
+                Assert.ThrowsException<ArgumentNullException>(() => target.DeleteProperty(DummySectionName, null));
+            }
+
+            private static void DeletesProperty(IniDocumentConfiguration configuration)
+            {
+                var expected = new[] { DummyPropertyKey };
+                var target = Make.SingleDefaultSectionTarget(configuration, DummyPropertyKey, DefaultPropertyKey);
+
+                target.DeleteProperty(DefaultSectionName, DefaultPropertyKey);
+
+                var actual = target.EnumerateProperties(DefaultSectionName).ToArray();
+
+                CollectionAssert.AreEqual(expected, actual);
+            }
+
+            [TestClass]
+            public sealed class When_fail_mode
+            {
+                private static IniDocumentConfiguration Configuration => IniDocumentConfiguration.Default.WithPropertyDeletionMode(PropertyDeletionMode.Fail);
+
+                [TestMethod]
+                public void Throws_section_not_found_exception_when_section_does_not_exist()
+                {
+                    var expected = new SectionNotFoundExceptionAssertion(NonexistentSectionName);
+                    var target = Make.EmptyTarget(Configuration);
+
+                    var actual = Assert.ThrowsException<SectionNotFoundException>(() => target.DeleteProperty(NonexistentSectionName, DummyPropertyKey));
+
+                    Assert.AreEqual(expected, actual);
+                }
+
+                [TestMethod]
+                public void Throws_property_not_found_exception_when_property_does_not_exist()
+                {
+                    var expected = new PropertyNotFoundExceptionAssertion(NonexistentPropertyKey);
+                    var target = Make.EmptySectionsTarget(Configuration, DefaultSectionName);
+
+                    var actual = Assert.ThrowsException<PropertyNotFoundException>(() => target.DeleteProperty(DefaultSectionName, NonexistentPropertyKey));
+
+                    Assert.AreEqual(expected, actual);
+                }
+
+                [TestMethod]
+                public void Deletes_property()
+                    => DeletesProperty(Configuration);
+            }
+
+            [TestClass]
+            public sealed class When_ignore_mode
+            {
+                private static IniDocumentConfiguration Configuration => IniDocumentConfiguration.Default.WithPropertyDeletionMode(PropertyDeletionMode.Ignore);
+
+                [TestMethod]
+                public void Ignores_when_section_does_not_exist()
+                {
+                    var target = Make.EmptyTarget(Configuration);
+
+                    target.DeleteProperty(NonexistentSectionName, DummyPropertyKey);
+                }
+
+                [TestMethod]
+                public void Ignores_when_property_does_not_exist()
+                {
+                    var target = Make.EmptySectionsTarget(Configuration, DefaultSectionName);
+
+                    target.DeleteProperty(DefaultSectionName, NonexistentPropertyKey);
+                }
+
+                [TestMethod]
+                public void Deletes_property()
+                    => DeletesProperty(Configuration);
+            }
+        }
+
+        [TestClass]
         public sealed class With_sectionName_and_propertyKey_and_mode
         {
             private static PropertyDeletionMode DummyMode => PropertyDeletionMode.Fail;
@@ -744,7 +834,7 @@ public sealed class IniDocumentSpec
                 }
 
                 [TestMethod]
-                public void Deletes_section()
+                public void Deletes_property()
                     => DeletesProperty(Mode);
             }
 
@@ -770,7 +860,7 @@ public sealed class IniDocumentSpec
                 }
 
                 [TestMethod]
-                public void Deletes_section()
+                public void Deletes_property()
                     => DeletesProperty(Mode);
             }
         }
@@ -925,7 +1015,10 @@ public sealed class IniDocumentSpec
             => IniDocument.CreateEmpty(configuration);
 
         public static IniDocument SingleDefaultSectionTarget(params PropertyKey[] propertyKeys)
-            => Target(DefaultConfiguration, Section.Create(DefaultSectionName, propertyKeys.Select(Property.Create)));
+            => SingleDefaultSectionTarget(DefaultConfiguration, propertyKeys);
+
+        public static IniDocument SingleDefaultSectionTarget(IniDocumentConfiguration configuration, params PropertyKey[] propertyKeys)
+            => Target(configuration, Section.Create(DefaultSectionName, propertyKeys.Select(Property.Create)));
 
         public static IniDocument SingleDefaultPropertyTarget(PropertyValue propertyValue)
             => SingleDefaultPropertyTarget(DefaultConfiguration, propertyValue);
