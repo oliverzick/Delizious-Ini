@@ -388,6 +388,38 @@
 
         /// <summary>
         /// <para>
+        /// Deletes the property using the <see cref="IniDocumentConfiguration.PropertyDeletionMode"/>.
+        /// </para>
+        /// <para>
+        /// When <see cref="IniDocumentConfiguration.PropertyDeletionMode"/> is <see cref="PropertyDeletionMode.Fail"/> and the section does not exist, a <see cref="SectionNotFoundException"/> is thrown.
+        /// If the section exists but the property to delete does not exist, a <see cref="PropertyNotFoundException"/> is thrown.
+        /// </para>
+        /// <para>
+        /// When <see cref="IniDocumentConfiguration.PropertyDeletionMode"/> is <see cref="PropertyDeletionMode.Ignore"/>, it is silently ignored if the section or the property does not exist.
+        /// </para>
+        /// </summary>
+        /// <param name="sectionName">
+        /// The name of the section containing the property.
+        /// </param>
+        /// <param name="propertyKey">
+        /// The key of the property to delete.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// <para><paramref name="sectionName"/> is <c>null</c>.</para>
+        /// <para>- or -</para>
+        /// <para><paramref name="propertyKey"/> is <c>null</c>.</para>
+        /// </exception>
+        /// <exception cref="SectionNotFoundException">
+        /// <see cref="IniDocumentConfiguration.PropertyDeletionMode"/> is <see cref="PropertyDeletionMode.Fail"/> and the specified section does not exist.
+        /// </exception>
+        /// <exception cref="PropertyNotFoundException">
+        /// <see cref="IniDocumentConfiguration.PropertyDeletionMode"/> is <see cref="PropertyDeletionMode.Fail"/> and the specified property does not exist.
+        /// </exception>
+        public void DeleteProperty(SectionName sectionName, PropertyKey propertyKey)
+            => this.DeleteProperty(sectionName, propertyKey, this.configuration.PropertyDeletionMode);
+
+        /// <summary>
+        /// <para>
         /// Deletes the property according to the given mode.
         /// </para>
         /// <para>

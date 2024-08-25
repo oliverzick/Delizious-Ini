@@ -92,6 +92,29 @@
         }
 
         /// <summary>
+        /// The mode that specifies how to delete a property.
+        /// </summary>
+        public PropertyDeletionMode PropertyDeletionMode { get; } = PropertyDeletionMode.Fail;
+
+        /// <summary>
+        /// Creates a copy of the current <see cref="IniDocumentConfiguration"/> instance and defines the mode that specifies how to delete a property.
+        /// </summary>
+        /// <param name="propertyDeletionMode">
+        /// The mode that specifies how to delete a property.
+        /// </param>
+        /// <returns>
+        /// A new <see cref="IniDocumentConfiguration"/> instance with the given <paramref name="propertyDeletionMode"/>.
+        /// </returns>
+        public IniDocumentConfiguration WithPropertyDeletionMode(PropertyDeletionMode propertyDeletionMode)
+            => new IniDocumentConfiguration(this, propertyDeletionMode);
+
+        private IniDocumentConfiguration(IniDocumentConfiguration other, PropertyDeletionMode propertyDeletionMode)
+            : this(other)
+        {
+            this.PropertyDeletionMode = propertyDeletionMode;
+        }
+
+        /// <summary>
         /// The mode that specifies how to delete a section.
         /// </summary>
         public SectionDeletionMode SectionDeletionMode { get; } = SectionDeletionMode.Fail;
