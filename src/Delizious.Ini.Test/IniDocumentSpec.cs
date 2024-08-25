@@ -734,7 +734,7 @@ public sealed class IniDocumentSpec
                 }
 
                 [TestMethod]
-                public void Deletes_section()
+                public void Deletes_property()
                     => DeletesProperty(Configuration);
             }
 
@@ -760,7 +760,7 @@ public sealed class IniDocumentSpec
                 }
 
                 [TestMethod]
-                public void Deletes_section()
+                public void Deletes_property()
                     => DeletesProperty(Configuration);
             }
         }
@@ -834,7 +834,7 @@ public sealed class IniDocumentSpec
                 }
 
                 [TestMethod]
-                public void Deletes_section()
+                public void Deletes_property()
                     => DeletesProperty(Mode);
             }
 
@@ -860,7 +860,7 @@ public sealed class IniDocumentSpec
                 }
 
                 [TestMethod]
-                public void Deletes_section()
+                public void Deletes_property()
                     => DeletesProperty(Mode);
             }
         }
