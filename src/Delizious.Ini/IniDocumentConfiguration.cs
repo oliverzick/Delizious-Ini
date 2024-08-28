@@ -14,6 +14,8 @@
             this.PropertyEnumerationMode = other.PropertyEnumerationMode;
             this.PropertyReadMode = other.PropertyReadMode;
             this.PropertyWriteMode = other.PropertyWriteMode;
+            this.PropertyDeletionMode = other.PropertyDeletionMode;
+            this.SectionDeletionMode = other.SectionDeletionMode;
         }
 
         /// <summary>
