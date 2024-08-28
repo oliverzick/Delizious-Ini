@@ -40,6 +40,10 @@
         /// <term><see cref="PropertyDeletionMode"/></term>
         /// <description><see cref="Ini.PropertyDeletionMode.Ignore"/></description>
         /// </item>
+        /// <item>
+        /// <term><see cref="SectionDeletionMode"/></term>
+        /// <description><see cref="Ini.SectionDeletionMode.Ignore"/></description>
+        /// </item>
         /// </list>
         /// </summary>
         public static IniDocumentConfiguration Default
@@ -140,7 +144,7 @@
         /// <summary>
         /// The mode that specifies how to delete a section.
         /// </summary>
-        public SectionDeletionMode SectionDeletionMode { get; } = SectionDeletionMode.Fail;
+        public SectionDeletionMode SectionDeletionMode { get; } = SectionDeletionMode.Ignore;
 
         /// <summary>
         /// Creates a copy of the current <see cref="IniDocumentConfiguration"/> instance and defines the mode that specifies how to delete a section.

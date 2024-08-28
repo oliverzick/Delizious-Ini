@@ -53,5 +53,17 @@ public sealed class IniDocumentConfigurationSpec
 
             Assert.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public void Specifies_section_deletion_mode_as_ignore()
+        {
+            var expected = SectionDeletionMode.Ignore;
+
+            var target = IniDocumentConfiguration.Default;
+
+            var actual = target.SectionDeletionMode;
+
+            Assert.AreEqual(expected, actual);
+        }
     }
 }
