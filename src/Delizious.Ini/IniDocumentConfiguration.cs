@@ -23,7 +23,7 @@
         /// The default configuration of an <see cref="IniDocument"/>.
         /// </para>
         /// <para>
-        /// Specifies modes to prevent throwing <see cref="SectionNotFoundException"/> and <see cref="PropertyNotFoundException"/> if a section or property does not exist, according to the given overview:
+        /// Specifies loose modes according to the given overview:
         /// </para>
         /// <list type="table">
         /// <item>
