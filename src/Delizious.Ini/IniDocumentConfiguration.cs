@@ -17,7 +17,18 @@
         }
 
         /// <summary>
+        /// <para>
         /// The default configuration of an <see cref="IniDocument"/>.
+        /// </para>
+        /// <para>
+        /// Specifies modes to prevent throwing <see cref="SectionNotFoundException"/> and <see cref="PropertyNotFoundException"/> if a section or property does not exist, according to the given overview:
+        /// </para>
+        /// <list type="table">
+        /// <item>
+        /// <term><see cref="PropertyEnumerationMode"/></term>
+        /// <description><see cref="Ini.PropertyEnumerationMode.Fallback"/></description>
+        /// </item>
+        /// </list>
         /// </summary>
         public static IniDocumentConfiguration Default
             => new IniDocumentConfiguration();
@@ -25,7 +36,7 @@
         /// <summary>
         /// The mode that specifies how to enumerate properties.
         /// </summary>
-        public PropertyEnumerationMode PropertyEnumerationMode { get; } = PropertyEnumerationMode.Fail;
+        public PropertyEnumerationMode PropertyEnumerationMode { get; } = PropertyEnumerationMode.Fallback;
 
         /// <summary>
         /// Creates a copy of the current <see cref="IniDocumentConfiguration"/> instance and defines the mode that specifies how to enumerate properties.
