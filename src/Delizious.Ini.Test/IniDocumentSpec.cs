@@ -1038,12 +1038,12 @@ public sealed class IniDocumentSpec
                       Section.Create("Section2", Property.Create("PropertyB", "Value B")));
 
         public static string SampleString()
-            => new IniDocumentBuilder().AppendSectionLine("Section1")
-                                       .AppendPropertyLine("PropertyA", "Value A")
-                                       .AppendEmptyLine()
-                                       .AppendSectionLine("Section2")
-                                       .AppendPropertyLine("PropertyB", "Value B")
-                                       .ToString();
+            => new IniDocumentBuilder(DefaultConfiguration).AppendSectionLine("Section1")
+                                                           .AppendPropertyLine("PropertyA", "Value A")
+                                                           .AppendEmptyLine()
+                                                           .AppendSectionLine("Section2")
+                                                           .AppendPropertyLine("PropertyB", "Value B")
+                                                           .ToString();
 
         private static IniDocument Target(IniDocumentConfiguration configuration, params Section[] sections)
             => Target(configuration, sections.AsEnumerable());
@@ -1055,11 +1055,7 @@ public sealed class IniDocumentSpec
         {
             private readonly StringBuilder stringBuilder = new();
 
-            private readonly IniDocumentConfiguration configuration = DefaultConfiguration;
-
-            public IniDocumentBuilder()
-            {
-            }
+            private readonly IniDocumentConfiguration configuration;
 
             public IniDocumentBuilder(IniDocumentConfiguration configuration)
             {
