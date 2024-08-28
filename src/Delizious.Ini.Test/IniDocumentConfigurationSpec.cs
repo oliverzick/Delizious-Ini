@@ -41,5 +41,17 @@ public sealed class IniDocumentConfigurationSpec
 
             Assert.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public void Specifies_property_deletion_mode_as_ignore()
+        {
+            var expected = PropertyDeletionMode.Ignore;
+
+            var target = IniDocumentConfiguration.Default;
+
+            var actual = target.PropertyDeletionMode;
+
+            Assert.AreEqual(expected, actual);
+        }
     }
 }

@@ -36,6 +36,10 @@
         /// <term><see cref="PropertyWriteMode"/></term>
         /// <description><see cref="Ini.PropertyWriteMode.Create"/></description>
         /// </item>
+        /// <item>
+        /// <term><see cref="PropertyDeletionMode"/></term>
+        /// <description><see cref="Ini.PropertyDeletionMode.Ignore"/></description>
+        /// </item>
         /// </list>
         /// </summary>
         public static IniDocumentConfiguration Default
@@ -113,7 +117,7 @@
         /// <summary>
         /// The mode that specifies how to delete a property.
         /// </summary>
-        public PropertyDeletionMode PropertyDeletionMode { get; } = PropertyDeletionMode.Fail;
+        public PropertyDeletionMode PropertyDeletionMode { get; } = PropertyDeletionMode.Ignore;
 
         /// <summary>
         /// Creates a copy of the current <see cref="IniDocumentConfiguration"/> instance and defines the mode that specifies how to delete a property.
