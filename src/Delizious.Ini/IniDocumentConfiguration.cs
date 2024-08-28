@@ -28,6 +28,10 @@
         /// <term><see cref="PropertyEnumerationMode"/></term>
         /// <description><see cref="Ini.PropertyEnumerationMode.Fallback"/></description>
         /// </item>
+        /// <item>
+        /// <term><see cref="PropertyReadMode"/></term>
+        /// <description><see cref="Ini.PropertyReadMode.Fallback"/></description>
+        /// </item>
         /// </list>
         /// </summary>
         public static IniDocumentConfiguration Default
@@ -59,7 +63,7 @@
         /// <summary>
         /// The mode that specifies how to read a property.
         /// </summary>
-        public PropertyReadMode PropertyReadMode { get; } = PropertyReadMode.Fail;
+        public PropertyReadMode PropertyReadMode { get; } = PropertyReadMode.Fallback;
 
         /// <summary>
         /// Creates a copy of the current <see cref="IniDocumentConfiguration"/> instance and defines the mode that specifies how to read a property.
