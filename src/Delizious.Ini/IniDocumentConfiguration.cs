@@ -32,6 +32,10 @@
         /// <term><see cref="PropertyReadMode"/></term>
         /// <description><see cref="Ini.PropertyReadMode.Fallback"/></description>
         /// </item>
+        /// <item>
+        /// <term><see cref="PropertyWriteMode"/></term>
+        /// <description><see cref="Ini.PropertyWriteMode.Create"/></description>
+        /// </item>
         /// </list>
         /// </summary>
         public static IniDocumentConfiguration Default
@@ -86,7 +90,7 @@
         /// <summary>
         /// The mode that specifies how to write a property.
         /// </summary>
-        public PropertyWriteMode PropertyWriteMode { get; } = PropertyWriteMode.Update;
+        public PropertyWriteMode PropertyWriteMode { get; } = PropertyWriteMode.Create;
 
         /// <summary>
         /// Creates a copy of the current <see cref="IniDocumentConfiguration"/> instance and defines the mode that specifies how to write a property.

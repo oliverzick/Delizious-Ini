@@ -29,5 +29,17 @@ public sealed class IniDocumentConfigurationSpec
 
             Assert.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public void Specifies_property_write_mode_as_create()
+        {
+            var expected = PropertyWriteMode.Create;
+
+            var target = IniDocumentConfiguration.Default;
+
+            var actual = target.PropertyWriteMode;
+
+            Assert.AreEqual(expected, actual);
+        }
     }
 }
