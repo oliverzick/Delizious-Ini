@@ -14,10 +14,39 @@
             this.PropertyEnumerationMode = other.PropertyEnumerationMode;
             this.PropertyReadMode = other.PropertyReadMode;
             this.PropertyWriteMode = other.PropertyWriteMode;
+            this.PropertyDeletionMode = other.PropertyDeletionMode;
+            this.SectionDeletionMode = other.SectionDeletionMode;
         }
 
         /// <summary>
+        /// <para>
         /// The default configuration of an <see cref="IniDocument"/>.
+        /// </para>
+        /// <para>
+        /// Specifies loose modes according to the given overview:
+        /// </para>
+        /// <list type="table">
+        /// <item>
+        /// <term><see cref="PropertyEnumerationMode"/></term>
+        /// <description><see cref="Ini.PropertyEnumerationMode.Fallback"/></description>
+        /// </item>
+        /// <item>
+        /// <term><see cref="PropertyReadMode"/></term>
+        /// <description><see cref="Ini.PropertyReadMode.Fallback"/></description>
+        /// </item>
+        /// <item>
+        /// <term><see cref="PropertyWriteMode"/></term>
+        /// <description><see cref="Ini.PropertyWriteMode.Create"/></description>
+        /// </item>
+        /// <item>
+        /// <term><see cref="PropertyDeletionMode"/></term>
+        /// <description><see cref="Ini.PropertyDeletionMode.Ignore"/></description>
+        /// </item>
+        /// <item>
+        /// <term><see cref="SectionDeletionMode"/></term>
+        /// <description><see cref="Ini.SectionDeletionMode.Ignore"/></description>
+        /// </item>
+        /// </list>
         /// </summary>
         public static IniDocumentConfiguration Default
             => new IniDocumentConfiguration();
@@ -25,7 +54,7 @@
         /// <summary>
         /// The mode that specifies how to enumerate properties.
         /// </summary>
-        public PropertyEnumerationMode PropertyEnumerationMode { get; } = PropertyEnumerationMode.Fail;
+        public PropertyEnumerationMode PropertyEnumerationMode { get; } = PropertyEnumerationMode.Fallback;
 
         /// <summary>
         /// Creates a copy of the current <see cref="IniDocumentConfiguration"/> instance and defines the mode that specifies how to enumerate properties.
@@ -48,7 +77,7 @@
         /// <summary>
         /// The mode that specifies how to read a property.
         /// </summary>
-        public PropertyReadMode PropertyReadMode { get; } = PropertyReadMode.Fail;
+        public PropertyReadMode PropertyReadMode { get; } = PropertyReadMode.Fallback;
 
         /// <summary>
         /// Creates a copy of the current <see cref="IniDocumentConfiguration"/> instance and defines the mode that specifies how to read a property.
@@ -71,7 +100,7 @@
         /// <summary>
         /// The mode that specifies how to write a property.
         /// </summary>
-        public PropertyWriteMode PropertyWriteMode { get; } = PropertyWriteMode.Update;
+        public PropertyWriteMode PropertyWriteMode { get; } = PropertyWriteMode.Create;
 
         /// <summary>
         /// Creates a copy of the current <see cref="IniDocumentConfiguration"/> instance and defines the mode that specifies how to write a property.
@@ -94,7 +123,7 @@
         /// <summary>
         /// The mode that specifies how to delete a property.
         /// </summary>
-        public PropertyDeletionMode PropertyDeletionMode { get; } = PropertyDeletionMode.Fail;
+        public PropertyDeletionMode PropertyDeletionMode { get; } = PropertyDeletionMode.Ignore;
 
         /// <summary>
         /// Creates a copy of the current <see cref="IniDocumentConfiguration"/> instance and defines the mode that specifies how to delete a property.
@@ -117,7 +146,7 @@
         /// <summary>
         /// The mode that specifies how to delete a section.
         /// </summary>
-        public SectionDeletionMode SectionDeletionMode { get; } = SectionDeletionMode.Fail;
+        public SectionDeletionMode SectionDeletionMode { get; } = SectionDeletionMode.Ignore;
 
         /// <summary>
         /// Creates a copy of the current <see cref="IniDocumentConfiguration"/> instance and defines the mode that specifies how to delete a section.

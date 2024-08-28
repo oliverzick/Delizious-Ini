@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.26.0] - 2024-08-28
+### Added
+- Specify loose modes for default INI document configuration ([#90](https://github.com/oliverzick/Delizious-Ini/issues/90))
+
+    |Mode                     |Default |
+    |-------------------------|--------|
+    |Property enumeration mode|Fallback|
+    |Property read mode       |Fallback|
+    |Property write mode      |Create  |
+    |Property deletion mode   |Ignore  |
+    |Section deletion mode    |Ignore  |
+
 ## [0.25.0] - 2024-08-25
 ### Added
 - Enable deletion of a property from an INI document with a configured default property deletion mode ([#86](https://github.com/oliverzick/Delizious-Ini/issues/86))
