@@ -3,7 +3,27 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Version>0.26.0</Version>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageId>Delizious.Ini</PackageId>
+    <Authors>OliverZick</Authors>
+    <Product>Delizious Ini</Product>
+    <Copyright>Copyright © 2024 Oliver Zick. All rights reserved.</Copyright>
+    <Description>A .NET standard library for reading and writing of INI data.</Description>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/oliverzick/Delizious-Ini</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/oliverzick/Delizious-Ini</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+    <PackageTags>delizious;ini;file;parser;reader;writer</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="ini-parser-netstandard" Version="2.5.2" />
