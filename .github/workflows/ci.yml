@@ -3,8 +3,6 @@ on: [push, pull_request]
 jobs:
   ci:
     runs-on: windows-latest
-    env:
-      SOLUTION_FILE: "src/Delizious-Ini.sln"
     steps:
     - name: Checkout
       uses: actions/checkout@v4
@@ -13,8 +11,11 @@ jobs:
     - name: Display .NET version
       run: dotnet --version
     - name: Restore dependencies
-      run: dotnet restore "$SOLUTION_FILE"
+      run: dotnet restore
+      working-directory: src
     - name: Build
-      run: dotnet build "$SOLUTION_FILE" --configuration Release --no-restore
+      run: dotnet build --configuration Release --no-restore
+      working-directory: src
     - name: Test
-      run: dotnet test "$SOLUTION_FILE" --configuration Release --no-restore --no-build
+      run: dotnet test --configuration Release --no-restore --no-build
+      working-directory: src
