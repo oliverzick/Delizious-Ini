@@ -6,6 +6,7 @@ Run(QuickStart,          nameof(QuickStart));
 Run(LoadAndSave,         nameof(LoadAndSave));
 Run(EnumerateSections,   nameof(EnumerateSections));
 Run(EnumerateProperties, nameof(EnumerateProperties));
+Run(DeleteSection,       nameof(DeleteSection));
 
 return;
 
@@ -98,6 +99,26 @@ void EnumerateProperties()
     {
         Console.WriteLine(propertyName);
     }
+}
+
+void DeleteSection()
+{
+    const string ini = """
+                       [Section]
+                       Property=Current value
+
+                       [EmptySection]
+
+                       [AnotherSection]
+                       AnotherProperty=With another value
+                       """;
+
+    using var textReader = new StringReader(ini);
+    var iniDocument = IniDocument.LoadFrom(textReader, IniDocumentConfiguration.Default);
+
+    iniDocument.DeleteSection("EmptySection");
+
+    iniDocument.SaveTo(Console.Out);
 }
 
 void Run(Action action, string name)
