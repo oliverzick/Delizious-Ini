@@ -2,7 +2,8 @@
 using System.IO;
 using Delizious.Ini;
 
-Run(QuickStart, nameof(QuickStart));
+Run(QuickStart,  nameof(QuickStart));
+Run(LoadAndSave, nameof(LoadAndSave));
 
 return;
 
@@ -44,6 +45,21 @@ void QuickStart()
     Console.WriteLine();
     Console.WriteLine(@"INI document:");
     iniDocument.SaveTo(Console.Out);
+}
+
+void LoadAndSave()
+{
+    const string ini = """
+                       [Section]
+                       Property=Current value
+                       """;
+
+    using var textReader = new StringReader(ini);
+    var iniDocument = IniDocument.LoadFrom(textReader, IniDocumentConfiguration.Default);
+
+    // Save entire INI document to text writer by using Console.Out to output content
+    var textWriter = Console.Out;
+    iniDocument.SaveTo(textWriter);
 }
 
 void Run(Action action, string name)
