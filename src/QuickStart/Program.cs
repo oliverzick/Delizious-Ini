@@ -2,8 +2,9 @@
 using System.IO;
 using Delizious.Ini;
 
-Run(QuickStart,  nameof(QuickStart));
-Run(LoadAndSave, nameof(LoadAndSave));
+Run(QuickStart,        nameof(QuickStart));
+Run(LoadAndSave,       nameof(LoadAndSave));
+Run(EnumerateSections, nameof(EnumerateSections));
 
 return;
 
@@ -60,6 +61,24 @@ void LoadAndSave()
     // Save entire INI document to text writer by using Console.Out to output content
     var textWriter = Console.Out;
     iniDocument.SaveTo(textWriter);
+}
+
+void EnumerateSections()
+{
+    const string ini = """
+                       [Section]
+                       Property=Current value
+
+                       [EmptySection]
+                       """;
+
+    using var textReader = new StringReader(ini);
+    var iniDocument = IniDocument.LoadFrom(textReader, IniDocumentConfiguration.Default);
+
+    foreach (var sectionName in iniDocument.EnumerateSections())
+    {
+        Console.WriteLine(sectionName);
+    }
 }
 
 void Run(Action action, string name)
