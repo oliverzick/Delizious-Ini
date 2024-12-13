@@ -2,9 +2,10 @@
 using System.IO;
 using Delizious.Ini;
 
-Run(QuickStart,        nameof(QuickStart));
-Run(LoadAndSave,       nameof(LoadAndSave));
-Run(EnumerateSections, nameof(EnumerateSections));
+Run(QuickStart,          nameof(QuickStart));
+Run(LoadAndSave,         nameof(LoadAndSave));
+Run(EnumerateSections,   nameof(EnumerateSections));
+Run(EnumerateProperties, nameof(EnumerateProperties));
 
 return;
 
@@ -78,6 +79,24 @@ void EnumerateSections()
     foreach (var sectionName in iniDocument.EnumerateSections())
     {
         Console.WriteLine(sectionName);
+    }
+}
+
+void EnumerateProperties()
+{
+    const string ini = """
+                       [Section]
+                       Property=Current value
+                       AnotherProperty=Another value
+                       EmptyProperty=
+                       """;
+
+    using var textReader = new StringReader(ini);
+    var iniDocument = IniDocument.LoadFrom(textReader, IniDocumentConfiguration.Default);
+
+    foreach (var propertyName in iniDocument.EnumerateProperties("Section"))
+    {
+        Console.WriteLine(propertyName);
     }
 }
 
