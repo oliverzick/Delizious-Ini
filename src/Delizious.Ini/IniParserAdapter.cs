@@ -18,19 +18,19 @@
             this.iniData = iniData;
         }
 
-        public static IniParserAdapter CreateEmpty()
+        public static IniParserAdapter CreateEmpty(IniDocumentConfiguration configuration)
         {
             using (var textReader = new StringReader(string.Empty))
             {
-                return LoadFrom(textReader);
+                return LoadFrom(textReader, configuration);
             }
         }
 
-        public static IniParserAdapter LoadFrom(TextReader textReader)
+        public static IniParserAdapter LoadFrom(TextReader textReader, IniDocumentConfiguration configuration)
         {
             try
             {
-                var parser = new IniDataParser(MakeIniParserConfiguration());
+                var parser = new IniDataParser(MakeIniParserConfiguration(configuration));
                 var iniData = parser.Parse(textReader.ReadToEnd());
 
                 return new IniParserAdapter(iniData);
@@ -41,7 +41,7 @@
             }
         }
 
-        private static IniParserConfiguration MakeIniParserConfiguration()
+        private static IniParserConfiguration MakeIniParserConfiguration(IniDocumentConfiguration configuration)
             => new IniParserConfiguration
                {
                    AllowCreateSectionsOnFly = false,
@@ -49,11 +49,20 @@
                    AllowDuplicateSections = false,
                    AllowKeysWithoutSection = false,
                    AssigmentSpacer = string.Empty,
-                   CaseInsensitive = true,
+                   CaseInsensitive = configuration.CaseSensitivity.Transform(new CaseSensitivityTransformation()),
                    ConcatenateDuplicateKeys = false,
                    SkipInvalidLines = true,
                    ThrowExceptionsOnError = true
                };
+
+        private readonly struct CaseSensitivityTransformation : ICaseSensitivityTransformation<bool>
+        {
+            public bool CaseSensitive()
+                => false;
+
+            public bool CaseInsensitive()
+                => true;
+        }
 
         public void SaveTo(TextWriter textWriter)
         {
