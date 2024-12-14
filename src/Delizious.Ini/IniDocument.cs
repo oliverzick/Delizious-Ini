@@ -38,7 +38,7 @@
                 throw new ArgumentNullException(nameof(configuration));
             }
 
-            return new IniDocument(IniParserAdapter.CreateEmpty(), configuration);
+            return new IniDocument(IniParserAdapter.CreateEmpty(configuration), configuration);
         }
 
         /// <summary>
@@ -75,7 +75,7 @@
                 throw new ArgumentNullException(nameof(configuration));
             }
 
-            return new IniDocument(IniParserAdapter.LoadFrom(textReader), configuration);
+            return new IniDocument(IniParserAdapter.LoadFrom(textReader, configuration), configuration);
         }
 
         /// <summary>

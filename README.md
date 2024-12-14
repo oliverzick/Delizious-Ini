@@ -10,9 +10,9 @@ Delizious Ini provides the following features:
 * Reading and writing of a property
 * Deletion of sections or properties
 * Configurability of the failure behavior (e.g. throw a specific exception in case a section or property does not exist, or proceed with a fallback behavior) for almost every operation on instance and operation level
+* Configurability of case sensitivity that specifies how to treat section names and property keys
 
 Upcoming features:
-* Configurability of case sensitivity
 * Configurability of behavior in case of invalid lines
 * Configurability of behavior whether to allow duplicated sections
 * Configurability of behavior whether to allow duplicated keys
@@ -44,7 +44,9 @@ const string ini = """
 using var textReader = new StringReader(ini);
 
 // Use default configuration 
-var configuration = IniDocumentConfiguration.Default;
+var configuration = IniDocumentConfiguration.Default
+                                            .WithCaseSensitivity(CaseSensitivity.CaseSensitive); // Treat section names and property keys as case-sensitive (by default, case-insensitive)
+
 var iniDocument = IniDocument.LoadFrom(textReader, configuration);
 
 // Read existing property

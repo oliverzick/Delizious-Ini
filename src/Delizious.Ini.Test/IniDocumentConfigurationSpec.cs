@@ -7,6 +7,18 @@ public sealed class IniDocumentConfigurationSpec
     public sealed class Default
     {
         [TestMethod]
+        public void Specifies_case_sensitivity_as_case_insensitive()
+        {
+            var expected = CaseSensitivity.CaseInsensitive;
+
+            var target = IniDocumentConfiguration.Default;
+
+            var actual = target.CaseSensitivity;
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
         public void Specifies_property_enumeration_mode_as_fallback()
         {
             var expected = PropertyEnumerationMode.Fallback;

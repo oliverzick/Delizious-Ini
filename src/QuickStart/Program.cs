@@ -24,7 +24,9 @@ void QuickStart()
     using var textReader = new StringReader(ini);
 
     // Use default configuration 
-    var configuration = IniDocumentConfiguration.Default;
+    var configuration = IniDocumentConfiguration.Default
+                                                .WithCaseSensitivity(CaseSensitivity.CaseSensitive); // Treat section names and property keys as case-sensitive (by default, case-insensitive)
+
     var iniDocument = IniDocument.LoadFrom(textReader, configuration);
 
     // Read existing property
