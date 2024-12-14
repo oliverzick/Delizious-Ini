@@ -52,6 +52,34 @@
             => new IniDocumentConfiguration();
 
         /// <summary>
+        /// <para>
+        /// The case sensitivity that specifies how to treat section names and property keys.
+        /// </para>
+        /// <para>
+        /// Defaults to <see cref="CaseSensitivity.CaseInsensitive"/>.
+        /// </para>
+        /// </summary>
+        public CaseSensitivity CaseSensitivity { get; } = CaseSensitivity.CaseInsensitive;
+
+        /// <summary>
+        /// Creates a copy of the current <see cref="IniDocumentConfiguration"/> instance and defines the case sensitivity.
+        /// </summary>
+        /// <param name="caseSensitivity">
+        /// The case sensitivity that specifies how to treat section names and property keys.
+        /// </param>
+        /// <returns>
+        /// A new <see cref="IniDocumentConfiguration"/> instance with the given <paramref name="caseSensitivity"/>.
+        /// </returns>
+        public IniDocumentConfiguration WithCaseSensitivity(CaseSensitivity caseSensitivity)
+            => new IniDocumentConfiguration(this, caseSensitivity);
+
+        private IniDocumentConfiguration(IniDocumentConfiguration other, CaseSensitivity caseSensitivity)
+            : this(other)
+        {
+            this.CaseSensitivity = caseSensitivity;
+        }
+
+        /// <summary>
         /// The mode that specifies how to enumerate properties.
         /// </summary>
         public PropertyEnumerationMode PropertyEnumerationMode { get; } = PropertyEnumerationMode.Fallback;
