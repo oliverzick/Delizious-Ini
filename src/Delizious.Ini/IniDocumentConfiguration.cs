@@ -1,5 +1,7 @@
 ﻿namespace Delizious.Ini
 {
+    using System;
+
     /// <summary>
     /// Represents the configuration of an <see cref="IniDocument"/>.
     /// </summary>
@@ -70,8 +72,11 @@
         /// <returns>
         /// A new <see cref="IniDocumentConfiguration"/> instance with the given <paramref name="caseSensitivity"/>.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="caseSensitivity"/> is <c>null</c>.
+        /// </exception>
         public IniDocumentConfiguration WithCaseSensitivity(CaseSensitivity caseSensitivity)
-            => new IniDocumentConfiguration(this, caseSensitivity);
+            => new IniDocumentConfiguration(this, caseSensitivity ?? throw new ArgumentNullException(nameof(caseSensitivity)));
 
         private IniDocumentConfiguration(IniDocumentConfiguration other, CaseSensitivity caseSensitivity)
             : this(other)
@@ -93,8 +98,11 @@
         /// <returns>
         /// A new <see cref="IniDocumentConfiguration"/> instance with the given <paramref name="propertyEnumerationMode"/>.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="propertyEnumerationMode"/> is <c>null</c>.
+        /// </exception>
         public IniDocumentConfiguration WithPropertyEnumerationMode(PropertyEnumerationMode propertyEnumerationMode)
-            => new IniDocumentConfiguration(this, propertyEnumerationMode);
+            => new IniDocumentConfiguration(this, propertyEnumerationMode ?? throw new ArgumentNullException(nameof(propertyEnumerationMode)));
 
         private IniDocumentConfiguration(IniDocumentConfiguration other, PropertyEnumerationMode propertyEnumerationMode)
             : this(other)
@@ -116,8 +124,11 @@
         /// <returns>
         /// A new <see cref="IniDocumentConfiguration"/> instance with the given <paramref name="propertyReadMode"/>.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="propertyReadMode"/> is <c>null</c>.
+        /// </exception>
         public IniDocumentConfiguration WithPropertyReadMode(PropertyReadMode propertyReadMode)
-            => new IniDocumentConfiguration(this, propertyReadMode);
+            => new IniDocumentConfiguration(this, propertyReadMode ?? throw new ArgumentNullException(nameof(propertyReadMode)));
 
         private IniDocumentConfiguration(IniDocumentConfiguration other, PropertyReadMode propertyReadMode)
             : this(other)
@@ -139,8 +150,11 @@
         /// <returns>
         /// A new <see cref="IniDocumentConfiguration"/> instance with the given <paramref name="propertyWriteMode"/>.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="propertyWriteMode"/> is <c>null</c>.
+        /// </exception>
         public IniDocumentConfiguration WithPropertyWriteMode(PropertyWriteMode propertyWriteMode)
-            => new IniDocumentConfiguration(this, propertyWriteMode);
+            => new IniDocumentConfiguration(this, propertyWriteMode ?? throw new ArgumentNullException(nameof(propertyWriteMode)));
 
         private IniDocumentConfiguration(IniDocumentConfiguration other, PropertyWriteMode propertyWriteMode)
             : this(other)
@@ -162,8 +176,11 @@
         /// <returns>
         /// A new <see cref="IniDocumentConfiguration"/> instance with the given <paramref name="propertyDeletionMode"/>.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="propertyDeletionMode"/> is <c>null</c>.
+        /// </exception>
         public IniDocumentConfiguration WithPropertyDeletionMode(PropertyDeletionMode propertyDeletionMode)
-            => new IniDocumentConfiguration(this, propertyDeletionMode);
+            => new IniDocumentConfiguration(this, propertyDeletionMode ?? throw new ArgumentNullException(nameof(propertyDeletionMode)));
 
         private IniDocumentConfiguration(IniDocumentConfiguration other, PropertyDeletionMode propertyDeletionMode)
             : this(other)
@@ -185,8 +202,11 @@
         /// <returns>
         /// A new <see cref="IniDocumentConfiguration"/> instance with the given <paramref name="sectionDeletionMode"/>.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="sectionDeletionMode"/> is <c>null</c>.
+        /// </exception>
         public IniDocumentConfiguration WithSectionDeletionMode(SectionDeletionMode sectionDeletionMode)
-            => new IniDocumentConfiguration(this, sectionDeletionMode);
+            => new IniDocumentConfiguration(this, sectionDeletionMode ?? throw new ArgumentNullException(nameof(sectionDeletionMode)));
 
         private IniDocumentConfiguration(IniDocumentConfiguration other, SectionDeletionMode sectionDeletionMode)
             : this(other)

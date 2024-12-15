@@ -1,8 +1,12 @@
 ﻿namespace Delizious.Ini.Test;
 
+using System;
+
 [TestClass]
 public sealed class IniDocumentConfigurationSpec
 {
+    private static IniDocumentConfiguration Target => IniDocumentConfiguration.Default;
+
     [TestClass]
     public sealed class Default
     {
@@ -76,6 +80,66 @@ public sealed class IniDocumentConfigurationSpec
             var actual = target.SectionDeletionMode;
 
             Assert.AreEqual(expected, actual);
+        }
+    }
+
+    [TestClass]
+    public sealed class WithCaseSensitivity
+    {
+        [TestMethod]
+        public void Throws_argument_null_exception_when_given_case_sensitivity_is_null()
+        {
+            Assert.ThrowsException<ArgumentNullException>(() => Target.WithCaseSensitivity(null!));
+        }
+    }
+
+    [TestClass]
+    public sealed class WithPropertyEnumerationMode
+    {
+        [TestMethod]
+        public void Throws_argument_null_exception_when_given_property_enumeration_mode_is_null()
+        {
+            Assert.ThrowsException<ArgumentNullException>(() => Target.WithPropertyEnumerationMode(null!));
+        }
+    }
+
+    [TestClass]
+    public sealed class WithPropertyReadMode
+    {
+        [TestMethod]
+        public void Throws_argument_null_exception_when_given_property_read_mode_is_null()
+        {
+            Assert.ThrowsException<ArgumentNullException>(() => Target.WithPropertyReadMode(null!));
+        }
+    }
+
+    [TestClass]
+    public sealed class WithPropertyWriteMode
+    {
+        [TestMethod]
+        public void Throws_argument_null_exception_when_given_property_write_mode_is_null()
+        {
+            Assert.ThrowsException<ArgumentNullException>(() => Target.WithPropertyWriteMode(null!));
+        }
+    }
+
+    [TestClass]
+    public sealed class WithPropertyDeletionMode
+    {
+        [TestMethod]
+        public void Throws_argument_null_exception_when_given_property_deletion_mode_is_null()
+        {
+            Assert.ThrowsException<ArgumentNullException>(() => Target.WithPropertyDeletionMode(null!));
+        }
+    }
+
+    [TestClass]
+    public sealed class WithSectionDeletionMode
+    {
+        [TestMethod]
+        public void Throws_argument_null_exception_when_given_section_deletion_mode_is_null()
+        {
+            Assert.ThrowsException<ArgumentNullException>(() => Target.WithSectionDeletionMode(null!));
         }
     }
 }

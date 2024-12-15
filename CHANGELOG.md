@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.27.1] - 2024-12-15
+### Fixed
+- Fix missing argument check in INI document configuration ([#103](https://github.com/oliverzick/Delizious-Ini/issues/103))
+
 ## [0.27.0] - 2024-12-14
 ### Added
 - Enable configuration of case sensitivity that specifies how to treat section names and property keys in an INI document ([#100](https://github.com/oliverzick/Delizious-Ini/issues/100))
