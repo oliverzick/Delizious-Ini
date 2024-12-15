@@ -150,8 +150,11 @@
         /// <returns>
         /// A new <see cref="IniDocumentConfiguration"/> instance with the given <paramref name="propertyWriteMode"/>.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="propertyWriteMode"/> is <c>null</c>.
+        /// </exception>
         public IniDocumentConfiguration WithPropertyWriteMode(PropertyWriteMode propertyWriteMode)
-            => new IniDocumentConfiguration(this, propertyWriteMode);
+            => new IniDocumentConfiguration(this, propertyWriteMode ?? throw new ArgumentNullException(nameof(propertyWriteMode)));
 
         private IniDocumentConfiguration(IniDocumentConfiguration other, PropertyWriteMode propertyWriteMode)
             : this(other)
