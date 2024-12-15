@@ -13,6 +13,7 @@
 
         private IniDocumentConfiguration(IniDocumentConfiguration other)
         {
+            this.CaseSensitivity = other.CaseSensitivity;
             this.PropertyEnumerationMode = other.PropertyEnumerationMode;
             this.PropertyReadMode = other.PropertyReadMode;
             this.PropertyWriteMode = other.PropertyWriteMode;
