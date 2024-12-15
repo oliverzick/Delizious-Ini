@@ -1,5 +1,7 @@
 ﻿namespace Delizious.Ini
 {
+    using System;
+
     /// <summary>
     /// Represents the configuration of an <see cref="IniDocument"/>.
     /// </summary>
@@ -70,8 +72,11 @@
         /// <returns>
         /// A new <see cref="IniDocumentConfiguration"/> instance with the given <paramref name="caseSensitivity"/>.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="caseSensitivity"/> is <c>null</c>.
+        /// </exception>
         public IniDocumentConfiguration WithCaseSensitivity(CaseSensitivity caseSensitivity)
-            => new IniDocumentConfiguration(this, caseSensitivity);
+            => new IniDocumentConfiguration(this, caseSensitivity ?? throw new ArgumentNullException(nameof(caseSensitivity)));
 
         private IniDocumentConfiguration(IniDocumentConfiguration other, CaseSensitivity caseSensitivity)
             : this(other)
