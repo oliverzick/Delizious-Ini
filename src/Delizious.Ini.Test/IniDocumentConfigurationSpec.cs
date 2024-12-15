@@ -122,4 +122,14 @@ public sealed class IniDocumentConfigurationSpec
             Assert.ThrowsException<ArgumentNullException>(() => Target.WithPropertyWriteMode(null!));
         }
     }
+
+    [TestClass]
+    public sealed class WithPropertyDeletionMode
+    {
+        [TestMethod]
+        public void Throws_argument_null_exception_when_given_property_deletion_mode_is_null()
+        {
+            Assert.ThrowsException<ArgumentNullException>(() => Target.WithPropertyDeletionMode(null!));
+        }
+    }
 }
