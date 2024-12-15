@@ -92,4 +92,14 @@ public sealed class IniDocumentConfigurationSpec
             Assert.ThrowsException<ArgumentNullException>(() => Target.WithCaseSensitivity(null!));
         }
     }
+
+    [TestClass]
+    public sealed class WithPropertyEnumerationMode
+    {
+        [TestMethod]
+        public void Throws_argument_null_exception_when_given_property_enumeration_mode_is_null()
+        {
+            Assert.ThrowsException<ArgumentNullException>(() => Target.WithPropertyEnumerationMode(null!));
+        }
+    }
 }

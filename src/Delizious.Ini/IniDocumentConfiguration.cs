@@ -98,8 +98,11 @@
         /// <returns>
         /// A new <see cref="IniDocumentConfiguration"/> instance with the given <paramref name="propertyEnumerationMode"/>.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="propertyEnumerationMode"/> is <c>null</c>.
+        /// </exception>
         public IniDocumentConfiguration WithPropertyEnumerationMode(PropertyEnumerationMode propertyEnumerationMode)
-            => new IniDocumentConfiguration(this, propertyEnumerationMode);
+            => new IniDocumentConfiguration(this, propertyEnumerationMode ?? throw new ArgumentNullException(nameof(propertyEnumerationMode)));
 
         private IniDocumentConfiguration(IniDocumentConfiguration other, PropertyEnumerationMode propertyEnumerationMode)
             : this(other)
