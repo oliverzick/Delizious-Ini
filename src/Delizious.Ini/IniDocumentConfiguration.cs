@@ -124,8 +124,11 @@
         /// <returns>
         /// A new <see cref="IniDocumentConfiguration"/> instance with the given <paramref name="propertyReadMode"/>.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="propertyReadMode"/> is <c>null</c>.
+        /// </exception>
         public IniDocumentConfiguration WithPropertyReadMode(PropertyReadMode propertyReadMode)
-            => new IniDocumentConfiguration(this, propertyReadMode);
+            => new IniDocumentConfiguration(this, propertyReadMode ?? throw new ArgumentNullException(nameof(propertyReadMode)));
 
         private IniDocumentConfiguration(IniDocumentConfiguration other, PropertyReadMode propertyReadMode)
             : this(other)

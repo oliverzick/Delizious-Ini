@@ -102,4 +102,14 @@ public sealed class IniDocumentConfigurationSpec
             Assert.ThrowsException<ArgumentNullException>(() => Target.WithPropertyEnumerationMode(null!));
         }
     }
+
+    [TestClass]
+    public sealed class WithPropertyReadMode
+    {
+        [TestMethod]
+        public void Throws_argument_null_exception_when_given_property_read_mode_is_null()
+        {
+            Assert.ThrowsException<ArgumentNullException>(() => Target.WithPropertyReadMode(null!));
+        }
+    }
 }
