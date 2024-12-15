@@ -202,8 +202,11 @@
         /// <returns>
         /// A new <see cref="IniDocumentConfiguration"/> instance with the given <paramref name="sectionDeletionMode"/>.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="sectionDeletionMode"/> is <c>null</c>.
+        /// </exception>
         public IniDocumentConfiguration WithSectionDeletionMode(SectionDeletionMode sectionDeletionMode)
-            => new IniDocumentConfiguration(this, sectionDeletionMode);
+            => new IniDocumentConfiguration(this, sectionDeletionMode ?? throw new ArgumentNullException(nameof(sectionDeletionMode)));
 
         private IniDocumentConfiguration(IniDocumentConfiguration other, SectionDeletionMode sectionDeletionMode)
             : this(other)
