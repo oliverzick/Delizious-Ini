@@ -9,14 +9,14 @@ public sealed class IniDocumentConfigurationSpec
 {
     private static IniDocumentConfiguration Target => IniDocumentConfiguration.Default;
 
-    public static IEnumerable<Assertion> AllAssertions =>
+    public static IEnumerable<Setting> AllSettings =>
     [
-        Assertion.CaseSensitivity,
-        Assertion.PropertyEnumerationMode,
-        Assertion.PropertyReadMode,
-        Assertion.PropertyWriteMode,
-        Assertion.PropertyDeletionMode,
-        Assertion.SectionDeletionMode
+        Setting.CaseSensitivity,
+        Setting.PropertyEnumerationMode,
+        Setting.PropertyReadMode,
+        Setting.PropertyWriteMode,
+        Setting.PropertyDeletionMode,
+        Setting.SectionDeletionMode
     ];
 
     [TestClass]
@@ -98,7 +98,7 @@ public sealed class IniDocumentConfigurationSpec
     [TestClass]
     public sealed class WithCaseSensitivity
     {
-        private static IEnumerable<Assertion> AssertionsToExclude => [Assertion.CaseSensitivity];
+        private static IEnumerable<Setting> SettingsToExclude => [Setting.CaseSensitivity];
 
         [TestMethod]
         public void Throws_argument_null_exception_when_given_case_sensitivity_is_null()
@@ -108,23 +108,23 @@ public sealed class IniDocumentConfigurationSpec
 
         [DataTestMethod]
         [DynamicData(nameof(Retains_remaining_settings_test_cases), DynamicDataSourceType.Method)]
-        public void Retains_remaining_settings(Assertion assertion)
+        public void Retains_remaining_settings(Setting setting)
         {
             var original = Target;
 
             var actual = original.WithCaseSensitivity(CaseSensitivity.CaseSensitive);
 
-            assertion.Check(original, actual);
+            setting.AssertIsEqual(original, actual);
         }
 
         public static IEnumerable<object[]> Retains_remaining_settings_test_cases()
-            => AllAssertions.Except(AssertionsToExclude).Select(ToTestCase);
+            => AllSettings.Except(SettingsToExclude).Select(ToTestCase);
     }
 
     [TestClass]
     public sealed class WithPropertyEnumerationMode
     {
-        private static IEnumerable<Assertion> AssertionsToExclude => [Assertion.PropertyEnumerationMode];
+        private static IEnumerable<Setting> SettingsToExclude => [Setting.PropertyEnumerationMode];
 
         [TestMethod]
         public void Throws_argument_null_exception_when_given_property_enumeration_mode_is_null()
@@ -134,23 +134,23 @@ public sealed class IniDocumentConfigurationSpec
 
         [DataTestMethod]
         [DynamicData(nameof(Retains_remaining_settings_test_cases), DynamicDataSourceType.Method)]
-        public void Retains_remaining_settings(Assertion assertion)
+        public void Retains_remaining_settings(Setting setting)
         {
             var original = Target;
 
             var actual = original.WithPropertyEnumerationMode(PropertyEnumerationMode.Fail);
 
-            assertion.Check(original, actual);
+            setting.AssertIsEqual(original, actual);
         }
 
         public static IEnumerable<object[]> Retains_remaining_settings_test_cases()
-            => AllAssertions.Except(AssertionsToExclude).Select(ToTestCase);
+            => AllSettings.Except(SettingsToExclude).Select(ToTestCase);
     }
 
     [TestClass]
     public sealed class WithPropertyReadMode
     {
-        private static IEnumerable<Assertion> AssertionsToExclude => [Assertion.PropertyReadMode];
+        private static IEnumerable<Setting> SettingsToExclude => [Setting.PropertyReadMode];
 
         [TestMethod]
         public void Throws_argument_null_exception_when_given_property_read_mode_is_null()
@@ -160,23 +160,23 @@ public sealed class IniDocumentConfigurationSpec
 
         [DataTestMethod]
         [DynamicData(nameof(Retains_remaining_settings_test_cases), DynamicDataSourceType.Method)]
-        public void Retains_remaining_settings(Assertion assertion)
+        public void Retains_remaining_settings(Setting setting)
         {
             var original = Target;
 
             var actual = original.WithPropertyReadMode(PropertyReadMode.Fail);
 
-            assertion.Check(original, actual);
+            setting.AssertIsEqual(original, actual);
         }
 
         public static IEnumerable<object[]> Retains_remaining_settings_test_cases()
-            => AllAssertions.Except(AssertionsToExclude).Select(ToTestCase);
+            => AllSettings.Except(SettingsToExclude).Select(ToTestCase);
     }
 
     [TestClass]
     public sealed class WithPropertyWriteMode
     {
-        private static IEnumerable<Assertion> AssertionsToExclude => [Assertion.PropertyWriteMode];
+        private static IEnumerable<Setting> SettingsToExclude => [Setting.PropertyWriteMode];
 
         [TestMethod]
         public void Throws_argument_null_exception_when_given_property_write_mode_is_null()
@@ -186,23 +186,23 @@ public sealed class IniDocumentConfigurationSpec
 
         [DataTestMethod]
         [DynamicData(nameof(Retains_remaining_settings_test_cases), DynamicDataSourceType.Method)]
-        public void Retains_remaining_settings(Assertion assertion)
+        public void Retains_remaining_settings(Setting setting)
         {
             var original = Target;
 
             var actual = original.WithPropertyWriteMode(PropertyWriteMode.Update);
 
-            assertion.Check(original, actual);
+            setting.AssertIsEqual(original, actual);
         }
 
         public static IEnumerable<object[]> Retains_remaining_settings_test_cases()
-            => AllAssertions.Except(AssertionsToExclude).Select(ToTestCase);
+            => AllSettings.Except(SettingsToExclude).Select(ToTestCase);
     }
 
     [TestClass]
     public sealed class WithPropertyDeletionMode
     {
-        private static IEnumerable<Assertion> AssertionsToExclude => [Assertion.PropertyDeletionMode];
+        private static IEnumerable<Setting> SettingsToExclude => [Setting.PropertyDeletionMode];
 
         [TestMethod]
         public void Throws_argument_null_exception_when_given_property_deletion_mode_is_null()
@@ -212,23 +212,23 @@ public sealed class IniDocumentConfigurationSpec
 
         [DataTestMethod]
         [DynamicData(nameof(Retains_remaining_settings_test_cases), DynamicDataSourceType.Method)]
-        public void Retains_remaining_settings(Assertion assertion)
+        public void Retains_remaining_settings(Setting setting)
         {
             var original = Target;
 
             var actual = original.WithPropertyDeletionMode(PropertyDeletionMode.Fail);
 
-            assertion.Check(original, actual);
+            setting.AssertIsEqual(original, actual);
         }
 
         public static IEnumerable<object[]> Retains_remaining_settings_test_cases()
-            => AllAssertions.Except(AssertionsToExclude).Select(ToTestCase);
+            => AllSettings.Except(SettingsToExclude).Select(ToTestCase);
     }
 
     [TestClass]
     public sealed class WithSectionDeletionMode
     {
-        private static IEnumerable<Assertion> AssertionsToExclude => [Assertion.SectionDeletionMode];
+        private static IEnumerable<Setting> SettingsToExclude => [Setting.SectionDeletionMode];
 
         [TestMethod]
         public void Throws_argument_null_exception_when_given_section_deletion_mode_is_null()
@@ -238,93 +238,93 @@ public sealed class IniDocumentConfigurationSpec
 
         [DataTestMethod]
         [DynamicData(nameof(Retains_remaining_settings_test_cases), DynamicDataSourceType.Method)]
-        public void Retains_remaining_settings(Assertion assertion)
+        public void Retains_remaining_settings(Setting setting)
         {
             var original = Target;
 
             var actual = original.WithSectionDeletionMode(SectionDeletionMode.Fail);
 
-            assertion.Check(original, actual);
+            setting.AssertIsEqual(original, actual);
         }
 
         public static IEnumerable<object[]> Retains_remaining_settings_test_cases()
-            => AllAssertions.Except(AssertionsToExclude).Select(ToTestCase);
+            => AllSettings.Except(SettingsToExclude).Select(ToTestCase);
     }
 
-    private static object[] ToTestCase(Assertion assertion)
-        => [assertion];
+    private static object[] ToTestCase(Setting setting)
+        => [setting];
 
-    public sealed record Assertion
+    public sealed record Setting
     {
         private readonly Strategy strategy;
 
-        private Assertion(Strategy strategy)
+        private Setting(Strategy strategy)
         {
             this.strategy = strategy;
         }
 
-        public void Check(IniDocumentConfiguration original, IniDocumentConfiguration actual)
-            => this.strategy.Check(original, actual);
+        public void AssertIsEqual(IniDocumentConfiguration original, IniDocumentConfiguration actual)
+            => this.strategy.AssertIsEqual(original, actual);
 
         public override string ToString()
             => this.strategy.ToString();
 
         private abstract record Strategy
         {
-            public abstract void Check(IniDocumentConfiguration original, IniDocumentConfiguration actual);
+            public abstract void AssertIsEqual(IniDocumentConfiguration original, IniDocumentConfiguration actual);
         }
 
-        public static Assertion CaseSensitivity
-            => new(new CaseSensitivityAssertion());
+        public static Setting CaseSensitivity
+            => new(new CaseSensitivitySetting());
 
-        private sealed record CaseSensitivityAssertion : Strategy
+        private sealed record CaseSensitivitySetting : Strategy
         {
-            public override void Check(IniDocumentConfiguration original, IniDocumentConfiguration actual)
+            public override void AssertIsEqual(IniDocumentConfiguration original, IniDocumentConfiguration actual)
                 => Assert.AreEqual(original.CaseSensitivity, actual.CaseSensitivity);
         }
 
-        public static Assertion PropertyEnumerationMode
-            => new(new PropertyEnumerationModeAssertion());
+        public static Setting PropertyEnumerationMode
+            => new(new PropertyEnumerationModeSetting());
 
-        private sealed record PropertyEnumerationModeAssertion : Strategy
+        private sealed record PropertyEnumerationModeSetting : Strategy
         {
-            public override void Check(IniDocumentConfiguration original, IniDocumentConfiguration actual)
+            public override void AssertIsEqual(IniDocumentConfiguration original, IniDocumentConfiguration actual)
                 => Assert.AreEqual(original.PropertyEnumerationMode, actual.PropertyEnumerationMode);
         }
 
-        public static Assertion PropertyReadMode
-            => new(new PropertyReadModeAssertion());
+        public static Setting PropertyReadMode
+            => new(new PropertyReadModeSetting());
 
-        private sealed record PropertyReadModeAssertion : Strategy
+        private sealed record PropertyReadModeSetting : Strategy
         {
-            public override void Check(IniDocumentConfiguration original, IniDocumentConfiguration actual)
+            public override void AssertIsEqual(IniDocumentConfiguration original, IniDocumentConfiguration actual)
                 => Assert.AreEqual(original.PropertyReadMode, actual.PropertyReadMode);
         }
 
-        public static Assertion PropertyWriteMode
-            => new(new PropertyWriteModeAssertion());
+        public static Setting PropertyWriteMode
+            => new(new PropertyWriteModeSetting());
 
-        private sealed record PropertyWriteModeAssertion : Strategy
+        private sealed record PropertyWriteModeSetting : Strategy
         {
-            public override void Check(IniDocumentConfiguration original, IniDocumentConfiguration actual)
+            public override void AssertIsEqual(IniDocumentConfiguration original, IniDocumentConfiguration actual)
                 => Assert.AreEqual(original.PropertyWriteMode, actual.PropertyWriteMode);
         }
 
-        public static Assertion PropertyDeletionMode
-            => new(new PropertyDeletionModeAssertion());
+        public static Setting PropertyDeletionMode
+            => new(new PropertyDeletionModeSetting());
 
-        private sealed record PropertyDeletionModeAssertion : Strategy
+        private sealed record PropertyDeletionModeSetting : Strategy
         {
-            public override void Check(IniDocumentConfiguration original, IniDocumentConfiguration actual)
+            public override void AssertIsEqual(IniDocumentConfiguration original, IniDocumentConfiguration actual)
                 => Assert.AreEqual(original.PropertyDeletionMode, actual.PropertyDeletionMode);
         }
 
-        public static Assertion SectionDeletionMode
-            => new(new SectionDeletionModeAssertion());
+        public static Setting SectionDeletionMode
+            => new(new SectionDeletionModeSetting());
 
-        private sealed record SectionDeletionModeAssertion : Strategy
+        private sealed record SectionDeletionModeSetting : Strategy
         {
-            public override void Check(IniDocumentConfiguration original, IniDocumentConfiguration actual)
+            public override void AssertIsEqual(IniDocumentConfiguration original, IniDocumentConfiguration actual)
                 => Assert.AreEqual(original.SectionDeletionMode, actual.SectionDeletionMode);
         }
     }
