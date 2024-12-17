@@ -275,54 +275,54 @@ public sealed class IniDocumentConfigurationSpec
         }
 
         public static Setting CaseSensitivity
-            => new(new CaseSensitivityAssertion());
+            => new(new CaseSensitivitySetting());
 
-        private sealed record CaseSensitivityAssertion : Strategy
+        private sealed record CaseSensitivitySetting : Strategy
         {
             public override void AssertIsEqual(IniDocumentConfiguration original, IniDocumentConfiguration actual)
                 => Assert.AreEqual(original.CaseSensitivity, actual.CaseSensitivity);
         }
 
         public static Setting PropertyEnumerationMode
-            => new(new PropertyEnumerationModeAssertion());
+            => new(new PropertyEnumerationModeSetting());
 
-        private sealed record PropertyEnumerationModeAssertion : Strategy
+        private sealed record PropertyEnumerationModeSetting : Strategy
         {
             public override void AssertIsEqual(IniDocumentConfiguration original, IniDocumentConfiguration actual)
                 => Assert.AreEqual(original.PropertyEnumerationMode, actual.PropertyEnumerationMode);
         }
 
         public static Setting PropertyReadMode
-            => new(new PropertyReadModeAssertion());
+            => new(new PropertyReadModeSetting());
 
-        private sealed record PropertyReadModeAssertion : Strategy
+        private sealed record PropertyReadModeSetting : Strategy
         {
             public override void AssertIsEqual(IniDocumentConfiguration original, IniDocumentConfiguration actual)
                 => Assert.AreEqual(original.PropertyReadMode, actual.PropertyReadMode);
         }
 
         public static Setting PropertyWriteMode
-            => new(new PropertyWriteModeAssertion());
+            => new(new PropertyWriteModeSetting());
 
-        private sealed record PropertyWriteModeAssertion : Strategy
+        private sealed record PropertyWriteModeSetting : Strategy
         {
             public override void AssertIsEqual(IniDocumentConfiguration original, IniDocumentConfiguration actual)
                 => Assert.AreEqual(original.PropertyWriteMode, actual.PropertyWriteMode);
         }
 
         public static Setting PropertyDeletionMode
-            => new(new PropertyDeletionModeAssertion());
+            => new(new PropertyDeletionModeSetting());
 
-        private sealed record PropertyDeletionModeAssertion : Strategy
+        private sealed record PropertyDeletionModeSetting : Strategy
         {
             public override void AssertIsEqual(IniDocumentConfiguration original, IniDocumentConfiguration actual)
                 => Assert.AreEqual(original.PropertyDeletionMode, actual.PropertyDeletionMode);
         }
 
         public static Setting SectionDeletionMode
-            => new(new SectionDeletionModeAssertion());
+            => new(new SectionDeletionModeSetting());
 
-        private sealed record SectionDeletionModeAssertion : Strategy
+        private sealed record SectionDeletionModeSetting : Strategy
         {
             public override void AssertIsEqual(IniDocumentConfiguration original, IniDocumentConfiguration actual)
                 => Assert.AreEqual(original.SectionDeletionMode, actual.SectionDeletionMode);
