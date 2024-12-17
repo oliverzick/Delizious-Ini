@@ -114,7 +114,7 @@ public sealed class IniDocumentConfigurationSpec
 
             var actual = original.WithCaseSensitivity(CaseSensitivity.CaseSensitive);
 
-            assertion.Check(original, actual);
+            assertion.AssertIsEqual(original, actual);
         }
 
         public static IEnumerable<object[]> Retains_remaining_settings_test_cases()
@@ -140,7 +140,7 @@ public sealed class IniDocumentConfigurationSpec
 
             var actual = original.WithPropertyEnumerationMode(PropertyEnumerationMode.Fail);
 
-            assertion.Check(original, actual);
+            assertion.AssertIsEqual(original, actual);
         }
 
         public static IEnumerable<object[]> Retains_remaining_settings_test_cases()
@@ -166,7 +166,7 @@ public sealed class IniDocumentConfigurationSpec
 
             var actual = original.WithPropertyReadMode(PropertyReadMode.Fail);
 
-            assertion.Check(original, actual);
+            assertion.AssertIsEqual(original, actual);
         }
 
         public static IEnumerable<object[]> Retains_remaining_settings_test_cases()
@@ -192,7 +192,7 @@ public sealed class IniDocumentConfigurationSpec
 
             var actual = original.WithPropertyWriteMode(PropertyWriteMode.Update);
 
-            assertion.Check(original, actual);
+            assertion.AssertIsEqual(original, actual);
         }
 
         public static IEnumerable<object[]> Retains_remaining_settings_test_cases()
@@ -218,7 +218,7 @@ public sealed class IniDocumentConfigurationSpec
 
             var actual = original.WithPropertyDeletionMode(PropertyDeletionMode.Fail);
 
-            assertion.Check(original, actual);
+            assertion.AssertIsEqual(original, actual);
         }
 
         public static IEnumerable<object[]> Retains_remaining_settings_test_cases()
@@ -244,7 +244,7 @@ public sealed class IniDocumentConfigurationSpec
 
             var actual = original.WithSectionDeletionMode(SectionDeletionMode.Fail);
 
-            assertion.Check(original, actual);
+            assertion.AssertIsEqual(original, actual);
         }
 
         public static IEnumerable<object[]> Retains_remaining_settings_test_cases()
@@ -263,15 +263,15 @@ public sealed class IniDocumentConfigurationSpec
             this.strategy = strategy;
         }
 
-        public void Check(IniDocumentConfiguration original, IniDocumentConfiguration actual)
-            => this.strategy.Check(original, actual);
+        public void AssertIsEqual(IniDocumentConfiguration original, IniDocumentConfiguration actual)
+            => this.strategy.AssertIsEqual(original, actual);
 
         public override string ToString()
             => this.strategy.ToString();
 
         private abstract record Strategy
         {
-            public abstract void Check(IniDocumentConfiguration original, IniDocumentConfiguration actual);
+            public abstract void AssertIsEqual(IniDocumentConfiguration original, IniDocumentConfiguration actual);
         }
 
         public static Assertion CaseSensitivity
@@ -279,7 +279,7 @@ public sealed class IniDocumentConfigurationSpec
 
         private sealed record CaseSensitivityAssertion : Strategy
         {
-            public override void Check(IniDocumentConfiguration original, IniDocumentConfiguration actual)
+            public override void AssertIsEqual(IniDocumentConfiguration original, IniDocumentConfiguration actual)
                 => Assert.AreEqual(original.CaseSensitivity, actual.CaseSensitivity);
         }
 
@@ -288,7 +288,7 @@ public sealed class IniDocumentConfigurationSpec
 
         private sealed record PropertyEnumerationModeAssertion : Strategy
         {
-            public override void Check(IniDocumentConfiguration original, IniDocumentConfiguration actual)
+            public override void AssertIsEqual(IniDocumentConfiguration original, IniDocumentConfiguration actual)
                 => Assert.AreEqual(original.PropertyEnumerationMode, actual.PropertyEnumerationMode);
         }
 
@@ -297,7 +297,7 @@ public sealed class IniDocumentConfigurationSpec
 
         private sealed record PropertyReadModeAssertion : Strategy
         {
-            public override void Check(IniDocumentConfiguration original, IniDocumentConfiguration actual)
+            public override void AssertIsEqual(IniDocumentConfiguration original, IniDocumentConfiguration actual)
                 => Assert.AreEqual(original.PropertyReadMode, actual.PropertyReadMode);
         }
 
@@ -306,7 +306,7 @@ public sealed class IniDocumentConfigurationSpec
 
         private sealed record PropertyWriteModeAssertion : Strategy
         {
-            public override void Check(IniDocumentConfiguration original, IniDocumentConfiguration actual)
+            public override void AssertIsEqual(IniDocumentConfiguration original, IniDocumentConfiguration actual)
                 => Assert.AreEqual(original.PropertyWriteMode, actual.PropertyWriteMode);
         }
 
@@ -315,7 +315,7 @@ public sealed class IniDocumentConfigurationSpec
 
         private sealed record PropertyDeletionModeAssertion : Strategy
         {
-            public override void Check(IniDocumentConfiguration original, IniDocumentConfiguration actual)
+            public override void AssertIsEqual(IniDocumentConfiguration original, IniDocumentConfiguration actual)
                 => Assert.AreEqual(original.PropertyDeletionMode, actual.PropertyDeletionMode);
         }
 
@@ -324,7 +324,7 @@ public sealed class IniDocumentConfigurationSpec
 
         private sealed record SectionDeletionModeAssertion : Strategy
         {
-            public override void Check(IniDocumentConfiguration original, IniDocumentConfiguration actual)
+            public override void AssertIsEqual(IniDocumentConfiguration original, IniDocumentConfiguration actual)
                 => Assert.AreEqual(original.SectionDeletionMode, actual.SectionDeletionMode);
         }
     }
