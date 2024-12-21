@@ -7,18 +7,32 @@
     /// </summary>
     public sealed class IniDocumentConfiguration
     {
-        private IniDocumentConfiguration()
+        // NOTE: Parameterless constructor called by copy constructor causes equality tests to fail
+        //       because state of properties is lost when instances are used in dynamic data method along with data test methods.
+
+        private IniDocumentConfiguration(CaseSensitivity caseSensitivity,
+                                         PropertyEnumerationMode propertyEnumerationMode,
+                                         PropertyReadMode propertyReadMode,
+                                         PropertyWriteMode propertyWriteMode,
+                                         PropertyDeletionMode propertyDeletionMode,
+                                         SectionDeletionMode sectionDeletionMode)
         {
+            this.CaseSensitivity = caseSensitivity;
+            this.PropertyEnumerationMode = propertyEnumerationMode;
+            this.PropertyReadMode = propertyReadMode;
+            this.PropertyWriteMode = propertyWriteMode;
+            this.PropertyDeletionMode = propertyDeletionMode;
+            this.SectionDeletionMode = sectionDeletionMode;
         }
 
         private IniDocumentConfiguration(IniDocumentConfiguration other)
+            : this(other.CaseSensitivity,
+                   other.PropertyEnumerationMode,
+                   other.PropertyReadMode,
+                   other.PropertyWriteMode,
+                   other.PropertyDeletionMode,
+                   other.SectionDeletionMode)
         {
-            this.CaseSensitivity = other.CaseSensitivity;
-            this.PropertyEnumerationMode = other.PropertyEnumerationMode;
-            this.PropertyReadMode = other.PropertyReadMode;
-            this.PropertyWriteMode = other.PropertyWriteMode;
-            this.PropertyDeletionMode = other.PropertyDeletionMode;
-            this.SectionDeletionMode = other.SectionDeletionMode;
         }
 
         /// <summary>
@@ -52,7 +66,12 @@
         /// </list>
         /// </summary>
         public static IniDocumentConfiguration Default
-            => new IniDocumentConfiguration();
+            => new IniDocumentConfiguration(CaseSensitivity.CaseInsensitive,
+                                            PropertyEnumerationMode.Fallback,
+                                            PropertyReadMode.Fallback,
+                                            PropertyWriteMode.Create,
+                                            PropertyDeletionMode.Ignore,
+                                            SectionDeletionMode.Ignore);
 
         /// <summary>
         /// <para>
@@ -62,7 +81,7 @@
         /// Defaults to <see cref="CaseSensitivity.CaseInsensitive"/>.
         /// </para>
         /// </summary>
-        public CaseSensitivity CaseSensitivity { get; } = CaseSensitivity.CaseInsensitive;
+        public CaseSensitivity CaseSensitivity { get; }
 
         /// <summary>
         /// Creates a copy of the current <see cref="IniDocumentConfiguration"/> instance and defines the case sensitivity.
@@ -88,7 +107,7 @@
         /// <summary>
         /// The mode that specifies how to enumerate properties.
         /// </summary>
-        public PropertyEnumerationMode PropertyEnumerationMode { get; } = PropertyEnumerationMode.Fallback;
+        public PropertyEnumerationMode PropertyEnumerationMode { get; }
 
         /// <summary>
         /// Creates a copy of the current <see cref="IniDocumentConfiguration"/> instance and defines the mode that specifies how to enumerate properties.
@@ -114,7 +133,7 @@
         /// <summary>
         /// The mode that specifies how to read a property.
         /// </summary>
-        public PropertyReadMode PropertyReadMode { get; } = PropertyReadMode.Fallback;
+        public PropertyReadMode PropertyReadMode { get; }
 
         /// <summary>
         /// Creates a copy of the current <see cref="IniDocumentConfiguration"/> instance and defines the mode that specifies how to read a property.
@@ -140,7 +159,7 @@
         /// <summary>
         /// The mode that specifies how to write a property.
         /// </summary>
-        public PropertyWriteMode PropertyWriteMode { get; } = PropertyWriteMode.Create;
+        public PropertyWriteMode PropertyWriteMode { get; }
 
         /// <summary>
         /// Creates a copy of the current <see cref="IniDocumentConfiguration"/> instance and defines the mode that specifies how to write a property.
@@ -166,7 +185,7 @@
         /// <summary>
         /// The mode that specifies how to delete a property.
         /// </summary>
-        public PropertyDeletionMode PropertyDeletionMode { get; } = PropertyDeletionMode.Ignore;
+        public PropertyDeletionMode PropertyDeletionMode { get; }
 
         /// <summary>
         /// Creates a copy of the current <see cref="IniDocumentConfiguration"/> instance and defines the mode that specifies how to delete a property.
@@ -192,7 +211,7 @@
         /// <summary>
         /// The mode that specifies how to delete a section.
         /// </summary>
-        public SectionDeletionMode SectionDeletionMode { get; } = SectionDeletionMode.Ignore;
+        public SectionDeletionMode SectionDeletionMode { get; }
 
         /// <summary>
         /// Creates a copy of the current <see cref="IniDocumentConfiguration"/> instance and defines the mode that specifies how to delete a section.
