@@ -39,10 +39,11 @@
         /// <para>
         /// The default configuration of an <see cref="IniDocument"/>.
         /// </para>
-        /// <para>
-        /// Specifies loose modes according to the given overview:
-        /// </para>
         /// <list type="table">
+        /// <item>
+        /// <term><see cref="CaseSensitivity"/></term>
+        /// <description><see cref="Ini.CaseSensitivity.CaseInsensitive"/></description>
+        /// </item>
         /// <item>
         /// <term><see cref="PropertyEnumerationMode"/></term>
         /// <description><see cref="Ini.PropertyEnumerationMode.Fallback"/></description>
@@ -76,9 +77,6 @@
         /// <summary>
         /// <para>
         /// The case sensitivity that specifies how to treat section names and property keys.
-        /// </para>
-        /// <para>
-        /// Defaults to <see cref="CaseSensitivity.CaseInsensitive"/>.
         /// </para>
         /// </summary>
         public CaseSensitivity CaseSensitivity { get; }
