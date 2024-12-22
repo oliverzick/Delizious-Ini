@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.0] - 2024-12-22
+### Added
+- Enable value semantics for INI document configuration ([#102](https://github.com/oliverzick/Delizious-Ini/issues/102))
+
 ## [0.27.2] - 2024-12-15
 ### Fixed
 - Fix resetting case sensitivity to default when specifying another setting in INI document configuration ([#105](https://github.com/oliverzick/Delizious-Ini/issues/105))
