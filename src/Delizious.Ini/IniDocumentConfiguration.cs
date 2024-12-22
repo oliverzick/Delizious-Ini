@@ -5,7 +5,7 @@
     /// <summary>
     /// Represents the configuration of an <see cref="IniDocument"/>.
     /// </summary>
-    public sealed class IniDocumentConfiguration
+    public sealed class IniDocumentConfiguration : IEquatable<IniDocumentConfiguration>
     {
         // NOTE: Parameterless constructor called by copy constructor causes equality tests to fail
         //       because state of properties is lost when instances are used in dynamic data method along with data test methods.
@@ -233,5 +233,40 @@
         {
             this.SectionDeletionMode = sectionDeletionMode;
         }
+
+        public static bool operator ==(IniDocumentConfiguration left, IniDocumentConfiguration right)
+            => Equals(left, right);
+
+        public static bool operator !=(IniDocumentConfiguration left, IniDocumentConfiguration right)
+            => !(left == right);
+
+        /// <inheritdoc/>
+        public bool Equals(IniDocumentConfiguration other)
+        {
+            if (other is null)
+            {
+                return false;
+            }
+
+            return Equals(this.CaseSensitivity,         other.CaseSensitivity)
+                && Equals(this.PropertyEnumerationMode, other.PropertyEnumerationMode)
+                && Equals(this.PropertyReadMode,        other.PropertyReadMode)
+                && Equals(this.PropertyWriteMode,       other.PropertyWriteMode)
+                && Equals(this.PropertyDeletionMode,    other.PropertyDeletionMode)
+                && Equals(this.SectionDeletionMode,     other.SectionDeletionMode);
+        }
+
+        /// <inheritdoc/>
+        public override bool Equals(object obj)
+            => this.Equals(obj as IniDocumentConfiguration);
+
+        /// <inheritdoc/>
+        public override int GetHashCode()
+            => HashCode.Calculate(this.CaseSensitivity.GetHashCode(),
+                                  this.PropertyEnumerationMode.GetHashCode(),
+                                  this.PropertyReadMode.GetHashCode(),
+                                  this.PropertyWriteMode.GetHashCode(),
+                                  this.PropertyDeletionMode.GetHashCode(),
+                                  this.SectionDeletionMode.GetHashCode());
     }
 }
