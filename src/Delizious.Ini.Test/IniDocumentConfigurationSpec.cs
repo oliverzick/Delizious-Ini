@@ -251,6 +251,166 @@ public sealed class IniDocumentConfigurationSpec
             => AllSettings.Except(SettingsToExclude).Select(ToTestCase);
     }
 
+    [TestClass]
+    public sealed class ValueSemantics
+    {
+        private static IniDocumentConfiguration Null => null!;
+        private static IniDocumentConfiguration Default => IniDocumentConfiguration.Default;
+        private static IniDocumentConfiguration CaseSensitivityCaseSensitive => IniDocumentConfiguration.Default.WithCaseSensitivity(CaseSensitivity.CaseSensitive);
+        private static IniDocumentConfiguration PropertyDeletionModeFail => IniDocumentConfiguration.Default.WithPropertyDeletionMode(PropertyDeletionMode.Fail);
+        private static IniDocumentConfiguration PropertyEnumerationModeFail => IniDocumentConfiguration.Default.WithPropertyEnumerationMode(PropertyEnumerationMode.Fail);
+        private static IniDocumentConfiguration PropertyReadModeFail => IniDocumentConfiguration.Default.WithPropertyReadMode(PropertyReadMode.Fail);
+        private static IniDocumentConfiguration PropertyWriteModeUpdate => IniDocumentConfiguration.Default.WithPropertyWriteMode(PropertyWriteMode.Update);
+        private static IniDocumentConfiguration SectionDeletionModeFail => IniDocumentConfiguration.Default.WithSectionDeletionMode(SectionDeletionMode.Fail);
+
+        [DataTestMethod]
+        [DynamicData(nameof(Equality_operator_test_cases), DynamicDataSourceType.Method)]
+        [DynamicData(nameof(Equals_test_cases),            DynamicDataSourceType.Method)]
+        [DynamicData(nameof(Equals_null_test_cases),       DynamicDataSourceType.Method)]
+        public void Properly_implements_equality_operator(IniDocumentConfiguration left, IniDocumentConfiguration right, bool expected)
+        {
+            var actual = left == right;
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [DataTestMethod]
+        [DynamicData(nameof(Equality_operator_test_cases), DynamicDataSourceType.Method)]
+        [DynamicData(nameof(Equals_test_cases),            DynamicDataSourceType.Method)]
+        [DynamicData(nameof(Equals_null_test_cases),       DynamicDataSourceType.Method)]
+        public void Properly_implements_inequality_operator(IniDocumentConfiguration left, IniDocumentConfiguration right, bool inverse_expected)
+        {
+            var expected = !inverse_expected;
+
+            var actual = left != right;
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [DataTestMethod]
+        [DynamicData(nameof(Equals_test_cases),      DynamicDataSourceType.Method)]
+        [DynamicData(nameof(Equals_null_test_cases), DynamicDataSourceType.Method)]
+        public void Properly_implements_equals_method(IniDocumentConfiguration target, object other, bool expected)
+        {
+            var actual = target.Equals(other);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [DataTestMethod]
+        [DynamicData(nameof(General_equals_test_cases), DynamicDataSourceType.Method)]
+        [DynamicData(nameof(Equals_test_cases),         DynamicDataSourceType.Method)]
+        [DynamicData(nameof(Equals_null_test_cases),    DynamicDataSourceType.Method)]
+        public void Properly_implements_general_equals_method(IniDocumentConfiguration target, object other, bool expected)
+        {
+            var actual = target.Equals(other);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [DataTestMethod]
+        [DynamicData(nameof(Equals_test_cases), DynamicDataSourceType.Method)]
+        public void Properly_implements_get_hash_code_method(IniDocumentConfiguration target, IniDocumentConfiguration other, bool expected)
+        {
+            var actual = target.GetHashCode() == other.GetHashCode();
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        public static IEnumerable<object[]> Equality_operator_test_cases()
+        {
+            yield return [Null, Null, true];
+            yield return [Null, Default, false];
+            yield return [Null, CaseSensitivityCaseSensitive, false];
+            yield return [Null, PropertyDeletionModeFail, false];
+            yield return [Null, PropertyEnumerationModeFail, false];
+            yield return [Null, PropertyReadModeFail, false];
+            yield return [Null, PropertyWriteModeUpdate, false];
+            yield return [Null, SectionDeletionModeFail, false];
+        }
+
+        public static IEnumerable<object[]> Equals_null_test_cases()
+        {
+            yield return [Default, Null, false];
+            yield return [CaseSensitivityCaseSensitive, Null, false];
+            yield return [PropertyDeletionModeFail, Null, false];
+            yield return [PropertyEnumerationModeFail, Null, false];
+            yield return [PropertyReadModeFail, Null, false];
+            yield return [PropertyWriteModeUpdate, Null, false];
+            yield return [SectionDeletionModeFail, Null, false];
+        }
+
+        public static IEnumerable<object[]> Equals_test_cases()
+        {
+            yield return [Default, Default, true];
+            yield return [Default, CaseSensitivityCaseSensitive, false];
+            yield return [Default, PropertyDeletionModeFail, false];
+            yield return [Default, PropertyEnumerationModeFail, false];
+            yield return [Default, PropertyReadModeFail, false];
+            yield return [Default, PropertyWriteModeUpdate, false];
+            yield return [Default, SectionDeletionModeFail, false];
+
+            yield return [CaseSensitivityCaseSensitive, Default, false];
+            yield return [CaseSensitivityCaseSensitive, CaseSensitivityCaseSensitive, true];
+            yield return [CaseSensitivityCaseSensitive, PropertyDeletionModeFail, false];
+            yield return [CaseSensitivityCaseSensitive, PropertyEnumerationModeFail, false];
+            yield return [CaseSensitivityCaseSensitive, PropertyReadModeFail, false];
+            yield return [CaseSensitivityCaseSensitive, PropertyWriteModeUpdate, false];
+            yield return [CaseSensitivityCaseSensitive, SectionDeletionModeFail, false];
+
+            yield return [PropertyDeletionModeFail, Default, false];
+            yield return [PropertyDeletionModeFail, CaseSensitivityCaseSensitive, false];
+            yield return [PropertyDeletionModeFail, PropertyDeletionModeFail, true];
+            yield return [PropertyDeletionModeFail, PropertyEnumerationModeFail, false];
+            yield return [PropertyDeletionModeFail, PropertyReadModeFail, false];
+            yield return [PropertyDeletionModeFail, PropertyWriteModeUpdate, false];
+            yield return [PropertyDeletionModeFail, SectionDeletionModeFail, false];
+
+            yield return [PropertyEnumerationModeFail, Default, false];
+            yield return [PropertyEnumerationModeFail, CaseSensitivityCaseSensitive, false];
+            yield return [PropertyEnumerationModeFail, PropertyDeletionModeFail, false];
+            yield return [PropertyEnumerationModeFail, PropertyEnumerationModeFail, true];
+            yield return [PropertyEnumerationModeFail, PropertyReadModeFail, false];
+            yield return [PropertyEnumerationModeFail, PropertyWriteModeUpdate, false];
+            yield return [PropertyEnumerationModeFail, SectionDeletionModeFail, false];
+
+            yield return [PropertyReadModeFail, Default, false];
+            yield return [PropertyReadModeFail, CaseSensitivityCaseSensitive, false];
+            yield return [PropertyReadModeFail, PropertyDeletionModeFail, false];
+            yield return [PropertyReadModeFail, PropertyEnumerationModeFail, false];
+            yield return [PropertyReadModeFail, PropertyReadModeFail, true];
+            yield return [PropertyReadModeFail, PropertyWriteModeUpdate, false];
+            yield return [PropertyReadModeFail, SectionDeletionModeFail, false];
+
+            yield return [PropertyWriteModeUpdate, Default, false];
+            yield return [PropertyWriteModeUpdate, CaseSensitivityCaseSensitive, false];
+            yield return [PropertyWriteModeUpdate, PropertyDeletionModeFail, false];
+            yield return [PropertyWriteModeUpdate, PropertyEnumerationModeFail, false];
+            yield return [PropertyWriteModeUpdate, PropertyReadModeFail, false];
+            yield return [PropertyWriteModeUpdate, PropertyWriteModeUpdate, true];
+            yield return [PropertyWriteModeUpdate, SectionDeletionModeFail, false];
+
+            yield return [SectionDeletionModeFail, Default, false];
+            yield return [SectionDeletionModeFail, CaseSensitivityCaseSensitive, false];
+            yield return [SectionDeletionModeFail, PropertyDeletionModeFail, false];
+            yield return [SectionDeletionModeFail, PropertyEnumerationModeFail, false];
+            yield return [SectionDeletionModeFail, PropertyReadModeFail, false];
+            yield return [SectionDeletionModeFail, PropertyWriteModeUpdate, false];
+            yield return [SectionDeletionModeFail, SectionDeletionModeFail, true];
+        }
+
+        public static IEnumerable<object[]> General_equals_test_cases()
+        {
+            yield return [Default, new(), false];
+            yield return [CaseSensitivityCaseSensitive, new(), false];
+            yield return [PropertyDeletionModeFail, new(), false];
+            yield return [PropertyEnumerationModeFail, new(), false];
+            yield return [PropertyReadModeFail, new(), false];
+            yield return [PropertyWriteModeUpdate, new(), false];
+            yield return [SectionDeletionModeFail, new(), false];
+        }
+    }
+
     private static object[] ToTestCase(Setting setting)
         => [setting];
 
