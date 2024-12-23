@@ -266,5 +266,9 @@
                                   this.PropertyWriteMode.GetHashCode(),
                                   this.PropertyDeletionMode.GetHashCode(),
                                   this.SectionDeletionMode.GetHashCode());
+
+        /// <inheritdoc/>
+        public override string ToString()
+            => $"{nameof(IniDocumentConfiguration)} {{ {nameof(this.CaseSensitivity)} = {this.CaseSensitivity}, {nameof(this.PropertyEnumerationMode)} = {this.PropertyEnumerationMode}, {nameof(this.PropertyReadMode)} = {this.PropertyReadMode}, {nameof(this.PropertyWriteMode)} = {this.PropertyWriteMode}, {nameof(this.PropertyDeletionMode)} = {this.PropertyDeletionMode}, {nameof(this.SectionDeletionMode)} = {this.SectionDeletionMode} }}";
     }
 }

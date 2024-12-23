@@ -264,6 +264,28 @@ public sealed class IniDocumentConfigurationSpec
         private static IniDocumentConfiguration SectionDeletionModeFail => IniDocumentConfiguration.Default.WithSectionDeletionMode(SectionDeletionMode.Fail);
 
         [DataTestMethod]
+        [DynamicData(nameof(Provides_string_representation_test_cases), DynamicDataSourceType.Method)]
+        public void Provides_string_representation(IniDocumentConfiguration target)
+        {
+            var expected = $"{nameof(IniDocumentConfiguration)} {{ {string.Join(", ", AllSettings.Select(setting => setting.BuildString(target)))} }}";
+
+            var actual = target.ToString();
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        public static IEnumerable<object[]> Provides_string_representation_test_cases()
+        {
+            yield return [Default];
+            yield return [CaseSensitivityCaseSensitive];
+            yield return [PropertyDeletionModeFail];
+            yield return [PropertyEnumerationModeFail];
+            yield return [PropertyReadModeFail];
+            yield return [PropertyWriteModeUpdate];
+            yield return [SectionDeletionModeFail];
+        }
+
+        [DataTestMethod]
         [DynamicData(nameof(Equality_operator_test_cases), DynamicDataSourceType.Method)]
         [DynamicData(nameof(Equals_test_cases),            DynamicDataSourceType.Method)]
         [DynamicData(nameof(Equals_null_test_cases),       DynamicDataSourceType.Method)]
@@ -426,12 +448,17 @@ public sealed class IniDocumentConfigurationSpec
         public void AssertIsEqual(IniDocumentConfiguration original, IniDocumentConfiguration actual)
             => this.strategy.AssertIsEqual(original, actual);
 
+        public string BuildString(IniDocumentConfiguration target)
+            => this.strategy.BuildString(target);
+
         public override string ToString()
             => this.strategy.ToString();
 
         private abstract record Strategy
         {
             public abstract void AssertIsEqual(IniDocumentConfiguration original, IniDocumentConfiguration actual);
+
+            public abstract string BuildString(IniDocumentConfiguration target);
         }
 
         public static Setting CaseSensitivity
@@ -441,6 +468,9 @@ public sealed class IniDocumentConfigurationSpec
         {
             public override void AssertIsEqual(IniDocumentConfiguration original, IniDocumentConfiguration actual)
                 => Assert.AreEqual(original.CaseSensitivity, actual.CaseSensitivity);
+
+            public override string BuildString(IniDocumentConfiguration target)
+                => $"{nameof(target.CaseSensitivity)} = {target.CaseSensitivity}";
         }
 
         public static Setting PropertyEnumerationMode
@@ -450,6 +480,9 @@ public sealed class IniDocumentConfigurationSpec
         {
             public override void AssertIsEqual(IniDocumentConfiguration original, IniDocumentConfiguration actual)
                 => Assert.AreEqual(original.PropertyEnumerationMode, actual.PropertyEnumerationMode);
+
+            public override string BuildString(IniDocumentConfiguration target)
+                => $"{nameof(target.PropertyEnumerationMode)} = {target.PropertyEnumerationMode}";
         }
 
         public static Setting PropertyReadMode
@@ -459,6 +492,9 @@ public sealed class IniDocumentConfigurationSpec
         {
             public override void AssertIsEqual(IniDocumentConfiguration original, IniDocumentConfiguration actual)
                 => Assert.AreEqual(original.PropertyReadMode, actual.PropertyReadMode);
+
+            public override string BuildString(IniDocumentConfiguration target)
+                => $"{nameof(target.PropertyReadMode)} = {target.PropertyReadMode}";
         }
 
         public static Setting PropertyWriteMode
@@ -468,6 +504,9 @@ public sealed class IniDocumentConfigurationSpec
         {
             public override void AssertIsEqual(IniDocumentConfiguration original, IniDocumentConfiguration actual)
                 => Assert.AreEqual(original.PropertyWriteMode, actual.PropertyWriteMode);
+
+            public override string BuildString(IniDocumentConfiguration target)
+                => $"{nameof(target.PropertyWriteMode)} = {target.PropertyWriteMode}";
         }
 
         public static Setting PropertyDeletionMode
@@ -477,6 +516,9 @@ public sealed class IniDocumentConfigurationSpec
         {
             public override void AssertIsEqual(IniDocumentConfiguration original, IniDocumentConfiguration actual)
                 => Assert.AreEqual(original.PropertyDeletionMode, actual.PropertyDeletionMode);
+
+            public override string BuildString(IniDocumentConfiguration target)
+                => $"{nameof(target.PropertyDeletionMode)} = {target.PropertyDeletionMode}";
         }
 
         public static Setting SectionDeletionMode
@@ -486,6 +528,9 @@ public sealed class IniDocumentConfigurationSpec
         {
             public override void AssertIsEqual(IniDocumentConfiguration original, IniDocumentConfiguration actual)
                 => Assert.AreEqual(original.SectionDeletionMode, actual.SectionDeletionMode);
+
+            public override string BuildString(IniDocumentConfiguration target)
+                => $"{nameof(target.SectionDeletionMode)} = {target.SectionDeletionMode}";
         }
     }
 }
