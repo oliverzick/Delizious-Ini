@@ -39,6 +39,20 @@
         /// <para>
         /// The default configuration of an <see cref="IniDocument"/>.
         /// </para>
+        /// <para>
+        /// Represents the <see cref="Loose"/> configuration.
+        /// </para>
+        /// </summary>
+        public static IniDocumentConfiguration Default
+            => Loose;
+
+        /// <summary>
+        /// <para>
+        /// The loose configuration of an <see cref="IniDocument"/>.
+        /// </para>
+        /// <para>
+        /// It contains the following settings:
+        /// </para>
         /// <list type="table">
         /// <item>
         /// <term><see cref="CaseSensitivity"/></term>
@@ -66,7 +80,7 @@
         /// </item>
         /// </list>
         /// </summary>
-        public static IniDocumentConfiguration Default
+        public static IniDocumentConfiguration Loose
             => new IniDocumentConfiguration(CaseSensitivity.CaseInsensitive,
                                             PropertyEnumerationMode.Fallback,
                                             PropertyReadMode.Fallback,
