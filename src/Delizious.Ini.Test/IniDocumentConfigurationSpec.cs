@@ -20,78 +20,96 @@ public sealed class IniDocumentConfigurationSpec
     ];
 
     [TestClass]
-    public sealed class Default
+    public sealed class Defaults
     {
-        [TestMethod]
-        public void Specifies_case_sensitivity_as_case_insensitive()
+        [DataTestMethod]
+        [DynamicData(nameof(Default_case_sensitivity_test_cases), DynamicDataSourceType.Method)]
+        public void Default_case_sensitivity(IniDocumentConfiguration target, CaseSensitivity expected)
         {
-            var expected = CaseSensitivity.CaseInsensitive;
-
-            var target = IniDocumentConfiguration.Default;
-
             var actual = target.CaseSensitivity;
 
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod]
-        public void Specifies_property_enumeration_mode_as_fallback()
+        public static IEnumerable<object[]> Default_case_sensitivity_test_cases()
         {
-            var expected = PropertyEnumerationMode.Fallback;
+            yield return [IniDocumentConfiguration.Default, CaseSensitivity.CaseInsensitive];
+            yield return [IniDocumentConfiguration.Loose, CaseSensitivity.CaseInsensitive];
+        }
 
-            var target = IniDocumentConfiguration.Default;
-
+        [DataTestMethod]
+        [DynamicData(nameof(Default_property_enumeration_mode_test_cases), DynamicDataSourceType.Method)]
+        public void Default_property_enumeration_mode(IniDocumentConfiguration target, PropertyEnumerationMode expected)
+        {
             var actual = target.PropertyEnumerationMode;
 
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod]
-        public void Specifies_property_read_mode_as_fallback()
+        public static IEnumerable<object[]> Default_property_enumeration_mode_test_cases()
         {
-            var expected = PropertyReadMode.Fallback;
+            yield return [IniDocumentConfiguration.Default, PropertyEnumerationMode.Fallback];
+            yield return [IniDocumentConfiguration.Loose, PropertyEnumerationMode.Fallback];
+        }
 
-            var target = IniDocumentConfiguration.Default;
-
+        [DataTestMethod]
+        [DynamicData(nameof(Default_property_read_mode_test_cases), DynamicDataSourceType.Method)]
+        public void Default_property_read_mode(IniDocumentConfiguration target, PropertyReadMode expected)
+        {
             var actual = target.PropertyReadMode;
 
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod]
-        public void Specifies_property_write_mode_as_create()
+        public static IEnumerable<object[]> Default_property_read_mode_test_cases()
         {
-            var expected = PropertyWriteMode.Create;
+            yield return [IniDocumentConfiguration.Default, PropertyReadMode.Fallback];
+            yield return [IniDocumentConfiguration.Loose, PropertyReadMode.Fallback];
+        }
 
-            var target = IniDocumentConfiguration.Default;
-
+        [DataTestMethod]
+        [DynamicData(nameof(Default_property_write_mode_test_cases), DynamicDataSourceType.Method)]
+        public void Default_property_write_mode(IniDocumentConfiguration target, PropertyWriteMode expected)
+        {
             var actual = target.PropertyWriteMode;
 
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod]
-        public void Specifies_property_deletion_mode_as_ignore()
+        public static IEnumerable<object[]> Default_property_write_mode_test_cases()
         {
-            var expected = PropertyDeletionMode.Ignore;
+            yield return [IniDocumentConfiguration.Default, PropertyWriteMode.Create];
+            yield return [IniDocumentConfiguration.Loose, PropertyWriteMode.Create];
+        }
 
-            var target = IniDocumentConfiguration.Default;
-
+        [DataTestMethod]
+        [DynamicData(nameof(Default_property_deletion_mode_test_cases), DynamicDataSourceType.Method)]
+        public void Default_property_deletion_mode(IniDocumentConfiguration target, PropertyDeletionMode expected)
+        {
             var actual = target.PropertyDeletionMode;
 
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod]
-        public void Specifies_section_deletion_mode_as_ignore()
+        public static IEnumerable<object[]> Default_property_deletion_mode_test_cases()
         {
-            var expected = SectionDeletionMode.Ignore;
+            yield return [IniDocumentConfiguration.Default, PropertyDeletionMode.Ignore];
+            yield return [IniDocumentConfiguration.Loose, PropertyDeletionMode.Ignore];
+        }
 
-            var target = IniDocumentConfiguration.Default;
-
+        [DataTestMethod]
+        [DynamicData(nameof(Default_section_deletion_mode_test_cases), DynamicDataSourceType.Method)]
+        public void Default_section_deletion_mode(IniDocumentConfiguration target, SectionDeletionMode expected)
+        {
             var actual = target.SectionDeletionMode;
 
             Assert.AreEqual(expected, actual);
+        }
+
+        public static IEnumerable<object[]> Default_section_deletion_mode_test_cases()
+        {
+            yield return [IniDocumentConfiguration.Default, SectionDeletionMode.Ignore];
+            yield return [IniDocumentConfiguration.Loose, SectionDeletionMode.Ignore];
         }
     }
 
@@ -256,6 +274,7 @@ public sealed class IniDocumentConfigurationSpec
     {
         private static IniDocumentConfiguration Null => null!;
         private static IniDocumentConfiguration Default => IniDocumentConfiguration.Default;
+        private static IniDocumentConfiguration Loose => IniDocumentConfiguration.Loose;
         private static IniDocumentConfiguration CaseSensitivityCaseSensitive => IniDocumentConfiguration.Default.WithCaseSensitivity(CaseSensitivity.CaseSensitive);
         private static IniDocumentConfiguration PropertyDeletionModeFail => IniDocumentConfiguration.Default.WithPropertyDeletionMode(PropertyDeletionMode.Fail);
         private static IniDocumentConfiguration PropertyEnumerationModeFail => IniDocumentConfiguration.Default.WithPropertyEnumerationMode(PropertyEnumerationMode.Fail);
@@ -343,6 +362,7 @@ public sealed class IniDocumentConfigurationSpec
         {
             yield return [Null, Null, true];
             yield return [Null, Default, false];
+            yield return [Null, Loose, false];
             yield return [Null, CaseSensitivityCaseSensitive, false];
             yield return [Null, PropertyDeletionModeFail, false];
             yield return [Null, PropertyEnumerationModeFail, false];
@@ -354,6 +374,7 @@ public sealed class IniDocumentConfigurationSpec
         public static IEnumerable<object[]> Equals_null_test_cases()
         {
             yield return [Default, Null, false];
+            yield return [Loose, Null, false];
             yield return [CaseSensitivityCaseSensitive, Null, false];
             yield return [PropertyDeletionModeFail, Null, false];
             yield return [PropertyEnumerationModeFail, Null, false];
@@ -365,12 +386,22 @@ public sealed class IniDocumentConfigurationSpec
         public static IEnumerable<object[]> Equals_test_cases()
         {
             yield return [Default, Default, true];
+            yield return [Default, Loose, true];
             yield return [Default, CaseSensitivityCaseSensitive, false];
             yield return [Default, PropertyDeletionModeFail, false];
             yield return [Default, PropertyEnumerationModeFail, false];
             yield return [Default, PropertyReadModeFail, false];
             yield return [Default, PropertyWriteModeUpdate, false];
             yield return [Default, SectionDeletionModeFail, false];
+
+            yield return [Loose, Default, true];
+            yield return [Loose, Loose, true];
+            yield return [Loose, CaseSensitivityCaseSensitive, false];
+            yield return [Loose, PropertyDeletionModeFail, false];
+            yield return [Loose, PropertyEnumerationModeFail, false];
+            yield return [Loose, PropertyReadModeFail, false];
+            yield return [Loose, PropertyWriteModeUpdate, false];
+            yield return [Loose, SectionDeletionModeFail, false];
 
             yield return [CaseSensitivityCaseSensitive, Default, false];
             yield return [CaseSensitivityCaseSensitive, CaseSensitivityCaseSensitive, true];
@@ -424,6 +455,7 @@ public sealed class IniDocumentConfigurationSpec
         public static IEnumerable<object[]> General_equals_test_cases()
         {
             yield return [Default, new(), false];
+            yield return [Loose, new(), false];
             yield return [CaseSensitivityCaseSensitive, new(), false];
             yield return [PropertyDeletionModeFail, new(), false];
             yield return [PropertyEnumerationModeFail, new(), false];
