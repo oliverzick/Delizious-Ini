@@ -35,6 +35,7 @@ public sealed class IniDocumentConfigurationSpec
         {
             yield return [IniDocumentConfiguration.Default, CaseSensitivity.CaseInsensitive];
             yield return [IniDocumentConfiguration.Loose, CaseSensitivity.CaseInsensitive];
+            yield return [IniDocumentConfiguration.Strict, CaseSensitivity.CaseInsensitive];
         }
 
         [DataTestMethod]
@@ -50,6 +51,7 @@ public sealed class IniDocumentConfigurationSpec
         {
             yield return [IniDocumentConfiguration.Default, PropertyEnumerationMode.Fallback];
             yield return [IniDocumentConfiguration.Loose, PropertyEnumerationMode.Fallback];
+            yield return [IniDocumentConfiguration.Strict, PropertyEnumerationMode.Fail];
         }
 
         [DataTestMethod]
@@ -65,6 +67,7 @@ public sealed class IniDocumentConfigurationSpec
         {
             yield return [IniDocumentConfiguration.Default, PropertyReadMode.Fallback];
             yield return [IniDocumentConfiguration.Loose, PropertyReadMode.Fallback];
+            yield return [IniDocumentConfiguration.Strict, PropertyReadMode.Fail];
         }
 
         [DataTestMethod]
@@ -80,6 +83,7 @@ public sealed class IniDocumentConfigurationSpec
         {
             yield return [IniDocumentConfiguration.Default, PropertyWriteMode.Create];
             yield return [IniDocumentConfiguration.Loose, PropertyWriteMode.Create];
+            yield return [IniDocumentConfiguration.Strict, PropertyWriteMode.Update];
         }
 
         [DataTestMethod]
@@ -95,6 +99,7 @@ public sealed class IniDocumentConfigurationSpec
         {
             yield return [IniDocumentConfiguration.Default, PropertyDeletionMode.Ignore];
             yield return [IniDocumentConfiguration.Loose, PropertyDeletionMode.Ignore];
+            yield return [IniDocumentConfiguration.Strict, PropertyDeletionMode.Fail];
         }
 
         [DataTestMethod]
@@ -110,6 +115,7 @@ public sealed class IniDocumentConfigurationSpec
         {
             yield return [IniDocumentConfiguration.Default, SectionDeletionMode.Ignore];
             yield return [IniDocumentConfiguration.Loose, SectionDeletionMode.Ignore];
+            yield return [IniDocumentConfiguration.Strict, SectionDeletionMode.Fail];
         }
     }
 
@@ -275,12 +281,7 @@ public sealed class IniDocumentConfigurationSpec
         private static IniDocumentConfiguration Null => null!;
         private static IniDocumentConfiguration Default => IniDocumentConfiguration.Default;
         private static IniDocumentConfiguration Loose => IniDocumentConfiguration.Loose;
-        private static IniDocumentConfiguration CaseSensitivityCaseSensitive => IniDocumentConfiguration.Default.WithCaseSensitivity(CaseSensitivity.CaseSensitive);
-        private static IniDocumentConfiguration PropertyDeletionModeFail => IniDocumentConfiguration.Default.WithPropertyDeletionMode(PropertyDeletionMode.Fail);
-        private static IniDocumentConfiguration PropertyEnumerationModeFail => IniDocumentConfiguration.Default.WithPropertyEnumerationMode(PropertyEnumerationMode.Fail);
-        private static IniDocumentConfiguration PropertyReadModeFail => IniDocumentConfiguration.Default.WithPropertyReadMode(PropertyReadMode.Fail);
-        private static IniDocumentConfiguration PropertyWriteModeUpdate => IniDocumentConfiguration.Default.WithPropertyWriteMode(PropertyWriteMode.Update);
-        private static IniDocumentConfiguration SectionDeletionModeFail => IniDocumentConfiguration.Default.WithSectionDeletionMode(SectionDeletionMode.Fail);
+        private static IniDocumentConfiguration Strict => IniDocumentConfiguration.Strict;
 
         [DataTestMethod]
         [DynamicData(nameof(Provides_string_representation_test_cases), DynamicDataSourceType.Method)]
@@ -296,12 +297,10 @@ public sealed class IniDocumentConfigurationSpec
         public static IEnumerable<object[]> Provides_string_representation_test_cases()
         {
             yield return [Default];
-            yield return [CaseSensitivityCaseSensitive];
-            yield return [PropertyDeletionModeFail];
-            yield return [PropertyEnumerationModeFail];
-            yield return [PropertyReadModeFail];
-            yield return [PropertyWriteModeUpdate];
-            yield return [SectionDeletionModeFail];
+            yield return [Loose];
+            yield return [Strict];
+
+            // ToDo: Reintroduce cases for single settings?
         }
 
         [DataTestMethod]
@@ -363,105 +362,48 @@ public sealed class IniDocumentConfigurationSpec
             yield return [Null, Null, true];
             yield return [Null, Default, false];
             yield return [Null, Loose, false];
-            yield return [Null, CaseSensitivityCaseSensitive, false];
-            yield return [Null, PropertyDeletionModeFail, false];
-            yield return [Null, PropertyEnumerationModeFail, false];
-            yield return [Null, PropertyReadModeFail, false];
-            yield return [Null, PropertyWriteModeUpdate, false];
-            yield return [Null, SectionDeletionModeFail, false];
+            yield return [Null, Strict, false];
         }
 
         public static IEnumerable<object[]> Equals_null_test_cases()
         {
             yield return [Default, Null, false];
             yield return [Loose, Null, false];
-            yield return [CaseSensitivityCaseSensitive, Null, false];
-            yield return [PropertyDeletionModeFail, Null, false];
-            yield return [PropertyEnumerationModeFail, Null, false];
-            yield return [PropertyReadModeFail, Null, false];
-            yield return [PropertyWriteModeUpdate, Null, false];
-            yield return [SectionDeletionModeFail, Null, false];
+            yield return [Strict, Null, false];
         }
 
         public static IEnumerable<object[]> Equals_test_cases()
         {
             yield return [Default, Default, true];
             yield return [Default, Loose, true];
-            yield return [Default, CaseSensitivityCaseSensitive, false];
-            yield return [Default, PropertyDeletionModeFail, false];
-            yield return [Default, PropertyEnumerationModeFail, false];
-            yield return [Default, PropertyReadModeFail, false];
-            yield return [Default, PropertyWriteModeUpdate, false];
-            yield return [Default, SectionDeletionModeFail, false];
+            yield return [Default, Strict, false];
+            yield return [Default, Default.WithCaseSensitivity(CaseSensitivity.CaseSensitive), false];
+            yield return [Default, Default.WithCaseSensitivity(CaseSensitivity.CaseInsensitive), true];
+            yield return [Default, Default.WithPropertyDeletionMode(PropertyDeletionMode.Fail), false];
+            yield return [Default, Default.WithPropertyDeletionMode(PropertyDeletionMode.Ignore), true];
+            yield return [Default, Default.WithPropertyEnumerationMode(PropertyEnumerationMode.Fail), false];
+            yield return [Default, Default.WithPropertyEnumerationMode(PropertyEnumerationMode.Fallback), true];
+            yield return [Default, Default.WithPropertyReadMode(PropertyReadMode.Fail), false];
+            yield return [Default, Default.WithPropertyReadMode(PropertyReadMode.Fallback), true];
+            yield return [Default, Default.WithPropertyWriteMode(PropertyWriteMode.Create), true];
+            yield return [Default, Default.WithPropertyWriteMode(PropertyWriteMode.Update), false];
+            yield return [Default, Default.WithSectionDeletionMode(SectionDeletionMode.Fail), false];
+            yield return [Default, Default.WithSectionDeletionMode(SectionDeletionMode.Ignore), true];
 
             yield return [Loose, Default, true];
             yield return [Loose, Loose, true];
-            yield return [Loose, CaseSensitivityCaseSensitive, false];
-            yield return [Loose, PropertyDeletionModeFail, false];
-            yield return [Loose, PropertyEnumerationModeFail, false];
-            yield return [Loose, PropertyReadModeFail, false];
-            yield return [Loose, PropertyWriteModeUpdate, false];
-            yield return [Loose, SectionDeletionModeFail, false];
+            yield return [Loose, Strict, false];
 
-            yield return [CaseSensitivityCaseSensitive, Default, false];
-            yield return [CaseSensitivityCaseSensitive, CaseSensitivityCaseSensitive, true];
-            yield return [CaseSensitivityCaseSensitive, PropertyDeletionModeFail, false];
-            yield return [CaseSensitivityCaseSensitive, PropertyEnumerationModeFail, false];
-            yield return [CaseSensitivityCaseSensitive, PropertyReadModeFail, false];
-            yield return [CaseSensitivityCaseSensitive, PropertyWriteModeUpdate, false];
-            yield return [CaseSensitivityCaseSensitive, SectionDeletionModeFail, false];
-
-            yield return [PropertyDeletionModeFail, Default, false];
-            yield return [PropertyDeletionModeFail, CaseSensitivityCaseSensitive, false];
-            yield return [PropertyDeletionModeFail, PropertyDeletionModeFail, true];
-            yield return [PropertyDeletionModeFail, PropertyEnumerationModeFail, false];
-            yield return [PropertyDeletionModeFail, PropertyReadModeFail, false];
-            yield return [PropertyDeletionModeFail, PropertyWriteModeUpdate, false];
-            yield return [PropertyDeletionModeFail, SectionDeletionModeFail, false];
-
-            yield return [PropertyEnumerationModeFail, Default, false];
-            yield return [PropertyEnumerationModeFail, CaseSensitivityCaseSensitive, false];
-            yield return [PropertyEnumerationModeFail, PropertyDeletionModeFail, false];
-            yield return [PropertyEnumerationModeFail, PropertyEnumerationModeFail, true];
-            yield return [PropertyEnumerationModeFail, PropertyReadModeFail, false];
-            yield return [PropertyEnumerationModeFail, PropertyWriteModeUpdate, false];
-            yield return [PropertyEnumerationModeFail, SectionDeletionModeFail, false];
-
-            yield return [PropertyReadModeFail, Default, false];
-            yield return [PropertyReadModeFail, CaseSensitivityCaseSensitive, false];
-            yield return [PropertyReadModeFail, PropertyDeletionModeFail, false];
-            yield return [PropertyReadModeFail, PropertyEnumerationModeFail, false];
-            yield return [PropertyReadModeFail, PropertyReadModeFail, true];
-            yield return [PropertyReadModeFail, PropertyWriteModeUpdate, false];
-            yield return [PropertyReadModeFail, SectionDeletionModeFail, false];
-
-            yield return [PropertyWriteModeUpdate, Default, false];
-            yield return [PropertyWriteModeUpdate, CaseSensitivityCaseSensitive, false];
-            yield return [PropertyWriteModeUpdate, PropertyDeletionModeFail, false];
-            yield return [PropertyWriteModeUpdate, PropertyEnumerationModeFail, false];
-            yield return [PropertyWriteModeUpdate, PropertyReadModeFail, false];
-            yield return [PropertyWriteModeUpdate, PropertyWriteModeUpdate, true];
-            yield return [PropertyWriteModeUpdate, SectionDeletionModeFail, false];
-
-            yield return [SectionDeletionModeFail, Default, false];
-            yield return [SectionDeletionModeFail, CaseSensitivityCaseSensitive, false];
-            yield return [SectionDeletionModeFail, PropertyDeletionModeFail, false];
-            yield return [SectionDeletionModeFail, PropertyEnumerationModeFail, false];
-            yield return [SectionDeletionModeFail, PropertyReadModeFail, false];
-            yield return [SectionDeletionModeFail, PropertyWriteModeUpdate, false];
-            yield return [SectionDeletionModeFail, SectionDeletionModeFail, true];
+            yield return [Strict, Default, false];
+            yield return [Strict, Loose, false];
+            yield return [Strict, Strict, true];
         }
 
         public static IEnumerable<object[]> General_equals_test_cases()
         {
             yield return [Default, new(), false];
             yield return [Loose, new(), false];
-            yield return [CaseSensitivityCaseSensitive, new(), false];
-            yield return [PropertyDeletionModeFail, new(), false];
-            yield return [PropertyEnumerationModeFail, new(), false];
-            yield return [PropertyReadModeFail, new(), false];
-            yield return [PropertyWriteModeUpdate, new(), false];
-            yield return [SectionDeletionModeFail, new(), false];
+            yield return [Strict, new(), false];
         }
     }
 
