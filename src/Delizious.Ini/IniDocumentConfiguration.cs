@@ -90,6 +90,48 @@
 
         /// <summary>
         /// <para>
+        /// The strict configuration of an <see cref="IniDocument"/>.
+        /// </para>
+        /// <para>
+        /// It contains the following settings:
+        /// </para>
+        /// <list type="table">
+        /// <item>
+        /// <term><see cref="CaseSensitivity"/></term>
+        /// <description><see cref="Ini.CaseSensitivity.CaseInsensitive"/></description>
+        /// </item>
+        /// <item>
+        /// <term><see cref="PropertyEnumerationMode"/></term>
+        /// <description><see cref="Ini.PropertyEnumerationMode.Fail"/></description>
+        /// </item>
+        /// <item>
+        /// <term><see cref="PropertyReadMode"/></term>
+        /// <description><see cref="Ini.PropertyReadMode.Fail"/></description>
+        /// </item>
+        /// <item>
+        /// <term><see cref="PropertyWriteMode"/></term>
+        /// <description><see cref="Ini.PropertyWriteMode.Update"/></description>
+        /// </item>
+        /// <item>
+        /// <term><see cref="PropertyDeletionMode"/></term>
+        /// <description><see cref="Ini.PropertyDeletionMode.Fail"/></description>
+        /// </item>
+        /// <item>
+        /// <term><see cref="SectionDeletionMode"/></term>
+        /// <description><see cref="Ini.SectionDeletionMode.Fail"/></description>
+        /// </item>
+        /// </list>
+        /// </summary>
+        public static IniDocumentConfiguration Strict
+            => new IniDocumentConfiguration(CaseSensitivity.CaseInsensitive,
+                                            PropertyEnumerationMode.Fail,
+                                            PropertyReadMode.Fail,
+                                            PropertyWriteMode.Update,
+                                            PropertyDeletionMode.Fail,
+                                            SectionDeletionMode.Fail);
+
+        /// <summary>
+        /// <para>
         /// The case sensitivity that specifies how to treat section names and property keys.
         /// </para>
         /// </summary>

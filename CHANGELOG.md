@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ## [1.2.0] - 2024-12-27
 ### Added
 - Provide dedicated loose INI document configuration ([#111](https://github.com/oliverzick/Delizious-Ini/issues/111))
+- Provide dedicated strict INI document configuration ([#112](https://github.com/oliverzick/Delizious-Ini/issues/112))
 
 ## [1.1.0] - 2024-12-23
 ### Added
