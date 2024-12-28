@@ -74,6 +74,17 @@ iniDocument.SaveTo(Console.Out);
 ```
 
 ## Examples
+### Configure case sensitivity of section names and property keys
+```cs
+// Treat section names and property keys as case-insensitive
+var configuration = IniDocumentConfiguration.Default
+                                            .WithCaseSensitivity(CaseSensitivity.CaseInsensitive);
+
+// Treat section names and property keys as case-sensitive
+configuration = IniDocumentConfiguration.Default
+                                        .WithCaseSensitivity(CaseSensitivity.CaseSensitive);
+```
+
 ### Load and save
 ```cs
 const string ini = """

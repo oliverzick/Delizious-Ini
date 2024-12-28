@@ -2,12 +2,13 @@
 using System.IO;
 using Delizious.Ini;
 
-Run(QuickStart,          nameof(QuickStart));
-Run(LoadAndSave,         nameof(LoadAndSave));
-Run(EnumerateSections,   nameof(EnumerateSections));
-Run(EnumerateProperties, nameof(EnumerateProperties));
-Run(DeleteSection,       nameof(DeleteSection));
-Run(DeleteProperty,      nameof(DeleteProperty));
+Run(QuickStart,               nameof(QuickStart));
+Run(ConfigureCaseSensitivity, nameof(ConfigureCaseSensitivity));
+Run(LoadAndSave,              nameof(LoadAndSave));
+Run(EnumerateSections,        nameof(EnumerateSections));
+Run(EnumerateProperties,      nameof(EnumerateProperties));
+Run(DeleteSection,            nameof(DeleteSection));
+Run(DeleteProperty,           nameof(DeleteProperty));
 
 return;
 
@@ -51,6 +52,17 @@ void QuickStart()
     Console.WriteLine();
     Console.WriteLine(@"INI document:");
     iniDocument.SaveTo(Console.Out);
+}
+
+void ConfigureCaseSensitivity()
+{
+    // Treat section names and property keys as case-insensitive
+    var configuration = IniDocumentConfiguration.Default
+                                                .WithCaseSensitivity(CaseSensitivity.CaseInsensitive);
+
+    // Treat section names and property keys as case-sensitive
+    configuration = IniDocumentConfiguration.Default
+                                            .WithCaseSensitivity(CaseSensitivity.CaseSensitive);
 }
 
 void LoadAndSave()
