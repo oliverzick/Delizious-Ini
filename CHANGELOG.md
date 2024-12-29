@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.0] - 2024-12-29
+### Added
+- Enable configuration of invalid line behavior that specifies how an INI document should behave on loading when a line is invalid and cannot be parsed ([#117](https://github.com/oliverzick/Delizious-Ini/issues/117))
+
 ## [1.2.0] - 2024-12-27
 ### Added
 - Provide dedicated loose INI document configuration ([#111](https://github.com/oliverzick/Delizious-Ini/issues/111))
