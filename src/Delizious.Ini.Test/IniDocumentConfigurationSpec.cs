@@ -12,6 +12,7 @@ public sealed class IniDocumentConfigurationSpec
     public static IEnumerable<Setting> AllSettings =>
     [
         Setting.CaseSensitivity,
+        Setting.InvalidLineBehavior,
         Setting.PropertyEnumerationMode,
         Setting.PropertyReadMode,
         Setting.PropertyWriteMode,
@@ -36,6 +37,22 @@ public sealed class IniDocumentConfigurationSpec
             yield return [IniDocumentConfiguration.Default, CaseSensitivity.CaseInsensitive];
             yield return [IniDocumentConfiguration.Loose, CaseSensitivity.CaseInsensitive];
             yield return [IniDocumentConfiguration.Strict, CaseSensitivity.CaseInsensitive];
+        }
+
+        [DataTestMethod]
+        [DynamicData(nameof(Default_invalid_line_behavior_test_cases), DynamicDataSourceType.Method)]
+        public void Default_invalid_line_behavior(IniDocumentConfiguration target, InvalidLineBehavior expected)
+        {
+            var actual = target.InvalidLineBehavior;
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        public static IEnumerable<object[]> Default_invalid_line_behavior_test_cases()
+        {
+            yield return [IniDocumentConfiguration.Default, InvalidLineBehavior.Ignore];
+            yield return [IniDocumentConfiguration.Loose, InvalidLineBehavior.Ignore];
+            yield return [IniDocumentConfiguration.Strict, InvalidLineBehavior.Fail];
         }
 
         [DataTestMethod]
@@ -137,6 +154,32 @@ public sealed class IniDocumentConfigurationSpec
             var original = Target;
 
             var actual = original.WithCaseSensitivity(CaseSensitivity.CaseSensitive);
+
+            setting.AssertIsEqual(original, actual);
+        }
+
+        public static IEnumerable<object[]> Retains_remaining_settings_test_cases()
+            => AllSettings.Except(SettingsToExclude).Select(ToTestCase);
+    }
+
+    [TestClass]
+    public sealed class WithInvalidLineBehavior
+    {
+        private static IEnumerable<Setting> SettingsToExclude => [Setting.InvalidLineBehavior];
+
+        [TestMethod]
+        public void Throws_argument_null_exception_when_given_invalid_line_behavior_is_null()
+        {
+            Assert.ThrowsException<ArgumentNullException>(() => Target.WithInvalidLineBehavior(null!));
+        }
+
+        [DataTestMethod]
+        [DynamicData(nameof(Retains_remaining_settings_test_cases), DynamicDataSourceType.Method)]
+        public void Retains_remaining_settings(Setting setting)
+        {
+            var original = Target;
+
+            var actual = original.WithInvalidLineBehavior(InvalidLineBehavior.Fail);
 
             setting.AssertIsEqual(original, actual);
         }
@@ -445,6 +488,18 @@ public sealed class IniDocumentConfigurationSpec
 
             public override string BuildString(IniDocumentConfiguration target)
                 => $"{nameof(target.CaseSensitivity)} = {target.CaseSensitivity}";
+        }
+
+        public static Setting InvalidLineBehavior
+            => new(new InvalidLineBehaviorSetting());
+
+        private sealed record InvalidLineBehaviorSetting : Strategy
+        {
+            public override void AssertIsEqual(IniDocumentConfiguration original, IniDocumentConfiguration actual)
+                => Assert.AreEqual(original.InvalidLineBehavior, actual.InvalidLineBehavior);
+
+            public override string BuildString(IniDocumentConfiguration target)
+                => $"{nameof(target.InvalidLineBehavior)} = {target.InvalidLineBehavior}";
         }
 
         public static Setting PropertyEnumerationMode
