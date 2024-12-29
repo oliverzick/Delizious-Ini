@@ -15,7 +15,7 @@
         }
 
         /// <summary>
-        /// Specifies that loading an INI document should fail
+        /// Specifies that loading an <see cref="IniDocument"/> should fail
         /// by throwing an <see cref="PersistenceException"/>
         /// if a line is invalid and cannot be parsed.
         /// </summary>
@@ -26,7 +26,7 @@
             => new InvalidLineBehavior(new FailIBehavior());
 
         /// <summary>
-        /// Specifies that loading an INI document should silently ignore
+        /// Specifies that loading an <see cref="IniDocument"/> should silently ignore
         /// if a line is invalid and cannot be parsed.
         /// </summary>
         /// <returns>
