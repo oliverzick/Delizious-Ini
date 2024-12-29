@@ -74,15 +74,29 @@ iniDocument.SaveTo(Console.Out);
 ```
 
 ## Examples
-### Configure case sensitivity of section names and property keys
+### Configure default behavior of an INI document
 ```cs
-// Treat section names and property keys as case-insensitive
-var configuration = IniDocumentConfiguration.Default
-                                            .WithCaseSensitivity(CaseSensitivity.CaseInsensitive);
+// This configuration represents the loose configuration which is also predefined:
+//var looseConfiguration = IniDocumentConfiguration.Loose;
+var looseConfiguration =
+    IniDocumentConfiguration.Default
+                            .WithCaseSensitivity(CaseSensitivity.CaseInsensitive) // Treat section names and property keys as case-insensitive
+                            .WithPropertyEnumerationMode(PropertyEnumerationMode.Fallback) // Fallback to empty collection of property keys when section does not exist
+                            .WithPropertyReadMode(PropertyReadMode.Fallback) // Fallback to empty string when property to read does not exist
+                            .WithPropertyWriteMode(PropertyWriteMode.Create) // Create a new property or update an existing property
+                            .WithPropertyDeletionMode(PropertyDeletionMode.Ignore) // Ignore when property to delete does not exist
+                            .WithSectionDeletionMode(SectionDeletionMode.Ignore); // Ignore when section to delete does not exist
 
-// Treat section names and property keys as case-sensitive
-configuration = IniDocumentConfiguration.Default
-                                        .WithCaseSensitivity(CaseSensitivity.CaseSensitive);
+// This configuration represents the strict configuration which is also predefined:
+//var strictConfiguration = IniDocumentConfiguration.Strict;
+var strictConfiguration =
+    IniDocumentConfiguration.Default
+                            .WithCaseSensitivity(CaseSensitivity.CaseInsensitive) // Treat section names and property keys as case-insensitive
+                            .WithPropertyEnumerationMode(PropertyEnumerationMode.Fail) // Throw exception when section to enumerate properties does not exist
+                            .WithPropertyReadMode(PropertyReadMode.Fail) // Throw exception when property to read to does not exist
+                            .WithPropertyWriteMode(PropertyWriteMode.Update) // Update existing property only but throw exception when property to write does not exist
+                            .WithPropertyDeletionMode(PropertyDeletionMode.Fail) // Throw exception when property to delete does not exist
+                            .WithSectionDeletionMode(SectionDeletionMode.Fail); // Throw exception when section to delete does not exist
 ```
 
 ### Load and save
