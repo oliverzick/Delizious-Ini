@@ -11,9 +11,9 @@ Delizious Ini provides the following features:
 * Deletion of sections or properties
 * Configurability of the failure behavior (e.g. throw a specific exception in case a section or property does not exist, or proceed with a fallback behavior) for almost every operation on instance and operation level
 * Configurability of case sensitivity that specifies how to treat section names and property keys
+* Configurability of behavior in case of invalid lines
 
 Upcoming features:
-* Configurability of behavior in case of invalid lines
 * Configurability of behavior whether to allow duplicated sections
 * Configurability of behavior whether to allow duplicated keys
 * Configurability of the property's assignment character and its spacer
@@ -81,6 +81,7 @@ iniDocument.SaveTo(Console.Out);
 var looseConfiguration =
     IniDocumentConfiguration.Default
                             .WithCaseSensitivity(CaseSensitivity.CaseInsensitive) // Treat section names and property keys as case-insensitive
+                            .WithInvalidLineBehavior(InvalidLineBehavior.Ignore) // Ignore when a line is invalid and cannot be parsed on loading
                             .WithPropertyEnumerationMode(PropertyEnumerationMode.Fallback) // Fallback to empty collection of property keys when section does not exist
                             .WithPropertyReadMode(PropertyReadMode.Fallback) // Fallback to empty string when property to read does not exist
                             .WithPropertyWriteMode(PropertyWriteMode.Create) // Create a new property or update an existing property
@@ -92,6 +93,7 @@ var looseConfiguration =
 var strictConfiguration =
     IniDocumentConfiguration.Default
                             .WithCaseSensitivity(CaseSensitivity.CaseInsensitive) // Treat section names and property keys as case-insensitive
+                            .WithInvalidLineBehavior(InvalidLineBehavior.Fail) // Throw exception when a line is invalid and cannot be parsed on loading
                             .WithPropertyEnumerationMode(PropertyEnumerationMode.Fail) // Throw exception when section to enumerate properties does not exist
                             .WithPropertyReadMode(PropertyReadMode.Fail) // Throw exception when property to read to does not exist
                             .WithPropertyWriteMode(PropertyWriteMode.Update) // Update existing property only but throw exception when property to write does not exist

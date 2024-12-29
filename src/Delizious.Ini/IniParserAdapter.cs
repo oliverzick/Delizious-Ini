@@ -51,7 +51,7 @@
                    AssigmentSpacer = string.Empty,
                    CaseInsensitive = configuration.CaseSensitivity.Transform(new CaseSensitivityTransformation()),
                    ConcatenateDuplicateKeys = false,
-                   SkipInvalidLines = true,
+                   SkipInvalidLines = configuration.InvalidLineBehavior.Transform(new InvalidLineBehaviorTransformation()),
                    ThrowExceptionsOnError = true
                };
 
@@ -61,6 +61,15 @@
                 => false;
 
             public bool CaseInsensitive()
+                => true;
+        }
+
+        private readonly struct InvalidLineBehaviorTransformation : IInvalidLineBehaviorTransformation<bool>
+        {
+            public bool Fail()
+                => false;
+
+            public bool Ignore()
                 => true;
         }
 

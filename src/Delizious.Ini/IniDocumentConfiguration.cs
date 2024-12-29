@@ -11,6 +11,7 @@
         //       because state of properties is lost when instances are used in dynamic data method along with data test methods.
 
         private IniDocumentConfiguration(CaseSensitivity caseSensitivity,
+                                         InvalidLineBehavior invalidLineBehavior,
                                          PropertyEnumerationMode propertyEnumerationMode,
                                          PropertyReadMode propertyReadMode,
                                          PropertyWriteMode propertyWriteMode,
@@ -18,6 +19,7 @@
                                          SectionDeletionMode sectionDeletionMode)
         {
             this.CaseSensitivity = caseSensitivity;
+            this.InvalidLineBehavior = invalidLineBehavior;
             this.PropertyEnumerationMode = propertyEnumerationMode;
             this.PropertyReadMode = propertyReadMode;
             this.PropertyWriteMode = propertyWriteMode;
@@ -27,6 +29,7 @@
 
         private IniDocumentConfiguration(IniDocumentConfiguration other)
             : this(other.CaseSensitivity,
+                   other.InvalidLineBehavior,
                    other.PropertyEnumerationMode,
                    other.PropertyReadMode,
                    other.PropertyWriteMode,
@@ -59,6 +62,10 @@
         /// <description><see cref="Ini.CaseSensitivity.CaseInsensitive"/></description>
         /// </item>
         /// <item>
+        /// <term><see cref="InvalidLineBehavior"/></term>
+        /// <description><see cref="InvalidLineBehavior.Ignore"/></description>
+        /// </item>
+        /// <item>
         /// <term><see cref="PropertyEnumerationMode"/></term>
         /// <description><see cref="Ini.PropertyEnumerationMode.Fallback"/></description>
         /// </item>
@@ -82,6 +89,7 @@
         /// </summary>
         public static IniDocumentConfiguration Loose
             => new IniDocumentConfiguration(CaseSensitivity.CaseInsensitive,
+                                            InvalidLineBehavior.Ignore,
                                             PropertyEnumerationMode.Fallback,
                                             PropertyReadMode.Fallback,
                                             PropertyWriteMode.Create,
@@ -99,6 +107,10 @@
         /// <item>
         /// <term><see cref="CaseSensitivity"/></term>
         /// <description><see cref="Ini.CaseSensitivity.CaseInsensitive"/></description>
+        /// </item>
+        /// <item>
+        /// <term><see cref="InvalidLineBehavior"/></term>
+        /// <description><see cref="InvalidLineBehavior.Fail"/></description>
         /// </item>
         /// <item>
         /// <term><see cref="PropertyEnumerationMode"/></term>
@@ -124,6 +136,7 @@
         /// </summary>
         public static IniDocumentConfiguration Strict
             => new IniDocumentConfiguration(CaseSensitivity.CaseInsensitive,
+                                            InvalidLineBehavior.Fail,
                                             PropertyEnumerationMode.Fail,
                                             PropertyReadMode.Fail,
                                             PropertyWriteMode.Update,
@@ -156,6 +169,33 @@
             : this(other)
         {
             this.CaseSensitivity = caseSensitivity;
+        }
+
+        /// <summary>
+        /// The behavior that specifies how an <see cref="IniDocument"/> should behave on loading when a line is invalid and cannot be parsed.
+        /// </summary>
+        public InvalidLineBehavior InvalidLineBehavior { get; }
+
+        /// <summary>
+        /// Creates a copy of the current <see cref="IniDocumentConfiguration"/> instance and defines
+        /// the behavior that specifies how an <see cref="IniDocument"/> should behave on loading when a line is invalid and cannot be parsed.
+        /// </summary>
+        /// <param name="invalidLineBehavior">
+        /// The behavior that specifies how an <see cref="IniDocument"/> should behave on loading when a line is invalid and cannot be parsed.
+        /// </param>
+        /// <returns>
+        /// A new <see cref="IniDocumentConfiguration"/> instance with the given <paramref name="invalidLineBehavior"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="invalidLineBehavior"/> is <c>null</c>.
+        /// </exception>
+        public IniDocumentConfiguration WithInvalidLineBehavior(InvalidLineBehavior invalidLineBehavior)
+            => new IniDocumentConfiguration(this, invalidLineBehavior ?? throw new ArgumentNullException(nameof(invalidLineBehavior)));
+
+        private IniDocumentConfiguration(IniDocumentConfiguration other, InvalidLineBehavior invalidLineBehavior)
+            : this(other)
+        {
+            this.InvalidLineBehavior = invalidLineBehavior;
         }
 
         /// <summary>
@@ -303,6 +343,7 @@
             }
 
             return Equals(this.CaseSensitivity,         other.CaseSensitivity)
+                && Equals(this.InvalidLineBehavior,     other.InvalidLineBehavior)
                 && Equals(this.PropertyEnumerationMode, other.PropertyEnumerationMode)
                 && Equals(this.PropertyReadMode,        other.PropertyReadMode)
                 && Equals(this.PropertyWriteMode,       other.PropertyWriteMode)
@@ -317,6 +358,7 @@
         /// <inheritdoc/>
         public override int GetHashCode()
             => HashCode.Calculate(this.CaseSensitivity.GetHashCode(),
+                                  this.InvalidLineBehavior.GetHashCode(),
                                   this.PropertyEnumerationMode.GetHashCode(),
                                   this.PropertyReadMode.GetHashCode(),
                                   this.PropertyWriteMode.GetHashCode(),
@@ -325,6 +367,6 @@
 
         /// <inheritdoc/>
         public override string ToString()
-            => $"{nameof(IniDocumentConfiguration)} {{ {nameof(this.CaseSensitivity)} = {this.CaseSensitivity}, {nameof(this.PropertyEnumerationMode)} = {this.PropertyEnumerationMode}, {nameof(this.PropertyReadMode)} = {this.PropertyReadMode}, {nameof(this.PropertyWriteMode)} = {this.PropertyWriteMode}, {nameof(this.PropertyDeletionMode)} = {this.PropertyDeletionMode}, {nameof(this.SectionDeletionMode)} = {this.SectionDeletionMode} }}";
+            => $"{nameof(IniDocumentConfiguration)} {{ {nameof(this.CaseSensitivity)} = {this.CaseSensitivity}, {nameof(this.InvalidLineBehavior)} = {this.InvalidLineBehavior}, {nameof(this.PropertyEnumerationMode)} = {this.PropertyEnumerationMode}, {nameof(this.PropertyReadMode)} = {this.PropertyReadMode}, {nameof(this.PropertyWriteMode)} = {this.PropertyWriteMode}, {nameof(this.PropertyDeletionMode)} = {this.PropertyDeletionMode}, {nameof(this.SectionDeletionMode)} = {this.SectionDeletionMode} }}";
     }
 }
