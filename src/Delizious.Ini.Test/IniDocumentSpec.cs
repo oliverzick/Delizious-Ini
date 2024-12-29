@@ -71,6 +71,44 @@ public sealed class IniDocumentSpec
 
             Assert.AreEqual(expected, actual);
         }
+
+        [TestClass]
+        public sealed class With_configured_invalid_line_behavior
+        {
+            private const string Ini = """
+                                       [Section]
+                                       <Invalid line>
+                                       Property=Value
+                                       """;
+
+            [TestClass]
+            public sealed class When_fail_behavior
+            {
+                [TestMethod]
+                public void Throws_persistence_exception_on_invalid_line()
+                {
+                    using var textReader = new StringReader(Ini);
+
+                    var configuration = DefaultConfiguration.WithInvalidLineBehavior(InvalidLineBehavior.Fail);
+
+                    Assert.ThrowsException<PersistenceException>(() => IniDocument.LoadFrom(textReader, configuration));
+                }
+            }
+
+            [TestClass]
+            public sealed class When_ignore_behavior
+            {
+                [TestMethod]
+                public void Ignores_invalid_line()
+                {
+                    using var textReader = new StringReader(Ini);
+
+                    var configuration = DefaultConfiguration.WithInvalidLineBehavior(InvalidLineBehavior.Ignore);
+
+                    var target = IniDocument.LoadFrom(textReader, configuration);
+                }
+            }
+        }
     }
 
     [TestClass]
