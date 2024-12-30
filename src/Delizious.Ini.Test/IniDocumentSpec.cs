@@ -157,7 +157,7 @@ public sealed class IniDocumentSpec
     [TestClass]
     public sealed class EnumerateSections
     {
-        private static SectionName[] SectionNames => new SectionName[] { "Section1", "AnotherSection2", "SomeSectionA" };
+        private static SectionName[] SectionNames => ["Section1", "AnotherSection2", "SomeSectionA"];
 
         [TestMethod]
         public void Enumerates_the_names_of_all_contained_sections()
@@ -175,7 +175,7 @@ public sealed class IniDocumentSpec
     [TestClass]
     public sealed class EnumerateProperties
     {
-        private static PropertyKey[] PropertyKeys => new PropertyKey[] { "Property1", "AnotherProperty2", "SomePropertyA" };
+        private static PropertyKey[] PropertyKeys => ["Property1", "AnotherProperty2", "SomePropertyA"];
 
         [TestClass]
         public sealed class With_sectionName
@@ -272,8 +272,8 @@ public sealed class IniDocumentSpec
 
             public static IEnumerable<object[]> Modes()
             {
-                yield return new object[] { PropertyEnumerationMode.Fail };
-                yield return new object[] { PropertyEnumerationMode.Fallback };
+                yield return [PropertyEnumerationMode.Fail];
+                yield return [PropertyEnumerationMode.Fallback];
             }
 
             [TestClass]
@@ -453,11 +453,11 @@ public sealed class IniDocumentSpec
 
             public static IEnumerable<object[]> Modes()
             {
-                yield return new object[] { EmptyPropertyValue, PropertyReadMode.Fallback };
-                yield return new object[] { EmptyPropertyValue, PropertyReadMode.Fail };
+                yield return [EmptyPropertyValue, PropertyReadMode.Fallback];
+                yield return [EmptyPropertyValue, PropertyReadMode.Fail];
 
-                yield return new object[] { DefaultPropertyValue, PropertyReadMode.Fallback };
-                yield return new object[] { DefaultPropertyValue, PropertyReadMode.Fail };
+                yield return [DefaultPropertyValue, PropertyReadMode.Fallback];
+                yield return [DefaultPropertyValue, PropertyReadMode.Fail];
             }
 
             [TestClass]
@@ -1140,7 +1140,7 @@ public sealed class IniDocumentSpec
                 => Create(sectionName, properties.AsEnumerable());
 
             public static Section Create(SectionName sectionName, IEnumerable<Property> properties)
-                => new(sectionName, properties.ToImmutableArray());
+                => new(sectionName, [..properties]);
 
             public IniDocumentBuilder ApplyTo(IniDocumentBuilder builder)
                 => this.Properties.Aggregate(builder.AppendSectionLine(this.SectionName), (currentBuilder, property) => property.ApplyTo(currentBuilder));

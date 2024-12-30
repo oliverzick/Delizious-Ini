@@ -19,8 +19,8 @@ public sealed class PropertyWriteModeSpec
 
     public static IEnumerable<object[]> Provides_string_representation_test_cases()
     {
-        yield return new object[] { Create, "Create" };
-        yield return new object[] { Update, "Update" };
+        yield return [Create, "Create"];
+        yield return [Update, "Update"];
     }
 
     [DataTestMethod]
@@ -79,29 +79,29 @@ public sealed class PropertyWriteModeSpec
 
     public static IEnumerable<object[]> Equality_operator_test_cases()
     {
-        yield return new object[] { null!, null!, true };
-        yield return new object[] { null!, Create, false };
-        yield return new object[] { null!, Update, false };
+        yield return [null!, null!, true];
+        yield return [null!, Create, false];
+        yield return [null!, Update, false];
     }
 
     public static IEnumerable<object[]> Equals_null_test_cases()
     {
-        yield return new object[] { Create, null!, false };
-        yield return new object[] { Update, null!, false };
+        yield return [Create, null!, false];
+        yield return [Update, null!, false];
     }
 
     public static IEnumerable<object[]> Equals_test_cases()
     {
-        yield return new object[] { Create, Create, true };
-        yield return new object[] { Create, Update, false };
+        yield return [Create, Create, true];
+        yield return [Create, Update, false];
 
-        yield return new object[] { Update, Update, true };
-        yield return new object[] { Update, Create, false };
+        yield return [Update, Update, true];
+        yield return [Update, Create, false];
     }
 
     public static IEnumerable<object[]> General_equals_test_cases()
     {
-        yield return new object[] { Create, string.Empty, false };
-        yield return new object[] { Update, string.Empty, false };
+        yield return [Create, string.Empty, false];
+        yield return [Update, string.Empty, false];
     }
 }

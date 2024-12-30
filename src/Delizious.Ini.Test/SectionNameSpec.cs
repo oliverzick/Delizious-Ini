@@ -110,29 +110,29 @@ public sealed class SectionNameSpec
 
     public static IEnumerable<object[]> Equality_operator_test_cases()
     {
-        yield return new object[] { Null, Null, true };
-        yield return new object[] { Null, A, false };
-        yield return new object[] { Null, B, false };
+        yield return [Null, Null, true];
+        yield return [Null, A, false];
+        yield return [Null, B, false];
     }
 
     public static IEnumerable<object[]> Equals_null_test_cases()
     {
-        yield return new object[] { A, Null, false };
-        yield return new object[] { B, Null, false };
+        yield return [A, Null, false];
+        yield return [B, Null, false];
     }
 
     public static IEnumerable<object[]> Equals_test_cases()
     {
-        yield return new object[] { A, A, true };
-        yield return new object[] { A, B, false };
+        yield return [A, A, true];
+        yield return [A, B, false];
 
-        yield return new object[] { B, B, true };
-        yield return new object[] { B, A, false };
+        yield return [B, B, true];
+        yield return [B, A, false];
     }
 
     public static IEnumerable<object[]> General_equals_test_cases()
     {
-        yield return new object[] { A, new(), false };
-        yield return new object[] { B, new(), false };
+        yield return [A, new(), false];
+        yield return [B, new(), false];
     }
 }

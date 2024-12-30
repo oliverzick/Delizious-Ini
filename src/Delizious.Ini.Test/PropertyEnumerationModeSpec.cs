@@ -20,8 +20,8 @@ public sealed class PropertyEnumerationModeSpec
 
     public static IEnumerable<object[]> Provides_string_representation_test_cases()
     {
-        yield return new object[] { Fail, "Fail" };
-        yield return new object[] { Fallback, "Fallback" };
+        yield return [Fail, "Fail"];
+        yield return [Fallback, "Fallback"];
     }
 
     [DataTestMethod]
@@ -80,28 +80,28 @@ public sealed class PropertyEnumerationModeSpec
 
     public static IEnumerable<object[]> Equality_operator_test_cases()
     {
-        yield return new object[] { Null, Null, true };
-        yield return new object[] { Null, Fail, false };
-        yield return new object[] { Null, Fallback, false };
+        yield return [Null, Null, true];
+        yield return [Null, Fail, false];
+        yield return [Null, Fallback, false];
     }
 
     public static IEnumerable<object[]> Equals_null_test_cases()
     {
-        yield return new object[] { Fail, Null, false };
-        yield return new object[] { Fallback, Null, false };
+        yield return [Fail, Null, false];
+        yield return [Fallback, Null, false];
     }
 
     public static IEnumerable<object[]> Equals_test_cases()
     {
-        yield return new object[] { Fail, Fail, true };
-        yield return new object[] { Fail, Fallback, false };
-        yield return new object[] { Fallback, Fallback, true };
-        yield return new object[] { Fallback, Fail, false };
+        yield return [Fail, Fail, true];
+        yield return [Fail, Fallback, false];
+        yield return [Fallback, Fallback, true];
+        yield return [Fallback, Fail, false];
     }
 
     public static IEnumerable<object[]> General_equals_test_cases()
     {
-        yield return new object[] { Fail, new(), false };
-        yield return new object[] { Fallback, new(), false };
+        yield return [Fail, new(), false];
+        yield return [Fallback, new(), false];
     }
 }

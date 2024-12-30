@@ -28,9 +28,9 @@ public sealed class PropertyReadModeSpec
 
     public static IEnumerable<object[]> Provides_string_representation_test_cases()
     {
-        yield return new object[] { Fail, "Fail" };
-        yield return new object[] { Fallback, "Fallback" };
-        yield return new object[] { FallbackCustom, "Fallback" };
+        yield return [Fail, "Fail"];
+        yield return [Fallback, "Fallback"];
+        yield return [FallbackCustom, "Fallback"];
     }
 
     [DataTestMethod]
@@ -89,41 +89,41 @@ public sealed class PropertyReadModeSpec
 
     public static IEnumerable<object[]> Equality_operator_test_cases()
     {
-        yield return new object[] { null!, null!, true };
-        yield return new object[] { null!, Fail, false };
-        yield return new object[] { null!, Fallback, false };
-        yield return new object[] { null!, FallbackCustom, false };
+        yield return [null!, null!, true];
+        yield return [null!, Fail, false];
+        yield return [null!, Fallback, false];
+        yield return [null!, FallbackCustom, false];
     }
 
     public static IEnumerable<object[]> Equals_null_test_cases()
     {
-        yield return new object[] { Fail, null!, false };
-        yield return new object[] { Fallback, null!, false };
-        yield return new object[] { FallbackCustom, null!, false };
+        yield return [Fail, null!, false];
+        yield return [Fallback, null!, false];
+        yield return [FallbackCustom, null!, false];
     }
 
     public static IEnumerable<object[]> Equals_test_cases()
     {
-        yield return new object[] { Fail, Fail, true };
-        yield return new object[] { Fail, Fallback, false };
-        yield return new object[] { Fail, FallbackCustom, false };
+        yield return [Fail, Fail, true];
+        yield return [Fail, Fallback, false];
+        yield return [Fail, FallbackCustom, false];
 
-        yield return new object[] { Fallback, Fallback, true };
-        yield return new object[] { Fallback, FallbackCustom, false };
-        yield return new object[] { Fallback, Fail, false };
+        yield return [Fallback, Fallback, true];
+        yield return [Fallback, FallbackCustom, false];
+        yield return [Fallback, Fail, false];
 
-        yield return new object[] { FallbackCustom, FallbackCustom, true };
-        yield return new object[] { FallbackCustom, Fallback, false };
-        yield return new object[] { FallbackCustom, Fail, false };
+        yield return [FallbackCustom, FallbackCustom, true];
+        yield return [FallbackCustom, Fallback, false];
+        yield return [FallbackCustom, Fail, false];
 
         // Specifies that default fallback is the same as custom fallback with empty string
-        yield return new object[] { Fallback, FallbackCustomDefault, true };
+        yield return [Fallback, FallbackCustomDefault, true];
     }
 
     public static IEnumerable<object[]> General_equals_test_cases()
     {
-        yield return new object[] { Fail, string.Empty, false };
-        yield return new object[] { Fallback, string.Empty, false };
-        yield return new object[] { FallbackCustom, string.Empty, false };
+        yield return [Fail, string.Empty, false];
+        yield return [Fallback, string.Empty, false];
+        yield return [FallbackCustom, string.Empty, false];
     }
 }
