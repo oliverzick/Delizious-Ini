@@ -19,8 +19,8 @@ public sealed class PropertyDeletionModeSpec
 
     public static IEnumerable<object[]> Provides_string_representation_test_cases()
     {
-        yield return new object[] { Fail, "Fail" };
-        yield return new object[] { Ignore, "Ignore" };
+        yield return [Fail, "Fail"];
+        yield return [Ignore, "Ignore"];
     }
 
     [DataTestMethod]
@@ -79,29 +79,29 @@ public sealed class PropertyDeletionModeSpec
 
     public static IEnumerable<object[]> Equality_operator_test_cases()
     {
-        yield return new object[] { null!, null!, true };
-        yield return new object[] { null!, Fail, false };
-        yield return new object[] { null!, Ignore, false };
+        yield return [null!, null!, true];
+        yield return [null!, Fail, false];
+        yield return [null!, Ignore, false];
     }
 
     public static IEnumerable<object[]> Equals_null_test_cases()
     {
-        yield return new object[] { Fail, null!, false };
-        yield return new object[] { Ignore, null!, false };
+        yield return [Fail, null!, false];
+        yield return [Ignore, null!, false];
     }
 
     public static IEnumerable<object[]> Equals_test_cases()
     {
-        yield return new object[] { Fail, Fail, true };
-        yield return new object[] { Fail, Ignore, false };
+        yield return [Fail, Fail, true];
+        yield return [Fail, Ignore, false];
 
-        yield return new object[] { Ignore, Ignore, true };
-        yield return new object[] { Ignore, Fail, false };
+        yield return [Ignore, Ignore, true];
+        yield return [Ignore, Fail, false];
     }
 
     public static IEnumerable<object[]> General_equals_test_cases()
     {
-        yield return new object[] { Fail, string.Empty, false };
-        yield return new object[] { Ignore, string.Empty, false };
+        yield return [Fail, string.Empty, false];
+        yield return [Ignore, string.Empty, false];
     }
 }
