@@ -57,6 +57,22 @@ public sealed class IniDocumentConfigurationSpec
         }
 
         [DataTestMethod]
+        [DynamicData(nameof(Default_property_assignment_separator_test_cases), DynamicDataSourceType.Method)]
+        public void Default_property_assignment_separator(IniDocumentConfiguration target, PropertyAssignmentSeparator expected)
+        {
+            var actual = target.PropertyAssignmentSeparator;
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        public static IEnumerable<object[]> Default_property_assignment_separator_test_cases()
+        {
+            yield return [IniDocumentConfiguration.Default, PropertyAssignmentSeparator.Default];
+            yield return [IniDocumentConfiguration.Loose, PropertyAssignmentSeparator.Default];
+            yield return [IniDocumentConfiguration.Strict, PropertyAssignmentSeparator.Default];
+        }
+
+        [DataTestMethod]
         [DynamicData(nameof(Default_property_enumeration_mode_test_cases), DynamicDataSourceType.Method)]
         public void Default_property_enumeration_mode(IniDocumentConfiguration target, PropertyEnumerationMode expected)
         {
