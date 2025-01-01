@@ -51,6 +51,7 @@
                    AssigmentSpacer = string.Empty,
                    CaseInsensitive = configuration.CaseSensitivity.Transform(new CaseSensitivityTransformation()),
                    ConcatenateDuplicateKeys = false,
+                   KeyValueAssigmentChar = configuration.PropertyAssignmentSeparator.ToChar(),
                    SkipInvalidLines = configuration.InvalidLineBehavior.Transform(new InvalidLineBehaviorTransformation()),
                    ThrowExceptionsOnError = true
                };

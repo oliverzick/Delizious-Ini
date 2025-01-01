@@ -136,14 +136,15 @@ public sealed class IniDocumentSpec
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod]
-        public void Saves_the_ini_document_to_text_writer()
+        [DataTestMethod]
+        [DynamicData(nameof(Saves_the_ini_document_to_text_writer_test_cases), DynamicDataSourceType.Method)]
+        public void Saves_the_ini_document_to_text_writer(IniDocumentConfiguration configuration)
         {
-            var expected = Make.SampleString();
+            var expected = Make.SampleString(configuration);
             var stringBuilder = new StringBuilder();
             using var textWriter = new StringWriter(stringBuilder);
 
-            var target = Make.SampleTarget();
+            var target = Make.SampleTarget(configuration);
 
             target.SaveTo(textWriter);
             textWriter.Flush();
@@ -151,6 +152,12 @@ public sealed class IniDocumentSpec
             var actual = stringBuilder.ToString();
 
             Assert.AreEqual(expected, actual);
+        }
+
+        public static IEnumerable<object[]> Saves_the_ini_document_to_text_writer_test_cases()
+        {
+            yield return [DefaultConfiguration];
+            yield return [DefaultConfiguration.WithPropertyAssignmentSeparator(':')];
         }
     }
 
@@ -1070,18 +1077,18 @@ public sealed class IniDocumentSpec
         public static IniDocument EmptySectionsTarget(IniDocumentConfiguration configuration, params SectionName[] sectionNames)
             => Target(configuration, sectionNames.Select(Section.CreateEmpty));
 
-        public static IniDocument SampleTarget()
-            => Target(DefaultConfiguration,
+        public static IniDocument SampleTarget(IniDocumentConfiguration configuration)
+            => Target(configuration,
                       Section.Create("Section1", Property.Create("PropertyA", "Value A")),
                       Section.Create("Section2", Property.Create("PropertyB", "Value B")));
 
-        public static string SampleString()
-            => new IniDocumentBuilder(DefaultConfiguration).AppendSectionLine("Section1")
-                                                           .AppendPropertyLine("PropertyA", "Value A")
-                                                           .AppendEmptyLine()
-                                                           .AppendSectionLine("Section2")
-                                                           .AppendPropertyLine("PropertyB", "Value B")
-                                                           .ToString();
+        public static string SampleString(IniDocumentConfiguration configuration)
+            => new IniDocumentBuilder(configuration).AppendSectionLine("Section1")
+                                                    .AppendPropertyLine("PropertyA", "Value A")
+                                                    .AppendEmptyLine()
+                                                    .AppendSectionLine("Section2")
+                                                    .AppendPropertyLine("PropertyB", "Value B")
+                                                    .ToString();
 
         private static IniDocument Target(IniDocumentConfiguration configuration, params Section[] sections)
             => Target(configuration, sections.AsEnumerable());
@@ -1116,7 +1123,7 @@ public sealed class IniDocumentSpec
 
             public IniDocumentBuilder AppendPropertyLine(PropertyKey propertyKey, PropertyValue propertyValue)
             {
-                this.stringBuilder.AppendLine($"{propertyKey}={propertyValue}");
+                this.stringBuilder.AppendLine($"{propertyKey}{this.configuration.PropertyAssignmentSeparator}{propertyValue}");
 
                 return this;
             }

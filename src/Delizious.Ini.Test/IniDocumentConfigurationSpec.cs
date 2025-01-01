@@ -13,6 +13,7 @@ public sealed class IniDocumentConfigurationSpec
     [
         Setting.CaseSensitivity,
         Setting.InvalidLineBehavior,
+        Setting.PropertyAssignmentSeparator,
         Setting.PropertyEnumerationMode,
         Setting.PropertyReadMode,
         Setting.PropertyWriteMode,
@@ -53,6 +54,22 @@ public sealed class IniDocumentConfigurationSpec
             yield return [IniDocumentConfiguration.Default, InvalidLineBehavior.Ignore];
             yield return [IniDocumentConfiguration.Loose, InvalidLineBehavior.Ignore];
             yield return [IniDocumentConfiguration.Strict, InvalidLineBehavior.Fail];
+        }
+
+        [DataTestMethod]
+        [DynamicData(nameof(Default_property_assignment_separator_test_cases), DynamicDataSourceType.Method)]
+        public void Default_property_assignment_separator(IniDocumentConfiguration target, PropertyAssignmentSeparator expected)
+        {
+            var actual = target.PropertyAssignmentSeparator;
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        public static IEnumerable<object[]> Default_property_assignment_separator_test_cases()
+        {
+            yield return [IniDocumentConfiguration.Default, PropertyAssignmentSeparator.Default];
+            yield return [IniDocumentConfiguration.Loose, PropertyAssignmentSeparator.Default];
+            yield return [IniDocumentConfiguration.Strict, PropertyAssignmentSeparator.Default];
         }
 
         [DataTestMethod]
@@ -180,6 +197,32 @@ public sealed class IniDocumentConfigurationSpec
             var original = Target;
 
             var actual = original.WithInvalidLineBehavior(InvalidLineBehavior.Fail);
+
+            setting.AssertIsEqual(original, actual);
+        }
+
+        public static IEnumerable<object[]> Retains_remaining_settings_test_cases()
+            => AllSettings.Except(SettingsToExclude).Select(ToTestCase);
+    }
+
+    [TestClass]
+    public sealed class WithPropertyAssignmentSeparator
+    {
+        private static IEnumerable<Setting> SettingsToExclude => [Setting.PropertyAssignmentSeparator];
+
+        [TestMethod]
+        public void Throws_argument_null_exception_when_given_invalid_line_behavior_is_null()
+        {
+            Assert.ThrowsException<ArgumentNullException>(() => Target.WithPropertyAssignmentSeparator(null!));
+        }
+
+        [DataTestMethod]
+        [DynamicData(nameof(Retains_remaining_settings_test_cases), DynamicDataSourceType.Method)]
+        public void Retains_remaining_settings(Setting setting)
+        {
+            var original = Target;
+
+            var actual = original.WithPropertyAssignmentSeparator(':');
 
             setting.AssertIsEqual(original, actual);
         }
@@ -424,6 +467,8 @@ public sealed class IniDocumentConfigurationSpec
             yield return [Default, Default.WithCaseSensitivity(CaseSensitivity.CaseInsensitive), true];
             yield return [Default, Default.WithPropertyDeletionMode(PropertyDeletionMode.Fail), false];
             yield return [Default, Default.WithPropertyDeletionMode(PropertyDeletionMode.Ignore), true];
+            yield return [Default, Default.WithPropertyAssignmentSeparator(PropertyAssignmentSeparator.Default), true];
+            yield return [Default, Default.WithPropertyAssignmentSeparator(':'), false];
             yield return [Default, Default.WithPropertyEnumerationMode(PropertyEnumerationMode.Fail), false];
             yield return [Default, Default.WithPropertyEnumerationMode(PropertyEnumerationMode.Fallback), true];
             yield return [Default, Default.WithPropertyReadMode(PropertyReadMode.Fail), false];
@@ -500,6 +545,18 @@ public sealed class IniDocumentConfigurationSpec
 
             public override string BuildString(IniDocumentConfiguration target)
                 => $"{nameof(target.InvalidLineBehavior)} = {target.InvalidLineBehavior}";
+        }
+
+        public static Setting PropertyAssignmentSeparator
+            => new(new PropertyAssignmentSeparatorSetting());
+
+        private sealed record PropertyAssignmentSeparatorSetting : Strategy
+        {
+            public override void AssertIsEqual(IniDocumentConfiguration original, IniDocumentConfiguration actual)
+                => Assert.AreEqual(original.PropertyAssignmentSeparator, actual.PropertyAssignmentSeparator);
+
+            public override string BuildString(IniDocumentConfiguration target)
+                => $"{nameof(target.PropertyAssignmentSeparator)} = {target.PropertyAssignmentSeparator}";
         }
 
         public static Setting PropertyEnumerationMode
