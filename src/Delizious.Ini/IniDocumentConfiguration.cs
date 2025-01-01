@@ -12,6 +12,7 @@
 
         private IniDocumentConfiguration(CaseSensitivity caseSensitivity,
                                          InvalidLineBehavior invalidLineBehavior,
+                                         PropertyAssignmentSeparator propertyAssignmentSeparator,
                                          PropertyEnumerationMode propertyEnumerationMode,
                                          PropertyReadMode propertyReadMode,
                                          PropertyWriteMode propertyWriteMode,
@@ -20,6 +21,7 @@
         {
             this.CaseSensitivity = caseSensitivity;
             this.InvalidLineBehavior = invalidLineBehavior;
+            this.PropertyAssignmentSeparator = propertyAssignmentSeparator;
             this.PropertyEnumerationMode = propertyEnumerationMode;
             this.PropertyReadMode = propertyReadMode;
             this.PropertyWriteMode = propertyWriteMode;
@@ -30,6 +32,7 @@
         private IniDocumentConfiguration(IniDocumentConfiguration other)
             : this(other.CaseSensitivity,
                    other.InvalidLineBehavior,
+                   other.PropertyAssignmentSeparator,
                    other.PropertyEnumerationMode,
                    other.PropertyReadMode,
                    other.PropertyWriteMode,
@@ -66,6 +69,10 @@
         /// <description><see cref="InvalidLineBehavior.Ignore"/></description>
         /// </item>
         /// <item>
+        /// <term><see cref="PropertyAssignmentSeparator"/></term>
+        /// <description><see cref="Ini.PropertyAssignmentSeparator.Default"/></description>
+        /// </item>
+        /// <item>
         /// <term><see cref="PropertyEnumerationMode"/></term>
         /// <description><see cref="Ini.PropertyEnumerationMode.Fallback"/></description>
         /// </item>
@@ -90,6 +97,7 @@
         public static IniDocumentConfiguration Loose
             => new IniDocumentConfiguration(CaseSensitivity.CaseInsensitive,
                                             InvalidLineBehavior.Ignore,
+                                            PropertyAssignmentSeparator.Default,
                                             PropertyEnumerationMode.Fallback,
                                             PropertyReadMode.Fallback,
                                             PropertyWriteMode.Create,
@@ -111,6 +119,10 @@
         /// <item>
         /// <term><see cref="InvalidLineBehavior"/></term>
         /// <description><see cref="InvalidLineBehavior.Fail"/></description>
+        /// </item>
+        /// <item>
+        /// <term><see cref="PropertyAssignmentSeparator"/></term>
+        /// <description><see cref="Ini.PropertyAssignmentSeparator.Default"/></description>
         /// </item>
         /// <item>
         /// <term><see cref="PropertyEnumerationMode"/></term>
@@ -137,6 +149,7 @@
         public static IniDocumentConfiguration Strict
             => new IniDocumentConfiguration(CaseSensitivity.CaseInsensitive,
                                             InvalidLineBehavior.Fail,
+                                            PropertyAssignmentSeparator.Default,
                                             PropertyEnumerationMode.Fail,
                                             PropertyReadMode.Fail,
                                             PropertyWriteMode.Update,
@@ -196,6 +209,33 @@
             : this(other)
         {
             this.InvalidLineBehavior = invalidLineBehavior;
+        }
+
+        /// <summary>
+        /// The assignment separator of a property.
+        /// </summary>
+        public PropertyAssignmentSeparator PropertyAssignmentSeparator { get; }
+
+        /// <summary>
+        /// Creates a copy of the current <see cref="IniDocumentConfiguration"/> instance and defines
+        /// the assignment separator of a property.
+        /// </summary>
+        /// <param name="propertyAssignmentSeparator">
+        /// The assignment separator of a property.
+        /// </param>
+        /// <returns>
+        /// A new <see cref="IniDocumentConfiguration"/> instance with the given <paramref name="propertyAssignmentSeparator"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="propertyAssignmentSeparator"/> is <c>null</c>.
+        /// </exception>
+        public IniDocumentConfiguration WithPropertyAssignmentSeparator(PropertyAssignmentSeparator propertyAssignmentSeparator)
+            => new IniDocumentConfiguration(this, propertyAssignmentSeparator ?? throw new ArgumentNullException(nameof(propertyAssignmentSeparator)));
+
+        private IniDocumentConfiguration(IniDocumentConfiguration other, PropertyAssignmentSeparator propertyAssignmentSeparator)
+            : this(other)
+        {
+            this.PropertyAssignmentSeparator = propertyAssignmentSeparator;
         }
 
         /// <summary>
@@ -342,13 +382,14 @@
                 return false;
             }
 
-            return Equals(this.CaseSensitivity,         other.CaseSensitivity)
-                && Equals(this.InvalidLineBehavior,     other.InvalidLineBehavior)
-                && Equals(this.PropertyEnumerationMode, other.PropertyEnumerationMode)
-                && Equals(this.PropertyReadMode,        other.PropertyReadMode)
-                && Equals(this.PropertyWriteMode,       other.PropertyWriteMode)
-                && Equals(this.PropertyDeletionMode,    other.PropertyDeletionMode)
-                && Equals(this.SectionDeletionMode,     other.SectionDeletionMode);
+            return Equals(this.CaseSensitivity,             other.CaseSensitivity)
+                && Equals(this.InvalidLineBehavior,         other.InvalidLineBehavior)
+                && Equals(this.PropertyAssignmentSeparator, other.PropertyAssignmentSeparator)
+                && Equals(this.PropertyEnumerationMode,     other.PropertyEnumerationMode)
+                && Equals(this.PropertyReadMode,            other.PropertyReadMode)
+                && Equals(this.PropertyWriteMode,           other.PropertyWriteMode)
+                && Equals(this.PropertyDeletionMode,        other.PropertyDeletionMode)
+                && Equals(this.SectionDeletionMode,         other.SectionDeletionMode);
         }
 
         /// <inheritdoc/>
@@ -359,6 +400,7 @@
         public override int GetHashCode()
             => HashCode.Calculate(this.CaseSensitivity.GetHashCode(),
                                   this.InvalidLineBehavior.GetHashCode(),
+                                  this.PropertyAssignmentSeparator.GetHashCode(),
                                   this.PropertyEnumerationMode.GetHashCode(),
                                   this.PropertyReadMode.GetHashCode(),
                                   this.PropertyWriteMode.GetHashCode(),
@@ -367,6 +409,6 @@
 
         /// <inheritdoc/>
         public override string ToString()
-            => $"{nameof(IniDocumentConfiguration)} {{ {nameof(this.CaseSensitivity)} = {this.CaseSensitivity}, {nameof(this.InvalidLineBehavior)} = {this.InvalidLineBehavior}, {nameof(this.PropertyEnumerationMode)} = {this.PropertyEnumerationMode}, {nameof(this.PropertyReadMode)} = {this.PropertyReadMode}, {nameof(this.PropertyWriteMode)} = {this.PropertyWriteMode}, {nameof(this.PropertyDeletionMode)} = {this.PropertyDeletionMode}, {nameof(this.SectionDeletionMode)} = {this.SectionDeletionMode} }}";
+            => $"{nameof(IniDocumentConfiguration)} {{ {nameof(this.CaseSensitivity)} = {this.CaseSensitivity}, {nameof(this.InvalidLineBehavior)} = {this.InvalidLineBehavior}, {nameof(this.PropertyAssignmentSeparator)} = {this.PropertyAssignmentSeparator}, {nameof(this.PropertyEnumerationMode)} = {this.PropertyEnumerationMode}, {nameof(this.PropertyReadMode)} = {this.PropertyReadMode}, {nameof(this.PropertyWriteMode)} = {this.PropertyWriteMode}, {nameof(this.PropertyDeletionMode)} = {this.PropertyDeletionMode}, {nameof(this.SectionDeletionMode)} = {this.SectionDeletionMode} }}";
     }
 }
