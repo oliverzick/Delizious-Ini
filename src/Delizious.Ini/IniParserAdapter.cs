@@ -48,7 +48,7 @@
                    AllowDuplicateKeys = false,
                    AllowDuplicateSections = false,
                    AllowKeysWithoutSection = false,
-                   AssigmentSpacer = string.Empty,
+                   AssigmentSpacer = configuration.PropertyAssignmentSpacer.ToString(),
                    CaseInsensitive = configuration.CaseSensitivity.Transform(new CaseSensitivityTransformation()),
                    ConcatenateDuplicateKeys = false,
                    KeyValueAssigmentChar = configuration.PropertyAssignmentSeparator.ToChar(),
