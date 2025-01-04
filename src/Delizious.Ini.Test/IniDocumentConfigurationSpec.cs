@@ -14,6 +14,7 @@ public sealed class IniDocumentConfigurationSpec
         Setting.CaseSensitivity,
         Setting.InvalidLineBehavior,
         Setting.PropertyAssignmentSeparator,
+        Setting.PropertyAssignmentSpacer,
         Setting.PropertyEnumerationMode,
         Setting.PropertyReadMode,
         Setting.PropertyWriteMode,
@@ -70,6 +71,22 @@ public sealed class IniDocumentConfigurationSpec
             yield return [IniDocumentConfiguration.Default, PropertyAssignmentSeparator.Default];
             yield return [IniDocumentConfiguration.Loose, PropertyAssignmentSeparator.Default];
             yield return [IniDocumentConfiguration.Strict, PropertyAssignmentSeparator.Default];
+        }
+
+        [DataTestMethod]
+        [DynamicData(nameof(Default_property_assignment_spacer_test_cases), DynamicDataSourceType.Method)]
+        public void Default_property_assignment_spacer(IniDocumentConfiguration target, PropertyAssignmentSpacer expected)
+        {
+            var actual = target.PropertyAssignmentSpacer;
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        public static IEnumerable<object[]> Default_property_assignment_spacer_test_cases()
+        {
+            yield return [IniDocumentConfiguration.Default, PropertyAssignmentSpacer.None];
+            yield return [IniDocumentConfiguration.Loose, PropertyAssignmentSpacer.None];
+            yield return [IniDocumentConfiguration.Strict, PropertyAssignmentSpacer.None];
         }
 
         [DataTestMethod]
@@ -211,7 +228,7 @@ public sealed class IniDocumentConfigurationSpec
         private static IEnumerable<Setting> SettingsToExclude => [Setting.PropertyAssignmentSeparator];
 
         [TestMethod]
-        public void Throws_argument_null_exception_when_given_invalid_line_behavior_is_null()
+        public void Throws_argument_null_exception_when_given_property_assignment_separator_is_null()
         {
             Assert.ThrowsException<ArgumentNullException>(() => Target.WithPropertyAssignmentSeparator(null!));
         }
@@ -223,6 +240,32 @@ public sealed class IniDocumentConfigurationSpec
             var original = Target;
 
             var actual = original.WithPropertyAssignmentSeparator(':');
+
+            setting.AssertIsEqual(original, actual);
+        }
+
+        public static IEnumerable<object[]> Retains_remaining_settings_test_cases()
+            => AllSettings.Except(SettingsToExclude).Select(ToTestCase);
+    }
+
+    [TestClass]
+    public sealed class WithPropertyAssignmentSpacer
+    {
+        private static IEnumerable<Setting> SettingsToExclude => [Setting.PropertyAssignmentSpacer];
+
+        [TestMethod]
+        public void Throws_argument_null_exception_when_given_property_assignment_spacer_is_null()
+        {
+            Assert.ThrowsException<ArgumentNullException>(() => Target.WithPropertyAssignmentSpacer(null!));
+        }
+
+        [DataTestMethod]
+        [DynamicData(nameof(Retains_remaining_settings_test_cases), DynamicDataSourceType.Method)]
+        public void Retains_remaining_settings(Setting setting)
+        {
+            var original = Target;
+
+            var actual = original.WithPropertyAssignmentSpacer(PropertyAssignmentSpacer.Space);
 
             setting.AssertIsEqual(original, actual);
         }
@@ -557,6 +600,18 @@ public sealed class IniDocumentConfigurationSpec
 
             public override string BuildString(IniDocumentConfiguration target)
                 => $"{nameof(target.PropertyAssignmentSeparator)} = {target.PropertyAssignmentSeparator}";
+        }
+
+        public static Setting PropertyAssignmentSpacer
+            => new(new PropertyAssignmentSpacerSetting());
+
+        private sealed record PropertyAssignmentSpacerSetting : Strategy
+        {
+            public override void AssertIsEqual(IniDocumentConfiguration original, IniDocumentConfiguration actual)
+                => Assert.AreEqual(original.PropertyAssignmentSpacer, actual.PropertyAssignmentSpacer);
+
+            public override string BuildString(IniDocumentConfiguration target)
+                => $"{nameof(target.PropertyAssignmentSpacer)} = {target.PropertyAssignmentSpacer}";
         }
 
         public static Setting PropertyEnumerationMode
