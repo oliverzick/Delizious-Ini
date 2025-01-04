@@ -13,6 +13,7 @@
         private IniDocumentConfiguration(CaseSensitivity caseSensitivity,
                                          InvalidLineBehavior invalidLineBehavior,
                                          PropertyAssignmentSeparator propertyAssignmentSeparator,
+                                         PropertyAssignmentSpacer propertyAssignmentSpacer,
                                          PropertyEnumerationMode propertyEnumerationMode,
                                          PropertyReadMode propertyReadMode,
                                          PropertyWriteMode propertyWriteMode,
@@ -22,6 +23,7 @@
             this.CaseSensitivity = caseSensitivity;
             this.InvalidLineBehavior = invalidLineBehavior;
             this.PropertyAssignmentSeparator = propertyAssignmentSeparator;
+            this.PropertyAssignmentSpacer = propertyAssignmentSpacer;
             this.PropertyEnumerationMode = propertyEnumerationMode;
             this.PropertyReadMode = propertyReadMode;
             this.PropertyWriteMode = propertyWriteMode;
@@ -33,6 +35,7 @@
             : this(other.CaseSensitivity,
                    other.InvalidLineBehavior,
                    other.PropertyAssignmentSeparator,
+                   other.PropertyAssignmentSpacer,
                    other.PropertyEnumerationMode,
                    other.PropertyReadMode,
                    other.PropertyWriteMode,
@@ -73,6 +76,10 @@
         /// <description><see cref="Ini.PropertyAssignmentSeparator.Default"/></description>
         /// </item>
         /// <item>
+        /// <term><see cref="PropertyAssignmentSpacer"/></term>
+        /// <description><see cref="Ini.PropertyAssignmentSpacer.None"/></description>
+        /// </item>
+        /// <item>
         /// <term><see cref="PropertyEnumerationMode"/></term>
         /// <description><see cref="Ini.PropertyEnumerationMode.Fallback"/></description>
         /// </item>
@@ -98,6 +105,7 @@
             => new IniDocumentConfiguration(CaseSensitivity.CaseInsensitive,
                                             InvalidLineBehavior.Ignore,
                                             PropertyAssignmentSeparator.Default,
+                                            PropertyAssignmentSpacer.None,
                                             PropertyEnumerationMode.Fallback,
                                             PropertyReadMode.Fallback,
                                             PropertyWriteMode.Create,
@@ -125,6 +133,10 @@
         /// <description><see cref="Ini.PropertyAssignmentSeparator.Default"/></description>
         /// </item>
         /// <item>
+        /// <term><see cref="PropertyAssignmentSpacer"/></term>
+        /// <description><see cref="Ini.PropertyAssignmentSpacer.None"/></description>
+        /// </item>
+        /// <item>
         /// <term><see cref="PropertyEnumerationMode"/></term>
         /// <description><see cref="Ini.PropertyEnumerationMode.Fail"/></description>
         /// </item>
@@ -150,6 +162,7 @@
             => new IniDocumentConfiguration(CaseSensitivity.CaseInsensitive,
                                             InvalidLineBehavior.Fail,
                                             PropertyAssignmentSeparator.Default,
+                                            PropertyAssignmentSpacer.None,
                                             PropertyEnumerationMode.Fail,
                                             PropertyReadMode.Fail,
                                             PropertyWriteMode.Update,
@@ -236,6 +249,35 @@
             : this(other)
         {
             this.PropertyAssignmentSeparator = propertyAssignmentSeparator;
+        }
+
+        /// <summary>
+        /// The assignment spacer that is used before and after the <see cref="PropertyAssignmentSeparator"/>
+        /// when saving an <see cref="IIniDocument"/>.
+        /// </summary>
+        public PropertyAssignmentSpacer PropertyAssignmentSpacer { get; }
+
+        /// <summary>
+        /// Creates a copy of the current <see cref="IniDocumentConfiguration"/> instance and defines
+        /// the assignment spacer that is used before and after the <see cref="PropertyAssignmentSeparator"/>
+        /// when saving an <see cref="IIniDocument"/>.
+        /// </summary>
+        /// <param name="propertyAssignmentSpacer">
+        /// The assignment spacer.
+        /// </param>
+        /// <returns>
+        /// A new <see cref="IniDocumentConfiguration"/> instance with the given <paramref name="propertyAssignmentSpacer"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="propertyAssignmentSpacer"/> is <c>null</c>.
+        /// </exception>
+        public IniDocumentConfiguration WithPropertyAssignmentSpacer(PropertyAssignmentSpacer propertyAssignmentSpacer)
+            => new IniDocumentConfiguration(this, propertyAssignmentSpacer ?? throw new ArgumentNullException(nameof(propertyAssignmentSpacer)));
+
+        private IniDocumentConfiguration(IniDocumentConfiguration other, PropertyAssignmentSpacer propertyAssignmentSpacer)
+            : this(other)
+        {
+            this.PropertyAssignmentSpacer = propertyAssignmentSpacer;
         }
 
         /// <summary>
@@ -385,6 +427,7 @@
             return Equals(this.CaseSensitivity,             other.CaseSensitivity)
                 && Equals(this.InvalidLineBehavior,         other.InvalidLineBehavior)
                 && Equals(this.PropertyAssignmentSeparator, other.PropertyAssignmentSeparator)
+                && Equals(this.PropertyAssignmentSpacer,    other.PropertyAssignmentSpacer)
                 && Equals(this.PropertyEnumerationMode,     other.PropertyEnumerationMode)
                 && Equals(this.PropertyReadMode,            other.PropertyReadMode)
                 && Equals(this.PropertyWriteMode,           other.PropertyWriteMode)
@@ -401,6 +444,7 @@
             => HashCode.Calculate(this.CaseSensitivity.GetHashCode(),
                                   this.InvalidLineBehavior.GetHashCode(),
                                   this.PropertyAssignmentSeparator.GetHashCode(),
+                                  this.PropertyAssignmentSpacer.GetHashCode(),
                                   this.PropertyEnumerationMode.GetHashCode(),
                                   this.PropertyReadMode.GetHashCode(),
                                   this.PropertyWriteMode.GetHashCode(),
@@ -409,6 +453,6 @@
 
         /// <inheritdoc/>
         public override string ToString()
-            => $"{nameof(IniDocumentConfiguration)} {{ {nameof(this.CaseSensitivity)} = {this.CaseSensitivity}, {nameof(this.InvalidLineBehavior)} = {this.InvalidLineBehavior}, {nameof(this.PropertyAssignmentSeparator)} = {this.PropertyAssignmentSeparator}, {nameof(this.PropertyEnumerationMode)} = {this.PropertyEnumerationMode}, {nameof(this.PropertyReadMode)} = {this.PropertyReadMode}, {nameof(this.PropertyWriteMode)} = {this.PropertyWriteMode}, {nameof(this.PropertyDeletionMode)} = {this.PropertyDeletionMode}, {nameof(this.SectionDeletionMode)} = {this.SectionDeletionMode} }}";
+            => $"{nameof(IniDocumentConfiguration)} {{ {nameof(this.CaseSensitivity)} = {this.CaseSensitivity}, {nameof(this.InvalidLineBehavior)} = {this.InvalidLineBehavior}, {nameof(this.PropertyAssignmentSeparator)} = {this.PropertyAssignmentSeparator}, {nameof(this.PropertyAssignmentSpacer)} = {this.PropertyAssignmentSpacer}, {nameof(this.PropertyEnumerationMode)} = {this.PropertyEnumerationMode}, {nameof(this.PropertyReadMode)} = {this.PropertyReadMode}, {nameof(this.PropertyWriteMode)} = {this.PropertyWriteMode}, {nameof(this.PropertyDeletionMode)} = {this.PropertyDeletionMode}, {nameof(this.SectionDeletionMode)} = {this.SectionDeletionMode} }}";
     }
 }

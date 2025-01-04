@@ -158,6 +158,7 @@ public sealed class IniDocumentSpec
         {
             yield return [DefaultConfiguration];
             yield return [DefaultConfiguration.WithPropertyAssignmentSeparator(':')];
+            yield return [DefaultConfiguration.WithPropertyAssignmentSpacer(PropertyAssignmentSpacer.Space)];
         }
     }
 
@@ -1123,7 +1124,7 @@ public sealed class IniDocumentSpec
 
             public IniDocumentBuilder AppendPropertyLine(PropertyKey propertyKey, PropertyValue propertyValue)
             {
-                this.stringBuilder.AppendLine($"{propertyKey}{this.configuration.PropertyAssignmentSeparator}{propertyValue}");
+                this.stringBuilder.AppendLine($"{propertyKey}{this.configuration.PropertyAssignmentSpacer}{this.configuration.PropertyAssignmentSeparator}{this.configuration.PropertyAssignmentSpacer}{propertyValue}");
 
                 return this;
             }
