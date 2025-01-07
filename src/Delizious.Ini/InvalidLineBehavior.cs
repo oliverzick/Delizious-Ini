@@ -23,7 +23,7 @@
         /// An <see cref="InvalidLineBehavior"/> instance that represents the fail mode.
         /// </returns>
         public static InvalidLineBehavior Fail
-            => new InvalidLineBehavior(new FailIBehavior());
+            => new InvalidLineBehavior(new FailBehavior());
 
         /// <summary>
         /// Specifies that loading an <see cref="IniDocument"/> should silently ignore
@@ -33,7 +33,7 @@
         /// An <see cref="InvalidLineBehavior"/> instance that represents the ignore mode.
         /// </returns>
         public static InvalidLineBehavior Ignore
-            => new InvalidLineBehavior(new IgnoreIBehavior());
+            => new InvalidLineBehavior(new IgnoreBehavior());
 
         public static bool operator ==(InvalidLineBehavior left, InvalidLineBehavior right)
             => Equals(left, right);
@@ -67,31 +67,31 @@
             bool Equals(IBehavior other);
         }
 
-        private sealed class FailIBehavior : IBehavior
+        private sealed class FailBehavior : IBehavior
         {
             public T Transform<T>(IInvalidLineBehaviorTransformation<T> transformation)
                 => transformation.Fail();
 
             public bool Equals(IBehavior other)
-                => other is FailIBehavior;
+                => other is FailBehavior;
 
             public override int GetHashCode()
-                => nameof(FailIBehavior).GetHashCode();
+                => nameof(FailBehavior).GetHashCode();
 
             public override string ToString()
                 => "Fail";
         }
 
-        private sealed class IgnoreIBehavior : IBehavior
+        private sealed class IgnoreBehavior : IBehavior
         {
             public T Transform<T>(IInvalidLineBehaviorTransformation<T> transformation)
                 => transformation.Ignore();
 
             public bool Equals(IBehavior other)
-                => other is IgnoreIBehavior;
+                => other is IgnoreBehavior;
 
             public override int GetHashCode()
-                => nameof(IgnoreIBehavior).GetHashCode();
+                => nameof(IgnoreBehavior).GetHashCode();
 
             public override string ToString()
                 => "Ignore";
