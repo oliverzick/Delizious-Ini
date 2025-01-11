@@ -14,9 +14,9 @@ Delizious Ini provides the following features:
 * Configurability of behavior in case of invalid lines
 * Configurability of property's assignment separator
 * Configurability of property's assignment spacer
+* Configurability of duplicate section behavior, e.g. throw a specific exception when a duplicate section occurs or merge a duplicate section
 
 Upcoming features:
-* Configurability of behavior whether to allow duplicated sections
 * Configurability of behavior whether to allow duplicated keys
 * Configurability of the new line string
 * Support for comments
@@ -82,6 +82,7 @@ iniDocument.SaveTo(Console.Out);
 var looseConfiguration =
     IniDocumentConfiguration.Default
                             .WithCaseSensitivity(CaseSensitivity.CaseInsensitive) // Treat section names and property keys as case-insensitive
+                            .WithDuplicateSectionBehavior(DuplicateSectionBehavior.Merge) // Merge a duplicate section
                             .WithInvalidLineBehavior(InvalidLineBehavior.Ignore) // Ignore when a line is invalid and cannot be parsed on loading
                             .WithPropertyAssignmentSeparator(PropertyAssignmentSeparator.Default) // Use default property assignment separator which is equality sign '='
                             .WithPropertyAssignmentSpacer(PropertyAssignmentSpacer.None) // Use no property assignment spacer
@@ -96,6 +97,7 @@ var looseConfiguration =
 var strictConfiguration =
     IniDocumentConfiguration.Default
                             .WithCaseSensitivity(CaseSensitivity.CaseInsensitive) // Treat section names and property keys as case-insensitive
+                            .WithDuplicateSectionBehavior(DuplicateSectionBehavior.Fail) // Throw exception when a duplicate section occurs
                             .WithInvalidLineBehavior(InvalidLineBehavior.Fail) // Throw exception when a line is invalid and cannot be parsed on loading
                             .WithPropertyAssignmentSeparator(PropertyAssignmentSeparator.Default) // Use default property assignment separator which is equality sign '='
                             .WithPropertyAssignmentSpacer(PropertyAssignmentSpacer.None) // Use no property assignment spacer

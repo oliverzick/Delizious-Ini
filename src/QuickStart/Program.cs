@@ -61,6 +61,7 @@ void Configure()
     var looseConfiguration =
         IniDocumentConfiguration.Default
                                 .WithCaseSensitivity(CaseSensitivity.CaseInsensitive) // Treat section names and property keys as case-insensitive
+                                .WithDuplicateSectionBehavior(DuplicateSectionBehavior.Merge) // Merge a duplicate section
                                 .WithInvalidLineBehavior(InvalidLineBehavior.Ignore) // Ignore when a line is invalid and cannot be parsed on loading
                                 .WithPropertyAssignmentSeparator(PropertyAssignmentSeparator.Default) // Use default property assignment separator which is equality sign '='
                                 .WithPropertyAssignmentSpacer(PropertyAssignmentSpacer.None) // Use no property assignment spacer
@@ -75,6 +76,7 @@ void Configure()
     var strictConfiguration =
         IniDocumentConfiguration.Default
                                 .WithCaseSensitivity(CaseSensitivity.CaseInsensitive) // Treat section names and property keys as case-insensitive
+                                .WithDuplicateSectionBehavior(DuplicateSectionBehavior.Fail) // Throw exception when a duplicate section occurs
                                 .WithInvalidLineBehavior(InvalidLineBehavior.Fail) // Throw exception when a line is invalid and cannot be parsed on loading
                                 .WithPropertyAssignmentSeparator(PropertyAssignmentSeparator.Default) // Use default property assignment separator which is equality sign '='
                                 .WithPropertyAssignmentSpacer(PropertyAssignmentSpacer.None) // Use no property assignment spacer
