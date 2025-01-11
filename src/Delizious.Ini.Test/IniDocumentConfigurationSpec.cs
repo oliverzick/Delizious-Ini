@@ -12,6 +12,7 @@ public sealed class IniDocumentConfigurationSpec
     public static IEnumerable<Setting> AllSettings =>
     [
         Setting.CaseSensitivity,
+        Setting.DuplicateSectionBehavior,
         Setting.InvalidLineBehavior,
         Setting.PropertyAssignmentSeparator,
         Setting.PropertyAssignmentSpacer,
@@ -39,6 +40,22 @@ public sealed class IniDocumentConfigurationSpec
             yield return [IniDocumentConfiguration.Default, CaseSensitivity.CaseInsensitive];
             yield return [IniDocumentConfiguration.Loose, CaseSensitivity.CaseInsensitive];
             yield return [IniDocumentConfiguration.Strict, CaseSensitivity.CaseInsensitive];
+        }
+
+        [DataTestMethod]
+        [DynamicData(nameof(Default_duplicate_section_behavior_test_cases), DynamicDataSourceType.Method)]
+        public void Default_duplicate_section_behavior(IniDocumentConfiguration target, DuplicateSectionBehavior expected)
+        {
+            var actual = target.DuplicateSectionBehavior;
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        public static IEnumerable<object[]> Default_duplicate_section_behavior_test_cases()
+        {
+            yield return [IniDocumentConfiguration.Default, DuplicateSectionBehavior.Merge];
+            yield return [IniDocumentConfiguration.Loose, DuplicateSectionBehavior.Merge];
+            yield return [IniDocumentConfiguration.Strict, DuplicateSectionBehavior.Fail];
         }
 
         [DataTestMethod]
@@ -188,6 +205,32 @@ public sealed class IniDocumentConfigurationSpec
             var original = Target;
 
             var actual = original.WithCaseSensitivity(CaseSensitivity.CaseSensitive);
+
+            setting.AssertIsEqual(original, actual);
+        }
+
+        public static IEnumerable<object[]> Retains_remaining_settings_test_cases()
+            => AllSettings.Except(SettingsToExclude).Select(ToTestCase);
+    }
+
+    [TestClass]
+    public sealed class WithDuplicateSectionBehavior
+    {
+        private static IEnumerable<Setting> SettingsToExclude => [Setting.DuplicateSectionBehavior];
+
+        [TestMethod]
+        public void Throws_argument_null_exception_when_given_duplicate_section_behavior_is_null()
+        {
+            Assert.ThrowsException<ArgumentNullException>(() => Target.WithDuplicateSectionBehavior(null!));
+        }
+
+        [DataTestMethod]
+        [DynamicData(nameof(Retains_remaining_settings_test_cases), DynamicDataSourceType.Method)]
+        public void Retains_remaining_settings(Setting setting)
+        {
+            var original = Target;
+
+            var actual = original.WithDuplicateSectionBehavior(DuplicateSectionBehavior.Fail);
 
             setting.AssertIsEqual(original, actual);
         }
@@ -576,6 +619,18 @@ public sealed class IniDocumentConfigurationSpec
 
             public override string BuildString(IniDocumentConfiguration target)
                 => $"{nameof(target.CaseSensitivity)} = {target.CaseSensitivity}";
+        }
+
+        public static Setting DuplicateSectionBehavior
+            => new(new DuplicateSectionBehaviorSetting());
+
+        private sealed record DuplicateSectionBehaviorSetting : Strategy
+        {
+            public override void AssertIsEqual(IniDocumentConfiguration original, IniDocumentConfiguration actual)
+                => Assert.AreEqual(original.DuplicateSectionBehavior, actual.DuplicateSectionBehavior);
+
+            public override string BuildString(IniDocumentConfiguration target)
+                => $"{nameof(target.DuplicateSectionBehavior)} = {target.DuplicateSectionBehavior}";
         }
 
         public static Setting InvalidLineBehavior
