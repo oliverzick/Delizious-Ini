@@ -73,6 +73,66 @@ public sealed class IniDocumentSpec
         }
 
         [TestClass]
+        public sealed class With_configured_duplicate_section_behavior
+        {
+            private const string Ini = """
+                                       [Section]
+                                       PropertyA=Value A
+
+                                       [AnotherSection]
+                                       AnotherProperty=Another value
+
+                                       [Section]
+                                       PropertyB=Value B
+                                       """;
+
+            [TestClass]
+            public sealed class When_fail_behavior
+            {
+                [TestMethod]
+                public void Throws_persistence_exception_for_duplicated_section()
+                {
+                    using var reader = new StringReader(Ini);
+
+                    var configuration = DefaultConfiguration.WithDuplicateSectionBehavior(DuplicateSectionBehavior.Fail);
+
+                    Assert.ThrowsException<PersistenceException>(() => IniDocument.LoadFrom(reader, configuration));
+                }
+            }
+
+            [TestClass]
+            public sealed class When_merge_behavior
+            {
+                private const string IniMerged = """
+                                                 [Section]
+                                                 PropertyA=Value A
+                                                 PropertyB=Value B
+
+                                                 [AnotherSection]
+                                                 AnotherProperty=Another value
+
+                                                 """;
+
+                [TestMethod]
+                public void Merges_duplicated_section()
+                {
+                    using var reader = new StringReader(Ini);
+
+                    var configuration = DefaultConfiguration.WithDuplicateSectionBehavior(DuplicateSectionBehavior.Merge);
+
+                    var target = IniDocument.LoadFrom(reader, configuration);
+
+                    var stringBuilder = new StringBuilder();
+                    using var writer = new StringWriter(stringBuilder);
+
+                    target.SaveTo(writer);
+
+                    Assert.AreEqual(IniMerged, stringBuilder.ToString());
+                }
+            }
+        }
+
+        [TestClass]
         public sealed class With_configured_invalid_line_behavior
         {
             private const string Ini = """

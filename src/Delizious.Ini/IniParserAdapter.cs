@@ -46,7 +46,7 @@
                {
                    AllowCreateSectionsOnFly = false,
                    AllowDuplicateKeys = false,
-                   AllowDuplicateSections = false,
+                   AllowDuplicateSections = configuration.DuplicateSectionBehavior.Transform(new AllowDuplicateSectionsTransformation()),
                    AllowKeysWithoutSection = false,
                    AssigmentSpacer = configuration.PropertyAssignmentSpacer.ToString(),
                    CaseInsensitive = configuration.CaseSensitivity.Transform(new CaseSensitivityTransformation()),
@@ -55,6 +55,15 @@
                    SkipInvalidLines = configuration.InvalidLineBehavior.Transform(new InvalidLineBehaviorTransformation()),
                    ThrowExceptionsOnError = true
                };
+
+        private readonly struct AllowDuplicateSectionsTransformation : IDuplicateSectionBehaviorTransformation<bool>
+        {
+            public bool Fail()
+                => false;
+
+            public bool Merge()
+                => true;
+        }
 
         private readonly struct CaseSensitivityTransformation : ICaseSensitivityTransformation<bool>
         {
