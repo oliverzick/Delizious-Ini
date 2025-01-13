@@ -101,7 +101,7 @@ public sealed class DuplicateSectionBehaviorSpec
 
     public static IEnumerable<object[]> General_equals_test_cases()
     {
-        yield return [Fail, string.Empty, false];
-        yield return [Merge, string.Empty, false];
+        yield return [Fail, new(), false];
+        yield return [Merge, new(), false];
     }
 }

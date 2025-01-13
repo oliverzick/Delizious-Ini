@@ -101,7 +101,7 @@ public sealed class PropertyDeletionModeSpec
 
     public static IEnumerable<object[]> General_equals_test_cases()
     {
-        yield return [Fail, string.Empty, false];
-        yield return [Ignore, string.Empty, false];
+        yield return [Fail, new(), false];
+        yield return [Ignore, new(), false];
     }
 }
