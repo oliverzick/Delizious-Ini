@@ -122,8 +122,8 @@ public sealed class PropertyReadModeSpec
 
     public static IEnumerable<object[]> General_equals_test_cases()
     {
-        yield return [Fail, string.Empty, false];
-        yield return [Fallback, string.Empty, false];
-        yield return [FallbackCustom, string.Empty, false];
+        yield return [Fail, new(), false];
+        yield return [Fallback, new(), false];
+        yield return [FallbackCustom, new(), false];
     }
 }

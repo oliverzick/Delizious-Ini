@@ -101,7 +101,7 @@ public sealed class PropertyWriteModeSpec
 
     public static IEnumerable<object[]> General_equals_test_cases()
     {
-        yield return [Create, string.Empty, false];
-        yield return [Update, string.Empty, false];
+        yield return [Create, new(), false];
+        yield return [Update, new(), false];
     }
 }
