@@ -11,6 +11,7 @@
         //       because state of properties is lost when instances are used in dynamic data method along with data test methods.
 
         private IniDocumentConfiguration(CaseSensitivity caseSensitivity,
+                                         DuplicatePropertyBehavior duplicatePropertyBehavior,
                                          DuplicateSectionBehavior duplicateSectionBehavior,
                                          InvalidLineBehavior invalidLineBehavior,
                                          PropertyAssignmentSeparator propertyAssignmentSeparator,
@@ -22,6 +23,7 @@
                                          SectionDeletionMode sectionDeletionMode)
         {
             this.CaseSensitivity = caseSensitivity;
+            this.DuplicatePropertyBehavior = duplicatePropertyBehavior;
             this.DuplicateSectionBehavior = duplicateSectionBehavior;
             this.InvalidLineBehavior = invalidLineBehavior;
             this.PropertyAssignmentSeparator = propertyAssignmentSeparator;
@@ -35,6 +37,7 @@
 
         private IniDocumentConfiguration(IniDocumentConfiguration other)
             : this(other.CaseSensitivity,
+                   other.DuplicatePropertyBehavior,
                    other.DuplicateSectionBehavior,
                    other.InvalidLineBehavior,
                    other.PropertyAssignmentSeparator,
@@ -69,6 +72,10 @@
         /// <item>
         /// <term><see cref="CaseSensitivity"/></term>
         /// <description><see cref="Ini.CaseSensitivity.CaseInsensitive"/></description>
+        /// </item>
+        /// <item>
+        /// <term><see cref="DuplicatePropertyBehavior"/></term>
+        /// <description><see cref="Ini.DuplicatePropertyBehavior.Ignore"/></description>
         /// </item>
         /// <item>
         /// <term><see cref="DuplicateSectionBehavior"/></term>
@@ -110,6 +117,7 @@
         /// </summary>
         public static IniDocumentConfiguration Loose
             => new IniDocumentConfiguration(CaseSensitivity.CaseInsensitive,
+                                            DuplicatePropertyBehavior.Ignore,
                                             DuplicateSectionBehavior.Merge,
                                             InvalidLineBehavior.Ignore,
                                             PropertyAssignmentSeparator.Default,
@@ -131,6 +139,10 @@
         /// <item>
         /// <term><see cref="CaseSensitivity"/></term>
         /// <description><see cref="Ini.CaseSensitivity.CaseInsensitive"/></description>
+        /// </item>
+        /// <item>
+        /// <term><see cref="DuplicatePropertyBehavior"/></term>
+        /// <description><see cref="Ini.DuplicatePropertyBehavior.Fail"/></description>
         /// </item>
         /// <item>
         /// <term><see cref="DuplicateSectionBehavior"/></term>
@@ -172,6 +184,7 @@
         /// </summary>
         public static IniDocumentConfiguration Strict
             => new IniDocumentConfiguration(CaseSensitivity.CaseInsensitive,
+                                            DuplicatePropertyBehavior.Fail,
                                             DuplicateSectionBehavior.Fail,
                                             InvalidLineBehavior.Fail,
                                             PropertyAssignmentSeparator.Default,
@@ -208,6 +221,33 @@
             : this(other)
         {
             this.CaseSensitivity = caseSensitivity;
+        }
+
+        /// <summary>
+        /// The behavior that specifies how an <see cref="IniDocument"/> should behave on loading when a duplicate property occurs.
+        /// </summary>
+        public DuplicatePropertyBehavior DuplicatePropertyBehavior { get; }
+
+        /// <summary>
+        /// Creates a copy of the current <see cref="IniDocumentConfiguration"/> instance and defines
+        /// the behavior that specifies how an <see cref="IniDocument"/> should behave on loading when a duplicate property occurs.
+        /// </summary>
+        /// <param name="duplicatePropertyBehavior">
+        /// The behavior that specifies how an <see cref="IniDocument"/> should behave on loading when a duplicate property occurs.
+        /// </param>
+        /// <returns>
+        /// A new <see cref="IniDocumentConfiguration"/> instance with the given <paramref name="duplicatePropertyBehavior"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="duplicatePropertyBehavior"/> is <c>null</c>.
+        /// </exception>
+        public IniDocumentConfiguration WithDuplicatePropertyBehavior(DuplicatePropertyBehavior duplicatePropertyBehavior)
+            => new IniDocumentConfiguration(this, duplicatePropertyBehavior ?? throw new ArgumentNullException(nameof(duplicatePropertyBehavior)));
+
+        private IniDocumentConfiguration(IniDocumentConfiguration other, DuplicatePropertyBehavior duplicatePropertyBehavior)
+            : this(other)
+        {
+            this.DuplicatePropertyBehavior = duplicatePropertyBehavior;
         }
 
         /// <summary>
@@ -465,6 +505,7 @@
             }
 
             return Equals(this.CaseSensitivity,             other.CaseSensitivity)
+                && Equals(this.DuplicatePropertyBehavior,   other.DuplicatePropertyBehavior)
                 && Equals(this.DuplicateSectionBehavior,    other.DuplicateSectionBehavior)
                 && Equals(this.InvalidLineBehavior,         other.InvalidLineBehavior)
                 && Equals(this.PropertyAssignmentSeparator, other.PropertyAssignmentSeparator)
@@ -483,6 +524,7 @@
         /// <inheritdoc/>
         public override int GetHashCode()
             => HashCode.Calculate(this.CaseSensitivity.GetHashCode(),
+                                  this.DuplicatePropertyBehavior.GetHashCode(),
                                   this.DuplicateSectionBehavior.GetHashCode(),
                                   this.InvalidLineBehavior.GetHashCode(),
                                   this.PropertyAssignmentSeparator.GetHashCode(),
@@ -495,6 +537,6 @@
 
         /// <inheritdoc/>
         public override string ToString()
-            => $"{nameof(IniDocumentConfiguration)} {{ {nameof(this.CaseSensitivity)} = {this.CaseSensitivity}, {nameof(this.DuplicateSectionBehavior)} = {this.DuplicateSectionBehavior}, {nameof(this.InvalidLineBehavior)} = {this.InvalidLineBehavior}, {nameof(this.PropertyAssignmentSeparator)} = {this.PropertyAssignmentSeparator}, {nameof(this.PropertyAssignmentSpacer)} = {this.PropertyAssignmentSpacer}, {nameof(this.PropertyEnumerationMode)} = {this.PropertyEnumerationMode}, {nameof(this.PropertyReadMode)} = {this.PropertyReadMode}, {nameof(this.PropertyWriteMode)} = {this.PropertyWriteMode}, {nameof(this.PropertyDeletionMode)} = {this.PropertyDeletionMode}, {nameof(this.SectionDeletionMode)} = {this.SectionDeletionMode} }}";
+            => $"{nameof(IniDocumentConfiguration)} {{ {nameof(this.CaseSensitivity)} = {this.CaseSensitivity}, {nameof(this.DuplicatePropertyBehavior)} = {this.DuplicatePropertyBehavior}, {nameof(this.DuplicateSectionBehavior)} = {this.DuplicateSectionBehavior}, {nameof(this.InvalidLineBehavior)} = {this.InvalidLineBehavior}, {nameof(this.PropertyAssignmentSeparator)} = {this.PropertyAssignmentSeparator}, {nameof(this.PropertyAssignmentSpacer)} = {this.PropertyAssignmentSpacer}, {nameof(this.PropertyEnumerationMode)} = {this.PropertyEnumerationMode}, {nameof(this.PropertyReadMode)} = {this.PropertyReadMode}, {nameof(this.PropertyWriteMode)} = {this.PropertyWriteMode}, {nameof(this.PropertyDeletionMode)} = {this.PropertyDeletionMode}, {nameof(this.SectionDeletionMode)} = {this.SectionDeletionMode} }}";
     }
 }
