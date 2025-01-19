@@ -45,16 +45,29 @@
             => new IniParserConfiguration
                {
                    AllowCreateSectionsOnFly = false,
-                   AllowDuplicateKeys = false,
+                   AllowDuplicateKeys = configuration.DuplicatePropertyBehavior.Transform(new AllowDuplicateKeysTransformation()),
                    AllowDuplicateSections = configuration.DuplicateSectionBehavior.Transform(new AllowDuplicateSectionsTransformation()),
                    AllowKeysWithoutSection = false,
                    AssigmentSpacer = configuration.PropertyAssignmentSpacer.ToString(),
                    CaseInsensitive = configuration.CaseSensitivity.Transform(new CaseSensitivityTransformation()),
                    ConcatenateDuplicateKeys = false,
                    KeyValueAssigmentChar = configuration.PropertyAssignmentSeparator.ToChar(),
+                   OverrideDuplicateKeys = configuration.DuplicatePropertyBehavior.Transform(new OverrideDuplicateKeysTransformation()),
                    SkipInvalidLines = configuration.InvalidLineBehavior.Transform(new InvalidLineBehaviorTransformation()),
                    ThrowExceptionsOnError = true
                };
+
+        private readonly struct AllowDuplicateKeysTransformation : IDuplicatePropertyBehaviorTransformation<bool>
+        {
+            public bool Fail()
+                => false;
+
+            public bool Ignore()
+                => true;
+
+            public bool Override()
+                => true;
+        }
 
         private readonly struct AllowDuplicateSectionsTransformation : IDuplicateSectionBehaviorTransformation<bool>
         {
@@ -71,6 +84,18 @@
                 => false;
 
             public bool CaseInsensitive()
+                => true;
+        }
+
+        private readonly struct OverrideDuplicateKeysTransformation : IDuplicatePropertyBehaviorTransformation<bool>
+        {
+            public bool Fail()
+                => false;
+
+            public bool Ignore()
+                => false;
+
+            public bool Override()
                 => true;
         }
 
