@@ -14,10 +14,15 @@ Delizious Ini provides the following features:
 * Configurability of behavior in case of invalid lines
 * Configurability of property's assignment separator
 * Configurability of property's assignment spacer
-* Configurability of duplicate section behavior, e.g. throw a specific exception when a duplicate section occurs or merge a duplicate section
+* Configurability of duplicate section behavior:
+  * Fail by throwing an exception when a duplicate section occurs
+  * Merge a duplicate section
+* Configurability of duplicate property behavior:
+  * Fail by throwing an exception when a duplicate section occurs
+  * Ignore subsequent occurrences of a duplicate property by using the first occurrence of such a property
+  * Override previous occurrences of a duplicate property by using the last occurrence of such a property
 
 Upcoming features:
-* Configurability of behavior whether to allow duplicated keys
 * Configurability of the new line string
 * Support for comments
 * Merge two INI documents
@@ -82,6 +87,7 @@ iniDocument.SaveTo(Console.Out);
 var looseConfiguration =
     IniDocumentConfiguration.Default
                             .WithCaseSensitivity(CaseSensitivity.CaseInsensitive) // Treat section names and property keys as case-insensitive
+                            .WithDuplicatePropertyBehavior(DuplicatePropertyBehavior.Ignore) // Ignore subsequent occurrences of a duplicate property by using the first occurrence of such a property
                             .WithDuplicateSectionBehavior(DuplicateSectionBehavior.Merge) // Merge a duplicate section
                             .WithInvalidLineBehavior(InvalidLineBehavior.Ignore) // Ignore when a line is invalid and cannot be parsed on loading
                             .WithPropertyAssignmentSeparator(PropertyAssignmentSeparator.Default) // Use default property assignment separator which is equality sign '='
@@ -97,6 +103,7 @@ var looseConfiguration =
 var strictConfiguration =
     IniDocumentConfiguration.Default
                             .WithCaseSensitivity(CaseSensitivity.CaseInsensitive) // Treat section names and property keys as case-insensitive
+                            .WithDuplicatePropertyBehavior(DuplicatePropertyBehavior.Fail) // Throw exception when a duplicate property occurs
                             .WithDuplicateSectionBehavior(DuplicateSectionBehavior.Fail) // Throw exception when a duplicate section occurs
                             .WithInvalidLineBehavior(InvalidLineBehavior.Fail) // Throw exception when a line is invalid and cannot be parsed on loading
                             .WithPropertyAssignmentSeparator(PropertyAssignmentSeparator.Default) // Use default property assignment separator which is equality sign '='

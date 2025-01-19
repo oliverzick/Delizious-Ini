@@ -12,6 +12,7 @@ public sealed class IniDocumentConfigurationSpec
     public static IEnumerable<Setting> AllSettings =>
     [
         Setting.CaseSensitivity,
+        Setting.DuplicatePropertyBehavior,
         Setting.DuplicateSectionBehavior,
         Setting.InvalidLineBehavior,
         Setting.PropertyAssignmentSeparator,
@@ -40,6 +41,22 @@ public sealed class IniDocumentConfigurationSpec
             yield return [IniDocumentConfiguration.Default, CaseSensitivity.CaseInsensitive];
             yield return [IniDocumentConfiguration.Loose, CaseSensitivity.CaseInsensitive];
             yield return [IniDocumentConfiguration.Strict, CaseSensitivity.CaseInsensitive];
+        }
+
+        [DataTestMethod]
+        [DynamicData(nameof(Default_duplicate_property_behavior_test_cases), DynamicDataSourceType.Method)]
+        public void Default_duplicate_property_behavior(IniDocumentConfiguration target, DuplicatePropertyBehavior expected)
+        {
+            var actual = target.DuplicatePropertyBehavior;
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        public static IEnumerable<object[]> Default_duplicate_property_behavior_test_cases()
+        {
+            yield return [IniDocumentConfiguration.Default, DuplicatePropertyBehavior.Ignore];
+            yield return [IniDocumentConfiguration.Loose, DuplicatePropertyBehavior.Ignore];
+            yield return [IniDocumentConfiguration.Strict, DuplicatePropertyBehavior.Fail];
         }
 
         [DataTestMethod]
@@ -205,6 +222,32 @@ public sealed class IniDocumentConfigurationSpec
             var original = Target;
 
             var actual = original.WithCaseSensitivity(CaseSensitivity.CaseSensitive);
+
+            setting.AssertIsEqual(original, actual);
+        }
+
+        public static IEnumerable<object[]> Retains_remaining_settings_test_cases()
+            => AllSettings.Except(SettingsToExclude).Select(ToTestCase);
+    }
+
+    [TestClass]
+    public sealed class WithDuplicatePropertyBehavior
+    {
+        private static IEnumerable<Setting> SettingsToExclude => [Setting.DuplicatePropertyBehavior];
+
+        [TestMethod]
+        public void Throws_argument_null_exception_when_given_duplicate_property_behavior_is_null()
+        {
+            Assert.ThrowsException<ArgumentNullException>(() => Target.WithDuplicatePropertyBehavior(null!));
+        }
+
+        [DataTestMethod]
+        [DynamicData(nameof(Retains_remaining_settings_test_cases), DynamicDataSourceType.Method)]
+        public void Retains_remaining_settings(Setting setting)
+        {
+            var original = Target;
+
+            var actual = original.WithDuplicatePropertyBehavior(DuplicatePropertyBehavior.Fail);
 
             setting.AssertIsEqual(original, actual);
         }
@@ -551,6 +594,11 @@ public sealed class IniDocumentConfigurationSpec
             yield return [Default, Strict, false];
             yield return [Default, Default.WithCaseSensitivity(CaseSensitivity.CaseSensitive), false];
             yield return [Default, Default.WithCaseSensitivity(CaseSensitivity.CaseInsensitive), true];
+            yield return [Default, Default.WithDuplicatePropertyBehavior(DuplicatePropertyBehavior.Fail), false];
+            yield return [Default, Default.WithDuplicatePropertyBehavior(DuplicatePropertyBehavior.Ignore), true];
+            yield return [Default, Default.WithDuplicatePropertyBehavior(DuplicatePropertyBehavior.Override), false];
+            yield return [Default, Default.WithDuplicateSectionBehavior(DuplicateSectionBehavior.Fail), false];
+            yield return [Default, Default.WithDuplicateSectionBehavior(DuplicateSectionBehavior.Merge), true];
             yield return [Default, Default.WithPropertyDeletionMode(PropertyDeletionMode.Fail), false];
             yield return [Default, Default.WithPropertyDeletionMode(PropertyDeletionMode.Ignore), true];
             yield return [Default, Default.WithPropertyAssignmentSeparator(PropertyAssignmentSeparator.Default), true];
@@ -619,6 +667,18 @@ public sealed class IniDocumentConfigurationSpec
 
             public override string BuildString(IniDocumentConfiguration target)
                 => $"{nameof(target.CaseSensitivity)} = {target.CaseSensitivity}";
+        }
+
+        public static Setting DuplicatePropertyBehavior
+            => new(new DuplicatePropertyBehaviorSetting());
+
+        private sealed record DuplicatePropertyBehaviorSetting : Strategy
+        {
+            public override void AssertIsEqual(IniDocumentConfiguration original, IniDocumentConfiguration actual)
+                => Assert.AreEqual(original.DuplicatePropertyBehavior, actual.DuplicatePropertyBehavior);
+
+            public override string BuildString(IniDocumentConfiguration target)
+                => $"{nameof(target.DuplicatePropertyBehavior)} = {target.DuplicatePropertyBehavior}";
         }
 
         public static Setting DuplicateSectionBehavior

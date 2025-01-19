@@ -73,6 +73,134 @@ public sealed class IniDocumentSpec
         }
 
         [TestClass]
+        public sealed class With_configured_duplicate_property_behavior
+        {
+            private const string Ini = """
+                                       [Section]
+                                       Property=First occurrence
+                                       Property=Second occurrence
+                                       Property=Last occurrence
+
+                                       [AnotherSection]
+                                       Property=Another occurrence
+                                       """;
+
+            private static IniDocumentConfiguration BaseConfiguration => IniDocumentConfiguration.Strict;
+
+            [TestClass]
+            public sealed class When_fail_behavior
+            {
+                private static IniDocumentConfiguration Configuration => BaseConfiguration.WithDuplicatePropertyBehavior(DuplicatePropertyBehavior.Fail);
+
+                [TestMethod]
+                public void Throws_persistence_exception_for_duplicated_property()
+                {
+                    using var reader = new StringReader(Ini);
+
+                    Assert.ThrowsException<PersistenceException>(() => IniDocument.LoadFrom(reader, Configuration));
+                }
+            }
+
+            [TestClass]
+            public sealed class When_ignore_behavior
+            {
+                private const string ExpectedIni = """
+                                                   [Section]
+                                                   Property=First occurrence
+
+                                                   [AnotherSection]
+                                                   Property=Another occurrence
+
+                                                   """;
+
+                private static IniDocumentConfiguration Configuration => BaseConfiguration.WithDuplicatePropertyBehavior(DuplicatePropertyBehavior.Ignore);
+
+                [TestMethod]
+                public void Ignores_subsequent_occurrences_of_a_duplicate_property_by_using_the_first_occurrence_of_such_a_property()
+                    => Load_and_save(Ini, Configuration, ExpectedIni);
+            }
+
+            [TestClass]
+            public sealed class When_override_behavior
+            {
+                private const string ExpectedIni = """
+                                                   [Section]
+                                                   Property=Last occurrence
+
+                                                   [AnotherSection]
+                                                   Property=Another occurrence
+
+                                                   """;
+
+                private static IniDocumentConfiguration Configuration => BaseConfiguration.WithDuplicatePropertyBehavior(DuplicatePropertyBehavior.Override);
+
+                [TestMethod]
+                public void Overrides_previous_occurrences_of_a_duplicate_property_by_using_the_last_occurrence_of_such_a_property()
+                    => Load_and_save(Ini, Configuration, ExpectedIni);
+            }
+        }
+
+        [TestClass]
+        public sealed class With_configured_duplicate_section_behavior_and_duplicate_property_behavior
+        {
+            private const string Ini = """
+                                       [Section]
+                                       Property=First occurrence
+
+                                       [Section]
+                                       Property=Second occurrence
+
+                                       [Section]
+                                       Property=Last occurrence
+
+                                       [AnotherSection]
+                                       Property=Another occurrence
+                                       """;
+
+            [TestClass]
+            public sealed class When_merge_duplicate_section_and_ignore_duplicate_property
+            {
+                private const string ExpectedIni = """
+                                                   [Section]
+                                                   Property=First occurrence
+
+                                                   [AnotherSection]
+                                                   Property=Another occurrence
+
+                                                   """;
+
+                private static IniDocumentConfiguration Configuration => IniDocumentConfiguration.Strict
+                                                                                                 .WithDuplicateSectionBehavior(DuplicateSectionBehavior.Merge)
+                                                                                                 .WithDuplicatePropertyBehavior(DuplicatePropertyBehavior.Ignore);
+
+                [TestMethod]
+                public void Ignores_subsequent_occurrences_of_a_duplicate_property_by_using_the_first_occurrence_of_such_a_property()
+                    => Load_and_save(Ini, Configuration, ExpectedIni);
+            }
+
+            [TestClass]
+            public sealed class When_merge_duplicate_section_and_override_duplicate_property
+            {
+                private const string ExpectedIni = """
+                                                   [Section]
+                                                   Property=Last occurrence
+
+                                                   [AnotherSection]
+                                                   Property=Another occurrence
+
+                                                   """;
+
+                private static IniDocumentConfiguration Configuration => IniDocumentConfiguration.Strict
+                                                                                                 .WithDuplicateSectionBehavior(DuplicateSectionBehavior.Merge)
+                                                                                                 .WithDuplicatePropertyBehavior(DuplicatePropertyBehavior.Override);
+
+                [TestMethod]
+                public void Overrides_previous_occurrences_of_a_duplicate_property_by_using_the_last_occurrence_of_such_a_property()
+                    => Load_and_save(Ini, Configuration, ExpectedIni);
+            }
+        }
+
+        [TestClass]
         public sealed class With_configured_duplicate_section_behavior
         {
             private const string Ini = """
@@ -168,6 +296,20 @@ public sealed class IniDocumentSpec
                     var target = IniDocument.LoadFrom(textReader, configuration);
                 }
             }
+        }
+
+        private static void Load_and_save(string sourceIni, IniDocumentConfiguration configuration, string expectedIni)
+        {
+            using var reader = new StringReader(sourceIni);
+
+            var target = IniDocument.LoadFrom(reader, configuration);
+
+            var stringBuilder = new StringBuilder();
+            using var writer = new StringWriter(stringBuilder);
+
+            target.SaveTo(writer);
+
+            Assert.AreEqual(expectedIni, stringBuilder.ToString());
         }
     }
 
