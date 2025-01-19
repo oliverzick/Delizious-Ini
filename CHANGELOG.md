@@ -4,9 +4,18 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.7.0] - 2025-01-19
+### Added
+- Enable configuration of duplicate property behavior that specifies how an INI document should behave on loading when a duplicate property occurs ([#128](https://github.com/oliverzick/Delizious-Ini/issues/128))
+  * Fail: Throws persistence exception when a duplicate property occurs
+  * Ignore: Ignores subsequent occurrences of a duplicate property by using the first occurrence of such a property
+  * Override: Overrides previous occurrences of a duplicate property by using the last occurrence of such a property
+
 ## [1.6.0] - 2025-01-11
 ### Added
 - Enable configuration of duplicate section behavior that specifies how an INI document should behave on loading when a duplicate section occurs ([#124](https://github.com/oliverzick/Delizious-Ini/issues/124))
+  * Fail: Throws persistence exception when a duplicate section occurs
+  * Merge: Merges a duplicate section
 
 ## [1.5.0] - 2025-01-04
 ### Added
