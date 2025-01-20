@@ -217,46 +217,37 @@ public sealed class IniDocumentSpec
             [TestClass]
             public sealed class When_fail_behavior
             {
+                private static IniDocumentConfiguration Configuration => IniDocumentConfiguration.Strict
+                                                                                                 .WithDuplicateSectionBehavior(DuplicateSectionBehavior.Fail);
+
                 [TestMethod]
                 public void Throws_persistence_exception_for_duplicated_section()
                 {
                     using var reader = new StringReader(Ini);
 
-                    var configuration = DefaultConfiguration.WithDuplicateSectionBehavior(DuplicateSectionBehavior.Fail);
-
-                    Assert.ThrowsException<PersistenceException>(() => IniDocument.LoadFrom(reader, configuration));
+                    Assert.ThrowsException<PersistenceException>(() => IniDocument.LoadFrom(reader, Configuration));
                 }
             }
 
             [TestClass]
             public sealed class When_merge_behavior
             {
-                private const string IniMerged = """
-                                                 [Section]
-                                                 PropertyA=Value A
-                                                 PropertyB=Value B
+                private const string ExpectedIni = """
+                                                   [Section]
+                                                   PropertyA=Value A
+                                                   PropertyB=Value B
 
-                                                 [AnotherSection]
-                                                 AnotherProperty=Another value
+                                                   [AnotherSection]
+                                                   AnotherProperty=Another value
 
-                                                 """;
+                                                   """;
+
+                private static IniDocumentConfiguration Configuration => IniDocumentConfiguration.Strict
+                                                                                                 .WithDuplicateSectionBehavior(DuplicateSectionBehavior.Merge);
 
                 [TestMethod]
                 public void Merges_duplicated_section()
-                {
-                    using var reader = new StringReader(Ini);
-
-                    var configuration = DefaultConfiguration.WithDuplicateSectionBehavior(DuplicateSectionBehavior.Merge);
-
-                    var target = IniDocument.LoadFrom(reader, configuration);
-
-                    var stringBuilder = new StringBuilder();
-                    using var writer = new StringWriter(stringBuilder);
-
-                    target.SaveTo(writer);
-
-                    Assert.AreEqual(IniMerged, stringBuilder.ToString());
-                }
+                    => Load_and_save(Ini, Configuration, ExpectedIni);
             }
         }
 
@@ -272,29 +263,33 @@ public sealed class IniDocumentSpec
             [TestClass]
             public sealed class When_fail_behavior
             {
+                private static IniDocumentConfiguration Configuration => IniDocumentConfiguration.Strict
+                                                                                                 .WithInvalidLineBehavior(InvalidLineBehavior.Fail);
+
                 [TestMethod]
                 public void Throws_persistence_exception_on_invalid_line()
                 {
                     using var textReader = new StringReader(Ini);
 
-                    var configuration = DefaultConfiguration.WithInvalidLineBehavior(InvalidLineBehavior.Fail);
-
-                    Assert.ThrowsException<PersistenceException>(() => IniDocument.LoadFrom(textReader, configuration));
+                    Assert.ThrowsException<PersistenceException>(() => IniDocument.LoadFrom(textReader, Configuration));
                 }
             }
 
             [TestClass]
             public sealed class When_ignore_behavior
             {
+                private const string ExpectedIni = """
+                                                   [Section]
+                                                   Property=Value
+
+                                                   """;
+
+                private static IniDocumentConfiguration Configuration => IniDocumentConfiguration.Strict
+                                                                                                 .WithInvalidLineBehavior(InvalidLineBehavior.Ignore);
+
                 [TestMethod]
                 public void Ignores_invalid_line()
-                {
-                    using var textReader = new StringReader(Ini);
-
-                    var configuration = DefaultConfiguration.WithInvalidLineBehavior(InvalidLineBehavior.Ignore);
-
-                    var target = IniDocument.LoadFrom(textReader, configuration);
-                }
+                    => Load_and_save(Ini, Configuration, ExpectedIni);
             }
         }
 
