@@ -357,6 +357,7 @@ public sealed class IniDocumentSpec
         {
             yield return [Configuration];
             yield return [Configuration.WithSectionBeginningDelimiter('<')];
+            yield return [Configuration.WithSectionEndDelimiter('>')];
             yield return [Configuration.WithPropertyAssignmentSeparator(':')];
             yield return [Configuration.WithPropertyAssignmentSpacer(PropertyAssignmentSpacer.Space)];
         }
@@ -1317,7 +1318,7 @@ public sealed class IniDocumentSpec
 
             public IniDocumentBuilder AppendSectionLine(SectionName sectionName)
             {
-                this.stringBuilder.AppendLine($"{this.configuration.SectionBeginningDelimiter}{sectionName}]");
+                this.stringBuilder.AppendLine($"{this.configuration.SectionBeginningDelimiter}{sectionName}{this.configuration.SectionEndDelimiter}");
 
                 return this;
             }
