@@ -53,6 +53,7 @@
                    ConcatenateDuplicateKeys = false,
                    KeyValueAssigmentChar = configuration.PropertyAssignmentSeparator.ToChar(),
                    OverrideDuplicateKeys = configuration.DuplicatePropertyBehavior.Transform(new OverrideDuplicateKeysTransformation()),
+                   SectionStartChar = configuration.SectionBeginningDelimiter.ToChar(),
                    SkipInvalidLines = configuration.InvalidLineBehavior.Transform(new InvalidLineBehaviorTransformation()),
                    ThrowExceptionsOnError = true
                };

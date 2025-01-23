@@ -311,6 +311,8 @@ public sealed class IniDocumentSpec
     [TestClass]
     public sealed class SaveTo
     {
+        private static IniDocumentConfiguration Configuration => IniDocumentConfiguration.Strict;
+
         [TestMethod]
         public void Throws_argument_null_exception_when_text_writer_is_null()
         {
@@ -353,9 +355,10 @@ public sealed class IniDocumentSpec
 
         public static IEnumerable<object[]> Saves_the_ini_document_to_text_writer_test_cases()
         {
-            yield return [DefaultConfiguration];
-            yield return [DefaultConfiguration.WithPropertyAssignmentSeparator(':')];
-            yield return [DefaultConfiguration.WithPropertyAssignmentSpacer(PropertyAssignmentSpacer.Space)];
+            yield return [Configuration];
+            yield return [Configuration.WithSectionBeginningDelimiter('<')];
+            yield return [Configuration.WithPropertyAssignmentSeparator(':')];
+            yield return [Configuration.WithPropertyAssignmentSpacer(PropertyAssignmentSpacer.Space)];
         }
     }
 
@@ -1314,7 +1317,7 @@ public sealed class IniDocumentSpec
 
             public IniDocumentBuilder AppendSectionLine(SectionName sectionName)
             {
-                this.stringBuilder.AppendLine($"[{sectionName}]");
+                this.stringBuilder.AppendLine($"{this.configuration.SectionBeginningDelimiter}{sectionName}]");
 
                 return this;
             }
