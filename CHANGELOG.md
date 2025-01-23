@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ## [1.8.0] - 2025-01-23
 ### Added
 - Enable configuration of the beginning delimiter of a section in an INI document ([#131](https://github.com/oliverzick/Delizious-Ini/issues/131))
+- Enable configuration of the end delimiter of a section in an INI document ([#133](https://github.com/oliverzick/Delizious-Ini/issues/133))
 
 ## [1.7.0] - 2025-01-19
 ### Added
