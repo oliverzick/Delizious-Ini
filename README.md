@@ -21,6 +21,7 @@ Delizious Ini provides the following features:
   * Fail by throwing an exception when a duplicate section occurs
   * Ignore subsequent occurrences of a duplicate property by using the first occurrence of such a property
   * Override previous occurrences of a duplicate property by using the last occurrence of such a property
+* Configurability of section's beginning delimiter
 
 Upcoming features:
 * Configurability of the new line string
@@ -87,6 +88,7 @@ iniDocument.SaveTo(Console.Out);
 var looseConfiguration =
     IniDocumentConfiguration.Default
                             .WithCaseSensitivity(CaseSensitivity.CaseInsensitive) // Treat section names and property keys as case-insensitive
+                            .WithSectionBeginningDelimiter(SectionBeginningDelimiter.Default) // Use default section beginning delimiter which is opening square bracket '['
                             .WithDuplicatePropertyBehavior(DuplicatePropertyBehavior.Ignore) // Ignore subsequent occurrences of a duplicate property by using the first occurrence of such a property
                             .WithDuplicateSectionBehavior(DuplicateSectionBehavior.Merge) // Merge a duplicate section
                             .WithInvalidLineBehavior(InvalidLineBehavior.Ignore) // Ignore when a line is invalid and cannot be parsed on loading
@@ -103,6 +105,7 @@ var looseConfiguration =
 var strictConfiguration =
     IniDocumentConfiguration.Default
                             .WithCaseSensitivity(CaseSensitivity.CaseInsensitive) // Treat section names and property keys as case-insensitive
+                            .WithSectionBeginningDelimiter(SectionBeginningDelimiter.Default) // Use default section beginning delimiter which is opening square bracket '['
                             .WithDuplicatePropertyBehavior(DuplicatePropertyBehavior.Fail) // Throw exception when a duplicate property occurs
                             .WithDuplicateSectionBehavior(DuplicateSectionBehavior.Fail) // Throw exception when a duplicate section occurs
                             .WithInvalidLineBehavior(InvalidLineBehavior.Fail) // Throw exception when a line is invalid and cannot be parsed on loading
