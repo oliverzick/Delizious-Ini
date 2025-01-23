@@ -11,6 +11,7 @@
         //       because state of properties is lost when instances are used in dynamic data method along with data test methods.
 
         private IniDocumentConfiguration(CaseSensitivity caseSensitivity,
+                                         SectionBeginningDelimiter sectionBeginningDelimiter,
                                          DuplicatePropertyBehavior duplicatePropertyBehavior,
                                          DuplicateSectionBehavior duplicateSectionBehavior,
                                          InvalidLineBehavior invalidLineBehavior,
@@ -23,6 +24,7 @@
                                          SectionDeletionMode sectionDeletionMode)
         {
             this.CaseSensitivity = caseSensitivity;
+            this.SectionBeginningDelimiter = sectionBeginningDelimiter;
             this.DuplicatePropertyBehavior = duplicatePropertyBehavior;
             this.DuplicateSectionBehavior = duplicateSectionBehavior;
             this.InvalidLineBehavior = invalidLineBehavior;
@@ -37,6 +39,7 @@
 
         private IniDocumentConfiguration(IniDocumentConfiguration other)
             : this(other.CaseSensitivity,
+                   other.SectionBeginningDelimiter,
                    other.DuplicatePropertyBehavior,
                    other.DuplicateSectionBehavior,
                    other.InvalidLineBehavior,
@@ -72,6 +75,10 @@
         /// <item>
         /// <term><see cref="CaseSensitivity"/></term>
         /// <description><see cref="Ini.CaseSensitivity.CaseInsensitive"/></description>
+        /// </item>
+        /// <item>
+        /// <term><see cref="SectionBeginningDelimiter"/></term>
+        /// <description><see cref="Ini.SectionBeginningDelimiter.Default"/></description>
         /// </item>
         /// <item>
         /// <term><see cref="DuplicatePropertyBehavior"/></term>
@@ -117,6 +124,7 @@
         /// </summary>
         public static IniDocumentConfiguration Loose
             => new IniDocumentConfiguration(CaseSensitivity.CaseInsensitive,
+                                            SectionBeginningDelimiter.Default,
                                             DuplicatePropertyBehavior.Ignore,
                                             DuplicateSectionBehavior.Merge,
                                             InvalidLineBehavior.Ignore,
@@ -139,6 +147,10 @@
         /// <item>
         /// <term><see cref="CaseSensitivity"/></term>
         /// <description><see cref="Ini.CaseSensitivity.CaseInsensitive"/></description>
+        /// </item>
+        /// <item>
+        /// <term><see cref="SectionBeginningDelimiter"/></term>
+        /// <description><see cref="Ini.SectionBeginningDelimiter.Default"/></description>
         /// </item>
         /// <item>
         /// <term><see cref="DuplicatePropertyBehavior"/></term>
@@ -184,6 +196,7 @@
         /// </summary>
         public static IniDocumentConfiguration Strict
             => new IniDocumentConfiguration(CaseSensitivity.CaseInsensitive,
+                                            SectionBeginningDelimiter.Default,
                                             DuplicatePropertyBehavior.Fail,
                                             DuplicateSectionBehavior.Fail,
                                             InvalidLineBehavior.Fail,
@@ -221,6 +234,33 @@
             : this(other)
         {
             this.CaseSensitivity = caseSensitivity;
+        }
+
+        /// <summary>
+        /// The beginning delimiter of a section.
+        /// </summary>
+        public SectionBeginningDelimiter SectionBeginningDelimiter { get; }
+
+        /// <summary>
+        /// Creates a copy of the current <see cref="IniDocumentConfiguration"/> instance and defines
+        /// the beginning delimiter of a section.
+        /// </summary>
+        /// <param name="sectionBeginningDelimiter">
+        /// The beginning delimiter of a section.
+        /// </param>
+        /// <returns>
+        /// A new <see cref="IniDocumentConfiguration"/> instance with the given <paramref name="sectionBeginningDelimiter"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="sectionBeginningDelimiter"/> is <c>null</c>.
+        /// </exception>
+        public IniDocumentConfiguration WithSectionBeginningDelimiter(SectionBeginningDelimiter sectionBeginningDelimiter)
+            => new IniDocumentConfiguration(this, sectionBeginningDelimiter ?? throw new ArgumentNullException(nameof(sectionBeginningDelimiter)));
+
+        private IniDocumentConfiguration(IniDocumentConfiguration other, SectionBeginningDelimiter sectionBeginningDelimiter)
+            : this(other)
+        {
+            this.SectionBeginningDelimiter = sectionBeginningDelimiter;
         }
 
         /// <summary>
@@ -505,6 +545,7 @@
             }
 
             return Equals(this.CaseSensitivity,             other.CaseSensitivity)
+                && Equals(this.SectionBeginningDelimiter,   other.SectionBeginningDelimiter)
                 && Equals(this.DuplicatePropertyBehavior,   other.DuplicatePropertyBehavior)
                 && Equals(this.DuplicateSectionBehavior,    other.DuplicateSectionBehavior)
                 && Equals(this.InvalidLineBehavior,         other.InvalidLineBehavior)
@@ -524,6 +565,7 @@
         /// <inheritdoc/>
         public override int GetHashCode()
             => HashCode.Calculate(this.CaseSensitivity.GetHashCode(),
+                                  this.SectionBeginningDelimiter.GetHashCode(),
                                   this.DuplicatePropertyBehavior.GetHashCode(),
                                   this.DuplicateSectionBehavior.GetHashCode(),
                                   this.InvalidLineBehavior.GetHashCode(),
@@ -537,6 +579,6 @@
 
         /// <inheritdoc/>
         public override string ToString()
-            => $"{nameof(IniDocumentConfiguration)} {{ {nameof(this.CaseSensitivity)} = {this.CaseSensitivity}, {nameof(this.DuplicatePropertyBehavior)} = {this.DuplicatePropertyBehavior}, {nameof(this.DuplicateSectionBehavior)} = {this.DuplicateSectionBehavior}, {nameof(this.InvalidLineBehavior)} = {this.InvalidLineBehavior}, {nameof(this.PropertyAssignmentSeparator)} = {this.PropertyAssignmentSeparator}, {nameof(this.PropertyAssignmentSpacer)} = {this.PropertyAssignmentSpacer}, {nameof(this.PropertyEnumerationMode)} = {this.PropertyEnumerationMode}, {nameof(this.PropertyReadMode)} = {this.PropertyReadMode}, {nameof(this.PropertyWriteMode)} = {this.PropertyWriteMode}, {nameof(this.PropertyDeletionMode)} = {this.PropertyDeletionMode}, {nameof(this.SectionDeletionMode)} = {this.SectionDeletionMode} }}";
+            => $"{nameof(IniDocumentConfiguration)} {{ {nameof(this.CaseSensitivity)} = {this.CaseSensitivity}, {nameof(this.SectionBeginningDelimiter)} = {this.SectionBeginningDelimiter}, {nameof(this.DuplicatePropertyBehavior)} = {this.DuplicatePropertyBehavior}, {nameof(this.DuplicateSectionBehavior)} = {this.DuplicateSectionBehavior}, {nameof(this.InvalidLineBehavior)} = {this.InvalidLineBehavior}, {nameof(this.PropertyAssignmentSeparator)} = {this.PropertyAssignmentSeparator}, {nameof(this.PropertyAssignmentSpacer)} = {this.PropertyAssignmentSpacer}, {nameof(this.PropertyEnumerationMode)} = {this.PropertyEnumerationMode}, {nameof(this.PropertyReadMode)} = {this.PropertyReadMode}, {nameof(this.PropertyWriteMode)} = {this.PropertyWriteMode}, {nameof(this.PropertyDeletionMode)} = {this.PropertyDeletionMode}, {nameof(this.SectionDeletionMode)} = {this.SectionDeletionMode} }}";
     }
 }

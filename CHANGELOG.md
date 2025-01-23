@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.8.0] - 2025-01-23
+### Added
+- Enable configuration of the beginning delimiter of a section in an INI document ([#131](https://github.com/oliverzick/Delizious-Ini/issues/131))
+
 ## [1.7.0] - 2025-01-19
 ### Added
 - Enable configuration of duplicate property behavior that specifies how an INI document should behave on loading when a duplicate property occurs ([#128](https://github.com/oliverzick/Delizious-Ini/issues/128))

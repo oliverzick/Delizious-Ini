@@ -12,6 +12,7 @@ public sealed class IniDocumentConfigurationSpec
     public static IEnumerable<Setting> AllSettings =>
     [
         Setting.CaseSensitivity,
+        Setting.SectionBeginningDelimiter,
         Setting.DuplicatePropertyBehavior,
         Setting.DuplicateSectionBehavior,
         Setting.InvalidLineBehavior,
@@ -41,6 +42,22 @@ public sealed class IniDocumentConfigurationSpec
             yield return [IniDocumentConfiguration.Default, CaseSensitivity.CaseInsensitive];
             yield return [IniDocumentConfiguration.Loose, CaseSensitivity.CaseInsensitive];
             yield return [IniDocumentConfiguration.Strict, CaseSensitivity.CaseInsensitive];
+        }
+
+        [DataTestMethod]
+        [DynamicData(nameof(Default_section_beginning_delimiter_test_cases), DynamicDataSourceType.Method)]
+        public void Default_section_beginning_delimiter(IniDocumentConfiguration target, SectionBeginningDelimiter expected)
+        {
+            var actual = target.SectionBeginningDelimiter;
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        public static IEnumerable<object[]> Default_section_beginning_delimiter_test_cases()
+        {
+            yield return [IniDocumentConfiguration.Default, SectionBeginningDelimiter.Default];
+            yield return [IniDocumentConfiguration.Loose, SectionBeginningDelimiter.Default];
+            yield return [IniDocumentConfiguration.Strict, SectionBeginningDelimiter.Default];
         }
 
         [DataTestMethod]
@@ -222,6 +239,32 @@ public sealed class IniDocumentConfigurationSpec
             var original = Target;
 
             var actual = original.WithCaseSensitivity(CaseSensitivity.CaseSensitive);
+
+            setting.AssertIsEqual(original, actual);
+        }
+
+        public static IEnumerable<object[]> Retains_remaining_settings_test_cases()
+            => AllSettings.Except(SettingsToExclude).Select(ToTestCase);
+    }
+
+    [TestClass]
+    public sealed class WithSectionBeginningDelimiter
+    {
+        private static IEnumerable<Setting> SettingsToExclude => [Setting.SectionBeginningDelimiter];
+
+        [TestMethod]
+        public void Throws_argument_null_exception_when_given_section_beginning_delimiter_is_null()
+        {
+            Assert.ThrowsException<ArgumentNullException>(() => Target.WithSectionBeginningDelimiter(null!));
+        }
+
+        [DataTestMethod]
+        [DynamicData(nameof(Retains_remaining_settings_test_cases), DynamicDataSourceType.Method)]
+        public void Retains_remaining_settings(Setting setting)
+        {
+            var original = Target;
+
+            var actual = original.WithSectionBeginningDelimiter('(');
 
             setting.AssertIsEqual(original, actual);
         }
@@ -594,6 +637,8 @@ public sealed class IniDocumentConfigurationSpec
             yield return [Default, Strict, false];
             yield return [Default, Default.WithCaseSensitivity(CaseSensitivity.CaseSensitive), false];
             yield return [Default, Default.WithCaseSensitivity(CaseSensitivity.CaseInsensitive), true];
+            yield return [Default, Default.WithSectionBeginningDelimiter(SectionBeginningDelimiter.Default), true];
+            yield return [Default, Default.WithSectionBeginningDelimiter('('), false];
             yield return [Default, Default.WithDuplicatePropertyBehavior(DuplicatePropertyBehavior.Fail), false];
             yield return [Default, Default.WithDuplicatePropertyBehavior(DuplicatePropertyBehavior.Ignore), true];
             yield return [Default, Default.WithDuplicatePropertyBehavior(DuplicatePropertyBehavior.Override), false];
@@ -667,6 +712,18 @@ public sealed class IniDocumentConfigurationSpec
 
             public override string BuildString(IniDocumentConfiguration target)
                 => $"{nameof(target.CaseSensitivity)} = {target.CaseSensitivity}";
+        }
+
+        public static Setting SectionBeginningDelimiter
+            => new(new SectionBeginningDelimiterSetting());
+
+        private sealed record SectionBeginningDelimiterSetting : Strategy
+        {
+            public override void AssertIsEqual(IniDocumentConfiguration original, IniDocumentConfiguration actual)
+                => Assert.AreEqual(original.SectionBeginningDelimiter, actual.SectionBeginningDelimiter);
+
+            public override string BuildString(IniDocumentConfiguration target)
+                => $"{nameof(target.SectionBeginningDelimiter)} = {target.SectionBeginningDelimiter}";
         }
 
         public static Setting DuplicatePropertyBehavior
