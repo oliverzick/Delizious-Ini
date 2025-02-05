@@ -52,6 +52,7 @@
                    CaseInsensitive = configuration.CaseSensitivity.Transform(new CaseSensitivityTransformation()),
                    ConcatenateDuplicateKeys = false,
                    KeyValueAssigmentChar = configuration.PropertyAssignmentSeparator.ToChar(),
+                   NewLineStr = configuration.NewlineString.ToString(),
                    OverrideDuplicateKeys = configuration.DuplicatePropertyBehavior.Transform(new OverrideDuplicateKeysTransformation()),
                    SectionStartChar = configuration.SectionBeginningDelimiter.ToChar(),
                    SectionEndChar = configuration.SectionEndDelimiter.ToChar(),
