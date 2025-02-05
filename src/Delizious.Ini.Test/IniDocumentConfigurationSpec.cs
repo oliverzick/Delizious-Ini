@@ -12,6 +12,7 @@ public sealed class IniDocumentConfigurationSpec
     public static IEnumerable<Setting> AllSettings =>
     [
         Setting.CaseSensitivity,
+        Setting.NewlineString,
         Setting.SectionBeginningDelimiter,
         Setting.SectionEndDelimiter,
         Setting.DuplicatePropertyBehavior,
@@ -43,6 +44,22 @@ public sealed class IniDocumentConfigurationSpec
             yield return [IniDocumentConfiguration.Default, CaseSensitivity.CaseInsensitive];
             yield return [IniDocumentConfiguration.Loose, CaseSensitivity.CaseInsensitive];
             yield return [IniDocumentConfiguration.Strict, CaseSensitivity.CaseInsensitive];
+        }
+
+        [DataTestMethod]
+        [DynamicData(nameof(Default_newline_string_test_cases), DynamicDataSourceType.Method)]
+        public void Default_newline_string(IniDocumentConfiguration target, NewlineString expected)
+        {
+            var actual = target.NewlineString;
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        public static IEnumerable<object[]> Default_newline_string_test_cases()
+        {
+            yield return [IniDocumentConfiguration.Default, NewlineString.Environment];
+            yield return [IniDocumentConfiguration.Loose, NewlineString.Environment];
+            yield return [IniDocumentConfiguration.Strict, NewlineString.Environment];
         }
 
         [DataTestMethod]
@@ -256,6 +273,33 @@ public sealed class IniDocumentConfigurationSpec
             var original = Target;
 
             var actual = original.WithCaseSensitivity(CaseSensitivity.CaseSensitive);
+
+            setting.AssertIsEqual(original, actual);
+        }
+
+        public static IEnumerable<object[]> Retains_remaining_settings_test_cases()
+            => AllSettings.Except(SettingsToExclude).Select(ToTestCase);
+    }
+
+    [TestClass]
+    public sealed class WithNewlineString
+    {
+        private static IEnumerable<Setting> SettingsToExclude => [Setting.NewlineString];
+
+        [TestMethod]
+        public void Throws_argument_null_exception_when_given_newline_string_is_null()
+        {
+            Assert.ThrowsException<ArgumentNullException>(() => Target.WithNewlineString(null!));
+        }
+
+        [DataTestMethod]
+        [DynamicData(nameof(Retains_remaining_settings_test_cases), DynamicDataSourceType.Method)]
+        public void Retains_remaining_settings(Setting setting)
+        {
+            var original = Target;
+
+            // ToDo: Use different newline string in regard to current environment?
+            var actual = original.WithNewlineString(NewlineString.Unix);
 
             setting.AssertIsEqual(original, actual);
         }
@@ -680,6 +724,9 @@ public sealed class IniDocumentConfigurationSpec
             yield return [Default, Strict, false];
             yield return [Default, Default.WithCaseSensitivity(CaseSensitivity.CaseSensitive), false];
             yield return [Default, Default.WithCaseSensitivity(CaseSensitivity.CaseInsensitive), true];
+            yield return [Default, Default.WithNewlineString(NewlineString.Environment), true];
+            yield return [Default, Default.WithNewlineString(NewlineString.Unix), NewlineString.Unix == NewlineString.Environment];
+            yield return [Default, Default.WithNewlineString(NewlineString.Windows), NewlineString.Windows == NewlineString.Environment];
             yield return [Default, Default.WithSectionBeginningDelimiter(SectionBeginningDelimiter.Default), true];
             yield return [Default, Default.WithSectionBeginningDelimiter('('), false];
             yield return [Default, Default.WithSectionEndDelimiter(SectionEndDelimiter.Default), true];
@@ -757,6 +804,18 @@ public sealed class IniDocumentConfigurationSpec
 
             public override string BuildString(IniDocumentConfiguration target)
                 => $"{nameof(target.CaseSensitivity)} = {target.CaseSensitivity}";
+        }
+
+        public static Setting NewlineString
+            => new(new NewlineStringSetting());
+
+        private sealed record NewlineStringSetting : Strategy
+        {
+            public override void AssertIsEqual(IniDocumentConfiguration original, IniDocumentConfiguration actual)
+                => Assert.AreEqual(original.NewlineString, actual.NewlineString);
+
+            public override string BuildString(IniDocumentConfiguration target)
+                => $"{nameof(target.NewlineString)} = {target.NewlineString}";
         }
 
         public static Setting SectionBeginningDelimiter

@@ -356,6 +356,9 @@ public sealed class IniDocumentSpec
         public static IEnumerable<object[]> Saves_the_ini_document_to_text_writer_test_cases()
         {
             yield return [Configuration];
+            yield return [Configuration.WithNewlineString(NewlineString.Environment)];
+            yield return [Configuration.WithNewlineString(NewlineString.Unix)];
+            yield return [Configuration.WithNewlineString(NewlineString.Windows)];
             yield return [Configuration.WithSectionBeginningDelimiter('<')];
             yield return [Configuration.WithSectionEndDelimiter('>')];
             yield return [Configuration.WithPropertyAssignmentSeparator(':')];
@@ -1310,22 +1313,17 @@ public sealed class IniDocumentSpec
             }
 
             public IniDocumentBuilder AppendEmptyLine()
-            {
-                this.stringBuilder.AppendLine();
-
-                return this;
-            }
+                => this.AppendLine(string.Empty);
 
             public IniDocumentBuilder AppendSectionLine(SectionName sectionName)
-            {
-                this.stringBuilder.AppendLine($"{this.configuration.SectionBeginningDelimiter}{sectionName}{this.configuration.SectionEndDelimiter}");
-
-                return this;
-            }
+                => this.AppendLine($"{this.configuration.SectionBeginningDelimiter}{sectionName}{this.configuration.SectionEndDelimiter}");
 
             public IniDocumentBuilder AppendPropertyLine(PropertyKey propertyKey, PropertyValue propertyValue)
+                => this.AppendLine($"{propertyKey}{this.configuration.PropertyAssignmentSpacer}{this.configuration.PropertyAssignmentSeparator}{this.configuration.PropertyAssignmentSpacer}{propertyValue}");
+
+            private IniDocumentBuilder AppendLine(string line)
             {
-                this.stringBuilder.AppendLine($"{propertyKey}{this.configuration.PropertyAssignmentSpacer}{this.configuration.PropertyAssignmentSeparator}{this.configuration.PropertyAssignmentSpacer}{propertyValue}");
+                this.stringBuilder.Append($"{line}{this.configuration.NewlineString}");
 
                 return this;
             }
