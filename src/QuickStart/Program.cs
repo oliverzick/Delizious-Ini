@@ -61,6 +61,7 @@ void Configure()
     var looseConfiguration =
         IniDocumentConfiguration.Default
                                 .WithCaseSensitivity(CaseSensitivity.CaseInsensitive) // Treat section names and property keys as case-insensitive
+                                .WithNewlineString(NewlineString.Environment) // Use newline string as given by current environment
                                 .WithSectionBeginningDelimiter(SectionBeginningDelimiter.Default) // Use default section beginning delimiter which is opening square bracket '['
                                 .WithSectionEndDelimiter(SectionEndDelimiter.Default) // Use default section end delimiter which is closing square bracket ']'
                                 .WithDuplicatePropertyBehavior(DuplicatePropertyBehavior.Ignore) // Ignore subsequent occurrences of a duplicate property by using the first occurrence of such a property
@@ -79,6 +80,7 @@ void Configure()
     var strictConfiguration =
         IniDocumentConfiguration.Default
                                 .WithCaseSensitivity(CaseSensitivity.CaseInsensitive) // Treat section names and property keys as case-insensitive
+                                .WithNewlineString(NewlineString.Environment) // Use newline string as given by current environment
                                 .WithSectionBeginningDelimiter(SectionBeginningDelimiter.Default) // Use default section beginning delimiter which is opening square bracket '['
                                 .WithSectionEndDelimiter(SectionEndDelimiter.Default) // Use default section end delimiter which is closing square bracket ']'
                                 .WithDuplicatePropertyBehavior(DuplicatePropertyBehavior.Fail) // Throw exception when a duplicate property occurs
