@@ -41,9 +41,9 @@ public sealed class SectionEndDelimiterSpec
     [DynamicData(nameof(Equality_operator_test_cases), DynamicDataSourceType.Method)]
     [DynamicData(nameof(Equals_test_cases),            DynamicDataSourceType.Method)]
     [DynamicData(nameof(Equals_null_test_cases),       DynamicDataSourceType.Method)]
-    public void Properly_implements_inequality_operator(SectionEndDelimiter left, SectionEndDelimiter right, bool inverse_expected)
+    public void Properly_implements_inequality_operator(SectionEndDelimiter left, SectionEndDelimiter right, bool unexpected)
     {
-        var expected = !inverse_expected;
+        var expected = !unexpected;
 
         var actual = left != right;
 
