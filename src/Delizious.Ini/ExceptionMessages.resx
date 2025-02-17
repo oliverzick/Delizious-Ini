@@ -135,4 +135,10 @@
   <data name="SectionNameMustNotBeEmptyOrConsistOnlyOfWhiteSpaceCharacters" xml:space="preserve">
     <value>Section name must not be empty or consist only of white-space characters.</value>
   </data>
+  <data name="InvalidPatternForSectionNameRegex" xml:space="preserve">
+    <value>Invalid pattern for section name regex.</value>
+  </data>
+  <data name="PatternForSectionNameRegexMustNotBeEmpty" xml:space="preserve">
+    <value>Pattern for section name regex must not be empty.</value>
+  </data>
 </root>
