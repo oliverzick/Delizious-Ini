@@ -95,7 +95,6 @@ public sealed class IniDocumentConfigurationSpec
             yield return [IniDocumentConfiguration.Strict, SectionEndDelimiter.Default];
         }
 
-
         [DataTestMethod]
         [DynamicData(nameof(Default_section_name_regex_test_cases), DynamicDataSourceType.Method)]
         public void Default_section_name_regex(IniDocumentConfiguration target, SectionNameRegex expected)
