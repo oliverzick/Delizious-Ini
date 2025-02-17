@@ -14,6 +14,7 @@
                                          NewlineString newlineString,
                                          SectionBeginningDelimiter sectionBeginningDelimiter,
                                          SectionEndDelimiter sectionEndDelimiter,
+                                         SectionNameRegex sectionNameRegex,
                                          DuplicatePropertyBehavior duplicatePropertyBehavior,
                                          DuplicateSectionBehavior duplicateSectionBehavior,
                                          InvalidLineBehavior invalidLineBehavior,
@@ -29,6 +30,7 @@
             this.NewlineString = newlineString;
             this.SectionBeginningDelimiter = sectionBeginningDelimiter;
             this.SectionEndDelimiter = sectionEndDelimiter;
+            this.SectionNameRegex = sectionNameRegex;
             this.DuplicatePropertyBehavior = duplicatePropertyBehavior;
             this.DuplicateSectionBehavior = duplicateSectionBehavior;
             this.InvalidLineBehavior = invalidLineBehavior;
@@ -46,6 +48,7 @@
                    other.NewlineString,
                    other.SectionBeginningDelimiter,
                    other.SectionEndDelimiter,
+                   other.SectionNameRegex,
                    other.DuplicatePropertyBehavior,
                    other.DuplicateSectionBehavior,
                    other.InvalidLineBehavior,
@@ -95,6 +98,10 @@
         /// <description><see cref="Ini.SectionEndDelimiter.Default"/></description>
         /// </item>
         /// <item>
+        /// <term><see cref="SectionNameRegex"/></term>
+        /// <description><see cref="SectionNameRegex.Default"/></description>
+        /// </item>
+        /// <item>
         /// <term><see cref="DuplicatePropertyBehavior"/></term>
         /// <description><see cref="Ini.DuplicatePropertyBehavior.Ignore"/></description>
         /// </item>
@@ -141,6 +148,7 @@
                                             NewlineString.Environment,
                                             SectionBeginningDelimiter.Default,
                                             SectionEndDelimiter.Default,
+                                            SectionNameRegex.Default,
                                             DuplicatePropertyBehavior.Ignore,
                                             DuplicateSectionBehavior.Merge,
                                             InvalidLineBehavior.Ignore,
@@ -175,6 +183,10 @@
         /// <item>
         /// <term><see cref="SectionEndDelimiter"/></term>
         /// <description><see cref="Ini.SectionEndDelimiter.Default"/></description>
+        /// </item>
+        /// <item>
+        /// <term><see cref="SectionNameRegex"/></term>
+        /// <description><see cref="SectionNameRegex.Default"/></description>
         /// </item>
         /// <item>
         /// <term><see cref="DuplicatePropertyBehavior"/></term>
@@ -223,6 +235,7 @@
                                             NewlineString.Environment,
                                             SectionBeginningDelimiter.Default,
                                             SectionEndDelimiter.Default,
+                                            SectionNameRegex.Default,
                                             DuplicatePropertyBehavior.Fail,
                                             DuplicateSectionBehavior.Fail,
                                             InvalidLineBehavior.Fail,
@@ -340,6 +353,33 @@
             : this(other)
         {
             this.SectionEndDelimiter = sectionEndDelimiter;
+        }
+
+        /// <summary>
+        /// The regular expression for the name of a section.
+        /// </summary>
+        public SectionNameRegex SectionNameRegex { get; }
+
+        /// <summary>
+        /// Creates a copy of the current <see cref="IniDocumentConfiguration"/> instance and defines
+        /// the regular expression for the name of a section.
+        /// </summary>
+        /// <param name="sectionNameRegex">
+        /// The regular expression for the name of a section.
+        /// </param>
+        /// <returns>
+        /// A new <see cref="IniDocumentConfiguration"/> instance with the given <paramref name="sectionNameRegex"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="sectionNameRegex"/> is <c>null</c>.
+        /// </exception>
+        public IniDocumentConfiguration WithSectionNameRegex(SectionNameRegex sectionNameRegex)
+            => new IniDocumentConfiguration(this, sectionNameRegex ?? throw new ArgumentNullException(nameof(sectionNameRegex)));
+
+        private IniDocumentConfiguration(IniDocumentConfiguration other, SectionNameRegex sectionNameRegex)
+            : this(other)
+        {
+            this.SectionNameRegex = sectionNameRegex;
         }
 
         /// <summary>
@@ -627,6 +667,7 @@
                 && Equals(this.NewlineString,               other.NewlineString)
                 && Equals(this.SectionBeginningDelimiter,   other.SectionBeginningDelimiter)
                 && Equals(this.SectionEndDelimiter,         other.SectionEndDelimiter)
+                && Equals(this.SectionNameRegex,            other.SectionNameRegex)
                 && Equals(this.DuplicatePropertyBehavior,   other.DuplicatePropertyBehavior)
                 && Equals(this.DuplicateSectionBehavior,    other.DuplicateSectionBehavior)
                 && Equals(this.InvalidLineBehavior,         other.InvalidLineBehavior)
@@ -649,6 +690,7 @@
                                   this.NewlineString.GetHashCode(),
                                   this.SectionBeginningDelimiter.GetHashCode(),
                                   this.SectionEndDelimiter.GetHashCode(),
+                                  this.SectionNameRegex.GetHashCode(),
                                   this.DuplicatePropertyBehavior.GetHashCode(),
                                   this.DuplicateSectionBehavior.GetHashCode(),
                                   this.InvalidLineBehavior.GetHashCode(),
@@ -662,6 +704,6 @@
 
         /// <inheritdoc/>
         public override string ToString()
-            => $"{nameof(IniDocumentConfiguration)} {{ {nameof(this.CaseSensitivity)} = {this.CaseSensitivity}, {nameof(this.NewlineString)} = {this.NewlineString}, {nameof(this.SectionBeginningDelimiter)} = {this.SectionBeginningDelimiter}, {nameof(this.SectionEndDelimiter)} = {this.SectionEndDelimiter}, {nameof(this.DuplicatePropertyBehavior)} = {this.DuplicatePropertyBehavior}, {nameof(this.DuplicateSectionBehavior)} = {this.DuplicateSectionBehavior}, {nameof(this.InvalidLineBehavior)} = {this.InvalidLineBehavior}, {nameof(this.PropertyAssignmentSeparator)} = {this.PropertyAssignmentSeparator}, {nameof(this.PropertyAssignmentSpacer)} = {this.PropertyAssignmentSpacer}, {nameof(this.PropertyEnumerationMode)} = {this.PropertyEnumerationMode}, {nameof(this.PropertyReadMode)} = {this.PropertyReadMode}, {nameof(this.PropertyWriteMode)} = {this.PropertyWriteMode}, {nameof(this.PropertyDeletionMode)} = {this.PropertyDeletionMode}, {nameof(this.SectionDeletionMode)} = {this.SectionDeletionMode} }}";
+            => $"{nameof(IniDocumentConfiguration)} {{ {nameof(this.CaseSensitivity)} = {this.CaseSensitivity}, {nameof(this.NewlineString)} = {this.NewlineString}, {nameof(this.SectionBeginningDelimiter)} = {this.SectionBeginningDelimiter}, {nameof(this.SectionEndDelimiter)} = {this.SectionEndDelimiter}, {nameof(this.SectionNameRegex)} = {this.SectionNameRegex}, {nameof(this.DuplicatePropertyBehavior)} = {this.DuplicatePropertyBehavior}, {nameof(this.DuplicateSectionBehavior)} = {this.DuplicateSectionBehavior}, {nameof(this.InvalidLineBehavior)} = {this.InvalidLineBehavior}, {nameof(this.PropertyAssignmentSeparator)} = {this.PropertyAssignmentSeparator}, {nameof(this.PropertyAssignmentSpacer)} = {this.PropertyAssignmentSpacer}, {nameof(this.PropertyEnumerationMode)} = {this.PropertyEnumerationMode}, {nameof(this.PropertyReadMode)} = {this.PropertyReadMode}, {nameof(this.PropertyWriteMode)} = {this.PropertyWriteMode}, {nameof(this.PropertyDeletionMode)} = {this.PropertyDeletionMode}, {nameof(this.SectionDeletionMode)} = {this.SectionDeletionMode} }}";
     }
 }
