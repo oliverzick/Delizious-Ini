@@ -15,6 +15,7 @@ public sealed class IniDocumentConfigurationSpec
         Setting.NewlineString,
         Setting.SectionBeginningDelimiter,
         Setting.SectionEndDelimiter,
+        Setting.SectionNameRegex,
         Setting.DuplicatePropertyBehavior,
         Setting.DuplicateSectionBehavior,
         Setting.InvalidLineBehavior,
@@ -92,6 +93,22 @@ public sealed class IniDocumentConfigurationSpec
             yield return [IniDocumentConfiguration.Default, SectionEndDelimiter.Default];
             yield return [IniDocumentConfiguration.Loose, SectionEndDelimiter.Default];
             yield return [IniDocumentConfiguration.Strict, SectionEndDelimiter.Default];
+        }
+
+        [DataTestMethod]
+        [DynamicData(nameof(Default_section_name_regex_test_cases), DynamicDataSourceType.Method)]
+        public void Default_section_name_regex(IniDocumentConfiguration target, SectionNameRegex expected)
+        {
+            var actual = target.SectionNameRegex;
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        public static IEnumerable<object[]> Default_section_name_regex_test_cases()
+        {
+            yield return [IniDocumentConfiguration.Default, SectionNameRegex.Default];
+            yield return [IniDocumentConfiguration.Loose, SectionNameRegex.Default];
+            yield return [IniDocumentConfiguration.Strict, SectionNameRegex.Default];
         }
 
         [DataTestMethod]
@@ -352,6 +369,32 @@ public sealed class IniDocumentConfigurationSpec
             var original = Target;
 
             var actual = original.WithSectionEndDelimiter(')');
+
+            setting.AssertIsEqual(original, actual);
+        }
+
+        public static IEnumerable<object[]> Retains_remaining_settings_test_cases()
+            => AllSettings.Except(SettingsToExclude).Select(ToTestCase);
+    }
+
+    [TestClass]
+    public sealed class WithSectionNameRegex
+    {
+        private static IEnumerable<Setting> SettingsToExclude => [Setting.SectionNameRegex];
+
+        [TestMethod]
+        public void Throws_argument_null_exception_when_given_section_regex_is_null()
+        {
+            Assert.ThrowsException<ArgumentNullException>(() => Target.WithSectionNameRegex(null!));
+        }
+
+        [DataTestMethod]
+        [DynamicData(nameof(Retains_remaining_settings_test_cases), DynamicDataSourceType.Method)]
+        public void Retains_remaining_settings(Setting setting)
+        {
+            var original = Target;
+
+            var actual = original.WithSectionNameRegex(SectionNameRegex.Create(@"\w+"));
 
             setting.AssertIsEqual(original, actual);
         }
@@ -840,6 +883,18 @@ public sealed class IniDocumentConfigurationSpec
 
             public override string BuildString(IniDocumentConfiguration target)
                 => $"{nameof(target.SectionEndDelimiter)} = {target.SectionEndDelimiter}";
+        }
+
+        public static Setting SectionNameRegex
+            => new(new SectionNameRegexSetting());
+
+        private sealed record SectionNameRegexSetting : Strategy
+        {
+            public override void AssertIsEqual(IniDocumentConfiguration original, IniDocumentConfiguration actual)
+                => Assert.AreEqual(original.SectionNameRegex, actual.SectionNameRegex);
+
+            public override string BuildString(IniDocumentConfiguration target)
+                => $"{nameof(target.SectionNameRegex)} = {target.SectionNameRegex}";
         }
 
         public static Setting DuplicatePropertyBehavior

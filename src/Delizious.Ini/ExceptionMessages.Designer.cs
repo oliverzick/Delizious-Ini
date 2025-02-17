@@ -97,6 +97,24 @@ namespace Delizious.Ini {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid pattern for section name regex..
+        /// </summary>
+        internal static string InvalidPatternForSectionNameRegex {
+            get {
+                return ResourceManager.GetString("InvalidPatternForSectionNameRegex", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pattern for section name regex must not be empty..
+        /// </summary>
+        internal static string PatternForSectionNameRegexMustNotBeEmpty {
+            get {
+                return ResourceManager.GetString("PatternForSectionNameRegexMustNotBeEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Property key must not be empty or consist only of white-space characters..
         /// </summary>
         internal static string PropertyKeyMustNotBeEmptyOrConsistOnlyOfWhiteSpaceCharacters {
