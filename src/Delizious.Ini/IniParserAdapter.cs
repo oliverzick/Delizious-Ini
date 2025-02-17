@@ -1,13 +1,14 @@
 ﻿namespace Delizious.Ini
 {
-    using IniParser.Model;
-    using IniParser.Model.Configuration;
-    using IniParser.Parser;
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Linq;
+    using System.Text.RegularExpressions;
+    using IniParser.Model;
+    using IniParser.Model.Configuration;
+    using IniParser.Parser;
 
     internal sealed class IniParserAdapter : IIniDocument
     {
@@ -56,9 +57,20 @@
                    OverrideDuplicateKeys = configuration.DuplicatePropertyBehavior.Transform(new OverrideDuplicateKeysTransformation()),
                    SectionStartChar = configuration.SectionBeginningDelimiter.ToChar(),
                    SectionEndChar = configuration.SectionEndDelimiter.ToChar(),
+                   SectionRegex = MakeSectionRegex(configuration), // Needs to be specified after SectionStartChar and SectionEndChar to prevent recreation of SectionRegex with default pattern
                    SkipInvalidLines = configuration.InvalidLineBehavior.Transform(new InvalidLineBehaviorTransformation()),
                    ThrowExceptionsOnError = true
                };
+
+        private static Regex MakeSectionRegex(IniDocumentConfiguration configuration)
+        {
+            const string whitespace = @"\p{Zs}*";
+            var beginningDelimiter = Regex.Escape(configuration.SectionBeginningDelimiter.ToString());
+            var endDelimiter = Regex.Escape(configuration.SectionEndDelimiter.ToString());
+            var sectionNameRegex = configuration.SectionNameRegex.ToString();
+
+            return new Regex($"^{whitespace}{beginningDelimiter}{sectionNameRegex}{endDelimiter}{whitespace}$");
+        }
 
         private readonly struct AllowDuplicateKeysTransformation : IDuplicatePropertyBehaviorTransformation<bool>
         {

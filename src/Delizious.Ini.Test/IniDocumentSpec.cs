@@ -293,6 +293,61 @@ public sealed class IniDocumentSpec
             }
         }
 
+        [TestClass]
+        public sealed class With_configured_invalid_line_behavior_and_section_name_regex
+        {
+            private const string Ini = """
+                                       [ValidSection]
+                                       Property=Value 1
+
+                                       [InvalidSection!]
+                                       UnluckyProperty=Value 2
+
+                                       [AnotherValidSection]
+                                       AnotherProperty=Value 3
+                                       """;
+
+            private static SectionNameRegex SectionNameRegex => SectionNameRegex.Create(@"\w+");
+
+            [TestClass]
+            public sealed class When_fail_behavior
+            {
+                private static IniDocumentConfiguration Configuration => IniDocumentConfiguration.Strict
+                                                                                                 .WithInvalidLineBehavior(InvalidLineBehavior.Fail)
+                                                                                                 .WithSectionNameRegex(SectionNameRegex);
+
+                [TestMethod]
+                public void Throws_persistence_exception_on_invalid_line()
+                {
+                    using var textReader = new StringReader(Ini);
+
+                    Assert.ThrowsException<PersistenceException>(() => IniDocument.LoadFrom(textReader, Configuration));
+                }
+            }
+
+            [TestClass]
+            public sealed class When_ignore_behavior
+            {
+                private const string ExpectedIni = """
+                                                   [ValidSection]
+                                                   Property=Value 1
+                                                   UnluckyProperty=Value 2
+
+                                                   [AnotherValidSection]
+                                                   AnotherProperty=Value 3
+
+                                                   """;
+
+                private static IniDocumentConfiguration Configuration => IniDocumentConfiguration.Strict
+                                                                                                 .WithInvalidLineBehavior(InvalidLineBehavior.Ignore)
+                                                                                                 .WithSectionNameRegex(SectionNameRegex);
+
+                [TestMethod]
+                public void Ignores_invalid_line()
+                    => Load_and_save(Ini, Configuration, ExpectedIni);
+            }
+        }
+
         private static void Load_and_save(string sourceIni, IniDocumentConfiguration configuration, string expectedIni)
         {
             using var reader = new StringReader(sourceIni);
