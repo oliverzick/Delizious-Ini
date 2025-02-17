@@ -64,6 +64,7 @@ void Configure()
                                 .WithNewlineString(NewlineString.Environment) // Use newline string as given by current environment
                                 .WithSectionBeginningDelimiter(SectionBeginningDelimiter.Default) // Use default section beginning delimiter which is opening square bracket '['
                                 .WithSectionEndDelimiter(SectionEndDelimiter.Default) // Use default section end delimiter which is closing square bracket ']'
+                                .WithSectionNameRegex(SectionNameRegex.Default) // Use default section name regex which is '[\p{L}\p{M}\p{N}\p{P}\p{S}\p{Zs}]+'
                                 .WithDuplicatePropertyBehavior(DuplicatePropertyBehavior.Ignore) // Ignore subsequent occurrences of a duplicate property by using the first occurrence of such a property
                                 .WithDuplicateSectionBehavior(DuplicateSectionBehavior.Merge) // Merge a duplicate section
                                 .WithInvalidLineBehavior(InvalidLineBehavior.Ignore) // Ignore when a line is invalid and cannot be parsed on loading
@@ -83,6 +84,7 @@ void Configure()
                                 .WithNewlineString(NewlineString.Environment) // Use newline string as given by current environment
                                 .WithSectionBeginningDelimiter(SectionBeginningDelimiter.Default) // Use default section beginning delimiter which is opening square bracket '['
                                 .WithSectionEndDelimiter(SectionEndDelimiter.Default) // Use default section end delimiter which is closing square bracket ']'
+                                .WithSectionNameRegex(SectionNameRegex.Default) // Use default section name regex which is '[\p{L}\p{M}\p{N}\p{P}\p{S}\p{Zs}]+'
                                 .WithDuplicatePropertyBehavior(DuplicatePropertyBehavior.Fail) // Throw exception when a duplicate property occurs
                                 .WithDuplicateSectionBehavior(DuplicateSectionBehavior.Fail) // Throw exception when a duplicate section occurs
                                 .WithInvalidLineBehavior(InvalidLineBehavior.Fail) // Throw exception when a line is invalid and cannot be parsed on loading
