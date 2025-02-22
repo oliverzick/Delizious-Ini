@@ -102,6 +102,27 @@
         }
 
         /// <summary>
+        /// Clones the INI document and provides a deep copy of this instance.
+        /// </summary>
+        /// <returns>
+        /// A new <see cref="IniDocument"/> instance that is a deep copy of this instance.
+        /// </returns>
+        public IniDocument Clone()
+        {
+            using (var stream = new MemoryStream())
+            using (var writer = new StreamWriter(stream))
+            using (var reader = new StreamReader(stream))
+            {
+                this.SaveTo(writer);
+                writer.Flush();
+
+                stream.Seek(0, SeekOrigin.Begin);
+
+                return LoadFrom(reader, this.configuration);
+            }
+        }
+
+        /// <summary>
         /// Enumerates the names of all contained sections.
         /// </summary>
         /// <returns>
