@@ -422,6 +422,55 @@ public sealed class IniDocumentSpec
     }
 
     [TestClass]
+    public sealed class Clone
+    {
+        private static IniDocumentConfiguration Configuration => IniDocumentConfiguration.Loose;
+
+        [TestMethod]
+        public void Cloned_instance_is_not_the_same_as_the_original_instance()
+        {
+            var original = Make.SampleTarget(Configuration);
+
+            var clone = original.Clone();
+
+            Assert.AreNotSame(original, clone);
+        }
+
+        [TestMethod]
+        public void Cloned_instance_represents_same_content_as_the_original_instance()
+        {
+            var original = Make.SampleTarget(Configuration);
+
+            var clone = original.Clone();
+
+            using var originalWriter = new StringWriter();
+            original.SaveTo(originalWriter);
+
+            using var cloneWriter = new StringWriter();
+            clone.SaveTo(cloneWriter);
+
+            Assert.AreEqual(originalWriter.ToString(), cloneWriter.ToString());
+        }
+
+        [TestMethod]
+        public void Changes_in_cloned_instance_do_not_affect_the_original_instance()
+        {
+            var original = Make.SampleTarget(Configuration);
+
+            var clone = original.Clone();
+            clone.WriteProperty("CloneSection", "CloneProperty", "Clone value");
+
+            using var originalWriter = new StringWriter();
+            original.SaveTo(originalWriter);
+
+            using var cloneWriter = new StringWriter();
+            clone.SaveTo(cloneWriter);
+
+            Assert.AreNotEqual(originalWriter.ToString(), cloneWriter.ToString());
+        }
+    }
+
+    [TestClass]
     public sealed class EnumerateSections
     {
         private static SectionName[] SectionNames => ["Section1", "AnotherSection2", "SomeSectionA"];

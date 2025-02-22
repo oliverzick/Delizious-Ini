@@ -2,6 +2,9 @@
 ## What?
 Delizious Ini is an easy to use .NET Standard library entirely written in C# for reading and writing of INI data.
 
+## New features in version 1.11.0
+* Cloning an INI document
+
 ## Features
 Delizious Ini provides the following features:
 * Intuitive API design applying [Domain-driven design (DDD)](https://en.wikipedia.org/wiki/Domain-driven_design)
