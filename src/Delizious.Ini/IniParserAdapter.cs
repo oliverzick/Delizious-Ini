@@ -169,9 +169,9 @@
 
         private ISection SelectSection(SectionName sectionName, ISection fallbackSection)
         {
-            var keyDataCollection = this.iniData.Sections[sectionName.ToString()];
+            var sectionData = this.iniData.Sections.GetSectionData(sectionName.ToString());
 
-            return keyDataCollection is null ? fallbackSection : new ExistentSection(this.iniData, sectionName, keyDataCollection);
+            return sectionData is null ? fallbackSection : new ExistentSection(this.iniData, sectionName, sectionData);
         }
 
         private interface ISection
@@ -231,33 +231,36 @@
 
             private readonly SectionName sectionName;
 
-            private readonly KeyDataCollection keyDataCollection;
+            private readonly SectionData sectionData;
 
-            public ExistentSection(IniData owner, SectionName sectionName, KeyDataCollection keyDataCollection)
+            public ExistentSection(IniData owner, SectionName sectionName, SectionData sectionData)
             {
                 this.owner = owner;
                 this.sectionName = sectionName;
-                this.keyDataCollection = keyDataCollection;
+                this.sectionData = sectionData;
             }
+
+            private KeyDataCollection KeyDataCollection
+                => this.sectionData.Keys;
 
             public void Delete()
                 => this.owner.Sections.RemoveSection(this.sectionName.ToString());
 
             public ISection CreateProperty(PropertyKey propertyKey)
             {
-                this.keyDataCollection.AddKey(propertyKey.ToString());
+                this.KeyDataCollection.AddKey(propertyKey.ToString());
 
                 return this;
             }
 
             public IEnumerable<PropertyKey> EnumerateProperties()
-                => this.keyDataCollection.Select(property => PropertyKey.Create(property.KeyName));
+                => this.KeyDataCollection.Select(property => PropertyKey.Create(property.KeyName));
 
             public IProperty SelectProperty(PropertyKey propertyKey, IProperty fallbackProperty)
             {
-                var keyData = this.keyDataCollection.GetKeyData(propertyKey.ToString());
+                var keyData = this.KeyDataCollection.GetKeyData(propertyKey.ToString());
 
-                return keyData is null ? fallbackProperty : new ExistentProperty(this.keyDataCollection, propertyKey, keyData);
+                return keyData is null ? fallbackProperty : new ExistentProperty(this.KeyDataCollection, propertyKey, keyData);
             }
         }
 
