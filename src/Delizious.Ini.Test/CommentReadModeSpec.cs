@@ -9,7 +9,7 @@ public sealed class CommentReadModeSpec
     private static CommentReadMode Fail => CommentReadMode.Fail;
     private static CommentReadMode Fallback => CommentReadMode.Fallback;
     private static CommentReadMode FallbackCustom => CommentReadMode.CustomFallback("Fallback");
-    private static CommentReadMode FallbackCustomDefault => CommentReadMode.CustomFallback(string.Empty);
+    private static CommentReadMode FallbackCustomDefault => CommentReadMode.CustomFallback(Comment.None);
 
     [TestMethod]
     public void Throws_argument_null_exception_when_fallback_comment_is_null()

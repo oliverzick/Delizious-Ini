@@ -26,17 +26,17 @@
             => new CommentReadMode(new FailMode());
 
         /// <summary>
-        /// Specifies that reading a comment should fall back to an empty fallback value
+        /// Specifies that reading a comment should fall back to <see cref="Comment.None"/>
         /// when the section or property does not exist.
         /// </summary>
         /// <remarks>
-        /// This is a convenience property that calls <see cref="CustomFallback(Comment)"/> with an empty fallback value.
+        /// This is a convenience property that calls <see cref="CustomFallback(Comment)"/> with <see cref="Comment.None"/>.
         /// </remarks>
         /// <returns>
-        /// A <see cref="CommentReadMode"/> instance that represents the fallback mode with an empty fallback value.
+        /// A <see cref="CommentReadMode"/> instance that represents the fallback mode with <see cref="Comment.None"/>.
         /// </returns>
         public static CommentReadMode Fallback
-            => CustomFallback(string.Empty);
+            => CustomFallback(Comment.None);
 
         /// <summary>
         /// Specifies that reading a comment should fall back to the given <paramref name="fallbackComment"/>
