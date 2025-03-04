@@ -7,6 +7,7 @@ using System.Collections.Generic;
 public sealed class CommentSpec
 {
     private static Comment Null => null!;
+    private static Comment None => Comment.None;
     private static Comment SingleLineComment => "Single line comment";
     private static Comment MultiLineComment => $"Multi-line{Environment.NewLine}Comment";
 
@@ -27,6 +28,7 @@ public sealed class CommentSpec
 
     public static IEnumerable<object[]> Provides_string_representation_test_cases()
     {
+        yield return [None, string.Empty];
         yield return [SingleLineComment, "Single line comment"];
         yield return [MultiLineComment, $"Multi-line{Environment.NewLine}Comment"];
     }
@@ -88,27 +90,36 @@ public sealed class CommentSpec
     public static IEnumerable<object[]> Equality_operator_test_cases()
     {
         yield return [Null, Null, true];
+        yield return [Null, None, false];
         yield return [Null, SingleLineComment, false];
         yield return [Null, MultiLineComment, false];
     }
 
     public static IEnumerable<object[]> Equals_null_test_cases()
     {
+        yield return [None, Null, false];
         yield return [SingleLineComment, Null, false];
         yield return [MultiLineComment, Null, false];
     }
 
     public static IEnumerable<object[]> Equals_test_cases()
     {
+        yield return [None, None, true];
+        yield return [None, SingleLineComment, false];
+        yield return [None, MultiLineComment, false];
+
         yield return [SingleLineComment, SingleLineComment, true];
+        yield return [SingleLineComment, None, false];
         yield return [SingleLineComment, MultiLineComment, false];
 
         yield return [MultiLineComment, MultiLineComment, true];
+        yield return [MultiLineComment, None, false];
         yield return [MultiLineComment, SingleLineComment, false];
     }
 
     public static IEnumerable<object[]> General_equals_test_cases()
     {
+        yield return [None, new(), false];
         yield return [SingleLineComment, new(), false];
         yield return [MultiLineComment, new(), false];
     }

@@ -40,6 +40,12 @@
         public static implicit operator Comment(string comment)
             => Create(comment);
 
+        /// <summary>
+        /// Specifies that no comment is given.
+        /// </summary>
+        public static Comment None
+            => string.Empty;
+
         public static bool operator ==(Comment left, Comment right)
             => Equals(left, right);
 
