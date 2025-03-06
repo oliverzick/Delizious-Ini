@@ -142,6 +142,10 @@
             => this.SelectSection(sectionName, mode.Transform(new FallbackSectionProvider(sectionName)))
                    .EnumerateProperties();
 
+        public Comment ReadComment(SectionName sectionName, CommentReadMode mode)
+            => this.SelectSection(sectionName, mode.Transform(new FallbackSectionProvider(sectionName)))
+                   .ReadComment();
+
         public PropertyValue ReadProperty(SectionName sectionName, PropertyKey propertyKey, PropertyReadMode mode)
             => this.SelectSection(sectionName, mode.Transform(new FallbackSectionProvider(sectionName)))
                    .SelectProperty(propertyKey, mode.Transform(new FallbackPropertyProvider(propertyKey)))
@@ -178,6 +182,8 @@
         {
             void Delete();
 
+            Comment ReadComment();
+
             ISection CreateProperty(PropertyKey propertyKey);
 
             IEnumerable<PropertyKey> EnumerateProperties();
@@ -187,9 +193,24 @@
 
         private sealed class NullSection : ISection
         {
+            private readonly Comment comment;
+
+            public NullSection()
+                : this(Comment.None)
+            {
+            }
+
+            public NullSection(Comment comment)
+            {
+                this.comment = comment;
+            }
+
             public void Delete()
             {
             }
+
+            public Comment ReadComment()
+                => this.comment;
 
             [ExcludeFromCodeCoverage]
             public ISection CreateProperty(PropertyKey propertyKey)
@@ -212,6 +233,9 @@
             }
 
             public void Delete()
+                => throw new SectionNotFoundException(this.sectionName);
+
+            public Comment ReadComment()
                 => throw new SectionNotFoundException(this.sectionName);
 
             [ExcludeFromCodeCoverage]
@@ -245,6 +269,9 @@
 
             public void Delete()
                 => this.owner.Sections.RemoveSection(this.sectionName.ToString());
+
+            public Comment ReadComment()
+                => string.Join(Environment.NewLine, this.sectionData.Comments);
 
             public ISection CreateProperty(PropertyKey propertyKey)
             {
@@ -339,7 +366,7 @@
                 => this.owner.RemoveKey(this.propertyKey.ToString());
         }
 
-        private sealed class FallbackSectionProvider : ISectionDeletionModeTransformation<ISection>, IPropertyEnumerationModeTransformation<ISection>, IPropertyReadModeTransformation<ISection>, IPropertyDeletionModeTransformation<ISection>
+        private sealed class FallbackSectionProvider : ISectionDeletionModeTransformation<ISection>, IPropertyEnumerationModeTransformation<ISection>, IPropertyReadModeTransformation<ISection>, IPropertyDeletionModeTransformation<ISection>, ICommentReadModeTransformation<ISection>
         {
             private readonly SectionName sectionName;
 
@@ -356,6 +383,9 @@
 
             public ISection Fallback(PropertyValue fallbackPropertyValue)
                 => new NullSection();
+
+            public ISection Fallback(Comment fallbackComment)
+                => new NullSection(fallbackComment);
 
             public ISection Ignore()
                 => new NullSection();
