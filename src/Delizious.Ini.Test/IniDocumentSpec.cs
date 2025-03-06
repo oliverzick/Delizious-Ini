@@ -1360,6 +1360,107 @@ public sealed class IniDocumentSpec
         }
     }
 
+    [TestClass]
+    public sealed class ReadComment
+    {
+        private static IniDocumentConfiguration Configuration => IniDocumentConfiguration.Strict;
+
+        [TestClass]
+        public sealed class With_sectionName_and_mode
+        {
+            private const string Ini = """
+                                       ;This is a multiline
+                                       ;
+                                       ;comment.
+                                       [Section]
+                                       Property=Value
+
+                                       [AnotherSection]
+                                       Property=Another value
+                                       """;
+
+            private static CommentReadMode DummyMode => CommentReadMode.Fail;
+
+            [TestMethod]
+            public void Throws_argument_null_exception_when_section_name_is_null()
+            {
+                var target = Make.EmptyTarget();
+
+                Assert.ThrowsException<ArgumentNullException>(() => target.ReadComment(null, DummyMode));
+            }
+
+            [TestMethod]
+            public void Throws_argument_null_exception_when_mode_is_null()
+            {
+                var target = Make.EmptyTarget();
+
+                Assert.ThrowsException<ArgumentNullException>(() => target.ReadComment(DummySectionName, null));
+            }
+
+            private static void ReadsComment(CommentReadMode mode)
+            {
+                Comment expected = """
+                                   This is a multiline
+
+                                   comment.
+                                   """;
+
+                using var reader = new StringReader(Ini);
+
+                var target = IniDocument.LoadFrom(reader, Configuration);
+
+                var actual = target.ReadComment("Section", mode);
+
+                Assert.AreEqual(expected, actual);
+            }
+
+            [TestClass]
+            public sealed class When_fail_mode
+            {
+                private static CommentReadMode Mode => CommentReadMode.Fail;
+
+                [TestMethod]
+                public void Throws_section_not_found_exception_when_section_does_not_exist()
+                {
+                    var expected = new SectionNotFoundExceptionAssertion(NonexistentSectionName);
+                    var target = Make.EmptyTarget();
+
+                    var actual = Assert.ThrowsException<SectionNotFoundException>(() => target.ReadComment(NonexistentSectionName, Mode));
+
+                    Assert.AreEqual(expected, actual);
+                }
+
+                [TestMethod]
+                public void Reads_comment()
+                    => ReadsComment(Mode);
+            }
+
+            [TestClass]
+            public sealed class When_fallback_mode
+            {
+                private static Comment FallbackComment => "Fallback comment";
+
+                private static CommentReadMode Mode => CommentReadMode.CustomFallback(FallbackComment);
+
+                [TestMethod]
+                public void Provides_the_fallback_comment_when_section_does_not_exist()
+                {
+                    var expected = FallbackComment;
+
+                    var target = Make.EmptyTarget();
+
+                    var actual = target.ReadComment(NonexistentSectionName, Mode);
+
+                    Assert.AreEqual(expected, actual);
+                }
+
+                [TestMethod]
+                public void Reads_comment()
+                    => ReadsComment(Mode);
+            }
+        }
+    }
+
     private static class Make
     {
         public static IniDocument EmptyTarget()
