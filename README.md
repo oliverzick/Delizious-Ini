@@ -219,6 +219,24 @@ iniDocument.DeleteProperty("Section", "Property");
 iniDocument.SaveTo(Console.Out);
 ```
 
+### Read comment of section
+```cs
+const string ini = """
+                   ;This is a sample
+                   ;multiline
+                   ;comment. :)
+                   [Section]
+                   Property=Value
+                   """;
+
+using var textReader = new StringReader(ini);
+var iniDocument = IniDocument.LoadFrom(textReader, IniDocumentConfiguration.Default);
+
+var comment = iniDocument.ReadComment("Section", CommentReadMode.Fail);
+
+Console.WriteLine(comment);
+```
+
 ## License
 MIT License
 
