@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.12.0] - 2025-03-06
+### Added
+- Enable reading the comment of a section from INI document for given section name and mode ([#142](https://github.com/oliverzick/Delizious-Ini/issues/142))
+  - Fail mode: Throw section not found exception when section does not exist
+  - Fallback mode: Return fallback comment given by the mode when the section does not exist
+
 ## [1.11.0] - 2025-02-22
 ### Added
 - Enable cloning an INI document ([#140](https://github.com/oliverzick/Delizious-Ini/issues/140))
