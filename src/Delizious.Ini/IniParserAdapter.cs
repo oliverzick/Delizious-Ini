@@ -401,7 +401,7 @@
             }
 
             public IProperty Fail()
-                => new NonexistentProperty(propertyKey);
+                => new NonexistentProperty(this.propertyKey);
 
             public IProperty Fallback(PropertyValue fallbackPropertyValue)
                 => new NullProperty(fallbackPropertyValue);
