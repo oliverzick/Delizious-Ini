@@ -11,6 +11,8 @@
 
         Comment ReadComment(SectionName sectionName, CommentReadMode mode);
 
+        Comment ReadComment(SectionName sectionName, PropertyKey propertyKey, CommentReadMode mode);
+
         PropertyValue ReadProperty(SectionName sectionName, PropertyKey propertyKey, PropertyReadMode mode);
 
         void WriteProperty(SectionName sectionName, PropertyKey propertyKey, PropertyValue propertyValue, PropertyWriteMode mode);
