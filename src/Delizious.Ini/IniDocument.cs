@@ -648,14 +648,14 @@
                 throw new ArgumentNullException(nameof(sectionName));
             }
 
-            if (mode is null)
-            {
-                throw new ArgumentNullException(nameof(mode));
-            }
-
             if (propertyKey is null)
             {
                 throw new ArgumentNullException(nameof(propertyKey));
+            }
+
+            if (mode is null)
+            {
+                throw new ArgumentNullException(nameof(mode));
             }
 
             return this.iniDocument.ReadComment(sectionName, propertyKey, mode);
