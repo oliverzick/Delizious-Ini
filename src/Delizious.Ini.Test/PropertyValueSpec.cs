@@ -9,6 +9,7 @@ public sealed class PropertyValueSpec
     private const string Value = "Value";
 
     private static PropertyValue Null => null!;
+    private static PropertyValue None => PropertyValue.None;
     private static PropertyValue A => "A";
     private static PropertyValue B => "B";
 
@@ -99,27 +100,36 @@ public sealed class PropertyValueSpec
     public static IEnumerable<object[]> Equality_operator_test_cases()
     {
         yield return [Null, Null, true];
+        yield return [Null, None, false];
         yield return [Null, A, false];
         yield return [Null, B, false];
     }
 
     public static IEnumerable<object[]> Equals_null_test_cases()
     {
+        yield return [None, Null, false];
         yield return [A, Null, false];
         yield return [B, Null, false];
     }
 
     public static IEnumerable<object[]> Equals_test_cases()
     {
+        yield return [None, None, true];
+        yield return [None, A, false];
+        yield return [None, B, false];
+
         yield return [A, A, true];
+        yield return [A, None, false];
         yield return [A, B, false];
 
         yield return [B, B, true];
+        yield return [B, None, false];
         yield return [B, A, false];
     }
 
     public static IEnumerable<object[]> General_equals_test_cases()
     {
+        yield return [None, new(), false];
         yield return [A, new(), false];
         yield return [B, new(), false];
     }
