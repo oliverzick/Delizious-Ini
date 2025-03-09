@@ -2,10 +2,10 @@
 ## What?
 Delizious Ini is an easy to use .NET Standard library entirely written in C# for reading and writing of INI data.
 
-## New features in version 1.12.0
-* Reading the comment of a section for given section name and mode
-  - Fail mode: Throw section not found exception when section does not exist
-  - Fallback mode: Return fallback comment given by the mode when the section does not exist
+## New features in version 1.13.0
+* Reading the comment of a property for given section name, property key and mode
+  - Fail mode: Throw section not found exception when section does not exist, throw property not found exception when property does not exist
+  - Fallback mode: Return fallback comment given by the mode when the section or property does not exist
 
 ## Features
 Delizious Ini provides the following features:
@@ -14,6 +14,9 @@ Delizious Ini provides the following features:
 * Enumeration of properties contained in a section
 * Reading and writing of a property
 * Deletion of sections or properties
+* Reading the comment of a section for given section name and mode
+  - Fail mode: Throw section not found exception when section does not exist
+  - Fallback mode: Return fallback comment given by the mode when the section does not exist
 * Configurability of the failure behavior (e.g. throw a specific exception in case a section or property does not exist, or proceed with a fallback behavior) for almost every operation on instance and operation level
 * Configurability of case sensitivity that specifies how to treat section names and property keys
 * Configurability of behavior in case of invalid lines
@@ -233,6 +236,24 @@ using var textReader = new StringReader(ini);
 var iniDocument = IniDocument.LoadFrom(textReader, IniDocumentConfiguration.Default);
 
 var comment = iniDocument.ReadComment("Section", CommentReadMode.Fail);
+
+Console.WriteLine(comment);
+```
+
+### Read comment of property
+```cs
+const string ini = """
+                   [Section]
+                   ;This is a sample
+                   ;multiline
+                   ;comment. :)
+                   Property=Value
+                   """;
+
+using var textReader = new StringReader(ini);
+var iniDocument = IniDocument.LoadFrom(textReader, IniDocumentConfiguration.Default);
+
+var comment = iniDocument.ReadComment("Section", "Property", CommentReadMode.Fail);
 
 Console.WriteLine(comment);
 ```

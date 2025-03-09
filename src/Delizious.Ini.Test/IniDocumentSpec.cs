@@ -1459,6 +1459,132 @@ public sealed class IniDocumentSpec
                     => ReadsComment(Mode);
             }
         }
+
+        [TestClass]
+        public sealed class With_sectionName_and_propertyKey_and_mode
+        {
+            private const string Ini = """
+                                       [Section]
+                                       ;This is a multiline
+                                       ;
+                                       ;comment.
+                                       Property=Value
+
+                                       [AnotherSection]
+                                       Property=Another value
+                                       """;
+
+            private static CommentReadMode DummyMode => CommentReadMode.Fail;
+
+            [TestMethod]
+            public void Throws_argument_null_exception_when_section_name_is_null()
+            {
+                var target = Make.EmptyTarget();
+
+                Assert.ThrowsException<ArgumentNullException>(() => target.ReadComment(null, DummyPropertyKey, DummyMode));
+            }
+
+            [TestMethod]
+            public void Throws_argument_null_exception_when_property_key_is_null()
+            {
+                var target = Make.EmptyTarget();
+
+                Assert.ThrowsException<ArgumentNullException>(() => target.ReadComment(DummySectionName, null, DummyMode));
+            }
+
+            [TestMethod]
+            public void Throws_argument_null_exception_when_mode_is_null()
+            {
+                var target = Make.EmptyTarget();
+
+                Assert.ThrowsException<ArgumentNullException>(() => target.ReadComment(DummySectionName, DummyPropertyKey, null));
+            }
+
+            private static void ReadsComment(CommentReadMode mode)
+            {
+                Comment expected = """
+                                   This is a multiline
+
+                                   comment.
+                                   """;
+
+                using var reader = new StringReader(Ini);
+
+                var target = IniDocument.LoadFrom(reader, Configuration);
+
+                var actual = target.ReadComment("Section", "Property", mode);
+
+                Assert.AreEqual(expected, actual);
+            }
+
+            [TestClass]
+            public sealed class When_fail_mode
+            {
+                private static CommentReadMode Mode => CommentReadMode.Fail;
+
+                [TestMethod]
+                public void Throws_section_not_found_exception_when_section_not_exist()
+                {
+                    var expected = new SectionNotFoundExceptionAssertion(NonexistentSectionName);
+                    var target = Make.EmptyTarget(Configuration);
+
+                    var actual = Assert.ThrowsException<SectionNotFoundException>(() => target.ReadComment(NonexistentSectionName, DefaultPropertyKey, Mode));
+
+                    Assert.AreEqual(expected, actual);
+                }
+
+                [TestMethod]
+                public void Throws_property_not_found_exception_when_property_does_not_exist()
+                {
+                    var expected = new PropertyNotFoundExceptionAssertion(NonexistentPropertyKey);
+                    var target = Make.SingleDefaultPropertyTarget(Configuration, DefaultPropertyValue);
+
+                    var actual = Assert.ThrowsException<PropertyNotFoundException>(() => target.ReadComment(DefaultSectionName, NonexistentPropertyKey, Mode));
+
+                    Assert.AreEqual(expected, actual);
+                }
+
+                [TestMethod]
+                public void Reads_comment()
+                    => ReadsComment(Mode);
+            }
+
+            [TestClass]
+            public sealed class When_fallback_mode
+            {
+                private static Comment FallbackComment => "Fallback comment";
+
+                private static CommentReadMode Mode => CommentReadMode.CustomFallback(FallbackComment);
+
+                [TestMethod]
+                public void Provides_the_fallback_comment_when_section_does_not_exist()
+                {
+                    var expected = FallbackComment;
+
+                    var target = Make.EmptyTarget(Configuration);
+
+                    var actual = target.ReadComment(NonexistentSectionName, DefaultPropertyKey, Mode);
+
+                    Assert.AreEqual(expected, actual);
+                }
+
+                [TestMethod]
+                public void Provides_the_fallback_comment_when_property_does_not_exist()
+                {
+                    var expected = FallbackComment;
+
+                    var target = Make.SingleDefaultPropertyTarget(Configuration, DefaultPropertyValue);
+
+                    var actual = target.ReadComment(DefaultSectionName, NonexistentPropertyKey, Mode);
+
+                    Assert.AreEqual(expected, actual);
+                }
+
+                [TestMethod]
+                public void Reads_comment()
+                    => ReadsComment(Mode);
+            }
+        }
     }
 
     private static class Make

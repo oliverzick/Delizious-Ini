@@ -146,6 +146,11 @@
             => this.SelectSection(sectionName, mode.Transform(new FallbackSectionProvider(sectionName)))
                    .ReadComment();
 
+        public Comment ReadComment(SectionName sectionName, PropertyKey propertyKey, CommentReadMode mode)
+            => this.SelectSection(sectionName, mode.Transform(new FallbackSectionProvider(sectionName)))
+                   .SelectProperty(propertyKey, mode.Transform(new FallbackPropertyProvider(propertyKey)))
+                   .ReadComment();
+
         public PropertyValue ReadProperty(SectionName sectionName, PropertyKey propertyKey, PropertyReadMode mode)
             => this.SelectSection(sectionName, mode.Transform(new FallbackSectionProvider(sectionName)))
                    .SelectProperty(propertyKey, mode.Transform(new FallbackPropertyProvider(propertyKey)))
@@ -293,6 +298,8 @@
 
         private interface IProperty
         {
+            Comment ReadComment();
+
             PropertyValue ReadValue();
 
             void WriteValue(PropertyValue value);
@@ -302,12 +309,28 @@
 
         private sealed class NullProperty : IProperty
         {
+            private readonly Comment comment;
+
             private readonly PropertyValue propertyValue;
 
-            public NullProperty(PropertyValue propertyValue)
+            private NullProperty(Comment comment, PropertyValue propertyValue)
             {
+                this.comment = comment;
                 this.propertyValue = propertyValue;
             }
+
+            public NullProperty(PropertyValue propertyValue)
+                : this(Comment.None, propertyValue)
+            {
+            }
+
+            public NullProperty(Comment comment)
+                : this(comment, PropertyValue.None)
+            {
+            }
+
+            public Comment ReadComment()
+                => this.comment;
 
             public PropertyValue ReadValue()
                 => this.propertyValue;
@@ -330,6 +353,9 @@
             {
                 this.propertyKey = propertyKey;
             }
+
+            public Comment ReadComment()
+                => throw new PropertyNotFoundException(this.propertyKey);
 
             public PropertyValue ReadValue()
                 => throw new PropertyNotFoundException(this.propertyKey);
@@ -355,6 +381,9 @@
                 this.propertyKey = propertyKey;
                 this.keyData = keyData;
             }
+
+            public Comment ReadComment()
+                => string.Join(Environment.NewLine, this.keyData.Comments);
 
             public PropertyValue ReadValue()
                 => this.keyData.Value;
@@ -391,7 +420,7 @@
                 => new NullSection();
         }
 
-        private sealed class FallbackPropertyProvider : IPropertyReadModeTransformation<IProperty>, IPropertyDeletionModeTransformation<IProperty>
+        private sealed class FallbackPropertyProvider : IPropertyReadModeTransformation<IProperty>, IPropertyDeletionModeTransformation<IProperty>, ICommentReadModeTransformation<IProperty>
         {
             private readonly PropertyKey propertyKey;
 
@@ -402,6 +431,9 @@
 
             public IProperty Fail()
                 => new NonexistentProperty(this.propertyKey);
+
+            public IProperty Fallback(Comment fallbackComment)
+                => new NullProperty(fallbackComment);
 
             public IProperty Fallback(PropertyValue fallbackPropertyValue)
                 => new NullProperty(fallbackPropertyValue);
