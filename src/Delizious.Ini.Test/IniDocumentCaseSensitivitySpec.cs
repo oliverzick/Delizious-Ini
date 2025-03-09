@@ -12,7 +12,7 @@ public sealed class IniDocumentCaseSensitivitySpec
                                  """;
 
     private static PropertyValue Value => "Value";
-    private static PropertyValue FallbackValue => string.Empty;
+    private static PropertyValue FallbackValue => PropertyValue.None;
 
     [DataTestMethod]
     [DynamicData(nameof(Reads_the_property_with_configured_case_sensitivity_test_cases), DynamicDataSourceType.Method)]

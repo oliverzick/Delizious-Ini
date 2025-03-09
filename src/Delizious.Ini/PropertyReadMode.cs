@@ -26,17 +26,17 @@
             => new PropertyReadMode(new FailMode());
 
         /// <summary>
-        /// Specifies that reading a property should fall back to an empty fallback value
+        /// Specifies that reading a property should fall back to <see cref="PropertyValue.None"/>
         /// when the section or property does not exist.
         /// </summary>
         /// <remarks>
-        /// This is a convenience property that calls <see cref="CustomFallback(PropertyValue)"/> with an empty fallback value.
+        /// This is a convenience property that calls <see cref="CustomFallback(PropertyValue)"/> with <see cref="PropertyValue.None"/>.
         /// </remarks>
         /// <returns>
-        /// A <see cref="PropertyReadMode"/> instance that represents the fallback mode with an empty fallback value.
+        /// A <see cref="PropertyReadMode"/> instance that represents the fallback mode with <see cref="PropertyValue.None"/>.
         /// </returns>
         public static PropertyReadMode Fallback
-            => CustomFallback(string.Empty);
+            => CustomFallback(PropertyValue.None);
 
         /// <summary>
         /// Specifies that reading a property should fall back to the given <paramref name="fallbackPropertyValue"/>

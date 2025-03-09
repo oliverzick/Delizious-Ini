@@ -407,7 +407,7 @@
                 => new NullProperty(fallbackPropertyValue);
 
             public IProperty Ignore()
-                => new NullProperty(string.Empty);
+                => new NullProperty(PropertyValue.None);
         }
 
         private sealed class WritePropertySelector : IPropertyWriteModeTransformation<IProperty>

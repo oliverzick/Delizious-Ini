@@ -23,7 +23,7 @@ public sealed class IniDocumentSpec
     private static PropertyKey DefaultPropertyKey => "Property";
     private static PropertyValue DefaultPropertyValue => "Value";
 
-    private static PropertyValue EmptyPropertyValue => string.Empty;
+    private static PropertyValue EmptyPropertyValue => PropertyValue.None;
 
     [TestClass]
     public sealed class CreateEmpty
