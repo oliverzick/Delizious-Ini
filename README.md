@@ -240,6 +240,24 @@ var comment = iniDocument.ReadComment("Section", CommentReadMode.Fail);
 Console.WriteLine(comment);
 ```
 
+### Read comment of property
+```cs
+const string ini = """
+                   [Section]
+                   ;This is a sample
+                   ;multiline
+                   ;comment. :)
+                   Property=Value
+                   """;
+
+using var textReader = new StringReader(ini);
+var iniDocument = IniDocument.LoadFrom(textReader, IniDocumentConfiguration.Default);
+
+var comment = iniDocument.ReadComment("Section", "Property", CommentReadMode.Fail);
+
+Console.WriteLine(comment);
+```
+
 ## License
 MIT License
 
