@@ -9,7 +9,7 @@ public sealed class PropertyReadModeSpec
     private static PropertyReadMode Fail => PropertyReadMode.Fail;
     private static PropertyReadMode Fallback => PropertyReadMode.Fallback;
     private static PropertyReadMode FallbackCustom => PropertyReadMode.CustomFallback("Fallback");
-    private static PropertyReadMode FallbackCustomDefault => PropertyReadMode.CustomFallback(string.Empty);
+    private static PropertyReadMode FallbackCustomDefault => PropertyReadMode.CustomFallback(PropertyValue.None);
 
     [TestMethod]
     public void Throws_argument_null_exception_when_fallback_property_value_is_null()

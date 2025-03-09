@@ -41,6 +41,12 @@
         public static implicit operator PropertyValue(string propertyValue)
             => Create(propertyValue);
 
+        /// <summary>
+        /// Specifies that no property value is given.
+        /// </summary>
+        public static PropertyValue None
+            => string.Empty;
+
         public static bool operator ==(PropertyValue left, PropertyValue right)
             => Equals(left, right);
 
