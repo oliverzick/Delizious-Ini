@@ -6,12 +6,10 @@ using System.Collections.Generic;
 [TestClass]
 public sealed class PropertyValueSpec
 {
-    private const string Value = "Value";
-
     private static PropertyValue Null => null!;
     private static PropertyValue None => PropertyValue.None;
-    private static PropertyValue A => "A";
-    private static PropertyValue B => "B";
+    private static PropertyValue A => "Value A";
+    private static PropertyValue B => "Value B";
 
     [TestMethod]
     public void Throws_argument_null_exception_on_creation_when_given_property_value_is_null()
@@ -19,28 +17,20 @@ public sealed class PropertyValueSpec
         Assert.ThrowsException<ArgumentNullException>(() => PropertyValue.Create(null));
     }
 
-    [TestMethod]
-    public void Represents_encapsulated_property_value()
+    [DataTestMethod]
+    [DynamicData(nameof(Provides_string_representation_test_cases), DynamicDataSourceType.Method)]
+    public void Provides_string_representation(PropertyValue target, string expected)
     {
-        const string expected = Value;
-
-        PropertyValue target = expected;
-
         var actual = target.ToString();
 
         Assert.AreEqual(expected, actual);
     }
 
-    [TestMethod]
-    public void Provides_hash_code_of_encapsulated_property_value()
+    public static IEnumerable<object[]> Provides_string_representation_test_cases()
     {
-        var expected = Value.GetHashCode();
-
-        PropertyValue target = Value;
-
-        var actual = target.GetHashCode();
-
-        Assert.AreEqual(expected, actual);
+        yield return [None, string.Empty];
+        yield return [A, "Value A"];
+        yield return [B, "Value B"];
     }
 
     [DataTestMethod]
