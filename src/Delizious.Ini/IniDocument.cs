@@ -600,5 +600,65 @@
 
             return this.iniDocument.ReadComment(sectionName, mode);
         }
+
+        /// <summary>
+        /// <para>
+        /// Reads the comment of the property.
+        /// The mode specifies the behavior in case the section or property does not exist.
+        /// </para>
+        /// <para>
+        /// When mode is <see cref="CommentReadMode.Fail"/> and the section does not exist,
+        /// throws a <see cref="SectionNotFoundException"/> 
+        /// </para>
+        /// <para>
+        /// When mode is <see cref="CommentReadMode.Fail"/> and the property does not exist,
+        /// throws a <see cref="PropertyNotFoundException"/> 
+        /// </para>
+        /// </summary>
+        /// <param name="sectionName">
+        /// The name of the section containing the property.
+        /// </param>
+        /// <param name="propertyKey">
+        /// The key of the property to read the comment.
+        /// </param>
+        /// <param name="mode">
+        /// The mode that specifies how to read the comment and behave in case the section or property does not exist.
+        /// </param>
+        /// <returns>
+        /// The comment of the property.
+        /// When mode is <see cref="CommentReadMode.CustomFallback(Comment)"/> and the section or property does not exist, the fallback comment given by the mode is returned.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <para><paramref name="sectionName"/> is <c>null</c>.</para>
+        /// <para>- or -</para>
+        /// <para><paramref name="propertyKey"/> is <c>null</c>.</para>
+        /// <para>- or -</para>
+        /// <para><paramref name="mode"/> is <c>null</c>.</para>
+        /// </exception>
+        /// <exception cref="SectionNotFoundException">
+        /// <paramref name="mode"/> is <see cref="CommentReadMode.Fail"/> and the specified section does not exist.
+        /// </exception>
+        /// <exception cref="PropertyNotFoundException">
+        /// <paramref name="mode"/> is <see cref="CommentReadMode.Fail"/> and the specified property does not exist.
+        /// </exception>
+        public Comment ReadComment(SectionName sectionName, PropertyKey propertyKey, CommentReadMode mode)
+        {
+            if (sectionName is null)
+            {
+                throw new ArgumentNullException(nameof(sectionName));
+            }
+
+            if (mode is null)
+            {
+                throw new ArgumentNullException(nameof(mode));
+            }
+
+            if (propertyKey is null)
+            {
+                throw new ArgumentNullException(nameof(propertyKey));
+            }
+
+            return this.iniDocument.ReadComment(sectionName, propertyKey, mode);
+        }
     }
 }
