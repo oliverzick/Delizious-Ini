@@ -1,6 +1,7 @@
 ﻿namespace Delizious.Ini
 {
     using System;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Represents a comment in an <see cref="IniDocument"/>.
@@ -36,6 +37,9 @@
 
             return new Comment(comment);
         }
+
+        internal static Comment Create(IEnumerable<string> comments)
+            => string.Join(Environment.NewLine, comments);
 
         public static implicit operator Comment(string comment)
             => Create(comment);

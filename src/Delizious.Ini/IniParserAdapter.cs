@@ -276,7 +276,7 @@
                 => this.owner.Sections.RemoveSection(this.sectionName.ToString());
 
             public Comment ReadComment()
-                => string.Join(Environment.NewLine, this.sectionData.Comments);
+                => Comment.Create(this.sectionData.Comments);
 
             public ISection CreateProperty(PropertyKey propertyKey)
             {
@@ -383,7 +383,7 @@
             }
 
             public Comment ReadComment()
-                => string.Join(Environment.NewLine, this.keyData.Comments);
+                => Comment.Create(this.keyData.Comments);
 
             public PropertyValue ReadValue()
                 => this.keyData.Value;
