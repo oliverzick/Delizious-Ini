@@ -111,7 +111,8 @@ var looseConfiguration =
                             .WithPropertyReadMode(PropertyReadMode.Fallback) // Fallback to empty string when property to read does not exist
                             .WithPropertyWriteMode(PropertyWriteMode.Create) // Create a new property or update an existing property
                             .WithPropertyDeletionMode(PropertyDeletionMode.Ignore) // Ignore when property to delete does not exist
-                            .WithSectionDeletionMode(SectionDeletionMode.Ignore); // Ignore when section to delete does not exist
+                            .WithSectionDeletionMode(SectionDeletionMode.Ignore) // Ignore when section to delete does not exist
+                            .WithCommentReadMode(CommentReadMode.Fallback); // Fallback to none comment when section or property to read comment does not exist
 
 // This configuration represents the strict configuration which is also predefined:
 //var strictConfiguration = IniDocumentConfiguration.Strict;
@@ -131,7 +132,8 @@ var strictConfiguration =
                             .WithPropertyReadMode(PropertyReadMode.Fail) // Throw exception when property to read to does not exist
                             .WithPropertyWriteMode(PropertyWriteMode.Update) // Update existing property only but throw exception when property to write does not exist
                             .WithPropertyDeletionMode(PropertyDeletionMode.Fail) // Throw exception when property to delete does not exist
-                            .WithSectionDeletionMode(SectionDeletionMode.Fail); // Throw exception when section to delete does not exist
+                            .WithSectionDeletionMode(SectionDeletionMode.Fail) // Throw exception when section to delete does not exist
+                            .WithCommentReadMode(CommentReadMode.Fail); // Throw exception when section or property to read comment does not exist
 ```
 
 ### Load and save
