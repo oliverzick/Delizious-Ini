@@ -25,7 +25,8 @@ public sealed class IniDocumentConfigurationSpec
         Setting.PropertyReadMode,
         Setting.PropertyWriteMode,
         Setting.PropertyDeletionMode,
-        Setting.SectionDeletionMode
+        Setting.SectionDeletionMode,
+        Setting.CommentReadMode
     ];
 
     [TestClass]
@@ -269,6 +270,22 @@ public sealed class IniDocumentConfigurationSpec
             yield return [IniDocumentConfiguration.Default, SectionDeletionMode.Ignore];
             yield return [IniDocumentConfiguration.Loose, SectionDeletionMode.Ignore];
             yield return [IniDocumentConfiguration.Strict, SectionDeletionMode.Fail];
+        }
+
+        [DataTestMethod]
+        [DynamicData(nameof(Default_comment_read_mode_test_cases), DynamicDataSourceType.Method)]
+        public void Default_comment_read_mode(IniDocumentConfiguration target, CommentReadMode expected)
+        {
+            var actual = target.CommentReadMode;
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        public static IEnumerable<object[]> Default_comment_read_mode_test_cases()
+        {
+            yield return [IniDocumentConfiguration.Default, CommentReadMode.Fallback];
+            yield return [IniDocumentConfiguration.Loose, CommentReadMode.Fallback];
+            yield return [IniDocumentConfiguration.Strict, CommentReadMode.Fail];
         }
     }
 
@@ -664,6 +681,32 @@ public sealed class IniDocumentConfigurationSpec
     }
 
     [TestClass]
+    public sealed class WithCommentReadMode
+    {
+        private static IEnumerable<Setting> SettingsToExclude => [Setting.CommentReadMode];
+
+        [TestMethod]
+        public void Throws_argument_null_exception_when_given_comment_read_mode_is_null()
+        {
+            Assert.ThrowsException<ArgumentNullException>(() => Target.WithCommentReadMode(null!));
+        }
+
+        [DataTestMethod]
+        [DynamicData(nameof(Retains_remaining_settings_test_cases), DynamicDataSourceType.Method)]
+        public void Retains_remaining_settings(Setting setting)
+        {
+            var original = Target;
+
+            var actual = original.WithCommentReadMode(CommentReadMode.Fail);
+
+            setting.AssertIsEqual(original, actual);
+        }
+
+        public static IEnumerable<object[]> Retains_remaining_settings_test_cases()
+            => AllSettings.Except(SettingsToExclude).Select(ToTestCase);
+    }
+
+    [TestClass]
     public sealed class ValueSemantics
     {
         private static IniDocumentConfiguration Null => null!;
@@ -791,6 +834,8 @@ public sealed class IniDocumentConfigurationSpec
             yield return [Default, Default.WithPropertyWriteMode(PropertyWriteMode.Update), false];
             yield return [Default, Default.WithSectionDeletionMode(SectionDeletionMode.Fail), false];
             yield return [Default, Default.WithSectionDeletionMode(SectionDeletionMode.Ignore), true];
+            yield return [Default, Default.WithCommentReadMode(CommentReadMode.Fail), false];
+            yield return [Default, Default.WithCommentReadMode(CommentReadMode.Fallback), true];
 
             yield return [Loose, Default, true];
             yield return [Loose, Loose, true];
@@ -1015,6 +1060,18 @@ public sealed class IniDocumentConfigurationSpec
 
             public override string BuildString(IniDocumentConfiguration target)
                 => $"{nameof(target.SectionDeletionMode)} = {target.SectionDeletionMode}";
+        }
+
+        public static Setting CommentReadMode
+            => new(new CommentReadModeSetting());
+
+        private sealed record CommentReadModeSetting : Strategy
+        {
+            public override void AssertIsEqual(IniDocumentConfiguration original, IniDocumentConfiguration actual)
+                => Assert.AreEqual(original.CommentReadMode, actual.CommentReadMode);
+
+            public override string BuildString(IniDocumentConfiguration target)
+                => $"{nameof(target.CommentReadMode)} = {target.CommentReadMode}";
         }
     }
 }
