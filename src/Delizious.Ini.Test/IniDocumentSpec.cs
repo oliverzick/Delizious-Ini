@@ -1363,7 +1363,7 @@ public sealed class IniDocumentSpec
     [TestClass]
     public sealed class ReadComment
     {
-        private static IniDocumentConfiguration Configuration => IniDocumentConfiguration.Strict;
+        private static IniDocumentConfiguration BaseConfiguration => IniDocumentConfiguration.Strict;
 
         [TestClass]
         public sealed class With_sectionName_and_mode
@@ -1378,6 +1378,8 @@ public sealed class IniDocumentSpec
                                        [AnotherSection]
                                        Property=Another value
                                        """;
+
+            private static IniDocumentConfiguration Configuration => BaseConfiguration;
 
             private static CommentReadMode DummyMode => CommentReadMode.Fail;
 
@@ -1473,6 +1475,8 @@ public sealed class IniDocumentSpec
                                        [AnotherSection]
                                        Property=Another value
                                        """;
+
+            private static IniDocumentConfiguration Configuration => BaseConfiguration;
 
             private static CommentReadMode DummyMode => CommentReadMode.Fail;
 
