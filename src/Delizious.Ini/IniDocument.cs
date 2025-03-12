@@ -560,6 +560,32 @@
 
         /// <summary>
         /// <para>
+        /// Reads the comment of the section using the <see cref="IniDocumentConfiguration.CommentReadMode"/>.
+        /// </para>
+        /// <para>
+        /// When <see cref="IniDocumentConfiguration.CommentReadMode"/> is <see cref="CommentReadMode.Fail"/> and the section does not exist,
+        /// throws a <see cref="SectionNotFoundException"/> 
+        /// </para>
+        /// </summary>
+        /// <param name="sectionName">
+        /// The name of the section to read the comment.
+        /// </param>
+        /// <returns>
+        /// The comment of the section.
+        /// When <see cref="IniDocumentConfiguration.CommentReadMode"/> is <see cref="CommentReadMode.CustomFallback(Comment)"/> and the section does not exist,
+        /// the fallback comment given by the mode is returned.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="sectionName"/> is <c>null</c>.
+        /// </exception>
+        /// <exception cref="SectionNotFoundException">
+        /// <see cref="IniDocumentConfiguration.CommentReadMode"/> is <see cref="CommentReadMode.Fail"/> and the specified section does not exist.
+        /// </exception>
+        public Comment ReadComment(SectionName sectionName)
+            => this.ReadComment(sectionName, this.configuration.CommentReadMode);
+
+        /// <summary>
+        /// <para>
         /// Reads the comment of the section.
         /// The mode specifies the behavior in case the section does not exist.
         /// </para>
