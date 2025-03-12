@@ -1366,6 +1366,91 @@ public sealed class IniDocumentSpec
         private static IniDocumentConfiguration BaseConfiguration => IniDocumentConfiguration.Strict;
 
         [TestClass]
+        public sealed class With_sectionName
+        {
+            private const string Ini = """
+                                       ;This is a multiline
+                                       ;
+                                       ;comment.
+                                       [Section]
+                                       Property=Value
+
+                                       [AnotherSection]
+                                       Property=Another value
+                                       """;
+
+            [TestMethod]
+            public void Throws_argument_null_exception_when_section_name_is_null()
+            {
+                var target = Make.EmptyTarget(BaseConfiguration);
+
+                Assert.ThrowsException<ArgumentNullException>(() => target.ReadComment(null));
+            }
+
+            private static void ReadsComment(IniDocumentConfiguration configuration)
+            {
+                Comment expected = """
+                                   This is a multiline
+
+                                   comment.
+                                   """;
+
+                using var reader = new StringReader(Ini);
+
+                var target = IniDocument.LoadFrom(reader, configuration);
+
+                var actual = target.ReadComment("Section");
+
+                Assert.AreEqual(expected, actual);
+            }
+
+            [TestClass]
+            public sealed class When_fail_mode
+            {
+                private static IniDocumentConfiguration Configuration => BaseConfiguration.WithCommentReadMode(CommentReadMode.Fail);
+
+                [TestMethod]
+                public void Throws_section_not_found_exception_when_section_does_not_exist()
+                {
+                    var expected = new SectionNotFoundExceptionAssertion(NonexistentSectionName);
+                    var target = Make.EmptyTarget(Configuration);
+
+                    var actual = Assert.ThrowsException<SectionNotFoundException>(() => target.ReadComment(NonexistentSectionName));
+
+                    Assert.AreEqual(expected, actual);
+                }
+
+                [TestMethod]
+                public void Reads_comment()
+                    => ReadsComment(Configuration);
+            }
+
+            [TestClass]
+            public sealed class When_fallback_mode
+            {
+                private static Comment FallbackComment => "Fallback comment";
+
+                private static IniDocumentConfiguration Configuration => BaseConfiguration.WithCommentReadMode(CommentReadMode.CustomFallback(FallbackComment));
+
+                [TestMethod]
+                public void Provides_the_fallback_comment_when_section_does_not_exist()
+                {
+                    var expected = FallbackComment;
+
+                    var target = Make.EmptyTarget(Configuration);
+
+                    var actual = target.ReadComment(NonexistentSectionName);
+
+                    Assert.AreEqual(expected, actual);
+                }
+
+                [TestMethod]
+                public void Reads_comment()
+                    => ReadsComment(Configuration);
+            }
+        }
+
+        [TestClass]
         public sealed class With_sectionName_and_mode
         {
             private const string Ini = """
