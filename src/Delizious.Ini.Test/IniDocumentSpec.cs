@@ -473,6 +473,8 @@ public sealed class IniDocumentSpec
     [TestClass]
     public sealed class EnumerateSections
     {
+        private static IniDocumentConfiguration Configuration => IniDocumentConfiguration.Strict;
+
         private static SectionName[] SectionNames => ["Section1", "AnotherSection2", "SomeSectionA"];
 
         [TestMethod]
@@ -480,7 +482,7 @@ public sealed class IniDocumentSpec
         {
             var expected = SectionNames;
 
-            var target = Make.EmptySectionsTarget(expected);
+            var target = Make.EmptySectionsTarget(Configuration, expected);
 
             var actual = target.EnumerateSections().ToImmutableArray();
 
@@ -929,6 +931,8 @@ public sealed class IniDocumentSpec
         [TestClass]
         public sealed class With_sectionName_and_propertyKey_and_propertyValue_and_mode
         {
+            private static IniDocumentConfiguration Configuration => IniDocumentConfiguration.Strict;
+
             private static PropertyWriteMode DummyMode => PropertyWriteMode.Update;
 
             [TestMethod]
@@ -985,7 +989,7 @@ public sealed class IniDocumentSpec
 
                 [TestMethod]
                 public void Creates_property_with_given_property_value_when_section_exists_but_property_does_not_exist()
-                    => Writes_property(Make.EmptySectionsTarget(DefaultSectionName), Mode);
+                    => Writes_property(Make.EmptySectionsTarget(Configuration, DefaultSectionName), Mode);
 
                 [TestMethod]
                 public void Overwrites_existing_property_with_given_property_value()
@@ -1122,6 +1126,8 @@ public sealed class IniDocumentSpec
         [TestClass]
         public sealed class With_sectionName_and_propertyKey_and_mode
         {
+            private static IniDocumentConfiguration Configuration => IniDocumentConfiguration.Strict;
+
             private static PropertyDeletionMode DummyMode => PropertyDeletionMode.Fail;
 
             [TestMethod]
@@ -1180,7 +1186,7 @@ public sealed class IniDocumentSpec
                 public void Throws_property_not_found_exception_when_property_does_not_exist()
                 {
                     var expected = new PropertyNotFoundExceptionAssertion(NonexistentPropertyKey);
-                    var target = Make.EmptySectionsTarget(DefaultSectionName);
+                    var target = Make.EmptySectionsTarget(Configuration, DefaultSectionName);
 
                     var actual = Assert.ThrowsException<PropertyNotFoundException>(() => target.DeleteProperty(DefaultSectionName, NonexistentPropertyKey, Mode));
 
@@ -1208,7 +1214,7 @@ public sealed class IniDocumentSpec
                 [TestMethod]
                 public void Ignores_when_property_does_not_exist()
                 {
-                    var target = Make.EmptySectionsTarget(DefaultSectionName);
+                    var target = Make.EmptySectionsTarget(Configuration, DefaultSectionName);
 
                     target.DeleteProperty(DefaultSectionName, NonexistentPropertyKey, Mode);
                 }
@@ -1289,6 +1295,8 @@ public sealed class IniDocumentSpec
         [TestClass]
         public sealed class With_sectionName_and_mode
         {
+            private static IniDocumentConfiguration Configuration => IniDocumentConfiguration.Strict;
+
             private static SectionDeletionMode DummyMode => SectionDeletionMode.Fail;
 
             [TestMethod]
@@ -1310,7 +1318,7 @@ public sealed class IniDocumentSpec
             private static void DeletesSection(SectionDeletionMode mode)
             {
                 var expected = new[] { DummySectionName };
-                var target = Make.EmptySectionsTarget(DummySectionName, DefaultSectionName);
+                var target = Make.EmptySectionsTarget(Configuration, DummySectionName, DefaultSectionName);
 
                 target.DeleteSection(DefaultSectionName, mode);
 
@@ -1695,9 +1703,6 @@ public sealed class IniDocumentSpec
 
         public static IniDocument SingleDefaultPropertyTarget(IniDocumentConfiguration configuration, PropertyValue propertyValue)
             => Target(configuration, Section.Create(DefaultSectionName, Property.Create(DefaultPropertyKey, propertyValue)));
-
-        public static IniDocument EmptySectionsTarget(params SectionName[] sectionNames)
-            => EmptySectionsTarget(DefaultConfiguration, sectionNames);
 
         public static IniDocument EmptySectionsTarget(IniDocumentConfiguration configuration, params SectionName[] sectionNames)
             => Target(configuration, sectionNames.Select(Section.CreateEmpty));
