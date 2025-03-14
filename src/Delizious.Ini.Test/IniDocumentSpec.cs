@@ -85,12 +85,10 @@ public sealed class IniDocumentSpec
                                        Property=Another occurrence
                                        """;
 
-            private static IniDocumentConfiguration BaseConfiguration => IniDocumentConfiguration.Strict;
-
             [TestClass]
             public sealed class When_fail_behavior
             {
-                private static IniDocumentConfiguration Configuration => BaseConfiguration.WithDuplicatePropertyBehavior(DuplicatePropertyBehavior.Fail);
+                private static IniDocumentConfiguration Configuration => DefaultConfiguration.WithDuplicatePropertyBehavior(DuplicatePropertyBehavior.Fail);
 
                 [TestMethod]
                 public void Throws_persistence_exception_for_duplicated_property()
@@ -113,7 +111,7 @@ public sealed class IniDocumentSpec
 
                                                    """;
 
-                private static IniDocumentConfiguration Configuration => BaseConfiguration.WithDuplicatePropertyBehavior(DuplicatePropertyBehavior.Ignore);
+                private static IniDocumentConfiguration Configuration => DefaultConfiguration.WithDuplicatePropertyBehavior(DuplicatePropertyBehavior.Ignore);
 
                 [TestMethod]
                 public void Ignores_subsequent_occurrences_of_a_duplicate_property_by_using_the_first_occurrence_of_such_a_property()
@@ -132,7 +130,7 @@ public sealed class IniDocumentSpec
 
                                                    """;
 
-                private static IniDocumentConfiguration Configuration => BaseConfiguration.WithDuplicatePropertyBehavior(DuplicatePropertyBehavior.Override);
+                private static IniDocumentConfiguration Configuration => DefaultConfiguration.WithDuplicatePropertyBehavior(DuplicatePropertyBehavior.Override);
 
                 [TestMethod]
                 public void Overrides_previous_occurrences_of_a_duplicate_property_by_using_the_last_occurrence_of_such_a_property()
@@ -493,8 +491,6 @@ public sealed class IniDocumentSpec
     [TestClass]
     public sealed class EnumerateProperties
     {
-        private static IniDocumentConfiguration BaseConfiguration => IniDocumentConfiguration.Strict;
-
         private static PropertyKey[] PropertyKeys => ["Property1", "AnotherProperty2", "SomePropertyA"];
 
         [TestClass]
@@ -503,7 +499,7 @@ public sealed class IniDocumentSpec
             [TestMethod]
             public void Throws_argument_null_exception_when_section_name_is_null()
             {
-                var target = Make.EmptyTarget(BaseConfiguration);
+                var target = Make.EmptyTarget(DefaultConfiguration);
 
                 Assert.ThrowsException<ArgumentNullException>(() => target.EnumerateProperties(null));
             }
@@ -512,7 +508,7 @@ public sealed class IniDocumentSpec
             public void Enumerates_the_keys_of_all_properties_contained_in_the_specified_section()
             {
                 var expected = PropertyKeys;
-                var target = Make.SingleDefaultSectionTarget(BaseConfiguration, expected);
+                var target = Make.SingleDefaultSectionTarget(DefaultConfiguration, expected);
 
                 var actual = target.EnumerateProperties(DefaultSectionName).ToImmutableArray();
 
@@ -522,7 +518,7 @@ public sealed class IniDocumentSpec
             [TestClass]
             public sealed class When_fail_mode
             {
-                private static IniDocumentConfiguration Configuration => BaseConfiguration.WithPropertyEnumerationMode(PropertyEnumerationMode.Fail);
+                private static IniDocumentConfiguration Configuration => DefaultConfiguration.WithPropertyEnumerationMode(PropertyEnumerationMode.Fail);
 
                 [TestMethod]
                 public void Throws_section_not_found_exception_when_section_does_not_exist()
@@ -541,7 +537,7 @@ public sealed class IniDocumentSpec
             [TestClass]
             public sealed class When_fallback_mode
             {
-                private static IniDocumentConfiguration Configuration => BaseConfiguration.WithPropertyEnumerationMode(PropertyEnumerationMode.Fallback);
+                private static IniDocumentConfiguration Configuration => DefaultConfiguration.WithPropertyEnumerationMode(PropertyEnumerationMode.Fallback);
 
                 [TestMethod]
                 public void Enumerates_an_empty_collection_when_section_does_not_exist()
@@ -560,7 +556,7 @@ public sealed class IniDocumentSpec
         [TestClass]
         public sealed class With_sectionName_and_mode
         {
-            private static IniDocumentConfiguration Configuration => BaseConfiguration;
+            private static IniDocumentConfiguration Configuration => DefaultConfiguration;
 
             private static PropertyEnumerationMode DummyMode => PropertyEnumerationMode.Fail;
 
@@ -638,12 +634,10 @@ public sealed class IniDocumentSpec
         [TestClass]
         public sealed class With_sectionName_and_propertyKey
         {
-            private static IniDocumentConfiguration BaseConfiguration => IniDocumentConfiguration.Strict;
-
             [TestMethod]
             public void Throws_argument_null_exception_when_section_name_is_null()
             {
-                var target = Make.EmptyTarget(BaseConfiguration);
+                var target = Make.EmptyTarget(DefaultConfiguration);
 
                 Assert.ThrowsException<ArgumentNullException>(() => target.ReadProperty(null, DummyPropertyKey));
             }
@@ -651,7 +645,7 @@ public sealed class IniDocumentSpec
             [TestMethod]
             public void Throws_argument_null_exception_when_property_key_is_null()
             {
-                var target = Make.EmptyTarget(BaseConfiguration);
+                var target = Make.EmptyTarget(DefaultConfiguration);
 
                 Assert.ThrowsException<ArgumentNullException>(() => target.ReadProperty(DummySectionName, null));
             }
@@ -663,7 +657,7 @@ public sealed class IniDocumentSpec
             {
                 var expected = propertyValue;
 
-                var target = Make.SingleDefaultPropertyTarget(BaseConfiguration, expected);
+                var target = Make.SingleDefaultPropertyTarget(DefaultConfiguration, expected);
 
                 var actual = target.ReadProperty(DefaultSectionName, DefaultPropertyKey);
 
@@ -673,7 +667,7 @@ public sealed class IniDocumentSpec
             [TestClass]
             public sealed class When_fail_mode
             {
-                private static IniDocumentConfiguration Configuration => BaseConfiguration.WithPropertyReadMode(PropertyReadMode.Fail);
+                private static IniDocumentConfiguration Configuration => DefaultConfiguration.WithPropertyReadMode(PropertyReadMode.Fail);
 
                 [TestMethod]
                 public void Throws_section_not_found_exception_when_section_does_not_exist()
@@ -707,7 +701,7 @@ public sealed class IniDocumentSpec
             {
                 private static PropertyValue FallbackPropertyValue => "Fallback";
 
-                private static IniDocumentConfiguration Configuration => BaseConfiguration.WithPropertyReadMode(PropertyReadMode.CustomFallback(FallbackPropertyValue));
+                private static IniDocumentConfiguration Configuration => DefaultConfiguration.WithPropertyReadMode(PropertyReadMode.CustomFallback(FallbackPropertyValue));
 
                 [TestMethod]
                 public void Returns_the_fallback_property_value_when_section_does_not_exist()
@@ -845,8 +839,6 @@ public sealed class IniDocumentSpec
     [TestClass]
     public sealed class WriteProperty
     {
-        private static IniDocumentConfiguration BaseConfiguration => IniDocumentConfiguration.Strict;
-
         private static PropertyReadMode ReadMode => PropertyReadMode.Fail;
 
         [TestClass]
@@ -855,7 +847,7 @@ public sealed class IniDocumentSpec
             [TestMethod]
             public void Throws_argument_null_exception_when_section_name_is_null()
             {
-                var target = Make.EmptyTarget(BaseConfiguration);
+                var target = Make.EmptyTarget(DefaultConfiguration);
 
                 Assert.ThrowsException<ArgumentNullException>(() => target.WriteProperty(null, DummyPropertyKey, DummyPropertyValue));
             }
@@ -863,7 +855,7 @@ public sealed class IniDocumentSpec
             [TestMethod]
             public void Throws_argument_null_exception_when_property_key_is_null()
             {
-                var target = Make.EmptyTarget(BaseConfiguration);
+                var target = Make.EmptyTarget(DefaultConfiguration);
 
                 Assert.ThrowsException<ArgumentNullException>(() => target.WriteProperty(DummySectionName, null, DummyPropertyValue));
             }
@@ -871,7 +863,7 @@ public sealed class IniDocumentSpec
             [TestMethod]
             public void Throws_argument_null_exception_when_property_value_is_null()
             {
-                var target = Make.EmptyTarget(BaseConfiguration);
+                var target = Make.EmptyTarget(DefaultConfiguration);
 
                 Assert.ThrowsException<ArgumentNullException>(() => target.WriteProperty(DummySectionName, DummyPropertyKey, null));
             }
@@ -890,7 +882,7 @@ public sealed class IniDocumentSpec
             [TestClass]
             public sealed class When_create_mode
             {
-                private static IniDocumentConfiguration Configuration => BaseConfiguration.WithPropertyWriteMode(PropertyWriteMode.Create);
+                private static IniDocumentConfiguration Configuration => DefaultConfiguration.WithPropertyWriteMode(PropertyWriteMode.Create);
 
                 [TestMethod]
                 public void Creates_property_with_given_property_value_when_section_does_not_exist()
@@ -908,7 +900,7 @@ public sealed class IniDocumentSpec
             [TestClass]
             public sealed class When_update_mode
             {
-                private static IniDocumentConfiguration Configuration => BaseConfiguration.WithPropertyWriteMode(PropertyWriteMode.Update);
+                private static IniDocumentConfiguration Configuration => DefaultConfiguration.WithPropertyWriteMode(PropertyWriteMode.Update);
 
                 [TestMethod]
                 public void Throws_section_not_found_exception_when_section_does_not_exist()
@@ -1046,12 +1038,10 @@ public sealed class IniDocumentSpec
         [TestClass]
         public sealed class With_sectionName_and_propertyKey
         {
-            private static IniDocumentConfiguration BaseConfiguration => IniDocumentConfiguration.Strict;
-
             [TestMethod]
             public void Throws_argument_null_exception_when_section_name_is_null()
             {
-                var target = Make.EmptyTarget(BaseConfiguration);
+                var target = Make.EmptyTarget(DefaultConfiguration);
 
                 Assert.ThrowsException<ArgumentNullException>(() => target.DeleteProperty(null, DummyPropertyKey));
             }
@@ -1059,7 +1049,7 @@ public sealed class IniDocumentSpec
             [TestMethod]
             public void Throws_argument_null_exception_when_property_key_is_null()
             {
-                var target = Make.EmptyTarget(BaseConfiguration);
+                var target = Make.EmptyTarget(DefaultConfiguration);
 
                 Assert.ThrowsException<ArgumentNullException>(() => target.DeleteProperty(DummySectionName, null));
             }
@@ -1079,7 +1069,7 @@ public sealed class IniDocumentSpec
             [TestClass]
             public sealed class When_fail_mode
             {
-                private static IniDocumentConfiguration Configuration => BaseConfiguration.WithPropertyDeletionMode(PropertyDeletionMode.Fail);
+                private static IniDocumentConfiguration Configuration => DefaultConfiguration.WithPropertyDeletionMode(PropertyDeletionMode.Fail);
 
                 [TestMethod]
                 public void Throws_section_not_found_exception_when_section_does_not_exist()
@@ -1111,7 +1101,7 @@ public sealed class IniDocumentSpec
             [TestClass]
             public sealed class When_ignore_mode
             {
-                private static IniDocumentConfiguration Configuration => BaseConfiguration.WithPropertyDeletionMode(PropertyDeletionMode.Ignore);
+                private static IniDocumentConfiguration Configuration => DefaultConfiguration.WithPropertyDeletionMode(PropertyDeletionMode.Ignore);
 
                 [TestMethod]
                 public void Ignores_when_section_does_not_exist()
@@ -1244,12 +1234,10 @@ public sealed class IniDocumentSpec
         [TestClass]
         public sealed class With_sectionName
         {
-            private static IniDocumentConfiguration BaseConfiguration => IniDocumentConfiguration.Strict;
-
             [TestMethod]
             public void Throws_argument_null_exception_when_section_name_is_null()
             {
-                var target = Make.EmptyTarget(BaseConfiguration);
+                var target = Make.EmptyTarget(DefaultConfiguration);
 
                 Assert.ThrowsException<ArgumentNullException>(() => target.DeleteSection(null));
             }
@@ -1269,7 +1257,7 @@ public sealed class IniDocumentSpec
             [TestClass]
             public sealed class When_fail_mode
             {
-                private static IniDocumentConfiguration Configuration => BaseConfiguration.WithSectionDeletionMode(SectionDeletionMode.Fail);
+                private static IniDocumentConfiguration Configuration => DefaultConfiguration.WithSectionDeletionMode(SectionDeletionMode.Fail);
 
                 [TestMethod]
                 public void Throws_section_not_found_exception_when_section_does_not_exist()
@@ -1290,7 +1278,7 @@ public sealed class IniDocumentSpec
             [TestClass]
             public sealed class When_ignore_mode
             {
-                private static IniDocumentConfiguration Configuration => BaseConfiguration.WithSectionDeletionMode(SectionDeletionMode.Ignore);
+                private static IniDocumentConfiguration Configuration => DefaultConfiguration.WithSectionDeletionMode(SectionDeletionMode.Ignore);
 
                 [TestMethod]
                 public void Ignores_when_section_does_not_exist()
@@ -1385,8 +1373,6 @@ public sealed class IniDocumentSpec
     [TestClass]
     public sealed class ReadComment
     {
-        private static IniDocumentConfiguration BaseConfiguration => IniDocumentConfiguration.Strict;
-
         [TestClass]
         public sealed class With_sectionName
         {
@@ -1404,7 +1390,7 @@ public sealed class IniDocumentSpec
             [TestMethod]
             public void Throws_argument_null_exception_when_section_name_is_null()
             {
-                var target = Make.EmptyTarget(BaseConfiguration);
+                var target = Make.EmptyTarget(DefaultConfiguration);
 
                 Assert.ThrowsException<ArgumentNullException>(() => target.ReadComment(null));
             }
@@ -1429,7 +1415,7 @@ public sealed class IniDocumentSpec
             [TestClass]
             public sealed class When_fail_mode
             {
-                private static IniDocumentConfiguration Configuration => BaseConfiguration.WithCommentReadMode(CommentReadMode.Fail);
+                private static IniDocumentConfiguration Configuration => DefaultConfiguration.WithCommentReadMode(CommentReadMode.Fail);
 
                 [TestMethod]
                 public void Throws_section_not_found_exception_when_section_does_not_exist()
@@ -1452,7 +1438,7 @@ public sealed class IniDocumentSpec
             {
                 private static Comment FallbackComment => "Fallback comment";
 
-                private static IniDocumentConfiguration Configuration => BaseConfiguration.WithCommentReadMode(CommentReadMode.CustomFallback(FallbackComment));
+                private static IniDocumentConfiguration Configuration => DefaultConfiguration.WithCommentReadMode(CommentReadMode.CustomFallback(FallbackComment));
 
                 [TestMethod]
                 public void Provides_the_fallback_comment_when_section_does_not_exist()
@@ -1486,7 +1472,7 @@ public sealed class IniDocumentSpec
                                        Property=Another value
                                        """;
 
-            private static IniDocumentConfiguration Configuration => BaseConfiguration;
+            private static IniDocumentConfiguration Configuration => DefaultConfiguration;
 
             private static CommentReadMode DummyMode => CommentReadMode.Fail;
 
@@ -1583,7 +1569,7 @@ public sealed class IniDocumentSpec
                                        Property=Another value
                                        """;
 
-            private static IniDocumentConfiguration Configuration => BaseConfiguration;
+            private static IniDocumentConfiguration Configuration => DefaultConfiguration;
 
             private static CommentReadMode DummyMode => CommentReadMode.Fail;
 
