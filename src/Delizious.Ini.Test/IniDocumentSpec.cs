@@ -638,6 +638,8 @@ public sealed class IniDocumentSpec
         [TestClass]
         public sealed class With_sectionName_and_propertyKey
         {
+            private static IniDocumentConfiguration BaseConfiguration => IniDocumentConfiguration.Strict;
+
             [TestMethod]
             public void Throws_argument_null_exception_when_section_name_is_null()
             {
@@ -661,7 +663,7 @@ public sealed class IniDocumentSpec
             {
                 var expected = propertyValue;
 
-                var target = Make.SingleDefaultPropertyTarget(expected);
+                var target = Make.SingleDefaultPropertyTarget(BaseConfiguration, expected);
 
                 var actual = target.ReadProperty(DefaultSectionName, DefaultPropertyKey);
 
@@ -671,7 +673,7 @@ public sealed class IniDocumentSpec
             [TestClass]
             public sealed class When_fail_mode
             {
-                private static IniDocumentConfiguration Configuration => IniDocumentConfiguration.Default.WithPropertyReadMode(PropertyReadMode.Fail);
+                private static IniDocumentConfiguration Configuration => BaseConfiguration.WithPropertyReadMode(PropertyReadMode.Fail);
 
                 [TestMethod]
                 public void Throws_section_not_found_exception_when_section_does_not_exist()
@@ -705,7 +707,7 @@ public sealed class IniDocumentSpec
             {
                 private static PropertyValue FallbackPropertyValue => "Fallback";
 
-                private static IniDocumentConfiguration Configuration => IniDocumentConfiguration.Default.WithPropertyReadMode(PropertyReadMode.CustomFallback(FallbackPropertyValue));
+                private static IniDocumentConfiguration Configuration => BaseConfiguration.WithPropertyReadMode(PropertyReadMode.CustomFallback(FallbackPropertyValue));
 
                 [TestMethod]
                 public void Returns_the_fallback_property_value_when_section_does_not_exist()
@@ -736,6 +738,8 @@ public sealed class IniDocumentSpec
         [TestClass]
         public sealed class With_sectionName_and_propertyKey_and_mode
         {
+            private static IniDocumentConfiguration Configuration => IniDocumentConfiguration.Strict;
+
             private static PropertyReadMode DummyMode => PropertyReadMode.Fail;
 
             [TestMethod]
@@ -766,7 +770,7 @@ public sealed class IniDocumentSpec
             [DynamicData(nameof(Modes), DynamicDataSourceType.Method)]
             public void Reads_the_value_of_the_property_contained_in_the_specified_section(PropertyValue expected, PropertyReadMode mode)
             {
-                var target = Make.SingleDefaultPropertyTarget(expected);
+                var target = Make.SingleDefaultPropertyTarget(Configuration, expected);
 
                 var actual = target.ReadProperty(DefaultSectionName, DefaultPropertyKey, mode);
 
@@ -798,7 +802,7 @@ public sealed class IniDocumentSpec
                 [TestMethod]
                 public void Throws_property_not_found_exception_when_section_exists_but_property_does_not_exist()
                 {
-                    var target = Make.SingleDefaultPropertyTarget(DefaultPropertyValue);
+                    var target = Make.SingleDefaultPropertyTarget(Configuration, DefaultPropertyValue);
 
                     Assert.ThrowsException<PropertyNotFoundException>(() => target.ReadProperty(DefaultSectionName, NonexistentPropertyKey, Mode));
                 }
@@ -828,7 +832,7 @@ public sealed class IniDocumentSpec
                 {
                     var expected = FallbackPropertyValue;
 
-                    var target = Make.SingleDefaultPropertyTarget(DefaultPropertyValue);
+                    var target = Make.SingleDefaultPropertyTarget(Configuration, DefaultPropertyValue);
 
                     var actual = target.ReadProperty(DefaultSectionName, NonexistentPropertyKey, Mode);
 
@@ -997,7 +1001,7 @@ public sealed class IniDocumentSpec
 
                 [TestMethod]
                 public void Overwrites_existing_property_with_given_property_value()
-                    => Writes_property(Make.SingleDefaultPropertyTarget(EmptyPropertyValue), Mode);
+                    => Writes_property(Make.SingleDefaultPropertyTarget(Configuration, EmptyPropertyValue), Mode);
             }
 
             [TestClass]
@@ -1020,7 +1024,7 @@ public sealed class IniDocumentSpec
                 public void Throws_property_not_found_exception_when_property_does_not_exist()
                 {
                     var expected = new PropertyNotFoundExceptionAssertion(NonexistentPropertyKey);
-                    var target = Make.SingleDefaultPropertyTarget(DefaultPropertyValue);
+                    var target = Make.SingleDefaultPropertyTarget(Configuration, DefaultPropertyValue);
 
                     var actual = Assert.ThrowsException<PropertyNotFoundException>(() => target.WriteProperty(DefaultSectionName, NonexistentPropertyKey, DefaultPropertyValue, Mode));
 
@@ -1029,7 +1033,7 @@ public sealed class IniDocumentSpec
 
                 [TestMethod]
                 public void Updates_existing_property_to_given_property_value()
-                    => Writes_property(Make.SingleDefaultPropertyTarget(EmptyPropertyValue), Mode);
+                    => Writes_property(Make.SingleDefaultPropertyTarget(Configuration, EmptyPropertyValue), Mode);
             }
         }
     }
@@ -1698,9 +1702,6 @@ public sealed class IniDocumentSpec
 
         public static IniDocument SingleDefaultSectionTarget(IniDocumentConfiguration configuration, params PropertyKey[] propertyKeys)
             => Target(configuration, Section.Create(DefaultSectionName, propertyKeys.Select(Property.Create)));
-
-        public static IniDocument SingleDefaultPropertyTarget(PropertyValue propertyValue)
-            => SingleDefaultPropertyTarget(DefaultConfiguration, propertyValue);
 
         public static IniDocument SingleDefaultPropertyTarget(IniDocumentConfiguration configuration, PropertyValue propertyValue)
             => Target(configuration, Section.Create(DefaultSectionName, Property.Create(DefaultPropertyKey, propertyValue)));
