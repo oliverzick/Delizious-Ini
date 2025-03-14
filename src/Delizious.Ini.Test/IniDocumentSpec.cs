@@ -493,6 +493,8 @@ public sealed class IniDocumentSpec
     [TestClass]
     public sealed class EnumerateProperties
     {
+        private static IniDocumentConfiguration BaseConfiguration => IniDocumentConfiguration.Strict;
+
         private static PropertyKey[] PropertyKeys => ["Property1", "AnotherProperty2", "SomePropertyA"];
 
         [TestClass]
@@ -510,7 +512,7 @@ public sealed class IniDocumentSpec
             public void Enumerates_the_keys_of_all_properties_contained_in_the_specified_section()
             {
                 var expected = PropertyKeys;
-                var target = Make.SingleDefaultSectionTarget(expected);
+                var target = Make.SingleDefaultSectionTarget(BaseConfiguration, expected);
 
                 var actual = target.EnumerateProperties(DefaultSectionName).ToImmutableArray();
 
@@ -520,7 +522,7 @@ public sealed class IniDocumentSpec
             [TestClass]
             public sealed class When_fail_mode
             {
-                private static IniDocumentConfiguration Configuration => IniDocumentConfiguration.Default.WithPropertyEnumerationMode(PropertyEnumerationMode.Fail);
+                private static IniDocumentConfiguration Configuration => BaseConfiguration.WithPropertyEnumerationMode(PropertyEnumerationMode.Fail);
 
                 [TestMethod]
                 public void Throws_section_not_found_exception_when_section_does_not_exist()
@@ -539,7 +541,7 @@ public sealed class IniDocumentSpec
             [TestClass]
             public sealed class When_fallback_mode
             {
-                private static IniDocumentConfiguration Configuration => IniDocumentConfiguration.Default.WithPropertyEnumerationMode(PropertyEnumerationMode.Fallback);
+                private static IniDocumentConfiguration Configuration => BaseConfiguration.WithPropertyEnumerationMode(PropertyEnumerationMode.Fallback);
 
                 [TestMethod]
                 public void Enumerates_an_empty_collection_when_section_does_not_exist()
@@ -558,6 +560,8 @@ public sealed class IniDocumentSpec
         [TestClass]
         public sealed class With_sectionName_and_mode
         {
+            private static IniDocumentConfiguration Configuration => BaseConfiguration;
+
             private static PropertyEnumerationMode DummyMode => PropertyEnumerationMode.Fail;
 
             [TestMethod]
@@ -581,7 +585,7 @@ public sealed class IniDocumentSpec
             public void Enumerates_the_keys_of_all_properties_contained_in_the_specified_section(PropertyEnumerationMode mode)
             {
                 var expected = PropertyKeys;
-                var target = Make.SingleDefaultSectionTarget(expected);
+                var target = Make.SingleDefaultSectionTarget(Configuration, expected);
 
                 var actual = target.EnumerateProperties(DefaultSectionName, mode).ToImmutableArray();
 
@@ -1157,7 +1161,7 @@ public sealed class IniDocumentSpec
             private static void DeletesProperty(PropertyDeletionMode mode)
             {
                 var expected = new[] { DummyPropertyKey };
-                var target = Make.SingleDefaultSectionTarget(DummyPropertyKey, DefaultPropertyKey);
+                var target = Make.SingleDefaultSectionTarget(Configuration, DummyPropertyKey, DefaultPropertyKey);
 
                 target.DeleteProperty(DefaultSectionName, DefaultPropertyKey, mode);
 
@@ -1691,9 +1695,6 @@ public sealed class IniDocumentSpec
 
         public static IniDocument EmptyTarget(IniDocumentConfiguration configuration)
             => IniDocument.CreateEmpty(configuration);
-
-        public static IniDocument SingleDefaultSectionTarget(params PropertyKey[] propertyKeys)
-            => SingleDefaultSectionTarget(DefaultConfiguration, propertyKeys);
 
         public static IniDocument SingleDefaultSectionTarget(IniDocumentConfiguration configuration, params PropertyKey[] propertyKeys)
             => Target(configuration, Section.Create(DefaultSectionName, propertyKeys.Select(Property.Create)));
