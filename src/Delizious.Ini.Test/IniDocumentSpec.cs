@@ -167,9 +167,8 @@ public sealed class IniDocumentSpec
 
                                                    """;
 
-                private static IniDocumentConfiguration Configuration => IniDocumentConfiguration.Strict
-                                                                                                 .WithDuplicateSectionBehavior(DuplicateSectionBehavior.Merge)
-                                                                                                 .WithDuplicatePropertyBehavior(DuplicatePropertyBehavior.Ignore);
+                private static IniDocumentConfiguration Configuration => DefaultConfiguration.WithDuplicateSectionBehavior(DuplicateSectionBehavior.Merge)
+                                                                                             .WithDuplicatePropertyBehavior(DuplicatePropertyBehavior.Ignore);
 
                 [TestMethod]
                 public void Ignores_subsequent_occurrences_of_a_duplicate_property_by_using_the_first_occurrence_of_such_a_property()
@@ -188,9 +187,8 @@ public sealed class IniDocumentSpec
 
                                                    """;
 
-                private static IniDocumentConfiguration Configuration => IniDocumentConfiguration.Strict
-                                                                                                 .WithDuplicateSectionBehavior(DuplicateSectionBehavior.Merge)
-                                                                                                 .WithDuplicatePropertyBehavior(DuplicatePropertyBehavior.Override);
+                private static IniDocumentConfiguration Configuration => DefaultConfiguration.WithDuplicateSectionBehavior(DuplicateSectionBehavior.Merge)
+                                                                                             .WithDuplicatePropertyBehavior(DuplicatePropertyBehavior.Override);
 
                 [TestMethod]
                 public void Overrides_previous_occurrences_of_a_duplicate_property_by_using_the_last_occurrence_of_such_a_property()
@@ -215,8 +213,7 @@ public sealed class IniDocumentSpec
             [TestClass]
             public sealed class When_fail_behavior
             {
-                private static IniDocumentConfiguration Configuration => IniDocumentConfiguration.Strict
-                                                                                                 .WithDuplicateSectionBehavior(DuplicateSectionBehavior.Fail);
+                private static IniDocumentConfiguration Configuration => DefaultConfiguration.WithDuplicateSectionBehavior(DuplicateSectionBehavior.Fail);
 
                 [TestMethod]
                 public void Throws_persistence_exception_for_duplicated_section()
@@ -240,8 +237,7 @@ public sealed class IniDocumentSpec
 
                                                    """;
 
-                private static IniDocumentConfiguration Configuration => IniDocumentConfiguration.Strict
-                                                                                                 .WithDuplicateSectionBehavior(DuplicateSectionBehavior.Merge);
+                private static IniDocumentConfiguration Configuration => DefaultConfiguration.WithDuplicateSectionBehavior(DuplicateSectionBehavior.Merge);
 
                 [TestMethod]
                 public void Merges_duplicated_section()
@@ -261,8 +257,7 @@ public sealed class IniDocumentSpec
             [TestClass]
             public sealed class When_fail_behavior
             {
-                private static IniDocumentConfiguration Configuration => IniDocumentConfiguration.Strict
-                                                                                                 .WithInvalidLineBehavior(InvalidLineBehavior.Fail);
+                private static IniDocumentConfiguration Configuration => DefaultConfiguration.WithInvalidLineBehavior(InvalidLineBehavior.Fail);
 
                 [TestMethod]
                 public void Throws_persistence_exception_on_invalid_line()
@@ -282,8 +277,7 @@ public sealed class IniDocumentSpec
 
                                                    """;
 
-                private static IniDocumentConfiguration Configuration => IniDocumentConfiguration.Strict
-                                                                                                 .WithInvalidLineBehavior(InvalidLineBehavior.Ignore);
+                private static IniDocumentConfiguration Configuration => DefaultConfiguration.WithInvalidLineBehavior(InvalidLineBehavior.Ignore);
 
                 [TestMethod]
                 public void Ignores_invalid_line()
@@ -310,9 +304,8 @@ public sealed class IniDocumentSpec
             [TestClass]
             public sealed class When_fail_behavior
             {
-                private static IniDocumentConfiguration Configuration => IniDocumentConfiguration.Strict
-                                                                                                 .WithInvalidLineBehavior(InvalidLineBehavior.Fail)
-                                                                                                 .WithSectionNameRegex(SectionNameRegex);
+                private static IniDocumentConfiguration Configuration => DefaultConfiguration.WithInvalidLineBehavior(InvalidLineBehavior.Fail)
+                                                                                             .WithSectionNameRegex(SectionNameRegex);
 
                 [TestMethod]
                 public void Throws_persistence_exception_on_invalid_line()
@@ -336,9 +329,8 @@ public sealed class IniDocumentSpec
 
                                                    """;
 
-                private static IniDocumentConfiguration Configuration => IniDocumentConfiguration.Strict
-                                                                                                 .WithInvalidLineBehavior(InvalidLineBehavior.Ignore)
-                                                                                                 .WithSectionNameRegex(SectionNameRegex);
+                private static IniDocumentConfiguration Configuration => DefaultConfiguration.WithInvalidLineBehavior(InvalidLineBehavior.Ignore)
+                                                                                             .WithSectionNameRegex(SectionNameRegex);
 
                 [TestMethod]
                 public void Ignores_invalid_line()
@@ -364,7 +356,7 @@ public sealed class IniDocumentSpec
     [TestClass]
     public sealed class SaveTo
     {
-        private static IniDocumentConfiguration Configuration => IniDocumentConfiguration.Strict;
+        private static IniDocumentConfiguration Configuration => DefaultConfiguration;
 
         [TestMethod]
         public void Throws_argument_null_exception_when_text_writer_is_null()
@@ -471,7 +463,7 @@ public sealed class IniDocumentSpec
     [TestClass]
     public sealed class EnumerateSections
     {
-        private static IniDocumentConfiguration Configuration => IniDocumentConfiguration.Strict;
+        private static IniDocumentConfiguration Configuration => DefaultConfiguration;
 
         private static SectionName[] SectionNames => ["Section1", "AnotherSection2", "SomeSectionA"];
 
@@ -732,7 +724,7 @@ public sealed class IniDocumentSpec
         [TestClass]
         public sealed class With_sectionName_and_propertyKey_and_mode
         {
-            private static IniDocumentConfiguration Configuration => IniDocumentConfiguration.Strict;
+            private static IniDocumentConfiguration Configuration => DefaultConfiguration;
 
             private static PropertyReadMode DummyMode => PropertyReadMode.Fail;
 
@@ -933,7 +925,7 @@ public sealed class IniDocumentSpec
         [TestClass]
         public sealed class With_sectionName_and_propertyKey_and_propertyValue_and_mode
         {
-            private static IniDocumentConfiguration Configuration => IniDocumentConfiguration.Strict;
+            private static IniDocumentConfiguration Configuration => DefaultConfiguration;
 
             private static PropertyWriteMode DummyMode => PropertyWriteMode.Update;
 
@@ -1128,7 +1120,7 @@ public sealed class IniDocumentSpec
         [TestClass]
         public sealed class With_sectionName_and_propertyKey_and_mode
         {
-            private static IniDocumentConfiguration Configuration => IniDocumentConfiguration.Strict;
+            private static IniDocumentConfiguration Configuration => DefaultConfiguration;
 
             private static PropertyDeletionMode DummyMode => PropertyDeletionMode.Fail;
 
@@ -1297,7 +1289,7 @@ public sealed class IniDocumentSpec
         [TestClass]
         public sealed class With_sectionName_and_mode
         {
-            private static IniDocumentConfiguration Configuration => IniDocumentConfiguration.Strict;
+            private static IniDocumentConfiguration Configuration => DefaultConfiguration;
 
             private static SectionDeletionMode DummyMode => SectionDeletionMode.Fail;
 
