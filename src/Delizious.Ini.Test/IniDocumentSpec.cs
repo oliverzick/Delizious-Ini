@@ -10,7 +10,7 @@ using System.Text;
 [TestClass]
 public sealed class IniDocumentSpec
 {
-    private static IniDocumentConfiguration DefaultConfiguration => IniDocumentConfiguration.Default;
+    private static IniDocumentConfiguration DefaultConfiguration => IniDocumentConfiguration.Strict;
 
     private static SectionName DummySectionName => "Dummy";
     private static PropertyKey DummyPropertyKey => "Dummy";
