@@ -256,7 +256,7 @@ const string ini = """
 using var textReader = new StringReader(ini);
 var iniDocument = IniDocument.LoadFrom(textReader, IniDocumentConfiguration.Default);
 
-var comment = iniDocument.ReadComment("Section", "Property", CommentReadMode.Fail);
+var comment = iniDocument.ReadComment("Section", "Property");
 
 Console.WriteLine(comment);
 ```
