@@ -4,6 +4,7 @@ Delizious Ini is an easy to use .NET Standard library entirely written in C# for
 
 ## New features in version 1.14.0
 * Enable reading the comment of a section from INI document for given section name and default comment read mode
+* Enable reading the comment of a property from INI document for given section name, property key and default comment read mode
 
 ## Features
 Delizious Ini provides the following features:
