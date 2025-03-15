@@ -629,6 +629,44 @@
 
         /// <summary>
         /// <para>
+        /// Reads the comment of the property using the <see cref="IniDocumentConfiguration.CommentReadMode"/>.
+        /// </para>
+        /// <para>
+        /// When <see cref="IniDocumentConfiguration.CommentReadMode"/> is <see cref="CommentReadMode.Fail"/> and the section does not exist,
+        /// throws a <see cref="SectionNotFoundException"/> 
+        /// </para>
+        /// <para>
+        /// When <see cref="IniDocumentConfiguration.CommentReadMode"/> is <see cref="CommentReadMode.Fail"/> and the property does not exist,
+        /// throws a <see cref="PropertyNotFoundException"/>.
+        /// </para>
+        /// </summary>
+        /// <param name="sectionName">
+        /// The name of the section containing the property.
+        /// </param>
+        /// <param name="propertyKey">
+        /// The key of the property to read the comment.
+        /// </param>
+        /// <returns>
+        /// The comment of the property.
+        /// When <see cref="IniDocumentConfiguration.CommentReadMode"/> is <see cref="CommentReadMode.CustomFallback(Comment)"/> and the section or property does not exist,
+        /// the fallback comment given by the mode is returned.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <para><paramref name="sectionName"/> is <c>null</c>.</para>
+        /// <para>- or -</para>
+        /// <para><paramref name="propertyKey"/> is <c>null</c>.</para>
+        /// </exception>
+        /// <exception cref="SectionNotFoundException">
+        /// <see cref="IniDocumentConfiguration.CommentReadMode"/> is <see cref="CommentReadMode.Fail"/> and the specified section does not exist.
+        /// </exception>
+        /// <exception cref="PropertyNotFoundException">
+        /// <see cref="IniDocumentConfiguration.CommentReadMode"/> is <see cref="CommentReadMode.Fail"/> and the specified property does not exist.
+        /// </exception>
+        public Comment ReadComment(SectionName sectionName, PropertyKey propertyKey)
+            => this.ReadComment(sectionName, propertyKey, this.configuration.CommentReadMode);
+
+        /// <summary>
+        /// <para>
         /// Reads the comment of the property.
         /// The mode specifies the behavior in case the section or property does not exist.
         /// </para>
