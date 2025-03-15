@@ -414,7 +414,7 @@ public sealed class IniDocumentSpec
     [TestClass]
     public sealed class Clone
     {
-        private static IniDocumentConfiguration Configuration => IniDocumentConfiguration.Loose;
+        private static IniDocumentConfiguration Configuration => DefaultConfiguration;
 
         [TestMethod]
         public void Cloned_instance_is_not_the_same_as_the_original_instance()
@@ -448,7 +448,7 @@ public sealed class IniDocumentSpec
             var original = Make.SampleTarget(Configuration);
 
             var clone = original.Clone();
-            clone.WriteProperty("CloneSection", "CloneProperty", "Clone value");
+            clone.WriteProperty("CloneSection", "CloneProperty", "Clone value", PropertyWriteMode.Create);
 
             using var originalWriter = new StringWriter();
             original.SaveTo(originalWriter);
