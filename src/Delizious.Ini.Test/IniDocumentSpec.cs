@@ -415,11 +415,11 @@ public sealed class IniDocumentSpec
     public sealed class Clone
     {
         private const string Ini = """
-                                    [Section1]
-                                    PropertyA=Value A
-                                   
-                                    [Section2]
-                                    PropertyB=Value B
+                                   [Section1]
+                                   PropertyA=Value A
+
+                                   [Section2]
+                                   PropertyB=Value B
                                    """;
 
         private static IniDocumentConfiguration Configuration => DefaultConfiguration;
