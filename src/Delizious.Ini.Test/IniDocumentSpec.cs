@@ -414,12 +414,20 @@ public sealed class IniDocumentSpec
     [TestClass]
     public sealed class Clone
     {
+        private const string Ini = """
+                                   [Section1]
+                                   PropertyA=Value A
+
+                                   [Section2]
+                                   PropertyB=Value B
+                                   """;
+
         private static IniDocumentConfiguration Configuration => DefaultConfiguration;
 
         [TestMethod]
         public void Cloned_instance_is_not_the_same_as_the_original_instance()
         {
-            var original = Make.SampleTarget(Configuration);
+            var original = Make.Target(Ini, Configuration);
 
             var clone = original.Clone();
 
@@ -429,7 +437,7 @@ public sealed class IniDocumentSpec
         [TestMethod]
         public void Cloned_instance_represents_same_content_as_the_original_instance()
         {
-            var original = Make.SampleTarget(Configuration);
+            var original = Make.Target(Ini, Configuration);
 
             var clone = original.Clone();
 
@@ -445,7 +453,7 @@ public sealed class IniDocumentSpec
         [TestMethod]
         public void Changes_in_cloned_instance_do_not_affect_the_original_instance()
         {
-            var original = Make.SampleTarget(Configuration);
+            var original = Make.Target(Ini, Configuration);
 
             var clone = original.Clone();
             clone.WriteProperty("CloneSection", "CloneProperty", "Clone value", PropertyWriteMode.Create);
@@ -1794,6 +1802,13 @@ public sealed class IniDocumentSpec
 
     private static class Make
     {
+        public static IniDocument Target(string ini, IniDocumentConfiguration configuration)
+        {
+            using var reader = new StringReader(ini);
+
+            return IniDocument.LoadFrom(reader, configuration);
+        }
+
         public static IniDocument EmptyTarget(IniDocumentConfiguration configuration)
             => IniDocument.CreateEmpty(configuration);
 
