@@ -471,16 +471,22 @@ public sealed class IniDocumentSpec
     [TestClass]
     public sealed class EnumerateSections
     {
+        private const string Ini = """
+                                   [Section1]
+                                   [AnotherSection2]
+                                   [SomeSectionA]
+                                   """;
+
         private static IniDocumentConfiguration Configuration => DefaultConfiguration;
 
-        private static SectionName[] SectionNames => ["Section1", "AnotherSection2", "SomeSectionA"];
+        private static ImmutableArray<SectionName> SectionNames => ["Section1", "AnotherSection2", "SomeSectionA"];
 
         [TestMethod]
         public void Enumerates_the_names_of_all_contained_sections()
         {
             var expected = SectionNames;
 
-            var target = Make.EmptySectionsTarget(Configuration, expected);
+            var target = Make.Target(Ini, Configuration);
 
             var actual = target.EnumerateSections().ToImmutableArray();
 
