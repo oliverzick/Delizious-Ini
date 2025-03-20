@@ -497,6 +497,20 @@ public sealed class IniDocumentSpec
     [TestClass]
     public sealed class EnumerateProperties
     {
+        private const string Ini = """
+                                   [Section]
+                                   Property1=
+                                   AnotherProperty2=
+                                   SomePropertyA=
+
+                                   [AnotherSection]
+                                   Property2=
+                                   """;
+
+        private static IniDocumentConfiguration Configuration => DefaultConfiguration;
+
+        private static SectionName SectionName => "Section";
+
         private static PropertyKey[] PropertyKeys => ["Property1", "AnotherProperty2", "SomePropertyA"];
 
         [TestClass]
@@ -514,9 +528,9 @@ public sealed class IniDocumentSpec
             public void Enumerates_the_keys_of_all_properties_contained_in_the_specified_section()
             {
                 var expected = PropertyKeys;
-                var target = Make.SingleDefaultSectionTarget(DefaultConfiguration, expected);
+                var target = Make.Target(Ini, Configuration);
 
-                var actual = target.EnumerateProperties(DefaultSectionName).ToImmutableArray();
+                var actual = target.EnumerateProperties(SectionName).ToImmutableArray();
 
                 CollectionAssert.AreEqual(expected, actual);
             }
@@ -587,9 +601,9 @@ public sealed class IniDocumentSpec
             public void Enumerates_the_keys_of_all_properties_contained_in_the_specified_section(PropertyEnumerationMode mode)
             {
                 var expected = PropertyKeys;
-                var target = Make.SingleDefaultSectionTarget(Configuration, expected);
+                var target = Make.Target(Ini, Configuration);
 
-                var actual = target.EnumerateProperties(DefaultSectionName, mode).ToImmutableArray();
+                var actual = target.EnumerateProperties(SectionName, mode).ToImmutableArray();
 
                 CollectionAssert.AreEqual(expected, actual);
             }
