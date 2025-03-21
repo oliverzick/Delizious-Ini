@@ -1055,6 +1055,16 @@ public sealed class IniDocumentSpec
     [TestClass]
     public sealed class DeleteProperty
     {
+        private const string Ini = """
+                                   [Section]
+                                   Property=
+                                   DummyProperty=
+                                   """;
+
+        private static SectionName SectionName => "Section";
+        private static PropertyKey PropertyKeyToDelete => "Property";
+        private static ImmutableArray<PropertyKey> RemainingPropertyKeys => ["DummyProperty"];
+
         [TestClass]
         public sealed class With_sectionName_and_propertyKey
         {
@@ -1076,12 +1086,12 @@ public sealed class IniDocumentSpec
 
             private static void DeletesProperty(IniDocumentConfiguration configuration)
             {
-                var expected = new[] { DummyPropertyKey };
-                var target = Make.SingleDefaultSectionTarget(configuration, DummyPropertyKey, DefaultPropertyKey);
+                var expected = RemainingPropertyKeys;
+                var target = Make.Target(Ini, configuration);
 
-                target.DeleteProperty(DefaultSectionName, DefaultPropertyKey);
+                target.DeleteProperty(SectionName, PropertyKeyToDelete);
 
-                var actual = target.EnumerateProperties(DefaultSectionName).ToArray();
+                var actual = target.EnumerateProperties(SectionName).ToImmutableArray();
 
                 CollectionAssert.AreEqual(expected, actual);
             }
@@ -1178,12 +1188,12 @@ public sealed class IniDocumentSpec
 
             private static void DeletesProperty(PropertyDeletionMode mode)
             {
-                var expected = new[] { DummyPropertyKey };
-                var target = Make.SingleDefaultSectionTarget(Configuration, DummyPropertyKey, DefaultPropertyKey);
+                var expected = RemainingPropertyKeys;
+                var target = Make.Target(Ini, Configuration);
 
-                target.DeleteProperty(DefaultSectionName, DefaultPropertyKey, mode);
+                target.DeleteProperty(SectionName, PropertyKeyToDelete, mode);
 
-                var actual = target.EnumerateProperties(DefaultSectionName).ToArray();
+                var actual = target.EnumerateProperties(SectionName).ToImmutableArray();
 
                 CollectionAssert.AreEqual(expected, actual);
             }
@@ -1832,9 +1842,6 @@ public sealed class IniDocumentSpec
         public static IniDocument EmptyTarget(IniDocumentConfiguration configuration)
             => IniDocument.CreateEmpty(configuration);
 
-        public static IniDocument SingleDefaultSectionTarget(IniDocumentConfiguration configuration, params PropertyKey[] propertyKeys)
-            => Target(configuration, Section.Create(DefaultSectionName, propertyKeys.Select(Property.Create)));
-
         public static IniDocument SingleDefaultPropertyTarget(IniDocumentConfiguration configuration, PropertyValue propertyValue)
             => Target(configuration, Section.Create(DefaultSectionName, Property.Create(DefaultPropertyKey, propertyValue)));
 
@@ -1903,9 +1910,6 @@ public sealed class IniDocumentSpec
                 => Create(sectionName);
 
             public static Section Create(SectionName sectionName, params Property[] properties)
-                => Create(sectionName, properties.AsEnumerable());
-
-            public static Section Create(SectionName sectionName, IEnumerable<Property> properties)
                 => new(sectionName, [..properties]);
 
             public IniDocumentBuilder ApplyTo(IniDocumentBuilder builder)
@@ -1914,9 +1918,6 @@ public sealed class IniDocumentSpec
 
         private sealed record Property(PropertyKey PropertyKey, PropertyValue PropertyValue)
         {
-            public static Property Create(PropertyKey propertyKey)
-                => Create(propertyKey, "Default");
-
             public static Property Create(PropertyKey propertyKey, PropertyValue propertyValue)
                 => new(propertyKey, propertyValue);
 
