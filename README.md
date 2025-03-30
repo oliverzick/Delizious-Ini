@@ -2,9 +2,8 @@
 ## What?
 Delizious Ini is an easy to use .NET Standard library entirely written in C# for reading and writing of INI data.
 
-## New features in version 1.14.0
-* Enable reading the comment of a section from INI document for given section name and default comment read mode
-* Enable reading the comment of a property from INI document for given section name, property key and default comment read mode
+## New features in version 1.15.0
+* Enable writing the comment of a section for given section name and mode
 
 ## Features
 Delizious Ini provides the following features:
@@ -260,6 +259,35 @@ var iniDocument = IniDocument.LoadFrom(textReader, IniDocumentConfiguration.Defa
 var comment = iniDocument.ReadComment("Section", "Property");
 
 Console.WriteLine(comment);
+```
+
+### Write comment of section
+```cs
+void WriteSectionComment()
+{
+const string ini = """
+                   [Section]
+                   Property=Value
+                   """;
+
+const string comment = """
+                       This is a sample
+                       multiline
+                       comment. :)
+                       """;
+
+using var textReader = new StringReader(ini);
+var iniDocument = IniDocument.LoadFrom(textReader, IniDocumentConfiguration.Default);
+
+iniDocument.WriteComment("Section", comment, CommentWriteMode.Fail);
+
+using var textWriter = new StringWriter();
+iniDocument.SaveTo(textWriter);
+
+textWriter.Flush();
+
+Console.WriteLine(textWriter);
+}
 ```
 
 ## License

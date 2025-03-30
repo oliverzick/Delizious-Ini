@@ -156,6 +156,10 @@
                    .SelectProperty(propertyKey, mode.Transform(new FallbackPropertyProvider(propertyKey)))
                    .ReadValue();
 
+        public void WriteComment(SectionName sectionName, Comment comment, CommentWriteMode mode)
+            => this.SelectSection(sectionName, mode.Transform(new FallbackSectionProvider(sectionName)))
+                   .WriteComment(comment);
+
         public void WriteProperty(SectionName sectionName, PropertyKey propertyKey, PropertyValue propertyValue, PropertyWriteMode mode)
             => mode.Transform(new WritePropertySelector(this, sectionName, propertyKey))
                    .WriteValue(propertyValue);
@@ -189,6 +193,8 @@
 
             Comment ReadComment();
 
+            void WriteComment(Comment comment);
+
             ISection CreateProperty(PropertyKey propertyKey);
 
             IEnumerable<PropertyKey> EnumerateProperties();
@@ -198,16 +204,16 @@
 
         private sealed class NullSection : ISection
         {
-            private readonly Comment comment;
+            private readonly Comment fallbackComment;
 
             public NullSection()
                 : this(Comment.None)
             {
             }
 
-            public NullSection(Comment comment)
+            public NullSection(Comment fallbackComment)
             {
-                this.comment = comment;
+                this.fallbackComment = fallbackComment;
             }
 
             public void Delete()
@@ -215,7 +221,11 @@
             }
 
             public Comment ReadComment()
-                => this.comment;
+                => this.fallbackComment;
+
+            public void WriteComment(Comment comment)
+            {
+            }
 
             [ExcludeFromCodeCoverage]
             public ISection CreateProperty(PropertyKey propertyKey)
@@ -241,6 +251,9 @@
                 => throw new SectionNotFoundException(this.sectionName);
 
             public Comment ReadComment()
+                => throw new SectionNotFoundException(this.sectionName);
+
+            public void WriteComment(Comment comment)
                 => throw new SectionNotFoundException(this.sectionName);
 
             [ExcludeFromCodeCoverage]
@@ -277,6 +290,12 @@
 
             public Comment ReadComment()
                 => Comment.Create(this.sectionData.Comments);
+
+            public void WriteComment(Comment comment)
+            {
+                this.sectionData.Comments.Clear();
+                this.sectionData.Comments.AddRange(comment.Split());
+            }
 
             public ISection CreateProperty(PropertyKey propertyKey)
             {
@@ -395,7 +414,7 @@
                 => this.owner.RemoveKey(this.propertyKey.ToString());
         }
 
-        private sealed class FallbackSectionProvider : ISectionDeletionModeTransformation<ISection>, IPropertyEnumerationModeTransformation<ISection>, IPropertyReadModeTransformation<ISection>, IPropertyDeletionModeTransformation<ISection>, ICommentReadModeTransformation<ISection>
+        private sealed class FallbackSectionProvider : ISectionDeletionModeTransformation<ISection>, IPropertyEnumerationModeTransformation<ISection>, IPropertyReadModeTransformation<ISection>, IPropertyDeletionModeTransformation<ISection>, ICommentReadModeTransformation<ISection>, ICommentWriteModeTransformation<ISection>
         {
             private readonly SectionName sectionName;
 

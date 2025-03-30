@@ -5,8 +5,8 @@ using System.Collections.Generic;
 [TestClass]
 public sealed class CommentWriteModeSpec
 {
-    private static CommentWriteMode Create => CommentWriteMode.Create;
-    private static CommentWriteMode Update => CommentWriteMode.Update;
+    private static CommentWriteMode Fail => CommentWriteMode.Fail;
+    private static CommentWriteMode Ignore => CommentWriteMode.Ignore;
 
     [DataTestMethod]
     [DynamicData(nameof(Provides_string_representation_test_cases), DynamicDataSourceType.Method)]
@@ -19,8 +19,8 @@ public sealed class CommentWriteModeSpec
 
     public static IEnumerable<object[]> Provides_string_representation_test_cases()
     {
-        yield return [Create, "Create"];
-        yield return [Update, "Update"];
+        yield return [Fail, "Fail"];
+        yield return [Ignore, "Ignore"];
     }
 
     [DataTestMethod]
@@ -80,28 +80,28 @@ public sealed class CommentWriteModeSpec
     public static IEnumerable<object[]> Equality_operator_test_cases()
     {
         yield return [null!, null!, true];
-        yield return [null!, Create, false];
-        yield return [null!, Update, false];
+        yield return [null!, Fail, false];
+        yield return [null!, Ignore, false];
     }
 
     public static IEnumerable<object[]> Equals_null_test_cases()
     {
-        yield return [Create, null!, false];
-        yield return [Update, null!, false];
+        yield return [Fail, null!, false];
+        yield return [Ignore, null!, false];
     }
 
     public static IEnumerable<object[]> Equals_test_cases()
     {
-        yield return [Create, Create, true];
-        yield return [Create, Update, false];
+        yield return [Fail, Fail, true];
+        yield return [Fail, Ignore, false];
 
-        yield return [Update, Update, true];
-        yield return [Update, Create, false];
+        yield return [Ignore, Ignore, true];
+        yield return [Ignore, Fail, false];
     }
 
     public static IEnumerable<object[]> General_equals_test_cases()
     {
-        yield return [Create, new(), false];
-        yield return [Update, new(), false];
+        yield return [Fail, new(), false];
+        yield return [Ignore, new(), false];
     }
 }

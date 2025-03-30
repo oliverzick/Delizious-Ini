@@ -1830,6 +1830,117 @@ public sealed class IniDocumentSpec
         }
     }
 
+    [TestClass]
+    public sealed class WriteComment
+    {
+        [TestClass]
+        public sealed class With_sectionName_and_comment_and_mode
+        {
+            private static IniDocumentConfiguration Configuration => DefaultConfiguration;
+
+            private static Comment DummyComment => Comment.None;
+
+            private static CommentWriteMode DummyMode => CommentWriteMode.Fail;
+
+            [TestMethod]
+            public void Throws_argument_null_exception_when_section_name_is_null()
+            {
+                var target = Make.EmptyTarget(Configuration);
+
+                Assert.ThrowsException<ArgumentNullException>(() => target.WriteComment(null, DummyComment, DummyMode));
+            }
+
+            [TestMethod]
+            public void Throws_argument_null_exception_when_comment_is_null()
+            {
+                var target = Make.EmptyTarget(Configuration);
+
+                Assert.ThrowsException<ArgumentNullException>(() => target.WriteComment(DummySectionName, null, DummyMode));
+            }
+
+            [TestMethod]
+            public void Throws_argument_null_exception_when_mode_is_null()
+            {
+                var target = Make.EmptyTarget(Configuration);
+
+                Assert.ThrowsException<ArgumentNullException>(() => target.WriteComment(DummySectionName, DummyComment, null));
+            }
+
+            private static void WritesComment(CommentWriteMode mode)
+            {
+                const string ini = """
+                                   [Section]
+                                   """;
+
+                Comment comment = """
+                                  This is a multiline
+
+                                  comment.
+                                  """;
+
+                const string expected = """
+                                        ;This is a multiline
+                                        ;
+                                        ;comment.
+                                        [Section]
+
+                                        """;
+
+                using var reader = new StringReader(ini);
+                var target = IniDocument.LoadFrom(reader, Configuration);
+
+                target.WriteComment("Section", comment, mode);
+
+                using var writer = new StringWriter();
+                target.SaveTo(writer);
+
+                writer.Flush();
+                var actual = writer.ToString();
+
+                Assert.AreEqual(expected, actual);
+            }
+
+            [TestClass]
+            public sealed class When_fail_mode
+            {
+                private static CommentWriteMode Mode => CommentWriteMode.Fail;
+
+                [TestMethod]
+                public void Throws_section_not_found_exception_when_section_does_not_exist()
+                {
+                    var expected = new SectionNotFoundExceptionAssertion(NonexistentSectionName);
+                    var target = Make.EmptyTarget(Configuration);
+
+                    var actual = Assert.ThrowsException<SectionNotFoundException>(() => target.WriteComment(NonexistentSectionName, DummyComment, Mode));
+
+                    Assert.AreEqual(expected, actual);
+                }
+
+                [TestMethod]
+                public void Writes_comment()
+                    => WritesComment(Mode);
+            }
+
+            [TestClass]
+            public sealed class When_ignore_mode
+            {
+                private static CommentWriteMode Mode => CommentWriteMode.Ignore;
+
+                [TestMethod]
+                public void Ignores_when_section_does_not_exist()
+                {
+                    var target = Make.EmptyTarget(Configuration);
+
+                    target.WriteComment(NonexistentSectionName, DummyComment, Mode);
+                }
+
+                [TestMethod]
+                public void Writes_comment()
+                    => WritesComment(Mode);
+            }
+        }
+    }
+
     private static class Make
     {
         public static IniDocument Target(string ini, IniDocumentConfiguration configuration)
