@@ -11,6 +11,7 @@ Run(DeleteSection,       nameof(DeleteSection));
 Run(DeleteProperty,      nameof(DeleteProperty));
 Run(ReadSectionComment,  nameof(ReadSectionComment));
 Run(ReadPropertyComment, nameof(ReadPropertyComment));
+Run(WriteSectionComment, nameof(WriteSectionComment));
 return;
 
 void QuickStart()
@@ -222,6 +223,32 @@ void ReadPropertyComment()
     var comment = iniDocument.ReadComment("Section", "Property");
 
     Console.WriteLine(comment);
+}
+
+void WriteSectionComment()
+{
+    const string ini = """
+                       [Section]
+                       Property=Value
+                       """;
+
+    const string comment = """
+                           This is a sample
+                           multiline
+                           comment. :)
+                           """;
+
+    using var textReader = new StringReader(ini);
+    var iniDocument = IniDocument.LoadFrom(textReader, IniDocumentConfiguration.Default);
+
+    iniDocument.WriteComment("Section", comment, CommentWriteMode.Fail);
+
+    using var textWriter = new StringWriter();
+    iniDocument.SaveTo(textWriter);
+
+    textWriter.Flush();
+
+    Console.WriteLine(textWriter);
 }
 
 void Run(Action action, string name)
