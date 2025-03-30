@@ -15,23 +15,24 @@
         }
 
         /// <summary>
-        /// Specifies that writing a comment should create a new comment.
-        /// If a comment already exists, it will be overwritten.
+        /// Specifies that writing a comment should fail by
+        /// throwing a <see cref="SectionNotFoundException"/> when the section does not exist,
+        /// or throwing a <see cref="PropertyNotFoundException"/> when the property does not exist.
         /// </summary>
         /// <returns>
-        /// A <see cref="CommentWriteMode"/> instance that represents the create mode.
+        /// A <see cref="CommentWriteMode"/> instance that represents the fail mode.
         /// </returns>
-        public static CommentWriteMode Create
-            => new CommentWriteMode(new CreateMode());
+        public static CommentWriteMode Fail
+            => new CommentWriteMode(new FailMode());
 
         /// <summary>
-        /// Specifies that writing a comment should update an existing comment and requires that both the section and property exist.
+        /// Specifies that writing a comment should silently ignore if the section or the property to write the comment does not exist.
         /// </summary>
         /// <returns>
-        /// A <see cref="CommentWriteMode"/> instance that represents the update mode.
+        /// A <see cref="CommentWriteMode"/> instance that represents the ignore mode.
         /// </returns>
-        public static CommentWriteMode Update
-            => new CommentWriteMode(new UpdateMode());
+        public static CommentWriteMode Ignore
+            => new CommentWriteMode(new IgnoreMode());
 
         public static bool operator ==(CommentWriteMode left, CommentWriteMode right)
             => Equals(left, right);
@@ -65,41 +66,41 @@
             bool Equals(IMode other);
         }
 
-        private sealed class CreateMode : IMode
+        private sealed class FailMode : IMode
         {
             public T Transform<T>(ICommentWriteModeTransformation<T> transformation)
-                => transformation.Create();
+                => transformation.Fail();
 
             public bool Equals(IMode other)
-                => other is CreateMode;
+                => other is FailMode;
 
             public override int GetHashCode()
-                => nameof(CreateMode).GetHashCode();
+                => nameof(FailMode).GetHashCode();
 
             public override string ToString()
-                => "Create";
+                => "Fail";
         }
 
-        private sealed class UpdateMode : IMode
+        private sealed class IgnoreMode : IMode
         {
             public T Transform<T>(ICommentWriteModeTransformation<T> transformation)
-                => transformation.Update();
+                => transformation.Ignore();
 
             public bool Equals(IMode other)
-                => other is UpdateMode;
+                => other is IgnoreMode;
 
             public override int GetHashCode()
-                => nameof(UpdateMode).GetHashCode();
+                => nameof(IgnoreMode).GetHashCode();
 
             public override string ToString()
-                => "Update";
+                => "Ignore";
         }
     }
 
     internal interface ICommentWriteModeTransformation<out T>
     {
-        T Create();
+        T Fail();
 
-        T Update();
+        T Ignore();
     }
 }
