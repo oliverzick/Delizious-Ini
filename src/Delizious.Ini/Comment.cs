@@ -78,5 +78,8 @@
         /// <inheritdoc/>
         public override string ToString()
             => this.comment;
+
+        internal IEnumerable<string> Split()
+            => this.comment.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
     }
 }

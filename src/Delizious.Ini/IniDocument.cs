@@ -724,5 +724,55 @@
 
             return this.iniDocument.ReadComment(sectionName, propertyKey, mode);
         }
+
+        /// <summary>
+        /// <para>
+        /// Writes the comment for the section according to the given mode.
+        /// </para>
+        /// <para>
+        /// When <paramref name="mode"/> is <see cref="CommentWriteMode.Fail"/> and the section does not exist, a <see cref="SectionNotFoundException"/> is thrown.
+        /// </para>
+        /// <para>
+        /// When <paramref name="mode"/> is <see cref="CommentWriteMode.Ignore"/>, it is silently ignored if the section does not exist.
+        /// </para>
+        /// </summary>
+        /// <param name="sectionName">
+        /// The name of the section to write the comment.
+        /// </param>
+        /// <param name="comment">
+        /// The comment to write for the section.
+        /// </param>
+        /// <param name="mode">
+        /// The mode that specifies how to write the comment.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// <para><paramref name="sectionName"/> is <c>null</c>.</para>
+        /// <para>- or -</para>
+        /// <para><paramref name="comment"/> is <c>null</c>.</para>
+        /// <para>- or -</para>
+        /// <para><paramref name="mode"/> is <c>null</c>.</para>
+        /// </exception>
+        /// <exception cref="SectionNotFoundException">
+        /// <paramref name="mode"/> is <see cref="CommentWriteMode.Fail"/> and the specified section does not exist.
+        /// </exception>
+        public void WriteComment(SectionName sectionName, Comment comment, CommentWriteMode mode)
+        {
+            if (sectionName is null)
+            {
+                throw new ArgumentNullException(nameof(sectionName));
+            }
+
+            if (comment is null)
+            {
+                throw new ArgumentNullException(nameof(comment));
+            }
+
+            if (mode is null)
+            {
+                throw new ArgumentNullException(nameof(mode));
+            }
+
+            this.iniDocument.WriteComment(sectionName, comment, mode);
+        }
     }
 }
