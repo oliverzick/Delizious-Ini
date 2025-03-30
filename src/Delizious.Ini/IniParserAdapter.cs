@@ -198,16 +198,16 @@
 
         private sealed class NullSection : ISection
         {
-            private readonly Comment comment;
+            private readonly Comment fallbackComment;
 
             public NullSection()
                 : this(Comment.None)
             {
             }
 
-            public NullSection(Comment comment)
+            public NullSection(Comment fallbackComment)
             {
-                this.comment = comment;
+                this.fallbackComment = fallbackComment;
             }
 
             public void Delete()
@@ -215,7 +215,7 @@
             }
 
             public Comment ReadComment()
-                => this.comment;
+                => this.fallbackComment;
 
             [ExcludeFromCodeCoverage]
             public ISection CreateProperty(PropertyKey propertyKey)
