@@ -9,6 +9,9 @@
     [Serializable]
     public sealed class Comment : IEquatable<Comment>
     {
+        private static string Separator
+            => Environment.NewLine;
+
         private readonly string comment;
 
         private Comment(string comment)
@@ -39,7 +42,7 @@
         }
 
         internal static Comment Create(IEnumerable<string> comments)
-            => string.Join(Environment.NewLine, comments);
+            => string.Join(Separator, comments);
 
         public static implicit operator Comment(string comment)
             => Create(comment);
@@ -80,6 +83,6 @@
             => this.comment;
 
         internal IEnumerable<string> Split()
-            => this.comment.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+            => this.comment.Split(new[] { Separator }, StringSplitOptions.None);
     }
 }
