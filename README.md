@@ -261,10 +261,8 @@ var comment = iniDocument.ReadComment("Section", "Property");
 Console.WriteLine(comment);
 ```
 
-### Write comment of section
+### Write comment for section
 ```cs
-void WriteSectionComment()
-{
 const string ini = """
                    [Section]
                    Property=Value
@@ -287,7 +285,32 @@ iniDocument.SaveTo(textWriter);
 textWriter.Flush();
 
 Console.WriteLine(textWriter);
-}
+```
+
+### Write comment for property
+```cs
+const string ini = """
+                   [Section]
+                   Property=Value
+                   """;
+
+const string comment = """
+                       This is a sample
+                       multiline
+                       comment. :)
+                       """;
+
+using var textReader = new StringReader(ini);
+var iniDocument = IniDocument.LoadFrom(textReader, IniDocumentConfiguration.Default);
+
+iniDocument.WriteComment("Section", "Property", comment, CommentWriteMode.Fail);
+
+using var textWriter = new StringWriter();
+iniDocument.SaveTo(textWriter);
+
+textWriter.Flush();
+
+Console.WriteLine(textWriter);
 ```
 
 ## License
