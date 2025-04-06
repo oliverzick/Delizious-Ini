@@ -2,16 +2,17 @@
 using System.IO;
 using Delizious.Ini;
 
-Run(QuickStart,          nameof(QuickStart));
-Run(Configure,           nameof(Configure));
-Run(LoadAndSave,         nameof(LoadAndSave));
-Run(EnumerateSections,   nameof(EnumerateSections));
-Run(EnumerateProperties, nameof(EnumerateProperties));
-Run(DeleteSection,       nameof(DeleteSection));
-Run(DeleteProperty,      nameof(DeleteProperty));
-Run(ReadSectionComment,  nameof(ReadSectionComment));
-Run(ReadPropertyComment, nameof(ReadPropertyComment));
-Run(WriteSectionComment, nameof(WriteSectionComment));
+Run(QuickStart,           nameof(QuickStart));
+Run(Configure,            nameof(Configure));
+Run(LoadAndSave,          nameof(LoadAndSave));
+Run(EnumerateSections,    nameof(EnumerateSections));
+Run(EnumerateProperties,  nameof(EnumerateProperties));
+Run(DeleteSection,        nameof(DeleteSection));
+Run(DeleteProperty,       nameof(DeleteProperty));
+Run(ReadSectionComment,   nameof(ReadSectionComment));
+Run(ReadPropertyComment,  nameof(ReadPropertyComment));
+Run(WriteSectionComment,  nameof(WriteSectionComment));
+Run(WritePropertyComment, nameof(WritePropertyComment));
 return;
 
 void QuickStart()
@@ -242,6 +243,32 @@ void WriteSectionComment()
     var iniDocument = IniDocument.LoadFrom(textReader, IniDocumentConfiguration.Default);
 
     iniDocument.WriteComment("Section", comment, CommentWriteMode.Fail);
+
+    using var textWriter = new StringWriter();
+    iniDocument.SaveTo(textWriter);
+
+    textWriter.Flush();
+
+    Console.WriteLine(textWriter);
+}
+
+void WritePropertyComment()
+{
+    const string ini = """
+                       [Section]
+                       Property=Value
+                       """;
+
+    const string comment = """
+                           This is a sample
+                           multiline
+                           comment. :)
+                           """;
+
+    using var textReader = new StringReader(ini);
+    var iniDocument = IniDocument.LoadFrom(textReader, IniDocumentConfiguration.Default);
+
+    iniDocument.WriteComment("Section", "Property", comment, CommentWriteMode.Fail);
 
     using var textWriter = new StringWriter();
     iniDocument.SaveTo(textWriter);

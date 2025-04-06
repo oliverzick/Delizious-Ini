@@ -17,6 +17,8 @@
 
         void WriteComment(SectionName sectionName, Comment comment, CommentWriteMode mode);
 
+        void WriteComment(SectionName sectionName, PropertyKey propertyKey, Comment comment, CommentWriteMode mode);
+
         void WriteProperty(SectionName sectionName, PropertyKey propertyKey, PropertyValue propertyValue, PropertyWriteMode mode);
 
         void DeleteProperty(SectionName sectionName, PropertyKey propertyKey, PropertyDeletionMode mode);
