@@ -160,6 +160,11 @@
             => this.SelectSection(sectionName, mode.Transform(new FallbackSectionProvider(sectionName)))
                    .WriteComment(comment);
 
+        public void WriteComment(SectionName sectionName, PropertyKey propertyKey, Comment comment, CommentWriteMode mode)
+            => this.SelectSection(sectionName, mode.Transform(new FallbackSectionProvider(sectionName)))
+                   .SelectProperty(propertyKey, mode.Transform(new FallbackPropertyProvider(propertyKey)))
+                   .WriteComment(comment);
+
         public void WriteProperty(SectionName sectionName, PropertyKey propertyKey, PropertyValue propertyValue, PropertyWriteMode mode)
             => mode.Transform(new WritePropertySelector(this, sectionName, propertyKey))
                    .WriteValue(propertyValue);
@@ -319,6 +324,8 @@
         {
             Comment ReadComment();
 
+            void WriteComment(Comment comment);
+
             PropertyValue ReadValue();
 
             void WriteValue(PropertyValue value);
@@ -351,6 +358,10 @@
             public Comment ReadComment()
                 => this.fallbackComment;
 
+            public void WriteComment(Comment comment)
+            {
+            }
+
             public PropertyValue ReadValue()
                 => this.fallbackValue;
 
@@ -374,6 +385,9 @@
             }
 
             public Comment ReadComment()
+                => throw new PropertyNotFoundException(this.propertyKey);
+
+            public void WriteComment(Comment comment)
                 => throw new PropertyNotFoundException(this.propertyKey);
 
             public PropertyValue ReadValue()
@@ -403,6 +417,12 @@
 
             public Comment ReadComment()
                 => Comment.Create(this.keyData.Comments);
+
+            public void WriteComment(Comment comment)
+            {
+                this.keyData.Comments.Clear();
+                this.keyData.Comments.AddRange(comment.Split());
+            }
 
             public PropertyValue ReadValue()
                 => this.keyData.Value;
@@ -439,7 +459,7 @@
                 => new NullSection();
         }
 
-        private sealed class FallbackPropertyProvider : IPropertyReadModeTransformation<IProperty>, IPropertyDeletionModeTransformation<IProperty>, ICommentReadModeTransformation<IProperty>
+        private sealed class FallbackPropertyProvider : IPropertyReadModeTransformation<IProperty>, IPropertyDeletionModeTransformation<IProperty>, ICommentReadModeTransformation<IProperty>, ICommentWriteModeTransformation<IProperty>
         {
             private readonly PropertyKey propertyKey;
 
