@@ -328,31 +328,31 @@
 
         private sealed class NullProperty : IProperty
         {
-            private readonly Comment comment;
+            private readonly Comment fallbackComment;
 
-            private readonly PropertyValue propertyValue;
+            private readonly PropertyValue fallbackValue;
 
-            private NullProperty(Comment comment, PropertyValue propertyValue)
+            private NullProperty(Comment fallbackComment, PropertyValue fallbackValue)
             {
-                this.comment = comment;
-                this.propertyValue = propertyValue;
+                this.fallbackComment = fallbackComment;
+                this.fallbackValue = fallbackValue;
             }
 
-            public NullProperty(PropertyValue propertyValue)
-                : this(Comment.None, propertyValue)
+            public NullProperty(PropertyValue fallbackValue)
+                : this(Comment.None, fallbackValue)
             {
             }
 
-            public NullProperty(Comment comment)
-                : this(comment, PropertyValue.None)
+            public NullProperty(Comment fallbackComment)
+                : this(fallbackComment, PropertyValue.None)
             {
             }
 
             public Comment ReadComment()
-                => this.comment;
+                => this.fallbackComment;
 
             public PropertyValue ReadValue()
-                => this.propertyValue;
+                => this.fallbackValue;
 
             [ExcludeFromCodeCoverage]
             public void WriteValue(PropertyValue value)
