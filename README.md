@@ -103,43 +103,45 @@ iniDocument.SaveTo(Console.Out);
 //var looseConfiguration = IniDocumentConfiguration.Loose;
 var looseConfiguration =
     IniDocumentConfiguration.Default
-                            .WithCaseSensitivity(CaseSensitivity.CaseInsensitive) // Treat section names and property keys as case-insensitive
-                            .WithNewlineString(NewlineString.Environment) // Use newline string as given by current environment
-                            .WithSectionBeginningDelimiter(SectionBeginningDelimiter.Default) // Use default section beginning delimiter which is opening square bracket '['
-                            .WithSectionEndDelimiter(SectionEndDelimiter.Default) // Use default section end delimiter which is closing square bracket ']'
-                            .WithSectionNameRegex(SectionNameRegex.Default) // Use default section name regex which is '[\p{L}\p{M}\p{N}\p{P}\p{S}\p{Zs}]+'
-                            .WithDuplicatePropertyBehavior(DuplicatePropertyBehavior.Ignore) // Ignore subsequent occurrences of a duplicate property by using the first occurrence of such a property
-                            .WithDuplicateSectionBehavior(DuplicateSectionBehavior.Merge) // Merge a duplicate section
-                            .WithInvalidLineBehavior(InvalidLineBehavior.Ignore) // Ignore when a line is invalid and cannot be parsed on loading
+                            .WithCaseSensitivity(CaseSensitivity.CaseInsensitive)                 // Treat section names and property keys as case-insensitive
+                            .WithNewlineString(NewlineString.Environment)                         // Use newline string as given by current environment
+                            .WithSectionBeginningDelimiter(SectionBeginningDelimiter.Default)     // Use default section beginning delimiter which is opening square bracket '['
+                            .WithSectionEndDelimiter(SectionEndDelimiter.Default)                 // Use default section end delimiter which is closing square bracket ']'
+                            .WithSectionNameRegex(SectionNameRegex.Default)                       // Use default section name regex which is '[\p{L}\p{M}\p{N}\p{P}\p{S}\p{Zs}]+'
+                            .WithDuplicatePropertyBehavior(DuplicatePropertyBehavior.Ignore)      // Ignore subsequent occurrences of a duplicate property by using the first occurrence of such a property
+                            .WithDuplicateSectionBehavior(DuplicateSectionBehavior.Merge)         // Merge a duplicate section
+                            .WithInvalidLineBehavior(InvalidLineBehavior.Ignore)                  // Ignore when a line is invalid and cannot be parsed on loading
                             .WithPropertyAssignmentSeparator(PropertyAssignmentSeparator.Default) // Use default property assignment separator which is equality sign '='
-                            .WithPropertyAssignmentSpacer(PropertyAssignmentSpacer.None) // Use no property assignment spacer
-                            .WithPropertyEnumerationMode(PropertyEnumerationMode.Fallback) // Fallback to empty collection of property keys when section does not exist
-                            .WithPropertyReadMode(PropertyReadMode.Fallback) // Fallback to empty string when property to read does not exist
-                            .WithPropertyWriteMode(PropertyWriteMode.Create) // Create a new property or update an existing property
-                            .WithPropertyDeletionMode(PropertyDeletionMode.Ignore) // Ignore when property to delete does not exist
-                            .WithSectionDeletionMode(SectionDeletionMode.Ignore) // Ignore when section to delete does not exist
-                            .WithCommentReadMode(CommentReadMode.Fallback); // Fallback to none comment when section or property to read comment does not exist
+                            .WithPropertyAssignmentSpacer(PropertyAssignmentSpacer.None)          // Use no property assignment spacer
+                            .WithPropertyEnumerationMode(PropertyEnumerationMode.Fallback)        // Fallback to empty collection of property keys when section does not exist
+                            .WithPropertyReadMode(PropertyReadMode.Fallback)                      // Fallback to empty string when property to read does not exist
+                            .WithPropertyWriteMode(PropertyWriteMode.Create)                      // Create a new property or update an existing property
+                            .WithPropertyDeletionMode(PropertyDeletionMode.Ignore)                // Ignore when property to delete does not exist
+                            .WithSectionDeletionMode(SectionDeletionMode.Ignore)                  // Ignore when section to delete does not exist
+                            .WithCommentReadMode(CommentReadMode.Fallback)                        // Fallback to none comment when section or property to read comment does not exist
+                            .WithCommentWriteMode(CommentWriteMode.Ignore);                       // Ignore when section or property to write the comment does not exist
 
 // This configuration represents the strict configuration which is also predefined:
 //var strictConfiguration = IniDocumentConfiguration.Strict;
 var strictConfiguration =
     IniDocumentConfiguration.Default
-                            .WithCaseSensitivity(CaseSensitivity.CaseInsensitive) // Treat section names and property keys as case-insensitive
-                            .WithNewlineString(NewlineString.Environment) // Use newline string as given by current environment
-                            .WithSectionBeginningDelimiter(SectionBeginningDelimiter.Default) // Use default section beginning delimiter which is opening square bracket '['
-                            .WithSectionEndDelimiter(SectionEndDelimiter.Default) // Use default section end delimiter which is closing square bracket ']'
-                            .WithSectionNameRegex(SectionNameRegex.Default) // Use default section name regex which is '[\p{L}\p{M}\p{N}\p{P}\p{S}\p{Zs}]+'
-                            .WithDuplicatePropertyBehavior(DuplicatePropertyBehavior.Fail) // Throw exception when a duplicate property occurs
-                            .WithDuplicateSectionBehavior(DuplicateSectionBehavior.Fail) // Throw exception when a duplicate section occurs
-                            .WithInvalidLineBehavior(InvalidLineBehavior.Fail) // Throw exception when a line is invalid and cannot be parsed on loading
+                            .WithCaseSensitivity(CaseSensitivity.CaseInsensitive)                 // Treat section names and property keys as case-insensitive
+                            .WithNewlineString(NewlineString.Environment)                         // Use newline string as given by current environment
+                            .WithSectionBeginningDelimiter(SectionBeginningDelimiter.Default)     // Use default section beginning delimiter which is opening square bracket '['
+                            .WithSectionEndDelimiter(SectionEndDelimiter.Default)                 // Use default section end delimiter which is closing square bracket ']'
+                            .WithSectionNameRegex(SectionNameRegex.Default)                       // Use default section name regex which is '[\p{L}\p{M}\p{N}\p{P}\p{S}\p{Zs}]+'
+                            .WithDuplicatePropertyBehavior(DuplicatePropertyBehavior.Fail)        // Throw exception when a duplicate property occurs
+                            .WithDuplicateSectionBehavior(DuplicateSectionBehavior.Fail)          // Throw exception when a duplicate section occurs
+                            .WithInvalidLineBehavior(InvalidLineBehavior.Fail)                    // Throw exception when a line is invalid and cannot be parsed on loading
                             .WithPropertyAssignmentSeparator(PropertyAssignmentSeparator.Default) // Use default property assignment separator which is equality sign '='
-                            .WithPropertyAssignmentSpacer(PropertyAssignmentSpacer.None) // Use no property assignment spacer
-                            .WithPropertyEnumerationMode(PropertyEnumerationMode.Fail) // Throw exception when section to enumerate properties does not exist
-                            .WithPropertyReadMode(PropertyReadMode.Fail) // Throw exception when property to read to does not exist
-                            .WithPropertyWriteMode(PropertyWriteMode.Update) // Update existing property only but throw exception when property to write does not exist
-                            .WithPropertyDeletionMode(PropertyDeletionMode.Fail) // Throw exception when property to delete does not exist
-                            .WithSectionDeletionMode(SectionDeletionMode.Fail) // Throw exception when section to delete does not exist
-                            .WithCommentReadMode(CommentReadMode.Fail); // Throw exception when section or property to read comment does not exist
+                            .WithPropertyAssignmentSpacer(PropertyAssignmentSpacer.None)          // Use no property assignment spacer
+                            .WithPropertyEnumerationMode(PropertyEnumerationMode.Fail)            // Throw exception when section to enumerate properties does not exist
+                            .WithPropertyReadMode(PropertyReadMode.Fail)                          // Throw exception when property to read to does not exist
+                            .WithPropertyWriteMode(PropertyWriteMode.Update)                      // Update existing property only but throw exception when property to write does not exist
+                            .WithPropertyDeletionMode(PropertyDeletionMode.Fail)                  // Throw exception when property to delete does not exist
+                            .WithSectionDeletionMode(SectionDeletionMode.Fail)                    // Throw exception when section to delete does not exist
+                            .WithCommentReadMode(CommentReadMode.Fail)                            // Throw exception when section or property to read comment does not exist
+                            .WithCommentWriteMode(CommentWriteMode.Fail);                         // Throw exception when section or property to write the comment does not exist
 ```
 
 ### Load and save

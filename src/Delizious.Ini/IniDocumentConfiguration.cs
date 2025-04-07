@@ -25,7 +25,8 @@
                                          PropertyWriteMode propertyWriteMode,
                                          PropertyDeletionMode propertyDeletionMode,
                                          SectionDeletionMode sectionDeletionMode,
-                                         CommentReadMode commentReadMode)
+                                         CommentReadMode commentReadMode,
+                                         CommentWriteMode commentWriteMode)
         {
             this.CaseSensitivity = caseSensitivity;
             this.NewlineString = newlineString;
@@ -43,6 +44,7 @@
             this.PropertyDeletionMode = propertyDeletionMode;
             this.SectionDeletionMode = sectionDeletionMode;
             this.CommentReadMode = commentReadMode;
+            this.CommentWriteMode = commentWriteMode;
         }
 
         private IniDocumentConfiguration(IniDocumentConfiguration other)
@@ -61,7 +63,8 @@
                    other.PropertyWriteMode,
                    other.PropertyDeletionMode,
                    other.SectionDeletionMode,
-                   other.CommentReadMode)
+                   other.CommentReadMode,
+                   other.CommentWriteMode)
         {
         }
 
@@ -148,6 +151,10 @@
         /// <term><see cref="CommentReadMode"/></term>
         /// <description><see cref="Ini.CommentReadMode.Fallback"/></description>
         /// </item>
+        /// <item>
+        /// <term><see cref="CommentWriteMode"/></term>
+        /// <description><see cref="Ini.CommentWriteMode.Ignore"/></description>
+        /// </item>
         /// </list>
         /// </summary>
         public static IniDocumentConfiguration Loose
@@ -166,7 +173,8 @@
                                             PropertyWriteMode.Create,
                                             PropertyDeletionMode.Ignore,
                                             SectionDeletionMode.Ignore,
-                                            CommentReadMode.Fallback);
+                                            CommentReadMode.Fallback,
+                                            CommentWriteMode.Ignore);
 
         /// <summary>
         /// <para>
@@ -240,6 +248,10 @@
         /// <term><see cref="CommentReadMode"/></term>
         /// <description><see cref="Ini.CommentReadMode.Fail"/></description>
         /// </item>
+        /// <item>
+        /// <term><see cref="CommentWriteMode"/></term>
+        /// <description><see cref="Ini.CommentWriteMode.Fail"/></description>
+        /// </item>
         /// </list>
         /// </summary>
         public static IniDocumentConfiguration Strict
@@ -258,7 +270,8 @@
                                             PropertyWriteMode.Update,
                                             PropertyDeletionMode.Fail,
                                             SectionDeletionMode.Fail,
-                                            CommentReadMode.Fail);
+                                            CommentReadMode.Fail,
+                                            CommentWriteMode.Fail);
 
         /// <summary>
         /// <para>
@@ -688,6 +701,32 @@
             this.CommentReadMode = commentReadMode;
         }
 
+        /// <summary>
+        /// The mode that specifies how to write a comment.
+        /// </summary>
+        public CommentWriteMode CommentWriteMode { get; }
+
+        /// <summary>
+        /// Creates a copy of the current <see cref="IniDocumentConfiguration"/> instance and defines the mode that specifies how to write a comment.
+        /// </summary>
+        /// <param name="commentWriteMode">
+        /// The mode that specifies how to write a comment.
+        /// </param>
+        /// <returns>
+        /// A new <see cref="IniDocumentConfiguration"/> instance with the given <paramref name="commentWriteMode"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="commentWriteMode"/> is <c>null</c>.
+        /// </exception>
+        public IniDocumentConfiguration WithCommentWriteMode(CommentWriteMode commentWriteMode)
+            => new IniDocumentConfiguration(this, commentWriteMode ?? throw new ArgumentNullException(nameof(commentWriteMode)));
+
+        private IniDocumentConfiguration(IniDocumentConfiguration other, CommentWriteMode commentWriteMode)
+            : this(other)
+        {
+            this.CommentWriteMode = commentWriteMode;
+        }
+
         public static bool operator ==(IniDocumentConfiguration left, IniDocumentConfiguration right)
             => Equals(left, right);
 
@@ -717,7 +756,8 @@
                 && Equals(this.PropertyWriteMode,           other.PropertyWriteMode)
                 && Equals(this.PropertyDeletionMode,        other.PropertyDeletionMode)
                 && Equals(this.SectionDeletionMode,         other.SectionDeletionMode)
-                && Equals(this.CommentReadMode,             other.CommentReadMode);
+                && Equals(this.CommentReadMode,             other.CommentReadMode)
+                && Equals(this.CommentWriteMode,            other.CommentWriteMode);
         }
 
         /// <inheritdoc/>
@@ -741,10 +781,11 @@
                                   this.PropertyWriteMode.GetHashCode(),
                                   this.PropertyDeletionMode.GetHashCode(),
                                   this.SectionDeletionMode.GetHashCode(),
-                                  this.CommentReadMode.GetHashCode());
+                                  this.CommentReadMode.GetHashCode(),
+                                  this.CommentWriteMode.GetHashCode());
 
         /// <inheritdoc/>
         public override string ToString()
-            => $"{nameof(IniDocumentConfiguration)} {{ {nameof(this.CaseSensitivity)} = {this.CaseSensitivity}, {nameof(this.NewlineString)} = {this.NewlineString}, {nameof(this.SectionBeginningDelimiter)} = {this.SectionBeginningDelimiter}, {nameof(this.SectionEndDelimiter)} = {this.SectionEndDelimiter}, {nameof(this.SectionNameRegex)} = {this.SectionNameRegex}, {nameof(this.DuplicatePropertyBehavior)} = {this.DuplicatePropertyBehavior}, {nameof(this.DuplicateSectionBehavior)} = {this.DuplicateSectionBehavior}, {nameof(this.InvalidLineBehavior)} = {this.InvalidLineBehavior}, {nameof(this.PropertyAssignmentSeparator)} = {this.PropertyAssignmentSeparator}, {nameof(this.PropertyAssignmentSpacer)} = {this.PropertyAssignmentSpacer}, {nameof(this.PropertyEnumerationMode)} = {this.PropertyEnumerationMode}, {nameof(this.PropertyReadMode)} = {this.PropertyReadMode}, {nameof(this.PropertyWriteMode)} = {this.PropertyWriteMode}, {nameof(this.PropertyDeletionMode)} = {this.PropertyDeletionMode}, {nameof(this.SectionDeletionMode)} = {this.SectionDeletionMode}, {nameof(this.CommentReadMode)} = {this.CommentReadMode} }}";
+            => $"{nameof(IniDocumentConfiguration)} {{ {nameof(this.CaseSensitivity)} = {this.CaseSensitivity}, {nameof(this.NewlineString)} = {this.NewlineString}, {nameof(this.SectionBeginningDelimiter)} = {this.SectionBeginningDelimiter}, {nameof(this.SectionEndDelimiter)} = {this.SectionEndDelimiter}, {nameof(this.SectionNameRegex)} = {this.SectionNameRegex}, {nameof(this.DuplicatePropertyBehavior)} = {this.DuplicatePropertyBehavior}, {nameof(this.DuplicateSectionBehavior)} = {this.DuplicateSectionBehavior}, {nameof(this.InvalidLineBehavior)} = {this.InvalidLineBehavior}, {nameof(this.PropertyAssignmentSeparator)} = {this.PropertyAssignmentSeparator}, {nameof(this.PropertyAssignmentSpacer)} = {this.PropertyAssignmentSpacer}, {nameof(this.PropertyEnumerationMode)} = {this.PropertyEnumerationMode}, {nameof(this.PropertyReadMode)} = {this.PropertyReadMode}, {nameof(this.PropertyWriteMode)} = {this.PropertyWriteMode}, {nameof(this.PropertyDeletionMode)} = {this.PropertyDeletionMode}, {nameof(this.SectionDeletionMode)} = {this.SectionDeletionMode}, {nameof(this.CommentReadMode)} = {this.CommentReadMode}, {nameof(this.CommentWriteMode)} = {this.CommentWriteMode} }}";
     }
 }
