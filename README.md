@@ -311,7 +311,7 @@ const string comment = """
 using var textReader = new StringReader(ini);
 var iniDocument = IniDocument.LoadFrom(textReader, IniDocumentConfiguration.Default);
 
-iniDocument.WriteComment("Section", "Property", comment, CommentWriteMode.Fail);
+iniDocument.WriteComment("Section", "Property", comment);
 
 using var textWriter = new StringWriter();
 iniDocument.SaveTo(textWriter);
