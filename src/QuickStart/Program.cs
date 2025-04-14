@@ -244,7 +244,7 @@ void WriteSectionComment()
     using var textReader = new StringReader(ini);
     var iniDocument = IniDocument.LoadFrom(textReader, IniDocumentConfiguration.Default);
 
-    iniDocument.WriteComment("Section", comment, CommentWriteMode.Fail);
+    iniDocument.WriteComment("Section", comment);
 
     using var textWriter = new StringWriter();
     iniDocument.SaveTo(textWriter);
