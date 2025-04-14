@@ -807,6 +807,48 @@
 
         /// <summary>
         /// <para>
+        /// Writes the comment for the property using the <see cref="IniDocumentConfiguration.CommentWriteMode"/>.
+        /// </para>
+        /// <para>
+        /// When <see cref="IniDocumentConfiguration.CommentWriteMode"/> is <see cref="CommentWriteMode.Fail"/> and the section does not exist,
+        /// throws a <see cref="SectionNotFoundException"/> 
+        /// </para>
+        /// <para>
+        /// When <see cref="IniDocumentConfiguration.CommentWriteMode"/> is <see cref="CommentWriteMode.Fail"/> and the property does not exist,
+        /// throws a <see cref="PropertyNotFoundException"/> 
+        /// </para>
+        /// <para>
+        /// When <see cref="IniDocumentConfiguration.CommentWriteMode"/> is <see cref="CommentWriteMode.Ignore"/>,
+        /// it is silently ignored if the section or property does not exist.
+        /// </para>
+        /// </summary>
+        /// <param name="sectionName">
+        /// The name of the section containing the property.
+        /// </param>
+        /// <param name="propertyKey">
+        /// The key of the property to write the comment.
+        /// </param>
+        /// <param name="comment">
+        /// The comment to write for the property.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// <para><paramref name="sectionName"/> is <c>null</c>.</para>
+        /// <para>- or -</para>
+        /// <para><paramref name="propertyKey"/> is <c>null</c>.</para>
+        /// <para>- or -</para>
+        /// <para><paramref name="comment"/> is <c>null</c>.</para>
+        /// </exception>
+        /// <exception cref="SectionNotFoundException">
+        /// <see cref="IniDocumentConfiguration.CommentWriteMode"/> is <see cref="CommentWriteMode.Fail"/> and the specified section does not exist.
+        /// </exception>
+        /// <exception cref="PropertyNotFoundException">
+        /// <see cref="IniDocumentConfiguration.CommentWriteMode"/> is <see cref="CommentWriteMode.Fail"/> and the specified property does not exist.
+        /// </exception>
+        public void WriteComment(SectionName sectionName, PropertyKey propertyKey, Comment comment)
+            => this.WriteComment(sectionName, propertyKey, comment, this.configuration.CommentWriteMode);
+
+        /// <summary>
+        /// <para>
         /// Writes the comment for the property according to the given mode.
         /// </para>
         /// <para>

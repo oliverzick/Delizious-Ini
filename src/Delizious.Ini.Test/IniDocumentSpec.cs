@@ -2036,6 +2036,131 @@ public sealed class IniDocumentSpec
         }
 
         [TestClass]
+        public sealed class With_sectionName_and_propertyKey_and_comment
+        {
+            private static Comment DummyComment => Comment.None;
+
+            [TestMethod]
+            public void Throws_argument_null_exception_when_section_name_is_null()
+            {
+                var target = Make.EmptyTarget(DefaultConfiguration);
+
+                Assert.ThrowsException<ArgumentNullException>(() => target.WriteComment(null, DummyPropertyKey, DummyComment));
+            }
+
+            [TestMethod]
+            public void Throws_argument_null_exception_when_property_key_is_null()
+            {
+                var target = Make.EmptyTarget(DefaultConfiguration);
+
+                Assert.ThrowsException<ArgumentNullException>(() => target.WriteComment(DummySectionName, null, DummyComment));
+            }
+
+            [TestMethod]
+            public void Throws_argument_null_exception_when_comment_is_null()
+            {
+                var target = Make.EmptyTarget(DefaultConfiguration);
+
+                Assert.ThrowsException<ArgumentNullException>(() => target.WriteComment(DummySectionName, DummyPropertyKey, null));
+            }
+
+            private static void WritesComment(IniDocumentConfiguration configuration)
+            {
+                const string ini = """
+                                   [Section]
+                                   Property=Value
+                                   """;
+
+                Comment comment = """
+                                  This is a multiline
+
+                                  comment.
+                                  """;
+
+                const string expected = """
+                                        [Section]
+
+                                        ;This is a multiline
+                                        ;
+                                        ;comment.
+                                        Property=Value
+
+                                        """;
+
+                using var reader = new StringReader(ini);
+                var target = IniDocument.LoadFrom(reader, configuration);
+
+                target.WriteComment("Section", "Property", comment);
+
+                using var writer = new StringWriter();
+                target.SaveTo(writer);
+
+                writer.Flush();
+                var actual = writer.ToString();
+
+                Assert.AreEqual(expected, actual);
+            }
+
+            [TestClass]
+            public sealed class When_fail_mode
+            {
+                private static IniDocumentConfiguration Configuration => DefaultConfiguration.WithCommentWriteMode(CommentWriteMode.Fail);
+
+                [TestMethod]
+                public void Throws_section_not_found_exception_when_section_does_not_exist()
+                {
+                    var expected = new SectionNotFoundExceptionAssertion(NonexistentSectionName);
+                    var target = Make.EmptyTarget(Configuration);
+
+                    var actual = Assert.ThrowsException<SectionNotFoundException>(() => target.WriteComment(NonexistentSectionName, DummyPropertyKey, DummyComment));
+
+                    Assert.AreEqual(expected, actual);
+                }
+
+                [TestMethod]
+                public void Throws_property_not_found_exception_when_property_does_not_exist()
+                {
+                    var expected = new PropertyNotFoundExceptionAssertion(NonexistentPropertyKey);
+                    var target = Make.SingleDefaultPropertyTarget(Configuration, DefaultPropertyValue);
+
+                    var actual = Assert.ThrowsException<PropertyNotFoundException>(() => target.WriteComment(DefaultSectionName, NonexistentPropertyKey, DummyComment));
+
+                    Assert.AreEqual(expected, actual);
+                }
+
+                [TestMethod]
+                public void Writes_comment()
+                    => WritesComment(Configuration);
+            }
+
+            [TestClass]
+            public sealed class When_ignore_mode
+            {
+                private static IniDocumentConfiguration Configuration => DefaultConfiguration.WithCommentWriteMode(CommentWriteMode.Ignore);
+
+                [TestMethod]
+                public void Ignores_when_section_does_not_exist()
+                {
+                    var target = Make.EmptyTarget(Configuration);
+
+                    target.WriteComment(NonexistentSectionName, DummyPropertyKey, DummyComment);
+                }
+
+                [TestMethod]
+                public void Ignores_when_property_does_not_exist()
+                {
+                    var target = Make.SingleDefaultPropertyTarget(Configuration, DefaultPropertyValue);
+
+                    target.WriteComment(DefaultSectionName, NonexistentPropertyKey, DummyComment);
+                }
+
+                [TestMethod]
+                public void Writes_comment()
+                    => WritesComment(Configuration);
+            }
+        }
+
+        [TestClass]
         public sealed class With_sectionName_and_propertyKey_and_comment_and_mode
         {
             private static IniDocumentConfiguration Configuration => DefaultConfiguration;

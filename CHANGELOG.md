@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ## [1.17.0] - 2025-04-14
 ### Added
 - Enable writing the comment for a section of an INI document with given section name and default comment write mode ([#170](https://github.com/oliverzick/Delizious-Ini/issues/170))
+- Enable writing the comment for a property of an INI document with given section name, property key and default comment write mode ([#173](https://github.com/oliverzick/Delizious-Ini/issues/173))
 
 ## [1.16.0] - 2025-04-06
 ### Added
