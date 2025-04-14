@@ -727,6 +727,36 @@
 
         /// <summary>
         /// <para>
+        /// Writes the comment for the section using the <see cref="IniDocumentConfiguration.CommentWriteMode"/>.
+        /// </para>
+        /// <para>
+        /// When <see cref="IniDocumentConfiguration.CommentWriteMode"/> is <see cref="CommentWriteMode.Fail"/> and the section does not exist,
+        /// a <see cref="SectionNotFoundException"/> is thrown.
+        /// </para>
+        /// <para>
+        /// When <see cref="IniDocumentConfiguration.CommentWriteMode"/> is <see cref="CommentWriteMode.Ignore"/>,
+        /// it is silently ignored if the section does not exist.
+        /// </para>
+        /// </summary>
+        /// <param name="sectionName">
+        /// The name of the section to write the comment.
+        /// </param>
+        /// <param name="comment">
+        /// The comment to write for the section.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// <para><paramref name="sectionName"/> is <c>null</c>.</para>
+        /// <para>- or -</para>
+        /// <para><paramref name="comment"/> is <c>null</c>.</para>
+        /// </exception>
+        /// <exception cref="SectionNotFoundException">
+        /// <see cref="IniDocumentConfiguration.CommentWriteMode"/> is <see cref="CommentWriteMode.Fail"/> and the specified section does not exist.
+        /// </exception>
+        public void WriteComment(SectionName sectionName, Comment comment)
+            => this.WriteComment(sectionName, comment, this.configuration.CommentWriteMode);
+
+        /// <summary>
+        /// <para>
         /// Writes the comment for the section according to the given mode.
         /// </para>
         /// <para>

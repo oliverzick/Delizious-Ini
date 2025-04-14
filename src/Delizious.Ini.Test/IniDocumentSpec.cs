@@ -1834,6 +1834,101 @@ public sealed class IniDocumentSpec
     public sealed class WriteComment
     {
         [TestClass]
+        public sealed class With_sectionName_and_comment
+        {
+            private static Comment DummyComment => Comment.None;
+
+            [TestMethod]
+            public void Throws_argument_null_exception_when_section_name_is_null()
+            {
+                var target = Make.EmptyTarget(DefaultConfiguration);
+
+                Assert.ThrowsException<ArgumentNullException>(() => target.WriteComment(null, DummyComment));
+            }
+
+            [TestMethod]
+            public void Throws_argument_null_exception_when_comment_is_null()
+            {
+                var target = Make.EmptyTarget(DefaultConfiguration);
+
+                Assert.ThrowsException<ArgumentNullException>(() => target.WriteComment(DummySectionName, null));
+            }
+
+            private static void WritesComment(IniDocumentConfiguration configuration)
+            {
+                const string ini = """
+                                   [Section]
+                                   """;
+
+                Comment comment = """
+                                  This is a multiline
+
+                                  comment.
+                                  """;
+
+                const string expected = """
+                                        ;This is a multiline
+                                        ;
+                                        ;comment.
+                                        [Section]
+
+                                        """;
+
+                using var reader = new StringReader(ini);
+                var target = IniDocument.LoadFrom(reader, configuration);
+
+                target.WriteComment("Section", comment);
+
+                using var writer = new StringWriter();
+                target.SaveTo(writer);
+
+                writer.Flush();
+                var actual = writer.ToString();
+
+                Assert.AreEqual(expected, actual);
+            }
+
+            [TestClass]
+            public sealed class When_fail_mode
+            {
+                private static IniDocumentConfiguration Configuration => DefaultConfiguration.WithCommentWriteMode(CommentWriteMode.Fail);
+
+                [TestMethod]
+                public void Throws_section_not_found_exception_when_section_does_not_exist()
+                {
+                    var expected = new SectionNotFoundExceptionAssertion(NonexistentSectionName);
+                    var target = Make.EmptyTarget(Configuration);
+
+                    var actual = Assert.ThrowsException<SectionNotFoundException>(() => target.WriteComment(NonexistentSectionName, DummyComment));
+
+                    Assert.AreEqual(expected, actual);
+                }
+
+                [TestMethod]
+                public void Writes_comment()
+                    => WritesComment(Configuration);
+            }
+
+            [TestClass]
+            public sealed class When_ignore_mode
+            {
+                private static IniDocumentConfiguration Configuration => DefaultConfiguration.WithCommentWriteMode(CommentWriteMode.Ignore);
+
+                [TestMethod]
+                public void Ignores_when_section_does_not_exist()
+                {
+                    var target = Make.EmptyTarget(Configuration);
+
+                    target.WriteComment(NonexistentSectionName, DummyComment);
+                }
+
+                [TestMethod]
+                public void Writes_comment()
+                    => WritesComment(Configuration);
+            }
+        }
+
+        [TestClass]
         public sealed class With_sectionName_and_comment_and_mode
         {
             private static IniDocumentConfiguration Configuration => DefaultConfiguration;
