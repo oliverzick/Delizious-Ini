@@ -141,4 +141,7 @@
   <data name="PatternForSectionNameRegexMustNotBeEmpty" xml:space="preserve">
     <value>Pattern for section name regex must not be empty.</value>
   </data>
+  <data name="CommentStringMustNotBeEmptyOrConsistOnlyOfWhiteSpaceCharacters" xml:space="preserve">
+    <value>Comment string must not be empty or consist only of white-space characters.</value>
+  </data>
 </root>

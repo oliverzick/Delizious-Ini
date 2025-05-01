@@ -61,6 +61,15 @@ namespace Delizious.Ini {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Comment string must not be empty or consist only of white-space characters..
+        /// </summary>
+        internal static string CommentStringMustNotBeEmptyOrConsistOnlyOfWhiteSpaceCharacters {
+            get {
+                return ResourceManager.GetString("CommentStringMustNotBeEmptyOrConsistOnlyOfWhiteSpaceCharacters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not find property in INI document..
         /// </summary>
         internal static string CouldNotFindPropertyInIniDocument {
