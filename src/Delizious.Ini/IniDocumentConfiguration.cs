@@ -25,6 +25,7 @@
                                          PropertyWriteMode propertyWriteMode,
                                          PropertyDeletionMode propertyDeletionMode,
                                          SectionDeletionMode sectionDeletionMode,
+                                         CommentString commentString,
                                          CommentReadMode commentReadMode,
                                          CommentWriteMode commentWriteMode)
         {
@@ -43,6 +44,7 @@
             this.PropertyWriteMode = propertyWriteMode;
             this.PropertyDeletionMode = propertyDeletionMode;
             this.SectionDeletionMode = sectionDeletionMode;
+            this.CommentString = commentString;
             this.CommentReadMode = commentReadMode;
             this.CommentWriteMode = commentWriteMode;
         }
@@ -63,6 +65,7 @@
                    other.PropertyWriteMode,
                    other.PropertyDeletionMode,
                    other.SectionDeletionMode,
+                   other.CommentString,
                    other.CommentReadMode,
                    other.CommentWriteMode)
         {
@@ -148,6 +151,10 @@
         /// <description><see cref="Ini.SectionDeletionMode.Ignore"/></description>
         /// </item>
         /// <item>
+        /// <term><see cref="CommentString"/></term>
+        /// <description><see cref="Ini.CommentString.Default"/></description>
+        /// </item>
+        /// <item>
         /// <term><see cref="CommentReadMode"/></term>
         /// <description><see cref="Ini.CommentReadMode.Fallback"/></description>
         /// </item>
@@ -173,6 +180,7 @@
                                             PropertyWriteMode.Create,
                                             PropertyDeletionMode.Ignore,
                                             SectionDeletionMode.Ignore,
+                                            CommentString.Default,
                                             CommentReadMode.Fallback,
                                             CommentWriteMode.Ignore);
 
@@ -245,6 +253,10 @@
         /// <description><see cref="Ini.SectionDeletionMode.Fail"/></description>
         /// </item>
         /// <item>
+        /// <term><see cref="CommentString"/></term>
+        /// <description><see cref="Ini.CommentString.Default"/></description>
+        /// </item>
+        /// <item>
         /// <term><see cref="CommentReadMode"/></term>
         /// <description><see cref="Ini.CommentReadMode.Fail"/></description>
         /// </item>
@@ -270,6 +282,7 @@
                                             PropertyWriteMode.Update,
                                             PropertyDeletionMode.Fail,
                                             SectionDeletionMode.Fail,
+                                            CommentString.Default,
                                             CommentReadMode.Fail,
                                             CommentWriteMode.Fail);
 
@@ -676,6 +689,32 @@
         }
 
         /// <summary>
+        /// The string that indicates the beginning of a comment line.
+        /// </summary>
+        public CommentString CommentString { get; }
+
+        /// <summary>
+        /// Creates a copy of the current <see cref="IniDocumentConfiguration"/> instance and defines the string that indicates the beginning of a comment line.
+        /// </summary>
+        /// <param name="commentString">
+        /// The string that indicates the beginning of a comment line.
+        /// </param>
+        /// <returns>
+        /// A new <see cref="IniDocumentConfiguration"/> instance with the given <paramref name="commentString"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="commentString"/> is <c>null</c>.
+        /// </exception>
+        public IniDocumentConfiguration WithCommentString(CommentString commentString)
+            => new IniDocumentConfiguration(this, commentString ?? throw new ArgumentNullException(nameof(commentString)));
+
+        private IniDocumentConfiguration(IniDocumentConfiguration other, CommentString commentString)
+            : this(other)
+        {
+            this.CommentString = commentString;
+        }
+
+        /// <summary>
         /// The mode that specifies how to read a comment.
         /// </summary>
         public CommentReadMode CommentReadMode { get; }
@@ -756,6 +795,7 @@
                 && Equals(this.PropertyWriteMode,           other.PropertyWriteMode)
                 && Equals(this.PropertyDeletionMode,        other.PropertyDeletionMode)
                 && Equals(this.SectionDeletionMode,         other.SectionDeletionMode)
+                && Equals(this.CommentString,               other.CommentString)
                 && Equals(this.CommentReadMode,             other.CommentReadMode)
                 && Equals(this.CommentWriteMode,            other.CommentWriteMode);
         }
@@ -781,11 +821,12 @@
                                   this.PropertyWriteMode.GetHashCode(),
                                   this.PropertyDeletionMode.GetHashCode(),
                                   this.SectionDeletionMode.GetHashCode(),
+                                  this.CommentString.GetHashCode(),
                                   this.CommentReadMode.GetHashCode(),
                                   this.CommentWriteMode.GetHashCode());
 
         /// <inheritdoc/>
         public override string ToString()
-            => $"{nameof(IniDocumentConfiguration)} {{ {nameof(this.CaseSensitivity)} = {this.CaseSensitivity}, {nameof(this.NewlineString)} = {this.NewlineString}, {nameof(this.SectionBeginningDelimiter)} = {this.SectionBeginningDelimiter}, {nameof(this.SectionEndDelimiter)} = {this.SectionEndDelimiter}, {nameof(this.SectionNameRegex)} = {this.SectionNameRegex}, {nameof(this.DuplicatePropertyBehavior)} = {this.DuplicatePropertyBehavior}, {nameof(this.DuplicateSectionBehavior)} = {this.DuplicateSectionBehavior}, {nameof(this.InvalidLineBehavior)} = {this.InvalidLineBehavior}, {nameof(this.PropertyAssignmentSeparator)} = {this.PropertyAssignmentSeparator}, {nameof(this.PropertyAssignmentSpacer)} = {this.PropertyAssignmentSpacer}, {nameof(this.PropertyEnumerationMode)} = {this.PropertyEnumerationMode}, {nameof(this.PropertyReadMode)} = {this.PropertyReadMode}, {nameof(this.PropertyWriteMode)} = {this.PropertyWriteMode}, {nameof(this.PropertyDeletionMode)} = {this.PropertyDeletionMode}, {nameof(this.SectionDeletionMode)} = {this.SectionDeletionMode}, {nameof(this.CommentReadMode)} = {this.CommentReadMode}, {nameof(this.CommentWriteMode)} = {this.CommentWriteMode} }}";
+            => $"{nameof(IniDocumentConfiguration)} {{ {nameof(this.CaseSensitivity)} = {this.CaseSensitivity}, {nameof(this.NewlineString)} = {this.NewlineString}, {nameof(this.SectionBeginningDelimiter)} = {this.SectionBeginningDelimiter}, {nameof(this.SectionEndDelimiter)} = {this.SectionEndDelimiter}, {nameof(this.SectionNameRegex)} = {this.SectionNameRegex}, {nameof(this.DuplicatePropertyBehavior)} = {this.DuplicatePropertyBehavior}, {nameof(this.DuplicateSectionBehavior)} = {this.DuplicateSectionBehavior}, {nameof(this.InvalidLineBehavior)} = {this.InvalidLineBehavior}, {nameof(this.PropertyAssignmentSeparator)} = {this.PropertyAssignmentSeparator}, {nameof(this.PropertyAssignmentSpacer)} = {this.PropertyAssignmentSpacer}, {nameof(this.PropertyEnumerationMode)} = {this.PropertyEnumerationMode}, {nameof(this.PropertyReadMode)} = {this.PropertyReadMode}, {nameof(this.PropertyWriteMode)} = {this.PropertyWriteMode}, {nameof(this.PropertyDeletionMode)} = {this.PropertyDeletionMode}, {nameof(this.SectionDeletionMode)} = {this.SectionDeletionMode}, {nameof(this.CommentString)} = {this.CommentString}, {nameof(this.CommentReadMode)} = {this.CommentReadMode}, {nameof(this.CommentWriteMode)} = {this.CommentWriteMode} }}";
     }
 }
