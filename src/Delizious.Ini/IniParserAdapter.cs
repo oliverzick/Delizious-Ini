@@ -51,6 +51,7 @@
                    AllowKeysWithoutSection = false,
                    AssigmentSpacer = configuration.PropertyAssignmentSpacer.ToString(),
                    CaseInsensitive = configuration.CaseSensitivity.Transform(new CaseSensitivityTransformation()),
+                   CommentString = configuration.CommentString.ToString(),
                    ConcatenateDuplicateKeys = false,
                    KeyValueAssigmentChar = configuration.PropertyAssignmentSeparator.ToChar(),
                    NewLineStr = configuration.NewlineString.ToString(),

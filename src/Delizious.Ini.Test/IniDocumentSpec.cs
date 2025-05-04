@@ -338,6 +338,51 @@ public sealed class IniDocumentSpec
             }
         }
 
+        [TestClass]
+        public sealed class With_configured_comment_string
+        {
+            private const string Ini = """
+                                       ;This is a multiline
+                                       ;
+                                       ;section comment.
+                                       [Section]
+                                       Property=Value
+                                       """;
+
+            [TestClass]
+            public sealed class When_incompatible_comment_string
+            {
+                private static IniDocumentConfiguration Configuration => DefaultConfiguration.WithCommentString("#");
+
+                [TestMethod]
+                public void Throws_persistence_exception_on_incompatible_comment_string()
+                {
+                    using var textReader = new StringReader(Ini);
+
+                    Assert.ThrowsException<PersistenceException>(() => IniDocument.LoadFrom(textReader, Configuration));
+                }
+            }
+
+            [TestClass]
+            public sealed class When_compatible_comment_string
+            {
+                private const string ExpectedIni = """
+                                                   ;This is a multiline
+                                                   ;
+                                                   ;section comment.
+                                                   [Section]
+                                                   Property=Value
+
+                                                   """;
+
+                private static IniDocumentConfiguration Configuration => DefaultConfiguration.WithCommentString(CommentString.Default);
+
+                [TestMethod]
+                public void Loads_and_saves_properly()
+                    => Load_and_save(Ini, Configuration, ExpectedIni);
+            }
+        }
+
         private static void Load_and_save(string sourceIni, IniDocumentConfiguration configuration, string expectedIni)
         {
             using var reader = new StringReader(sourceIni);
