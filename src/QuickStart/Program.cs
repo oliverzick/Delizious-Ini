@@ -78,6 +78,7 @@ void Configure()
                                 .WithPropertyWriteMode(PropertyWriteMode.Create)                      // Create a new property or update an existing property
                                 .WithPropertyDeletionMode(PropertyDeletionMode.Ignore)                // Ignore when property to delete does not exist
                                 .WithSectionDeletionMode(SectionDeletionMode.Ignore)                  // Ignore when section to delete does not exist
+                                .WithCommentString(CommentString.Default)                             // Use default comment string that indicates the beginning of a comment line which is a semicolon ';'
                                 .WithCommentReadMode(CommentReadMode.Fallback)                        // Fallback to none comment when section or property to read comment does not exist
                                 .WithCommentWriteMode(CommentWriteMode.Ignore);                       // Ignore when section or property to write the comment does not exist
 
@@ -100,6 +101,7 @@ void Configure()
                                 .WithPropertyWriteMode(PropertyWriteMode.Update)                      // Update existing property only but throw exception when property to write does not exist
                                 .WithPropertyDeletionMode(PropertyDeletionMode.Fail)                  // Throw exception when property to delete does not exist
                                 .WithSectionDeletionMode(SectionDeletionMode.Fail)                    // Throw exception when section to delete does not exist
+                                .WithCommentString(CommentString.Default)                             // Use default comment string that indicates the beginning of a comment line which is a semicolon ';'
                                 .WithCommentReadMode(CommentReadMode.Fail)                            // Throw exception when section or property to read comment does not exist
                                 .WithCommentWriteMode(CommentWriteMode.Fail);                         // Throw exception when section or property to write the comment does not exist
 }
