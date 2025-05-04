@@ -2,9 +2,8 @@
 ## What?
 Delizious Ini is an easy to use .NET Standard library entirely written in C# for reading and writing of INI data.
 
-## New features in version 1.17.0
-* Writing the comment for a section with given section name and default comment write mode
-* Writing the comment for a property with given section name, property key and default comment write mode
+## New features in version 1.18.0
+* Configurability of the comment string that indicates the beginning of a comment line
 
 ## Features
 Delizious Ini provides the following features:
@@ -13,10 +12,10 @@ Delizious Ini provides the following features:
 * Enumeration of properties contained in a section
 * Reading and writing of a property
 * Deletion of sections or properties
-* Reading the comment of a section for given section name and mode
+* Reading the comment of a section with given section name and mode
   - Fail mode: Throw section not found exception when section does not exist
   - Fallback mode: Return fallback comment given by the mode when the section does not exist
-* Reading the comment of a property for given section name, property key and mode
+* Reading the comment of a property with given section name, property key and mode
   - Fail mode: Throw section not found exception when section does not exist, throw property not found exception when property does not exist
   - Fallback mode: Return fallback comment given by the mode when the section or property does not exist
 * Writing the comment for a section with given mode
@@ -120,6 +119,7 @@ var looseConfiguration =
                             .WithPropertyWriteMode(PropertyWriteMode.Create)                      // Create a new property or update an existing property
                             .WithPropertyDeletionMode(PropertyDeletionMode.Ignore)                // Ignore when property to delete does not exist
                             .WithSectionDeletionMode(SectionDeletionMode.Ignore)                  // Ignore when section to delete does not exist
+                            .WithCommentString(CommentString.Default)                             // Use default comment string that indicates the beginning of a comment line which is a semicolon ';'
                             .WithCommentReadMode(CommentReadMode.Fallback)                        // Fallback to none comment when section or property to read comment does not exist
                             .WithCommentWriteMode(CommentWriteMode.Ignore);                       // Ignore when section or property to write the comment does not exist
 
@@ -142,6 +142,7 @@ var strictConfiguration =
                             .WithPropertyWriteMode(PropertyWriteMode.Update)                      // Update existing property only but throw exception when property to write does not exist
                             .WithPropertyDeletionMode(PropertyDeletionMode.Fail)                  // Throw exception when property to delete does not exist
                             .WithSectionDeletionMode(SectionDeletionMode.Fail)                    // Throw exception when section to delete does not exist
+                            .WithCommentString(CommentString.Default)                             // Use default comment string that indicates the beginning of a comment line which is a semicolon ';'
                             .WithCommentReadMode(CommentReadMode.Fail)                            // Throw exception when section or property to read comment does not exist
                             .WithCommentWriteMode(CommentWriteMode.Fail);                         // Throw exception when section or property to write the comment does not exist
 ```

@@ -26,6 +26,7 @@ public sealed class IniDocumentConfigurationSpec
         Setting.PropertyWriteMode,
         Setting.PropertyDeletionMode,
         Setting.SectionDeletionMode,
+        Setting.CommentString,
         Setting.CommentReadMode,
         Setting.CommentWriteMode
     ];
@@ -271,6 +272,22 @@ public sealed class IniDocumentConfigurationSpec
             yield return [IniDocumentConfiguration.Default, SectionDeletionMode.Ignore];
             yield return [IniDocumentConfiguration.Loose, SectionDeletionMode.Ignore];
             yield return [IniDocumentConfiguration.Strict, SectionDeletionMode.Fail];
+        }
+
+        [DataTestMethod]
+        [DynamicData(nameof(Default_comment_string_test_cases), DynamicDataSourceType.Method)]
+        public void Default_comment_string(IniDocumentConfiguration target, CommentString expected)
+        {
+            var actual = target.CommentString;
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        public static IEnumerable<object[]> Default_comment_string_test_cases()
+        {
+            yield return [IniDocumentConfiguration.Default, CommentString.Default];
+            yield return [IniDocumentConfiguration.Loose, CommentString.Default];
+            yield return [IniDocumentConfiguration.Strict, CommentString.Default];
         }
 
         [DataTestMethod]
@@ -698,6 +715,32 @@ public sealed class IniDocumentConfigurationSpec
     }
 
     [TestClass]
+    public sealed class WithCommentString
+    {
+        private static IEnumerable<Setting> SettingsToExclude => [Setting.CommentString];
+
+        [TestMethod]
+        public void Throws_argument_null_exception_when_given_comment_string_is_null()
+        {
+            Assert.ThrowsException<ArgumentNullException>(() => Target.WithCommentString(null!));
+        }
+
+        [DataTestMethod]
+        [DynamicData(nameof(Retains_remaining_settings_test_cases), DynamicDataSourceType.Method)]
+        public void Retains_remaining_settings(Setting setting)
+        {
+            var original = Target;
+
+            var actual = original.WithCommentString("/");
+
+            setting.AssertIsEqual(original, actual);
+        }
+
+        public static IEnumerable<object[]> Retains_remaining_settings_test_cases()
+            => AllSettings.Except(SettingsToExclude).Select(ToTestCase);
+    }
+
+    [TestClass]
     public sealed class WithCommentReadMode
     {
         private static IEnumerable<Setting> SettingsToExclude => [Setting.CommentReadMode];
@@ -877,6 +920,8 @@ public sealed class IniDocumentConfigurationSpec
             yield return [Default, Default.WithPropertyWriteMode(PropertyWriteMode.Update), false];
             yield return [Default, Default.WithSectionDeletionMode(SectionDeletionMode.Fail), false];
             yield return [Default, Default.WithSectionDeletionMode(SectionDeletionMode.Ignore), true];
+            yield return [Default, Default.WithCommentString(CommentString.Default), true];
+            yield return [Default, Default.WithCommentString("/"), false];
             yield return [Default, Default.WithCommentReadMode(CommentReadMode.Fail), false];
             yield return [Default, Default.WithCommentReadMode(CommentReadMode.Fallback), true];
             yield return [Default, Default.WithCommentWriteMode(CommentWriteMode.Fail), false];
@@ -1105,6 +1150,18 @@ public sealed class IniDocumentConfigurationSpec
 
             public override string BuildString(IniDocumentConfiguration target)
                 => $"{nameof(target.SectionDeletionMode)} = {target.SectionDeletionMode}";
+        }
+
+        public static Setting CommentString
+            => new(new CommentStringSetting());
+
+        private sealed record CommentStringSetting : Strategy
+        {
+            public override void AssertIsEqual(IniDocumentConfiguration original, IniDocumentConfiguration actual)
+                => Assert.AreEqual(original.CommentString, actual.CommentString);
+
+            public override string BuildString(IniDocumentConfiguration target)
+                => $"{nameof(target.CommentString)} = {target.CommentString}";
         }
 
         public static Setting CommentReadMode

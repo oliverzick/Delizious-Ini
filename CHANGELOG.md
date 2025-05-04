@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.18.0] - 2025-05-04
+### Added
+- Enable configuration of the comment string that indicates the beginning of a comment line in an INI document ([#175](https://github.com/oliverzick/Delizious-Ini/issues/175))
+
 ## [1.17.0] - 2025-04-14
 ### Added
 - Enable writing the comment for a section of an INI document with given section name and default comment write mode ([#170](https://github.com/oliverzick/Delizious-Ini/issues/170))
