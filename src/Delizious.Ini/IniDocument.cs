@@ -137,7 +137,7 @@
         /// </para>
         /// <para>
         /// When <see cref="IniDocumentConfiguration.PropertyEnumerationMode"/> is <see cref="PropertyEnumerationMode.Fail"/> and the specified section does not exist,
-        /// throws a <see cref="SectionNotFoundException"/>.
+        /// a <see cref="SectionNotFoundException"/> is thrown.
         /// </para>
         /// </summary>
         /// <param name="sectionName">
@@ -168,11 +168,11 @@
         /// </para>
         /// <para>
         /// When mode is <see cref="PropertyEnumerationMode.Fail"/> and the section does not exist,
-        /// throws a <see cref="SectionNotFoundException"/> 
+        /// a <see cref="SectionNotFoundException"/> is thrown.
         /// </para>
         /// <para>
         /// When mode is <see cref="PropertyEnumerationMode.Fallback"/> and the section does not exist,
-        /// returns an empty collection of property keys.
+        /// an empty collection of property keys is returned.
         /// </para>
         /// </summary>
         /// <param name="sectionName">
@@ -213,11 +213,11 @@
         /// </para>
         /// <para>
         /// When <see cref="IniDocumentConfiguration.PropertyReadMode"/> is <see cref="PropertyReadMode.Fail"/> and the specified section does not exist,
-        /// throws a <see cref="SectionNotFoundException"/>.
+        /// a <see cref="SectionNotFoundException"/> is thrown.
         /// </para>
         /// <para>
         /// When <see cref="IniDocumentConfiguration.PropertyReadMode"/> is <see cref="PropertyReadMode.Fail"/> and the specified property does not exist,
-        /// throws a <see cref="PropertyNotFoundException"/>.
+        /// a <see cref="PropertyNotFoundException"/> is thrown.
         /// </para>
         /// </summary>
         /// <param name="sectionName">
@@ -251,11 +251,11 @@
         /// </para>
         /// <para>
         /// When mode is <see cref="PropertyReadMode.Fail"/> and the section does not exist,
-        /// throws a <see cref="SectionNotFoundException"/> 
+        /// a <see cref="SectionNotFoundException"/> is thrown.
         /// </para>
         /// <para>
         /// When mode is <see cref="PropertyReadMode.Fail"/> and the property does not exist,
-        /// throws a <see cref="PropertyNotFoundException"/> 
+        /// a <see cref="PropertyNotFoundException"/> is thrown.
         /// </para>
         /// </summary>
         /// <param name="sectionName">
@@ -269,7 +269,8 @@
         /// </param>
         /// <returns>
         /// The value of the property.
-        /// When mode is <see cref="PropertyReadMode.CustomFallback(PropertyValue)"/> and the section or property does not exist, the fallback property value given by the mode is returned.
+        /// When mode is <see cref="PropertyReadMode.CustomFallback(PropertyValue)"/> and the section or property does not exist,
+        /// the fallback property value given by the mode is returned.
         /// </returns>
         /// <exception cref="ArgumentNullException">
         /// <para><paramref name="sectionName"/> is <c>null</c>.</para>
@@ -412,11 +413,14 @@
         /// Deletes the property using the <see cref="IniDocumentConfiguration.PropertyDeletionMode"/>.
         /// </para>
         /// <para>
-        /// When <see cref="IniDocumentConfiguration.PropertyDeletionMode"/> is <see cref="PropertyDeletionMode.Fail"/> and the section does not exist, a <see cref="SectionNotFoundException"/> is thrown.
-        /// If the section exists but the property to delete does not exist, a <see cref="PropertyNotFoundException"/> is thrown.
+        /// When <see cref="IniDocumentConfiguration.PropertyDeletionMode"/> is <see cref="PropertyDeletionMode.Fail"/> and the section does not exist,
+        /// a <see cref="SectionNotFoundException"/> is thrown.
+        /// When the section exists but the property to delete does not exist,
+        /// a <see cref="PropertyNotFoundException"/> is thrown.
         /// </para>
         /// <para>
-        /// When <see cref="IniDocumentConfiguration.PropertyDeletionMode"/> is <see cref="PropertyDeletionMode.Ignore"/>, it is silently ignored if the section or the property does not exist.
+        /// When <see cref="IniDocumentConfiguration.PropertyDeletionMode"/> is <see cref="PropertyDeletionMode.Ignore"/>,
+        /// it is silently ignored if the section or the property does not exist.
         /// </para>
         /// </summary>
         /// <param name="sectionName">
@@ -444,11 +448,14 @@
         /// Deletes the property according to the given mode.
         /// </para>
         /// <para>
-        /// When mode is <see cref="PropertyDeletionMode.Fail"/> and the section does not exist, a <see cref="SectionNotFoundException"/> is thrown.
-        /// If the section exists but the property to delete does not exist, a <see cref="PropertyNotFoundException"/> is thrown.
+        /// When mode is <see cref="PropertyDeletionMode.Fail"/> and the section does not exist,
+        /// a <see cref="SectionNotFoundException"/> is thrown.
+        /// When the section exists but the property to delete does not exist,
+        /// a <see cref="PropertyNotFoundException"/> is thrown.
         /// </para>
         /// <para>
-        /// When mode is <see cref="PropertyDeletionMode.Ignore"/>, it is silently ignored if the section or the property does not exist.
+        /// When mode is <see cref="PropertyDeletionMode.Ignore"/>,
+        /// it is silently ignored if the section or the property does not exist.
         /// </para>
         /// </summary>
         /// <param name="sectionName">
@@ -502,7 +509,8 @@
         /// a <see cref="SectionNotFoundException"/> is thrown.
         /// </para>
         /// <para>
-        /// When <see cref="IniDocumentConfiguration.SectionDeletionMode"/> is <see cref="SectionDeletionMode.Ignore"/>, it is silently ignored if the section does not exist.
+        /// When <see cref="IniDocumentConfiguration.SectionDeletionMode"/> is <see cref="SectionDeletionMode.Ignore"/>,
+        /// it is silently ignored if the section does not exist.
         /// </para>
         /// </summary>
         /// <param name="sectionName">
@@ -526,7 +534,8 @@
         /// a <see cref="SectionNotFoundException"/> is thrown.
         /// </para>
         /// <para>
-        /// When mode is <see cref="SectionDeletionMode.Ignore"/>, it is silently ignored if the section does not exist.
+        /// When mode is <see cref="SectionDeletionMode.Ignore"/>,
+        /// it is silently ignored if the section does not exist.
         /// </para>
         /// </summary>
         /// <param name="sectionName">
@@ -564,7 +573,7 @@
         /// </para>
         /// <para>
         /// When <see cref="IniDocumentConfiguration.CommentReadMode"/> is <see cref="CommentReadMode.Fail"/> and the section does not exist,
-        /// throws a <see cref="SectionNotFoundException"/> 
+        /// a <see cref="SectionNotFoundException"/> is thrown.
         /// </para>
         /// </summary>
         /// <param name="sectionName">
@@ -591,7 +600,7 @@
         /// </para>
         /// <para>
         /// When mode is <see cref="CommentReadMode.Fail"/> and the section does not exist,
-        /// throws a <see cref="SectionNotFoundException"/> 
+        /// a <see cref="SectionNotFoundException"/> is thrown.
         /// </para>
         /// </summary>
         /// <param name="sectionName">
@@ -602,7 +611,8 @@
         /// </param>
         /// <returns>
         /// The comment of the section.
-        /// When mode is <see cref="CommentReadMode.CustomFallback(Comment)"/> and the section does not exist, the fallback comment given by the mode is returned.
+        /// When mode is <see cref="CommentReadMode.CustomFallback(Comment)"/> and the section does not exist,
+        /// the fallback comment given by the mode is returned.
         /// </returns>
         /// <exception cref="ArgumentNullException">
         /// <para><paramref name="sectionName"/> is <c>null</c>.</para>
@@ -633,11 +643,11 @@
         /// </para>
         /// <para>
         /// When <see cref="IniDocumentConfiguration.CommentReadMode"/> is <see cref="CommentReadMode.Fail"/> and the section does not exist,
-        /// throws a <see cref="SectionNotFoundException"/> 
+        /// a <see cref="SectionNotFoundException"/> is thrown.
         /// </para>
         /// <para>
         /// When <see cref="IniDocumentConfiguration.CommentReadMode"/> is <see cref="CommentReadMode.Fail"/> and the property does not exist,
-        /// throws a <see cref="PropertyNotFoundException"/>.
+        /// a <see cref="PropertyNotFoundException"/> is thrown.
         /// </para>
         /// </summary>
         /// <param name="sectionName">
@@ -672,11 +682,11 @@
         /// </para>
         /// <para>
         /// When mode is <see cref="CommentReadMode.Fail"/> and the section does not exist,
-        /// throws a <see cref="SectionNotFoundException"/> 
+        /// a <see cref="SectionNotFoundException"/> is thrown.
         /// </para>
         /// <para>
         /// When mode is <see cref="CommentReadMode.Fail"/> and the property does not exist,
-        /// throws a <see cref="PropertyNotFoundException"/> 
+        /// a <see cref="PropertyNotFoundException"/> is thrown.
         /// </para>
         /// </summary>
         /// <param name="sectionName">
@@ -690,7 +700,8 @@
         /// </param>
         /// <returns>
         /// The comment of the property.
-        /// When mode is <see cref="CommentReadMode.CustomFallback(Comment)"/> and the section or property does not exist, the fallback comment given by the mode is returned.
+        /// When mode is <see cref="CommentReadMode.CustomFallback(Comment)"/> and the section or property does not exist,
+        /// the fallback comment given by the mode is returned.
         /// </returns>
         /// <exception cref="ArgumentNullException">
         /// <para><paramref name="sectionName"/> is <c>null</c>.</para>
@@ -760,10 +771,12 @@
         /// Writes the comment for the section according to the given mode.
         /// </para>
         /// <para>
-        /// When <paramref name="mode"/> is <see cref="CommentWriteMode.Fail"/> and the section does not exist, a <see cref="SectionNotFoundException"/> is thrown.
+        /// When <paramref name="mode"/> is <see cref="CommentWriteMode.Fail"/> and the section does not exist,
+        /// a <see cref="SectionNotFoundException"/> is thrown.
         /// </para>
         /// <para>
-        /// When <paramref name="mode"/> is <see cref="CommentWriteMode.Ignore"/>, it is silently ignored if the section does not exist.
+        /// When <paramref name="mode"/> is <see cref="CommentWriteMode.Ignore"/>,
+        /// it is silently ignored if the section does not exist.
         /// </para>
         /// </summary>
         /// <param name="sectionName">
@@ -811,11 +824,11 @@
         /// </para>
         /// <para>
         /// When <see cref="IniDocumentConfiguration.CommentWriteMode"/> is <see cref="CommentWriteMode.Fail"/> and the section does not exist,
-        /// throws a <see cref="SectionNotFoundException"/> 
+        /// a <see cref="SectionNotFoundException"/> is thrown.
         /// </para>
         /// <para>
         /// When <see cref="IniDocumentConfiguration.CommentWriteMode"/> is <see cref="CommentWriteMode.Fail"/> and the property does not exist,
-        /// throws a <see cref="PropertyNotFoundException"/> 
+        /// a <see cref="PropertyNotFoundException"/> is thrown.
         /// </para>
         /// <para>
         /// When <see cref="IniDocumentConfiguration.CommentWriteMode"/> is <see cref="CommentWriteMode.Ignore"/>,
@@ -853,11 +866,11 @@
         /// </para>
         /// <para>
         /// When mode is <see cref="CommentWriteMode.Fail"/> and the section does not exist,
-        /// throws a <see cref="SectionNotFoundException"/> 
+        /// a <see cref="SectionNotFoundException"/> is thrown.
         /// </para>
         /// <para>
         /// When mode is <see cref="CommentWriteMode.Fail"/> and the property does not exist,
-        /// throws a <see cref="PropertyNotFoundException"/> 
+        /// a <see cref="PropertyNotFoundException"/> is thrown.
         /// </para>
         /// <para>
         /// When <paramref name="mode"/> is <see cref="CommentWriteMode.Ignore"/>,
