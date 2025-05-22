@@ -15,9 +15,9 @@
         }
 
         /// <summary>
-        /// Specifies that deleting a property should fail by throwing an appropriate exception.
-        /// Throws a <see cref="SectionNotFoundException"/> if the section does not exist.
-        /// Throws a <see cref="PropertyNotFoundException"/> if the section exists but the property to delete does not exist.
+        /// Specifies that deleting a property should fail by
+        /// throwing a <see cref="SectionNotFoundException"/> when the section does not exist,
+        /// or throwing a <see cref="PropertyNotFoundException"/> when the section exists but the property to delete does not exist.
         /// </summary>
         /// <returns>
         /// A <see cref="PropertyDeletionMode"/> instance that represents the fail mode.
