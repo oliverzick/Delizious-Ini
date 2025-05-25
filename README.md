@@ -42,7 +42,6 @@ Delizious Ini provides the following features:
 * Cloning an INI document
 
 Upcoming features:
-* Support for comments
 * Merge two INI documents
 * ...
 
