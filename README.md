@@ -8,20 +8,21 @@ Delizious Ini is an easy to use .NET Standard library entirely written in C# for
 ## Features
 Delizious Ini provides the following features:
 * Intuitive API design applying [Domain-driven design (DDD)](https://en.wikipedia.org/wiki/Domain-driven_design)
-* Enumeration of sections
-* Enumeration of properties contained in a section
-* Reading and writing of a property
-* Deletion of sections or properties
-* Reading the comment of a section with given section name and mode
+* [Enumeration of sections](#enumeration-of-sections)
+* [Enumeration of properties](#enumeration-of-properties)
+* [Reading and writing of a property](#quick-start)
+* [Deletion of a section](#deletion-of-a-section)
+* [Deletion of a property](#deletion-of-a-property)
+* [Reading the comment of a section](#reading-the-comment-of-a-section)
   - Fail mode: Throw section not found exception when section does not exist
   - Fallback mode: Return fallback comment given by the mode when the section does not exist
-* Reading the comment of a property with given section name, property key and mode
+* [Reading the comment of a property](#reading-the-comment-of-a-property)
   - Fail mode: Throw section not found exception when section does not exist, throw property not found exception when property does not exist
   - Fallback mode: Return fallback comment given by the mode when the section or property does not exist
-* Writing the comment for a section with given mode
+* [Writing the comment of a section](#writing-the-comment-of-a-section)
   - Fail mode: Throw section not found exception when section does not exist
   - Ignore mode: Silently ignores when the section does not exist
-* Writing the comment for a property with given mode
+* [Writing the comment of a property](#writing-the-comment-of-a-property)
   - Fail mode: Throw section not found exception when section does not exist, throw property not found exception when property does not exist
   - Ignore mode: Silently ignores when the section or property does not exist
 * Configurability of the failure behavior (e.g. throw a specific exception in case a section or property does not exist, or proceed with a fallback behavior) for almost every operation on instance and operation level
@@ -54,7 +55,7 @@ To install Delizious Ini, run the following command in the respective console:
 ### .NET CLI Console
     > dotnet add package Delizious.Ini
 
-### Quick start
+### Quick start [&#8593;](#features)
 ```cs
 const string ini = """
                    [Section]
@@ -96,8 +97,8 @@ Console.WriteLine(@"INI document:");
 iniDocument.SaveTo(Console.Out);
 ```
 
-## Examples
-### Configure default behavior of an INI document
+## Examples [&#8593;](#features)
+### Configure default behavior of an INI document [&#8593;](#features)
 ```cs
 // This configuration represents the loose configuration which is also predefined:
 //var looseConfiguration = IniDocumentConfiguration.Loose;
@@ -146,7 +147,7 @@ var strictConfiguration =
                             .WithCommentWriteMode(CommentWriteMode.Fail);                         // Throw exception when section or property to write the comment does not exist
 ```
 
-### Load and save
+### Load and save [&#8593;](#features)
 ```cs
 const string ini = """
                    [Section]
@@ -161,7 +162,7 @@ var textWriter = Console.Out;
 iniDocument.SaveTo(textWriter);
 ```
 
-### Enumerate sections
+### Enumeration of sections [&#8593;](#features)
 ```cs
 const string ini = """
                    [Section]
@@ -179,7 +180,7 @@ foreach (var sectionName in iniDocument.EnumerateSections())
 }
 ```
 
-### Enumerate properties
+### Enumeration of properties [&#8593;](#features)
 ```cs
 const string ini = """
                    [Section]
@@ -197,7 +198,7 @@ foreach (var propertyName in iniDocument.EnumerateProperties("Section"))
 }
 ```
 
-### Delete section
+### Deletion of a section [&#8593;](#features)
 ```cs
 const string ini = """
                    [Section]
@@ -217,7 +218,7 @@ iniDocument.DeleteSection("EmptySection");
 iniDocument.SaveTo(Console.Out);
 ```
 
-### Delete property
+### Deletion of a property [&#8593;](#features)
 ```cs
 const string ini = """
                    [Section]
@@ -234,7 +235,7 @@ iniDocument.DeleteProperty("Section", "Property");
 iniDocument.SaveTo(Console.Out);
 ```
 
-### Read comment of section
+### Reading the comment of a section [&#8593;](#features)
 ```cs
 const string ini = """
                    ;This is a sample
@@ -252,7 +253,7 @@ var comment = iniDocument.ReadComment("Section");
 Console.WriteLine(comment);
 ```
 
-### Read comment of property
+### Reading the comment of a property [&#8593;](#features)
 ```cs
 const string ini = """
                    [Section]
@@ -270,7 +271,7 @@ var comment = iniDocument.ReadComment("Section", "Property");
 Console.WriteLine(comment);
 ```
 
-### Write comment for section
+### Writing the comment of a section [&#8593;](#features)
 ```cs
 const string ini = """
                    [Section]
@@ -296,7 +297,7 @@ textWriter.Flush();
 Console.WriteLine(textWriter);
 ```
 
-### Write comment for property
+### Writing the comment of a property [&#8593;](#features)
 ```cs
 const string ini = """
                    [Section]
