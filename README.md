@@ -44,7 +44,9 @@ Delizious Ini provides the following features:
 
 Upcoming features:
 * Merge two INI documents
-* ...
+
+[&#8593;](#features)
+---
 
 ## Getting started
 To install Delizious Ini, run the following command in the respective console:
@@ -55,7 +57,10 @@ To install Delizious Ini, run the following command in the respective console:
 ### .NET CLI Console
     > dotnet add package Delizious.Ini
 
-### Quick start [&#8593;](#features)
+[&#8593;](#features)
+---
+
+## Quick start
 ```cs
 const string ini = """
                    [Section]
@@ -97,8 +102,11 @@ Console.WriteLine(@"INI document:");
 iniDocument.SaveTo(Console.Out);
 ```
 
-## Examples [&#8593;](#features)
-### Configure default behavior of an INI document [&#8593;](#features)
+[&#8593;](#features)
+---
+
+## Examples
+### Configure default behavior of an INI document
 ```cs
 // This configuration represents the loose configuration which is also predefined:
 //var looseConfiguration = IniDocumentConfiguration.Loose;
@@ -147,7 +155,10 @@ var strictConfiguration =
                             .WithCommentWriteMode(CommentWriteMode.Fail);                         // Throw exception when section or property to write the comment does not exist
 ```
 
-### Load and save [&#8593;](#features)
+[&#8593;](#features)
+---
+
+### Load and save
 ```cs
 const string ini = """
                    [Section]
@@ -162,7 +173,10 @@ var textWriter = Console.Out;
 iniDocument.SaveTo(textWriter);
 ```
 
-### Enumeration of sections [&#8593;](#features)
+[&#8593;](#features)
+---
+
+### Enumeration of sections
 ```cs
 const string ini = """
                    [Section]
@@ -180,7 +194,10 @@ foreach (var sectionName in iniDocument.EnumerateSections())
 }
 ```
 
-### Enumeration of properties [&#8593;](#features)
+[&#8593;](#features)
+---
+
+### Enumeration of properties
 ```cs
 const string ini = """
                    [Section]
@@ -198,7 +215,10 @@ foreach (var propertyName in iniDocument.EnumerateProperties("Section"))
 }
 ```
 
-### Deletion of a section [&#8593;](#features)
+[&#8593;](#features)
+---
+
+### Deletion of a section
 ```cs
 const string ini = """
                    [Section]
@@ -218,7 +238,10 @@ iniDocument.DeleteSection("EmptySection");
 iniDocument.SaveTo(Console.Out);
 ```
 
-### Deletion of a property [&#8593;](#features)
+[&#8593;](#features)
+---
+
+### Deletion of a property
 ```cs
 const string ini = """
                    [Section]
@@ -235,7 +258,10 @@ iniDocument.DeleteProperty("Section", "Property");
 iniDocument.SaveTo(Console.Out);
 ```
 
-### Reading the comment of a section [&#8593;](#features)
+[&#8593;](#features)
+---
+
+### Reading the comment of a section
 ```cs
 const string ini = """
                    ;This is a sample
@@ -253,7 +279,10 @@ var comment = iniDocument.ReadComment("Section");
 Console.WriteLine(comment);
 ```
 
-### Reading the comment of a property [&#8593;](#features)
+[&#8593;](#features)
+---
+
+### Reading the comment of a property
 ```cs
 const string ini = """
                    [Section]
@@ -271,7 +300,10 @@ var comment = iniDocument.ReadComment("Section", "Property");
 Console.WriteLine(comment);
 ```
 
-### Writing the comment of a section [&#8593;](#features)
+[&#8593;](#features)
+---
+
+### Writing the comment of a section
 ```cs
 const string ini = """
                    [Section]
@@ -297,7 +329,10 @@ textWriter.Flush();
 Console.WriteLine(textWriter);
 ```
 
-### Writing the comment of a property [&#8593;](#features)
+[&#8593;](#features)
+---
+
+### Writing the comment of a property
 ```cs
 const string ini = """
                    [Section]
@@ -322,6 +357,9 @@ textWriter.Flush();
 
 Console.WriteLine(textWriter);
 ```
+
+[&#8593;](#features)
+---
 
 ## License
 MIT License
