@@ -2,8 +2,10 @@
 ## What?
 Delizious Ini is an easy to use .NET Standard library entirely written in C# for reading and writing of INI data.
 
-## New features in version 1.18.0
-* Configurability of the comment string that indicates the beginning of a comment line
+## New features in version 1.19.0
+* Link features and chapters in README
+* Streamline XML doc of INI document for thrown exceptions
+* Streamline XML doc of property deletion mode fail
 
 ## Features
 Delizious Ini provides the following features:
@@ -40,6 +42,7 @@ Delizious Ini provides the following features:
 * Configurability of section's beginning and end delimiters
 * Configurability of regular expression pattern (regex) for section name
 * Configurability of the newline string (Environment, Windows or Unix)
+* Configurability of the comment string that indicates the beginning of a comment line
 * Cloning an INI document
 
 Upcoming features:

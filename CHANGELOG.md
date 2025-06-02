@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.19.0] - 2025-06-02
+### Documented
+- Streamline XML doc for thrown exceptions ([#183](https://github.com/oliverzick/Delizious-Ini/issues/183))
+- Link features and chapters in README ([#184](https://github.com/oliverzick/Delizious-Ini/issues/184))
+
 ## [1.18.0] - 2025-05-04
 ### Added
 - Enable configuration of the comment string that indicates the beginning of a comment line in an INI document ([#175](https://github.com/oliverzick/Delizious-Ini/issues/175))
