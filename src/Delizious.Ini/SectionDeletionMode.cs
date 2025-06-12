@@ -16,7 +16,7 @@
 
         /// <summary>
         /// Specifies that deleting a section should fail by
-        /// throwing a <see cref="SectionNotFoundException"/> if the section to delete does not exist.
+        /// throwing a <see cref="SectionNotFoundException"/> when the section does not exist.
         /// </summary>
         /// <returns>
         /// A <see cref="SectionDeletionMode"/> instance that represents the fail mode.
@@ -25,7 +25,7 @@
             => new SectionDeletionMode(new FailMode());
 
         /// <summary>
-        /// Specifies that deleting a section should silently ignore if the section to delete does not exist.
+        /// Specifies that deleting a section should silently ignore if the section does not exist.
         /// </summary>
         /// <returns>
         /// A <see cref="SectionDeletionMode"/> instance that represents the ignore mode.

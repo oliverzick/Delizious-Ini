@@ -248,6 +248,13 @@ iniDocument.DeleteSection("EmptySection");
 iniDocument.SaveTo(Console.Out);
 ```
 
+The deletion of a section supports the following modes:
+
+| Mode                         | Description |
+|------------------------------|-------------|
+| `SectionDeletionMode.Fail`   | Throw a `SectionNotFoundException` when the section does not exist. |
+| `SectionDeletionMode.Ignore` | Silently ignore if the section does not exist. |
+
 [&#8593;](#features)
 ---
 
