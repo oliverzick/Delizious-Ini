@@ -15,8 +15,8 @@
         }
 
         /// <summary>
-        /// Specifies that enumerating the properties contained in a section should fail and throw a <see cref="SectionNotFoundException"/>
-        /// when the section does not exist.
+        /// Specifies that enumerating the properties should fail by
+        /// throwing a <see cref="SectionNotFoundException"/> when the section does not exist.
         /// </summary>
         /// <returns>
         /// A <see cref="PropertyEnumerationMode"/> instance that represents the fail mode.
@@ -25,8 +25,8 @@
             => new PropertyEnumerationMode(new FailMode());
 
         /// <summary>
-        /// Specifies that enumerating the properties contained in a section should fall back to an empty collection of properties
-        /// when the section does not exist.
+        /// Specifies that enumerating the properties should fall back
+        /// to an empty collection of properties when the section does not exist.
         /// </summary>
         /// <returns>
         /// A <see cref="PropertyEnumerationMode"/> instance that represents the fallback mode.

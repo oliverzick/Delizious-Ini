@@ -218,6 +218,13 @@ foreach (var propertyName in iniDocument.EnumerateProperties("Section"))
 }
 ```
 
+The enumeration of properties supports the following modes:
+
+| Mode                               | Description |
+|------------------------------------|-------------|
+| `PropertyEnumerationMode.Fail`     | Throw a `SectionNotFoundException` when the section does not exist. |
+| `PropertyEnumerationMode.Fallback` | Fall back to an empty collection of properties when the section does not exist. |
+
 [&#8593;](#features)
 ---
 
