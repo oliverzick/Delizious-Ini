@@ -275,6 +275,13 @@ iniDocument.DeleteProperty("Section", "Property");
 iniDocument.SaveTo(Console.Out);
 ```
 
+The deletion of a property supports the following modes:
+
+| Mode                          | Description |
+|-------------------------------|-------------|
+| `PropertyDeletionMode.Fail`   | Throw a `SectionNotFoundException` when the section does not exist, or throw a `PropertyNotFoundException` when the section exists but the property does not exist. |
+| `PropertyDeletionMode.Ignore` | Silently ignore if the section or the property does not exist. |
+
 [&#8593;](#features)
 ---
 
