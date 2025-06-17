@@ -27,7 +27,7 @@
 
         /// <summary>
         /// Specifies that reading a comment should fall back to <see cref="Comment.None"/>
-        /// when the section or property does not exist.
+        /// if the section or property does not exist.
         /// </summary>
         /// <remarks>
         /// This is a convenience property that calls <see cref="CustomFallback(Comment)"/> with <see cref="Comment.None"/>.
@@ -40,7 +40,7 @@
 
         /// <summary>
         /// Specifies that reading a comment should fall back to the given <paramref name="fallbackComment"/>
-        /// when the section or property does not exist.
+        /// if the section or property does not exist.
         /// </summary>
         /// <param name="fallbackComment">
         /// The comment to fall back when the section or property does not exist.
