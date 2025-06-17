@@ -16,8 +16,6 @@ Delizious Ini provides the following features:
 * [Deletion of a section](#deletion-of-a-section)
 * [Deletion of a property](#deletion-of-a-property)
 * [Reading the comment of a section](#reading-the-comment-of-a-section)
-  - Fail mode: Throw section not found exception when section does not exist
-  - Fallback mode: Return fallback comment given by the mode when the section does not exist
 * [Reading the comment of a property](#reading-the-comment-of-a-property)
   - Fail mode: Throw section not found exception when section does not exist, throw property not found exception when property does not exist
   - Fallback mode: Return fallback comment given by the mode when the section or property does not exist
@@ -302,6 +300,14 @@ var comment = iniDocument.ReadComment("Section");
 
 Console.WriteLine(comment);
 ```
+
+Reading the comment of a section supports the following modes:
+
+| Mode                             | Description |
+|----------------------------------|-------------|
+| `CommentReadMode.Fail`           | Throw a `SectionNotFoundException` when the section does not exist. |
+| `CommentReadMode.Fallback`       | Fall back to none comment if the section does not exist. |
+| `CommentReadMode.CustomFallback` | Fall back to a custom fallback comment if the section does not exist. |
 
 [&#8593;](#features)
 ---
