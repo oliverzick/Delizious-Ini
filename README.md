@@ -330,6 +330,14 @@ var comment = iniDocument.ReadComment("Section", "Property");
 Console.WriteLine(comment);
 ```
 
+Reading the comment of a property supports the following modes:
+
+| Mode                             | Description |
+|----------------------------------|-------------|
+| `CommentReadMode.Fail`           | Throw a `SectionNotFoundException` when the section does not exist, or throw a `PropertyNotFoundException` when the section exists but the property does not exist. |
+| `CommentReadMode.Fallback`       | Fall back to none comment if the section or property does not exist. |
+| `CommentReadMode.CustomFallback` | Fall back to a custom fallback comment if the section or property does not exist. |
+
 [&#8593;](#features)
 ---
 
