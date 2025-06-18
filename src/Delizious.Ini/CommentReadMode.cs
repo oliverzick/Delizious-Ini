@@ -17,7 +17,7 @@
         /// <summary>
         /// Specifies that reading a comment should fail by
         /// throwing a <see cref="SectionNotFoundException"/> when the section does not exist,
-        /// or throwing a <see cref="PropertyNotFoundException"/> when the property does not exist.
+        /// or throwing a <see cref="PropertyNotFoundException"/> when the section exists but the property does not exist.
         /// </summary>
         /// <returns>
         /// A <see cref="CommentReadMode"/> instance that represents the fail mode.
