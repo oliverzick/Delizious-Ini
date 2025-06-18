@@ -17,8 +17,6 @@ Delizious Ini provides the following features:
 * [Deletion of a property](#deletion-of-a-property)
 * [Reading the comment of a section](#reading-the-comment-of-a-section)
 * [Reading the comment of a property](#reading-the-comment-of-a-property)
-  - Fail mode: Throw section not found exception when section does not exist, throw property not found exception when property does not exist
-  - Fallback mode: Return fallback comment given by the mode when the section or property does not exist
 * [Writing the comment of a section](#writing-the-comment-of-a-section)
   - Fail mode: Throw section not found exception when section does not exist
   - Ignore mode: Silently ignores when the section does not exist
