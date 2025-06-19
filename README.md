@@ -18,8 +18,6 @@ Delizious Ini provides the following features:
 * [Reading the comment of a section](#reading-the-comment-of-a-section)
 * [Reading the comment of a property](#reading-the-comment-of-a-property)
 * [Writing the comment of a section](#writing-the-comment-of-a-section)
-  - Fail mode: Throw section not found exception when section does not exist
-  - Ignore mode: Silently ignores when the section does not exist
 * [Writing the comment of a property](#writing-the-comment-of-a-property)
   - Fail mode: Throw section not found exception when section does not exist, throw property not found exception when property does not exist
   - Ignore mode: Silently ignores when the section or property does not exist
@@ -364,6 +362,13 @@ textWriter.Flush();
 
 Console.WriteLine(textWriter);
 ```
+
+Writing the comment of a section supports the following modes:
+
+| Mode                      | Description |
+|---------------------------|-------------|
+| `CommentWriteMode.Fail`   | Throw a `SectionNotFoundException` when the section does not exist. |
+| `CommentWriteMode.Ignore` | Silently ignore if the section does not exist. |
 
 [&#8593;](#features)
 ---
