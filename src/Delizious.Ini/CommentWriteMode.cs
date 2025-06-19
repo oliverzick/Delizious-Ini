@@ -17,7 +17,7 @@
         /// <summary>
         /// Specifies that writing a comment should fail by
         /// throwing a <see cref="SectionNotFoundException"/> when the section does not exist,
-        /// or throwing a <see cref="PropertyNotFoundException"/> when the property does not exist.
+        /// or throwing a <see cref="PropertyNotFoundException"/> when the section exists but the property does not exist.
         /// </summary>
         /// <returns>
         /// A <see cref="CommentWriteMode"/> instance that represents the fail mode.
@@ -26,7 +26,7 @@
             => new CommentWriteMode(new FailMode());
 
         /// <summary>
-        /// Specifies that writing a comment should silently ignore if the section or the property to write the comment does not exist.
+        /// Specifies that writing a comment should silently ignore if the section or the property does not exist.
         /// </summary>
         /// <returns>
         /// A <see cref="CommentWriteMode"/> instance that represents the ignore mode.
