@@ -367,8 +367,8 @@ Writing the comment of a section supports the following modes:
 
 | Mode                      | Description |
 |---------------------------|-------------|
-| `CommentWriteMode.Fail`   | Throw a `SectionNotFoundException` when the section does not exist, or throw a `PropertyNotFoundException` when the section exists but the property does not exist. |
-| `CommentWriteMode.Ignore` | Silently ignore if the section or the property does not exist. |
+| `CommentWriteMode.Fail`   | Throw a `SectionNotFoundException` when the section does not exist. |
+| `CommentWriteMode.Ignore` | Silently ignore if the section does not exist. |
 
 [&#8593;](#features)
 ---
