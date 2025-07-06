@@ -12,7 +12,7 @@ Delizious Ini provides the following features:
 * Intuitive API design applying [Domain-driven design (DDD)](https://en.wikipedia.org/wiki/Domain-driven_design)
 * [Enumeration of sections](#enumeration-of-sections)
 * [Enumeration of properties](#enumeration-of-properties)
-* [Reading of a property](#quick-start)
+* [Reading of a property](#reading-of-a-property)
 * [Writing of a property](#quick-start)
 * [Deletion of a section](#deletion-of-a-section)
 * [Deletion of a property](#deletion-of-a-property)
@@ -217,6 +217,19 @@ The enumeration of properties supports the following modes:
 |------------------------------------|-------------|
 | `PropertyEnumerationMode.Fail`     | Throw a `SectionNotFoundException` when the section does not exist. |
 | `PropertyEnumerationMode.Fallback` | Fall back to an empty collection of properties when the section does not exist. |
+
+[&#8593;](#features)
+---
+
+### Reading of a property
+
+The reading of a property supports the following modes:
+
+| Mode                              | Description |
+|-----------------------------------|-------------|
+| `PropertyReadMode.Fail`           | Throw a `SectionNotFoundException` when the section does not exist, or throw a `PropertyNotFoundException` when the section exists but the property does not exist. |
+| `PropertyReadMode.Fallback`       | Fall back to `PropertyValue.None` if the section or property does not exist. |
+| `PropertyReadMode.CustomFallback` | Fall back to the given custom property value if the section or property does not exist. |
 
 [&#8593;](#features)
 ---
