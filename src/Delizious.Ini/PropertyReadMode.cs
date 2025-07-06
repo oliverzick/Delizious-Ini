@@ -17,7 +17,7 @@
         /// <summary>
         /// Specifies that reading a property should fail by
         /// throwing a <see cref="SectionNotFoundException"/> when the section does not exist,
-        /// or throwing a <see cref="PropertyNotFoundException"/> when the property does not exist.
+        /// or throwing a <see cref="PropertyNotFoundException"/> when the section exists but the property does not exist.
         /// </summary>
         /// <returns>
         /// A <see cref="PropertyReadMode"/> instance that represents the fail mode.
