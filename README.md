@@ -13,7 +13,7 @@ Delizious Ini provides the following features:
 * [Enumeration of sections](#enumeration-of-sections)
 * [Enumeration of properties](#enumeration-of-properties)
 * [Reading of a property](#reading-of-a-property)
-* [Writing of a property](#quick-start)
+* [Writing of a property](#writing-of-a-property)
 * [Deletion of a section](#deletion-of-a-section)
 * [Deletion of a property](#deletion-of-a-property)
 * [Reading the comment of a section](#reading-the-comment-of-a-section)
@@ -230,6 +230,18 @@ The reading of a property supports the following modes:
 | `PropertyReadMode.Fail`           | Throw a `SectionNotFoundException` when the section does not exist, or throw a `PropertyNotFoundException` when the section exists but the property does not exist. |
 | `PropertyReadMode.Fallback`       | Fall back to `PropertyValue.None` if the section or property does not exist. |
 | `PropertyReadMode.CustomFallback` | Fall back to the given custom property value if the section or property does not exist. |
+
+[&#8593;](#features)
+---
+
+### Writing of a property
+
+The writing of a property supports the following modes:
+
+| Mode                       | Description |
+|----------------------------|-------------|
+| `PropertyWriteMode.Create` | Create a new property. If the property already exists, it will be overwritten. If the section does not exist, a new section is created. If the section exists but the property itself does not exist, a new property is created. |
+| `PropertyWriteMode.Update` | Update an existing property and require that both the section and property exist. Throw a `SectionNotFoundException` when the section does not exist, or throw a `PropertyNotFoundException` when the section exists but the property does not exist. |
 
 [&#8593;](#features)
 ---
