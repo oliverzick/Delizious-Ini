@@ -15,7 +15,7 @@
         }
 
         /// <summary>
-        /// Specifies that writing a property should create a new property with the given value.
+        /// Specifies that writing a property should create a new property.
         /// If the property already exists, it will be overwritten.
         /// If the section does not exist, a new section is created.
         /// If the section exists but the property itself does not exist, a new property is created.
@@ -28,8 +28,8 @@
 
         /// <summary>
         /// Specifies that writing a property should update an existing property and requires that both the section and property exist.
-        /// If the section does not exist, a <see cref="SectionNotFoundException"/> is thrown.
-        /// If the section exists but the property itself does not exist, a <see cref="PropertyNotFoundException"/> is thrown.
+        /// Throws a <see cref="SectionNotFoundException"/> when the section does not exist,
+        /// or throws a <see cref="PropertyNotFoundException"/> when the section exists but the property does not exist.
         /// </summary>
         /// <returns>
         /// A <see cref="PropertyWriteMode"/> instance that represents the update mode.
