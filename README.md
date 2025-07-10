@@ -20,23 +20,18 @@ Delizious Ini provides the following features:
 * [Reading the comment of a property](#reading-the-comment-of-a-property)
 * [Writing the comment of a section](#writing-the-comment-of-a-section)
 * [Writing the comment of a property](#writing-the-comment-of-a-property)
-* Configurability of the failure behavior (e.g. throw a specific exception in case a section or property does not exist, or proceed with a fallback behavior) for almost every operation on instance and operation level
-* Configurability of case sensitivity that specifies how to treat section names and property keys
-* Configurability of behavior in case of invalid lines
-* Configurability of property's assignment separator
-* Configurability of property's assignment spacer
-* Configurability of duplicate section behavior:
-  * Fail by throwing an exception when a duplicate section occurs
-  * Merge a duplicate section
-* Configurability of duplicate property behavior:
-  * Fail by throwing an exception when a duplicate section occurs
-  * Ignore subsequent occurrences of a duplicate property by using the first occurrence of such a property
-  * Override previous occurrences of a duplicate property by using the last occurrence of such a property
-* Configurability of section's beginning and end delimiters
-* Configurability of regular expression pattern (regex) for section name
-* Configurability of the newline string (Environment, Windows or Unix)
-* Configurability of the comment string that indicates the beginning of a comment line
 * Cloning an INI document
+* [Configurability](#configure-default-behavior-of-an-ini-document)
+  * Failure behavior (e.g. throw a specific exception in case a section or property does not exist, or proceed with a fallback behavior) for almost every operation on instance and operation level
+  * Case sensitivity that specifies how to treat section names and property keys
+  * Invalid line behavior (`Fail` or `Ignore`)
+  * Property's assignment separator and assignment spacer
+  * Duplicate section behavior (`Fail` or `Merge`)
+  * Duplicate property behavior (`Fail`, `Ignore` or `Override`)
+  * Section's beginning and end delimiters
+  * Regular expression pattern (regex) for section name
+  * Newline string (`Environment`, `Windows` or `Unix`)
+  * Comment string that indicates the beginning of a comment line
 
 Upcoming features:
 * Merge two INI documents
