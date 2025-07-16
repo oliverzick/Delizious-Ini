@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.20.0] - 2025-07-16
+### Documented
+- Document available property enumeration modes in README ([#186](https://github.com/oliverzick/Delizious-Ini/issues/186))
+- Document available section deletion modes in README ([#188](https://github.com/oliverzick/Delizious-Ini/issues/188))
+- Document available property deletion modes in README ([#190](https://github.com/oliverzick/Delizious-Ini/issues/190))
+- Document available comment read modes for reading the comment of a section in README ([#192](https://github.com/oliverzick/Delizious-Ini/issues/192))
+- Document available comment read modes for reading the comment of a property in README ([#194](https://github.com/oliverzick/Delizious-Ini/issues/194))
+- Document available comment write modes for writing the comment of a section in README ([#197](https://github.com/oliverzick/Delizious-Ini/issues/197))
+- Document available comment write modes for writing the comment of a property in README ([#199](https://github.com/oliverzick/Delizious-Ini/issues/199))
+- Document available property read modes in README ([#202](https://github.com/oliverzick/Delizious-Ini/issues/202))
+- Document available property write modes in README ([#204](https://github.com/oliverzick/Delizious-Ini/issues/204))
+
 ## [1.19.0] - 2025-06-02
 ### Documented
 - Streamline XML doc for thrown exceptions ([#183](https://github.com/oliverzick/Delizious-Ini/issues/183))
