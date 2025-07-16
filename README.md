@@ -2,10 +2,9 @@
 ## What?
 Delizious Ini is an easy to use .NET Standard library entirely written in C# for reading and writing of INI data.
 
-## New features in version 1.19.0
-* Link features and chapters in README
-* Streamline XML doc of INI document for thrown exceptions
-* Streamline XML doc of property deletion mode fail
+## New features in version 1.20.0
+* Document available modes `PropertyEnumerationMode`, `PropertyReadMode`, `PropertyWriteMode`, `SectionDeletionMode`, `PropertyDeletionMode`, `CommentReadMode` and `CommentWriteMode` in README
+* Improve readability of [Features](#features) section in README
 
 ## Features
 Delizious Ini provides the following features:
