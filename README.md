@@ -2,13 +2,16 @@
 ## What?
 Delizious Ini is an easy to use .NET Standard library entirely written in C# for reading and writing of INI data.
 
+It comes with an intuitive API design applying [Domain-driven design (DDD)](https://en.wikipedia.org/wiki/Domain-driven_design)
+and allows to specify failure behaviors (e.g. throw a specific exception in case a section or property does not exist, or proceed with a fallback behavior) 
+for almost every operation on both instance and operation level.
+
 ## New features in version 1.20.0
 * Document available modes `PropertyEnumerationMode`, `PropertyReadMode`, `PropertyWriteMode`, `SectionDeletionMode`, `PropertyDeletionMode`, `CommentReadMode` and `CommentWriteMode` in README
 * Improve readability of [Features](#features) section in README
 
 ## Features
 Delizious Ini provides the following features:
-* Intuitive API design applying [Domain-driven design (DDD)](https://en.wikipedia.org/wiki/Domain-driven_design)
 * [Enumeration of sections](#enumeration-of-sections)
 * [Enumeration of properties](#enumeration-of-properties)
 * [Reading of a property](#reading-of-a-property)
@@ -21,7 +24,6 @@ Delizious Ini provides the following features:
 * [Writing the comment of a property](#writing-the-comment-of-a-property)
 * Cloning an INI document
 * [Configurability](#configure-default-behavior-of-an-ini-document)
-  * Failure behavior (e.g. throw a specific exception in case a section or property does not exist, or proceed with a fallback behavior) for almost every operation on instance and operation level
   * [Property enumeration mode](#enumeration-of-properties) (`Fail` or `Fallback`)
   * [Property read mode](#reading-of-a-property) (`Fail`, `Fallback` or `CustomFallback`)
   * [Property write mode](#writing-of-a-property) (`Create` or `Update`)
