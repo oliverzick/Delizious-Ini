@@ -1,14 +1,16 @@
 # Delizious Ini
 ## What?
-Delizious Ini is an easy to use .NET Standard library entirely written in C# for reading and writing of INI data.
+Delizious Ini is an easy to use .NET Standard library entirely written in C# for reading and writing of INI data
+that comes with an intuitive API design applying [Domain-driven design (DDD)](https://en.wikipedia.org/wiki/Domain-driven_design).
 
-## New features in version 1.20.0
-* Document available modes `PropertyEnumerationMode`, `PropertyReadMode`, `PropertyWriteMode`, `SectionDeletionMode`, `PropertyDeletionMode`, `CommentReadMode` and `CommentWriteMode` in README
-* Improve readability of [Features](#features) section in README
+It provides extensive configurability and allows to specify failure behaviors (e.g. throw a specific exception in case a section or property does not exist, or proceed with a fallback behavior) 
+for almost every operation on both instance and operation level.
+
+## New features in version 1.21.0
+* Improve documentation of configurability summary in README
 
 ## Features
 Delizious Ini provides the following features:
-* Intuitive API design applying [Domain-driven design (DDD)](https://en.wikipedia.org/wiki/Domain-driven_design)
 * [Enumeration of sections](#enumeration-of-sections)
 * [Enumeration of properties](#enumeration-of-properties)
 * [Reading of a property](#reading-of-a-property)
@@ -21,16 +23,24 @@ Delizious Ini provides the following features:
 * [Writing the comment of a property](#writing-the-comment-of-a-property)
 * Cloning an INI document
 * [Configurability](#configure-default-behavior-of-an-ini-document)
-  * Failure behavior (e.g. throw a specific exception in case a section or property does not exist, or proceed with a fallback behavior) for almost every operation on instance and operation level
-  * Case sensitivity that specifies how to treat section names and property keys
+  * [Property enumeration mode](#enumeration-of-properties) (`Fail` or `Fallback`)
+  * [Property read mode](#reading-of-a-property) (`Fail`, `Fallback` or `CustomFallback`)
+  * [Property write mode](#writing-of-a-property) (`Create` or `Update`)
+  * [Section deletion mode](#deletion-of-a-section) (`Fail` or `Ignore`)
+  * [Property deletion mode](#deletion-of-a-property) (`Fail` or `Ignore`)
+  * [Comment read mode](#reading-the-comment-of-a-property) (`Fail`, `Fallback` or `CustomFallback`)
+  * [Comment write mode](#writing-the-comment-of-a-property) (`Fail` or `Ignore`)
+  * Case sensitivity that specifies how to treat section names and property keys (`CaseSensitive` or `CaseInsensitive`)
+  * New line string (`Environment`, `Unix` or `Windows`)
   * Invalid line behavior (`Fail` or `Ignore`)
-  * Property's assignment separator and assignment spacer
+  * Property's assignment separator (defaults to `=`)
+  * Property's assignment spacer (`None` or `Space`)
   * Duplicate section behavior (`Fail` or `Merge`)
   * Duplicate property behavior (`Fail`, `Ignore` or `Override`)
-  * Section's beginning and end delimiters
+  * Section's beginning and end delimiters (default to `[` and `]`)
   * Regular expression pattern (regex) for section name
   * Newline string (`Environment`, `Windows` or `Unix`)
-  * Comment string that indicates the beginning of a comment line
+  * Comment string that indicates the beginning of a comment line (defaults to `;`)
 
 Upcoming features:
 * Merge two INI documents
