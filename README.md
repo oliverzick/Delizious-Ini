@@ -25,6 +25,7 @@ Delizious Ini provides the following features:
   * Case sensitivity that specifies how to treat section names and property keys (`CaseSensitive` or `CaseInsensitive`)
   * Invalid line behavior (`Fail` or `Ignore`)
   * Property's assignment separator (defaults to `=`)
+  * Property's assignment spacer (`None` or `Space`)
   * Duplicate section behavior (`Fail` or `Merge`)
   * Duplicate property behavior (`Fail`, `Ignore` or `Override`)
   * Section's beginning and end delimiters
