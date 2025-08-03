@@ -24,6 +24,7 @@ Delizious Ini provides the following features:
   * Failure behavior (e.g. throw a specific exception in case a section or property does not exist, or proceed with a fallback behavior) for almost every operation on instance and operation level
   * [Property enumeration mode](#enumeration-of-properties) (`Fail` or `Fallback`)
   * [Property read mode](#reading-of-a-property) (`Fail`, `Fallback` or `CustomFallback`)
+  * [Property write mode](#writing-of-a-property) (`Create` or `Update`)
   * Case sensitivity that specifies how to treat section names and property keys (`CaseSensitive` or `CaseInsensitive`)
   * Invalid line behavior (`Fail` or `Ignore`)
   * Property's assignment separator (defaults to `=`)
