@@ -1,9 +1,9 @@
 # Delizious Ini
 ## What?
-Delizious Ini is an easy to use .NET Standard library entirely written in C# for reading and writing of INI data.
+Delizious Ini is an easy to use .NET Standard library entirely written in C# for reading and writing of INI data
+that comes with an intuitive API design applying [Domain-driven design (DDD)](https://en.wikipedia.org/wiki/Domain-driven_design).
 
-It comes with an intuitive API design applying [Domain-driven design (DDD)](https://en.wikipedia.org/wiki/Domain-driven_design)
-and allows to specify failure behaviors (e.g. throw a specific exception in case a section or property does not exist, or proceed with a fallback behavior) 
+It provides extensive configurability and allows to specify failure behaviors (e.g. throw a specific exception in case a section or property does not exist, or proceed with a fallback behavior) 
 for almost every operation on both instance and operation level.
 
 ## New features in version 1.20.0
