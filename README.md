@@ -22,6 +22,7 @@ Delizious Ini provides the following features:
 * Cloning an INI document
 * [Configurability](#configure-default-behavior-of-an-ini-document)
   * Failure behavior (e.g. throw a specific exception in case a section or property does not exist, or proceed with a fallback behavior) for almost every operation on instance and operation level
+  * [Property enumeration mode](#enumeration-of-properties) (`Fail` or `Fallback`)
   * Case sensitivity that specifies how to treat section names and property keys (`CaseSensitive` or `CaseInsensitive`)
   * Invalid line behavior (`Fail` or `Ignore`)
   * Property's assignment separator (defaults to `=`)
