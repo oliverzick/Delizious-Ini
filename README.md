@@ -31,7 +31,7 @@ Delizious Ini provides the following features:
   * Section's beginning and end delimiters (default to `[` and `]`)
   * Regular expression pattern (regex) for section name
   * Newline string (`Environment`, `Windows` or `Unix`)
-  * Comment string that indicates the beginning of a comment line
+  * Comment string that indicates the beginning of a comment line (defaults to `;`)
 
 Upcoming features:
 * Merge two INI documents
