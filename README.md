@@ -6,9 +6,8 @@ that comes with an intuitive API design applying [Domain-driven design (DDD)](ht
 It provides extensive configurability and allows to specify failure behaviors (e.g. throw a specific exception in case a section or property does not exist, or proceed with a fallback behavior) 
 for almost every operation on both instance and operation level.
 
-## New features in version 1.20.0
-* Document available modes `PropertyEnumerationMode`, `PropertyReadMode`, `PropertyWriteMode`, `SectionDeletionMode`, `PropertyDeletionMode`, `CommentReadMode` and `CommentWriteMode` in README
-* Improve readability of [Features](#features) section in README
+## New features in version 1.21.0
+* Improve documentation of configurability summary in README
 
 ## Features
 Delizious Ini provides the following features:
