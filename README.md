@@ -28,6 +28,7 @@ Delizious Ini provides the following features:
   * [Section deletion mode](#deletion-of-a-section) (`Fail` or `Ignore`)
   * [Property deletion mode](#deletion-of-a-property) (`Fail` or `Ignore`)
   * [Comment read mode](#reading-the-comment-of-a-property) (`Fail`, `Fallback` or `CustomFallback`)
+  * [Comment write mode](#writing-the-comment-of-a-property) (`Fail` or `Ignore`)
   * Case sensitivity that specifies how to treat section names and property keys (`CaseSensitive` or `CaseInsensitive`)
   * Invalid line behavior (`Fail` or `Ignore`)
   * Property's assignment separator (defaults to `=`)
