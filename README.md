@@ -30,6 +30,7 @@ Delizious Ini provides the following features:
   * [Comment read mode](#reading-the-comment-of-a-property) (`Fail`, `Fallback` or `CustomFallback`)
   * [Comment write mode](#writing-the-comment-of-a-property) (`Fail` or `Ignore`)
   * Case sensitivity that specifies how to treat section names and property keys (`CaseSensitive` or `CaseInsensitive`)
+  * New line string (`Environment`, `Unix` or `Windows`)
   * Invalid line behavior (`Fail` or `Ignore`)
   * Property's assignment separator (defaults to `=`)
   * Property's assignment spacer (`None` or `Space`)
