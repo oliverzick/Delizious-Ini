@@ -28,7 +28,7 @@ Delizious Ini provides the following features:
   * Property's assignment spacer (`None` or `Space`)
   * Duplicate section behavior (`Fail` or `Merge`)
   * Duplicate property behavior (`Fail`, `Ignore` or `Override`)
-  * Section's beginning and end delimiters
+  * Section's beginning and end delimiters (default to `[` and `]`)
   * Regular expression pattern (regex) for section name
   * Newline string (`Environment`, `Windows` or `Unix`)
   * Comment string that indicates the beginning of a comment line
