@@ -425,7 +425,7 @@ public sealed class IniDocumentSpec
             Assert.AreEqual(expected, actual);
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DynamicData(nameof(Saves_the_ini_document_to_text_writer_test_cases), DynamicDataSourceType.Method)]
         public void Saves_the_ini_document_to_text_writer(IniDocumentConfiguration configuration)
         {
@@ -641,7 +641,7 @@ public sealed class IniDocumentSpec
                 Assert.Throws<ArgumentNullException>(() => target.EnumerateProperties(DummySectionName, null));
             }
 
-            [DataTestMethod]
+            [TestMethod]
             [DynamicData(nameof(Modes), DynamicDataSourceType.Method)]
             public void Enumerates_the_keys_of_all_properties_contained_in_the_specified_section(PropertyEnumerationMode mode)
             {
@@ -715,7 +715,7 @@ public sealed class IniDocumentSpec
                 Assert.Throws<ArgumentNullException>(() => target.ReadProperty(DummySectionName, null));
             }
 
-            [DataTestMethod]
+            [TestMethod]
             [DataRow("Property value", DisplayName = "Actual value")]
             [DataRow("",               DisplayName = "Empty string when property does exist but has no value")]
             public void Reads_the_value_of_the_property_contained_in_the_specified_section(string propertyValue)
@@ -825,7 +825,7 @@ public sealed class IniDocumentSpec
                 Assert.Throws<ArgumentNullException>(() => target.ReadProperty(DummySectionName, DummyPropertyKey, null));
             }
 
-            [DataTestMethod]
+            [TestMethod]
             [DynamicData(nameof(Modes), DynamicDataSourceType.Method)]
             public void Reads_the_value_of_the_property_contained_in_the_specified_section(PropertyValue expected, PropertyReadMode mode)
             {

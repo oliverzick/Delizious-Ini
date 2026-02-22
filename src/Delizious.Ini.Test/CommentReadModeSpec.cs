@@ -17,7 +17,7 @@ public sealed class CommentReadModeSpec
         Assert.Throws<ArgumentNullException>(() => CommentReadMode.CustomFallback(null));
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DynamicData(nameof(Provides_string_representation_test_cases), DynamicDataSourceType.Method)]
     public void Provides_string_representation(CommentReadMode target, string expected)
     {
@@ -33,7 +33,7 @@ public sealed class CommentReadModeSpec
         yield return [FallbackCustom, "Fallback"];
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DynamicData(nameof(Equality_operator_test_cases), DynamicDataSourceType.Method)]
     [DynamicData(nameof(Equals_test_cases),            DynamicDataSourceType.Method)]
     [DynamicData(nameof(Equals_null_test_cases),       DynamicDataSourceType.Method)]
@@ -44,7 +44,7 @@ public sealed class CommentReadModeSpec
         Assert.AreEqual(expected, actual);
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DynamicData(nameof(Equality_operator_test_cases), DynamicDataSourceType.Method)]
     [DynamicData(nameof(Equals_test_cases),            DynamicDataSourceType.Method)]
     [DynamicData(nameof(Equals_null_test_cases),       DynamicDataSourceType.Method)]
@@ -57,7 +57,7 @@ public sealed class CommentReadModeSpec
         Assert.AreEqual(expected, actual);
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DynamicData(nameof(Equals_test_cases),      DynamicDataSourceType.Method)]
     [DynamicData(nameof(Equals_null_test_cases), DynamicDataSourceType.Method)]
     public void Properly_implements_equals_method(CommentReadMode target, object other, bool expected)
@@ -67,7 +67,7 @@ public sealed class CommentReadModeSpec
         Assert.AreEqual(expected, actual);
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DynamicData(nameof(General_equals_test_cases), DynamicDataSourceType.Method)]
     [DynamicData(nameof(Equals_test_cases),         DynamicDataSourceType.Method)]
     [DynamicData(nameof(Equals_null_test_cases),    DynamicDataSourceType.Method)]
@@ -78,7 +78,7 @@ public sealed class CommentReadModeSpec
         Assert.AreEqual(expected, actual);
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DynamicData(nameof(Equals_test_cases), DynamicDataSourceType.Method)]
     public void Properly_implements_get_hash_code_method(CommentReadMode target, CommentReadMode other, bool expected)
     {

@@ -8,7 +8,7 @@ public sealed class DuplicateSectionBehaviorSpec
     private static DuplicateSectionBehavior Fail => DuplicateSectionBehavior.Fail;
     private static DuplicateSectionBehavior Merge => DuplicateSectionBehavior.Merge;
 
-    [DataTestMethod]
+    [TestMethod]
     [DynamicData(nameof(Provides_string_representation_test_cases), DynamicDataSourceType.Method)]
     public void Provides_string_representation(DuplicateSectionBehavior target, string expected)
     {
@@ -23,7 +23,7 @@ public sealed class DuplicateSectionBehaviorSpec
         yield return [Merge, "Merge"];
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DynamicData(nameof(Equality_operator_test_cases), DynamicDataSourceType.Method)]
     [DynamicData(nameof(Equals_test_cases),            DynamicDataSourceType.Method)]
     [DynamicData(nameof(Equals_null_test_cases),       DynamicDataSourceType.Method)]
@@ -34,7 +34,7 @@ public sealed class DuplicateSectionBehaviorSpec
         Assert.AreEqual(expected, actual);
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DynamicData(nameof(Equality_operator_test_cases), DynamicDataSourceType.Method)]
     [DynamicData(nameof(Equals_test_cases),            DynamicDataSourceType.Method)]
     [DynamicData(nameof(Equals_null_test_cases),       DynamicDataSourceType.Method)]
@@ -47,7 +47,7 @@ public sealed class DuplicateSectionBehaviorSpec
         Assert.AreEqual(expected, actual);
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DynamicData(nameof(Equals_test_cases),      DynamicDataSourceType.Method)]
     [DynamicData(nameof(Equals_null_test_cases), DynamicDataSourceType.Method)]
     public void Properly_implements_equals_method(DuplicateSectionBehavior target, object other, bool expected)
@@ -57,7 +57,7 @@ public sealed class DuplicateSectionBehaviorSpec
         Assert.AreEqual(expected, actual);
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DynamicData(nameof(General_equals_test_cases), DynamicDataSourceType.Method)]
     [DynamicData(nameof(Equals_test_cases),         DynamicDataSourceType.Method)]
     [DynamicData(nameof(Equals_null_test_cases),    DynamicDataSourceType.Method)]
@@ -68,7 +68,7 @@ public sealed class DuplicateSectionBehaviorSpec
         Assert.AreEqual(expected, actual);
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DynamicData(nameof(Equals_test_cases), DynamicDataSourceType.Method)]
     public void Properly_implements_get_hash_code_method(DuplicateSectionBehavior target, DuplicateSectionBehavior other, bool expected)
     {

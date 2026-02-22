@@ -10,7 +10,7 @@ public sealed class SectionBeginningDelimiterSpec
     private static SectionBeginningDelimiter Bracket => '[';
     private static SectionBeginningDelimiter Parentheses => '(';
 
-    [DataTestMethod]
+    [TestMethod]
     [DynamicData(nameof(Provides_string_representation_test_cases), DynamicDataSourceType.Method)]
     public void Provides_string_representation(SectionBeginningDelimiter target, string expected)
     {
@@ -26,7 +26,7 @@ public sealed class SectionBeginningDelimiterSpec
         yield return [Parentheses, "("];
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DynamicData(nameof(Equality_operator_test_cases), DynamicDataSourceType.Method)]
     [DynamicData(nameof(Equals_test_cases),            DynamicDataSourceType.Method)]
     [DynamicData(nameof(Equals_null_test_cases),       DynamicDataSourceType.Method)]
@@ -37,7 +37,7 @@ public sealed class SectionBeginningDelimiterSpec
         Assert.AreEqual(expected, actual);
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DynamicData(nameof(Equality_operator_test_cases), DynamicDataSourceType.Method)]
     [DynamicData(nameof(Equals_test_cases),            DynamicDataSourceType.Method)]
     [DynamicData(nameof(Equals_null_test_cases),       DynamicDataSourceType.Method)]
@@ -50,7 +50,7 @@ public sealed class SectionBeginningDelimiterSpec
         Assert.AreEqual(expected, actual);
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DynamicData(nameof(Equals_test_cases),      DynamicDataSourceType.Method)]
     [DynamicData(nameof(Equals_null_test_cases), DynamicDataSourceType.Method)]
     public void Properly_implements_equals_method(SectionBeginningDelimiter target, object other, bool expected)
@@ -60,7 +60,7 @@ public sealed class SectionBeginningDelimiterSpec
         Assert.AreEqual(expected, actual);
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DynamicData(nameof(General_equals_test_cases), DynamicDataSourceType.Method)]
     [DynamicData(nameof(Equals_test_cases),         DynamicDataSourceType.Method)]
     [DynamicData(nameof(Equals_null_test_cases),    DynamicDataSourceType.Method)]
@@ -71,7 +71,7 @@ public sealed class SectionBeginningDelimiterSpec
         Assert.AreEqual(expected, actual);
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DynamicData(nameof(Equals_test_cases), DynamicDataSourceType.Method)]
     public void Properly_implements_get_hash_code_method(SectionBeginningDelimiter target, SectionBeginningDelimiter other, bool expected)
     {

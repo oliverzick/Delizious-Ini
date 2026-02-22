@@ -9,7 +9,7 @@ public sealed class CaseSensitivitySpec
     private static CaseSensitivity CaseInsensitive => CaseSensitivity.CaseInsensitive;
     private static CaseSensitivity CaseSensitive => CaseSensitivity.CaseSensitive;
 
-    [DataTestMethod]
+    [TestMethod]
     [DynamicData(nameof(Provides_string_representation_test_cases), DynamicDataSourceType.Method)]
     public void Provides_string_representation(CaseSensitivity target, string expected)
     {
@@ -24,7 +24,7 @@ public sealed class CaseSensitivitySpec
         yield return [CaseSensitive, "CaseSensitive"];
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DynamicData(nameof(Equality_operator_test_cases), DynamicDataSourceType.Method)]
     [DynamicData(nameof(Equals_test_cases),            DynamicDataSourceType.Method)]
     [DynamicData(nameof(Equals_null_test_cases),       DynamicDataSourceType.Method)]
@@ -35,7 +35,7 @@ public sealed class CaseSensitivitySpec
         Assert.AreEqual(expected, actual);
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DynamicData(nameof(Equality_operator_test_cases), DynamicDataSourceType.Method)]
     [DynamicData(nameof(Equals_test_cases),            DynamicDataSourceType.Method)]
     [DynamicData(nameof(Equals_null_test_cases),       DynamicDataSourceType.Method)]
@@ -48,7 +48,7 @@ public sealed class CaseSensitivitySpec
         Assert.AreEqual(expected, actual);
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DynamicData(nameof(Equals_test_cases),      DynamicDataSourceType.Method)]
     [DynamicData(nameof(Equals_null_test_cases), DynamicDataSourceType.Method)]
     public void Properly_implements_equals_method(CaseSensitivity target, object other, bool expected)
@@ -58,7 +58,7 @@ public sealed class CaseSensitivitySpec
         Assert.AreEqual(expected, actual);
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DynamicData(nameof(General_equals_test_cases), DynamicDataSourceType.Method)]
     [DynamicData(nameof(Equals_test_cases),         DynamicDataSourceType.Method)]
     [DynamicData(nameof(Equals_null_test_cases),    DynamicDataSourceType.Method)]
@@ -69,7 +69,7 @@ public sealed class CaseSensitivitySpec
         Assert.AreEqual(expected, actual);
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DynamicData(nameof(Equals_test_cases), DynamicDataSourceType.Method)]
     public void Properly_implements_get_hash_code_method(CaseSensitivity target, CaseSensitivity other, bool expected)
     {

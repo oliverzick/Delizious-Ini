@@ -8,7 +8,7 @@ public sealed class PropertyDeletionModeSpec
     private static PropertyDeletionMode Fail => PropertyDeletionMode.Fail;
     private static PropertyDeletionMode Ignore => PropertyDeletionMode.Ignore;
 
-    [DataTestMethod]
+    [TestMethod]
     [DynamicData(nameof(Provides_string_representation_test_cases), DynamicDataSourceType.Method)]
     public void Provides_string_representation(PropertyDeletionMode target, string expected)
     {
@@ -23,7 +23,7 @@ public sealed class PropertyDeletionModeSpec
         yield return [Ignore, "Ignore"];
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DynamicData(nameof(Equality_operator_test_cases), DynamicDataSourceType.Method)]
     [DynamicData(nameof(Equals_test_cases),            DynamicDataSourceType.Method)]
     [DynamicData(nameof(Equals_null_test_cases),       DynamicDataSourceType.Method)]
@@ -34,7 +34,7 @@ public sealed class PropertyDeletionModeSpec
         Assert.AreEqual(expected, actual);
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DynamicData(nameof(Equality_operator_test_cases), DynamicDataSourceType.Method)]
     [DynamicData(nameof(Equals_test_cases),            DynamicDataSourceType.Method)]
     [DynamicData(nameof(Equals_null_test_cases),       DynamicDataSourceType.Method)]
@@ -47,7 +47,7 @@ public sealed class PropertyDeletionModeSpec
         Assert.AreEqual(expected, actual);
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DynamicData(nameof(Equals_test_cases),      DynamicDataSourceType.Method)]
     [DynamicData(nameof(Equals_null_test_cases), DynamicDataSourceType.Method)]
     public void Properly_implements_equals_method(PropertyDeletionMode target, object other, bool expected)
@@ -57,7 +57,7 @@ public sealed class PropertyDeletionModeSpec
         Assert.AreEqual(expected, actual);
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DynamicData(nameof(General_equals_test_cases), DynamicDataSourceType.Method)]
     [DynamicData(nameof(Equals_test_cases),         DynamicDataSourceType.Method)]
     [DynamicData(nameof(Equals_null_test_cases),    DynamicDataSourceType.Method)]
@@ -68,7 +68,7 @@ public sealed class PropertyDeletionModeSpec
         Assert.AreEqual(expected, actual);
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DynamicData(nameof(Equals_test_cases), DynamicDataSourceType.Method)]
     public void Properly_implements_get_hash_code_method(PropertyDeletionMode target, PropertyDeletionMode other, bool expected)
     {

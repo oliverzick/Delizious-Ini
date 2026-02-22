@@ -9,7 +9,7 @@ public sealed class PropertyEnumerationModeSpec
     private static PropertyEnumerationMode Fail => PropertyEnumerationMode.Fail;
     private static PropertyEnumerationMode Fallback => PropertyEnumerationMode.Fallback;
 
-    [DataTestMethod]
+    [TestMethod]
     [DynamicData(nameof(Provides_string_representation_test_cases), DynamicDataSourceType.Method)]
     public void Provides_string_representation(PropertyEnumerationMode target, string expected)
     {
@@ -24,7 +24,7 @@ public sealed class PropertyEnumerationModeSpec
         yield return [Fallback, "Fallback"];
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DynamicData(nameof(Equality_operator_test_cases), DynamicDataSourceType.Method)]
     [DynamicData(nameof(Equals_test_cases),            DynamicDataSourceType.Method)]
     [DynamicData(nameof(Equals_null_test_cases),       DynamicDataSourceType.Method)]
@@ -35,7 +35,7 @@ public sealed class PropertyEnumerationModeSpec
         Assert.AreEqual(expected, actual);
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DynamicData(nameof(Equality_operator_test_cases), DynamicDataSourceType.Method)]
     [DynamicData(nameof(Equals_test_cases),            DynamicDataSourceType.Method)]
     [DynamicData(nameof(Equals_null_test_cases),       DynamicDataSourceType.Method)]
@@ -48,7 +48,7 @@ public sealed class PropertyEnumerationModeSpec
         Assert.AreEqual(expected, actual);
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DynamicData(nameof(Equals_test_cases),      DynamicDataSourceType.Method)]
     [DynamicData(nameof(Equals_null_test_cases), DynamicDataSourceType.Method)]
     public void Properly_implements_equals_method(PropertyEnumerationMode target, object other, bool expected)
@@ -58,7 +58,7 @@ public sealed class PropertyEnumerationModeSpec
         Assert.AreEqual(expected, actual);
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DynamicData(nameof(General_equals_test_cases), DynamicDataSourceType.Method)]
     [DynamicData(nameof(Equals_test_cases),         DynamicDataSourceType.Method)]
     [DynamicData(nameof(Equals_null_test_cases),    DynamicDataSourceType.Method)]
@@ -69,7 +69,7 @@ public sealed class PropertyEnumerationModeSpec
         Assert.AreEqual(expected, actual);
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DynamicData(nameof(Equals_test_cases), DynamicDataSourceType.Method)]
     public void Properly_implements_get_hash_code_method(PropertyEnumerationMode target, PropertyEnumerationMode other, bool expected)
     {

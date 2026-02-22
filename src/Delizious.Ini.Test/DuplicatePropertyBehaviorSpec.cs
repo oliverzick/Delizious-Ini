@@ -9,7 +9,7 @@ public sealed class DuplicatePropertyBehaviorSpec
     private static DuplicatePropertyBehavior Ignore => DuplicatePropertyBehavior.Ignore;
     private static DuplicatePropertyBehavior Override => DuplicatePropertyBehavior.Override;
 
-    [DataTestMethod]
+    [TestMethod]
     [DynamicData(nameof(Provides_string_representation_test_cases), DynamicDataSourceType.Method)]
     public void Provides_string_representation(DuplicatePropertyBehavior target, string expected)
     {
@@ -25,7 +25,7 @@ public sealed class DuplicatePropertyBehaviorSpec
         yield return [Override, "Override"];
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DynamicData(nameof(Equality_operator_test_cases), DynamicDataSourceType.Method)]
     [DynamicData(nameof(Equals_test_cases),            DynamicDataSourceType.Method)]
     [DynamicData(nameof(Equals_null_test_cases),       DynamicDataSourceType.Method)]
@@ -36,7 +36,7 @@ public sealed class DuplicatePropertyBehaviorSpec
         Assert.AreEqual(expected, actual);
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DynamicData(nameof(Equality_operator_test_cases), DynamicDataSourceType.Method)]
     [DynamicData(nameof(Equals_test_cases),            DynamicDataSourceType.Method)]
     [DynamicData(nameof(Equals_null_test_cases),       DynamicDataSourceType.Method)]
@@ -49,7 +49,7 @@ public sealed class DuplicatePropertyBehaviorSpec
         Assert.AreEqual(expected, actual);
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DynamicData(nameof(Equals_test_cases),      DynamicDataSourceType.Method)]
     [DynamicData(nameof(Equals_null_test_cases), DynamicDataSourceType.Method)]
     public void Properly_implements_equals_method(DuplicatePropertyBehavior target, object other, bool expected)
@@ -59,7 +59,7 @@ public sealed class DuplicatePropertyBehaviorSpec
         Assert.AreEqual(expected, actual);
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DynamicData(nameof(General_equals_test_cases), DynamicDataSourceType.Method)]
     [DynamicData(nameof(Equals_test_cases),         DynamicDataSourceType.Method)]
     [DynamicData(nameof(Equals_null_test_cases),    DynamicDataSourceType.Method)]
@@ -70,7 +70,7 @@ public sealed class DuplicatePropertyBehaviorSpec
         Assert.AreEqual(expected, actual);
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DynamicData(nameof(Equals_test_cases), DynamicDataSourceType.Method)]
     public void Properly_implements_get_hash_code_method(DuplicatePropertyBehavior target, DuplicatePropertyBehavior other, bool expected)
     {

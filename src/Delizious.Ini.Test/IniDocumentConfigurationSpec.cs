@@ -34,7 +34,7 @@ public sealed class IniDocumentConfigurationSpec
     [TestClass]
     public sealed class Defaults
     {
-        [DataTestMethod]
+        [TestMethod]
         [DynamicData(nameof(Default_case_sensitivity_test_cases), DynamicDataSourceType.Method)]
         public void Default_case_sensitivity(IniDocumentConfiguration target, CaseSensitivity expected)
         {
@@ -50,7 +50,7 @@ public sealed class IniDocumentConfigurationSpec
             yield return [IniDocumentConfiguration.Strict, CaseSensitivity.CaseInsensitive];
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DynamicData(nameof(Default_newline_string_test_cases), DynamicDataSourceType.Method)]
         public void Default_newline_string(IniDocumentConfiguration target, NewlineString expected)
         {
@@ -66,7 +66,7 @@ public sealed class IniDocumentConfigurationSpec
             yield return [IniDocumentConfiguration.Strict, NewlineString.Environment];
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DynamicData(nameof(Default_section_beginning_delimiter_test_cases), DynamicDataSourceType.Method)]
         public void Default_section_beginning_delimiter(IniDocumentConfiguration target, SectionBeginningDelimiter expected)
         {
@@ -82,7 +82,7 @@ public sealed class IniDocumentConfigurationSpec
             yield return [IniDocumentConfiguration.Strict, SectionBeginningDelimiter.Default];
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DynamicData(nameof(Default_section_end_delimiter_test_cases), DynamicDataSourceType.Method)]
         public void Default_section_end_delimiter(IniDocumentConfiguration target, SectionEndDelimiter expected)
         {
@@ -98,7 +98,7 @@ public sealed class IniDocumentConfigurationSpec
             yield return [IniDocumentConfiguration.Strict, SectionEndDelimiter.Default];
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DynamicData(nameof(Default_section_name_regex_test_cases), DynamicDataSourceType.Method)]
         public void Default_section_name_regex(IniDocumentConfiguration target, SectionNameRegex expected)
         {
@@ -114,7 +114,7 @@ public sealed class IniDocumentConfigurationSpec
             yield return [IniDocumentConfiguration.Strict, SectionNameRegex.Default];
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DynamicData(nameof(Default_duplicate_property_behavior_test_cases), DynamicDataSourceType.Method)]
         public void Default_duplicate_property_behavior(IniDocumentConfiguration target, DuplicatePropertyBehavior expected)
         {
@@ -130,7 +130,7 @@ public sealed class IniDocumentConfigurationSpec
             yield return [IniDocumentConfiguration.Strict, DuplicatePropertyBehavior.Fail];
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DynamicData(nameof(Default_duplicate_section_behavior_test_cases), DynamicDataSourceType.Method)]
         public void Default_duplicate_section_behavior(IniDocumentConfiguration target, DuplicateSectionBehavior expected)
         {
@@ -146,7 +146,7 @@ public sealed class IniDocumentConfigurationSpec
             yield return [IniDocumentConfiguration.Strict, DuplicateSectionBehavior.Fail];
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DynamicData(nameof(Default_invalid_line_behavior_test_cases), DynamicDataSourceType.Method)]
         public void Default_invalid_line_behavior(IniDocumentConfiguration target, InvalidLineBehavior expected)
         {
@@ -162,7 +162,7 @@ public sealed class IniDocumentConfigurationSpec
             yield return [IniDocumentConfiguration.Strict, InvalidLineBehavior.Fail];
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DynamicData(nameof(Default_property_assignment_separator_test_cases), DynamicDataSourceType.Method)]
         public void Default_property_assignment_separator(IniDocumentConfiguration target, PropertyAssignmentSeparator expected)
         {
@@ -178,7 +178,7 @@ public sealed class IniDocumentConfigurationSpec
             yield return [IniDocumentConfiguration.Strict, PropertyAssignmentSeparator.Default];
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DynamicData(nameof(Default_property_assignment_spacer_test_cases), DynamicDataSourceType.Method)]
         public void Default_property_assignment_spacer(IniDocumentConfiguration target, PropertyAssignmentSpacer expected)
         {
@@ -194,7 +194,7 @@ public sealed class IniDocumentConfigurationSpec
             yield return [IniDocumentConfiguration.Strict, PropertyAssignmentSpacer.None];
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DynamicData(nameof(Default_property_enumeration_mode_test_cases), DynamicDataSourceType.Method)]
         public void Default_property_enumeration_mode(IniDocumentConfiguration target, PropertyEnumerationMode expected)
         {
@@ -210,7 +210,7 @@ public sealed class IniDocumentConfigurationSpec
             yield return [IniDocumentConfiguration.Strict, PropertyEnumerationMode.Fail];
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DynamicData(nameof(Default_property_read_mode_test_cases), DynamicDataSourceType.Method)]
         public void Default_property_read_mode(IniDocumentConfiguration target, PropertyReadMode expected)
         {
@@ -226,7 +226,7 @@ public sealed class IniDocumentConfigurationSpec
             yield return [IniDocumentConfiguration.Strict, PropertyReadMode.Fail];
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DynamicData(nameof(Default_property_write_mode_test_cases), DynamicDataSourceType.Method)]
         public void Default_property_write_mode(IniDocumentConfiguration target, PropertyWriteMode expected)
         {
@@ -242,7 +242,7 @@ public sealed class IniDocumentConfigurationSpec
             yield return [IniDocumentConfiguration.Strict, PropertyWriteMode.Update];
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DynamicData(nameof(Default_property_deletion_mode_test_cases), DynamicDataSourceType.Method)]
         public void Default_property_deletion_mode(IniDocumentConfiguration target, PropertyDeletionMode expected)
         {
@@ -258,7 +258,7 @@ public sealed class IniDocumentConfigurationSpec
             yield return [IniDocumentConfiguration.Strict, PropertyDeletionMode.Fail];
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DynamicData(nameof(Default_section_deletion_mode_test_cases), DynamicDataSourceType.Method)]
         public void Default_section_deletion_mode(IniDocumentConfiguration target, SectionDeletionMode expected)
         {
@@ -274,7 +274,7 @@ public sealed class IniDocumentConfigurationSpec
             yield return [IniDocumentConfiguration.Strict, SectionDeletionMode.Fail];
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DynamicData(nameof(Default_comment_string_test_cases), DynamicDataSourceType.Method)]
         public void Default_comment_string(IniDocumentConfiguration target, CommentString expected)
         {
@@ -290,7 +290,7 @@ public sealed class IniDocumentConfigurationSpec
             yield return [IniDocumentConfiguration.Strict, CommentString.Default];
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DynamicData(nameof(Default_comment_read_mode_test_cases), DynamicDataSourceType.Method)]
         public void Default_comment_read_mode(IniDocumentConfiguration target, CommentReadMode expected)
         {
@@ -306,7 +306,7 @@ public sealed class IniDocumentConfigurationSpec
             yield return [IniDocumentConfiguration.Strict, CommentReadMode.Fail];
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DynamicData(nameof(Default_comment_write_mode_test_cases), DynamicDataSourceType.Method)]
         public void Default_comment_write_mode(IniDocumentConfiguration target, CommentWriteMode expected)
         {
@@ -334,7 +334,7 @@ public sealed class IniDocumentConfigurationSpec
             Assert.Throws<ArgumentNullException>(() => Target.WithCaseSensitivity(null!));
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DynamicData(nameof(Retains_remaining_settings_test_cases), DynamicDataSourceType.Method)]
         public void Retains_remaining_settings(Setting setting)
         {
@@ -360,7 +360,7 @@ public sealed class IniDocumentConfigurationSpec
             Assert.Throws<ArgumentNullException>(() => Target.WithNewlineString(null!));
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DynamicData(nameof(Retains_remaining_settings_test_cases), DynamicDataSourceType.Method)]
         public void Retains_remaining_settings(Setting setting)
         {
@@ -387,7 +387,7 @@ public sealed class IniDocumentConfigurationSpec
             Assert.Throws<ArgumentNullException>(() => Target.WithSectionBeginningDelimiter(null!));
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DynamicData(nameof(Retains_remaining_settings_test_cases), DynamicDataSourceType.Method)]
         public void Retains_remaining_settings(Setting setting)
         {
@@ -413,7 +413,7 @@ public sealed class IniDocumentConfigurationSpec
             Assert.Throws<ArgumentNullException>(() => Target.WithSectionEndDelimiter(null!));
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DynamicData(nameof(Retains_remaining_settings_test_cases), DynamicDataSourceType.Method)]
         public void Retains_remaining_settings(Setting setting)
         {
@@ -439,7 +439,7 @@ public sealed class IniDocumentConfigurationSpec
             Assert.Throws<ArgumentNullException>(() => Target.WithSectionNameRegex(null!));
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DynamicData(nameof(Retains_remaining_settings_test_cases), DynamicDataSourceType.Method)]
         public void Retains_remaining_settings(Setting setting)
         {
@@ -465,7 +465,7 @@ public sealed class IniDocumentConfigurationSpec
             Assert.Throws<ArgumentNullException>(() => Target.WithDuplicatePropertyBehavior(null!));
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DynamicData(nameof(Retains_remaining_settings_test_cases), DynamicDataSourceType.Method)]
         public void Retains_remaining_settings(Setting setting)
         {
@@ -491,7 +491,7 @@ public sealed class IniDocumentConfigurationSpec
             Assert.Throws<ArgumentNullException>(() => Target.WithDuplicateSectionBehavior(null!));
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DynamicData(nameof(Retains_remaining_settings_test_cases), DynamicDataSourceType.Method)]
         public void Retains_remaining_settings(Setting setting)
         {
@@ -517,7 +517,7 @@ public sealed class IniDocumentConfigurationSpec
             Assert.Throws<ArgumentNullException>(() => Target.WithInvalidLineBehavior(null!));
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DynamicData(nameof(Retains_remaining_settings_test_cases), DynamicDataSourceType.Method)]
         public void Retains_remaining_settings(Setting setting)
         {
@@ -543,7 +543,7 @@ public sealed class IniDocumentConfigurationSpec
             Assert.Throws<ArgumentNullException>(() => Target.WithPropertyAssignmentSeparator(null!));
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DynamicData(nameof(Retains_remaining_settings_test_cases), DynamicDataSourceType.Method)]
         public void Retains_remaining_settings(Setting setting)
         {
@@ -569,7 +569,7 @@ public sealed class IniDocumentConfigurationSpec
             Assert.Throws<ArgumentNullException>(() => Target.WithPropertyAssignmentSpacer(null!));
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DynamicData(nameof(Retains_remaining_settings_test_cases), DynamicDataSourceType.Method)]
         public void Retains_remaining_settings(Setting setting)
         {
@@ -595,7 +595,7 @@ public sealed class IniDocumentConfigurationSpec
             Assert.Throws<ArgumentNullException>(() => Target.WithPropertyEnumerationMode(null!));
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DynamicData(nameof(Retains_remaining_settings_test_cases), DynamicDataSourceType.Method)]
         public void Retains_remaining_settings(Setting setting)
         {
@@ -621,7 +621,7 @@ public sealed class IniDocumentConfigurationSpec
             Assert.Throws<ArgumentNullException>(() => Target.WithPropertyReadMode(null!));
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DynamicData(nameof(Retains_remaining_settings_test_cases), DynamicDataSourceType.Method)]
         public void Retains_remaining_settings(Setting setting)
         {
@@ -647,7 +647,7 @@ public sealed class IniDocumentConfigurationSpec
             Assert.Throws<ArgumentNullException>(() => Target.WithPropertyWriteMode(null!));
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DynamicData(nameof(Retains_remaining_settings_test_cases), DynamicDataSourceType.Method)]
         public void Retains_remaining_settings(Setting setting)
         {
@@ -673,7 +673,7 @@ public sealed class IniDocumentConfigurationSpec
             Assert.Throws<ArgumentNullException>(() => Target.WithPropertyDeletionMode(null!));
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DynamicData(nameof(Retains_remaining_settings_test_cases), DynamicDataSourceType.Method)]
         public void Retains_remaining_settings(Setting setting)
         {
@@ -699,7 +699,7 @@ public sealed class IniDocumentConfigurationSpec
             Assert.Throws<ArgumentNullException>(() => Target.WithSectionDeletionMode(null!));
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DynamicData(nameof(Retains_remaining_settings_test_cases), DynamicDataSourceType.Method)]
         public void Retains_remaining_settings(Setting setting)
         {
@@ -725,7 +725,7 @@ public sealed class IniDocumentConfigurationSpec
             Assert.Throws<ArgumentNullException>(() => Target.WithCommentString(null!));
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DynamicData(nameof(Retains_remaining_settings_test_cases), DynamicDataSourceType.Method)]
         public void Retains_remaining_settings(Setting setting)
         {
@@ -751,7 +751,7 @@ public sealed class IniDocumentConfigurationSpec
             Assert.Throws<ArgumentNullException>(() => Target.WithCommentReadMode(null!));
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DynamicData(nameof(Retains_remaining_settings_test_cases), DynamicDataSourceType.Method)]
         public void Retains_remaining_settings(Setting setting)
         {
@@ -777,7 +777,7 @@ public sealed class IniDocumentConfigurationSpec
             Assert.Throws<ArgumentNullException>(() => Target.WithCommentWriteMode(null!));
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DynamicData(nameof(Retains_remaining_settings_test_cases), DynamicDataSourceType.Method)]
         public void Retains_remaining_settings(Setting setting)
         {
@@ -800,7 +800,7 @@ public sealed class IniDocumentConfigurationSpec
         private static IniDocumentConfiguration Loose => IniDocumentConfiguration.Loose;
         private static IniDocumentConfiguration Strict => IniDocumentConfiguration.Strict;
 
-        [DataTestMethod]
+        [TestMethod]
         [DynamicData(nameof(Provides_string_representation_test_cases), DynamicDataSourceType.Method)]
         public void Provides_string_representation(IniDocumentConfiguration target)
         {
@@ -820,7 +820,7 @@ public sealed class IniDocumentConfigurationSpec
             // ToDo: Reintroduce cases for single settings?
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DynamicData(nameof(Equality_operator_test_cases), DynamicDataSourceType.Method)]
         [DynamicData(nameof(Equals_test_cases),            DynamicDataSourceType.Method)]
         [DynamicData(nameof(Equals_null_test_cases),       DynamicDataSourceType.Method)]
@@ -831,7 +831,7 @@ public sealed class IniDocumentConfigurationSpec
             Assert.AreEqual(expected, actual);
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DynamicData(nameof(Equality_operator_test_cases), DynamicDataSourceType.Method)]
         [DynamicData(nameof(Equals_test_cases),            DynamicDataSourceType.Method)]
         [DynamicData(nameof(Equals_null_test_cases),       DynamicDataSourceType.Method)]
@@ -844,7 +844,7 @@ public sealed class IniDocumentConfigurationSpec
             Assert.AreEqual(expected, actual);
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DynamicData(nameof(Equals_test_cases),      DynamicDataSourceType.Method)]
         [DynamicData(nameof(Equals_null_test_cases), DynamicDataSourceType.Method)]
         public void Properly_implements_equals_method(IniDocumentConfiguration target, object other, bool expected)
@@ -854,7 +854,7 @@ public sealed class IniDocumentConfigurationSpec
             Assert.AreEqual(expected, actual);
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DynamicData(nameof(General_equals_test_cases), DynamicDataSourceType.Method)]
         [DynamicData(nameof(Equals_test_cases),         DynamicDataSourceType.Method)]
         [DynamicData(nameof(Equals_null_test_cases),    DynamicDataSourceType.Method)]
@@ -865,7 +865,7 @@ public sealed class IniDocumentConfigurationSpec
             Assert.AreEqual(expected, actual);
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DynamicData(nameof(Equals_test_cases), DynamicDataSourceType.Method)]
         public void Properly_implements_get_hash_code_method(IniDocumentConfiguration target, IniDocumentConfiguration other, bool expected)
         {
