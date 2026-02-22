@@ -331,7 +331,7 @@ public sealed class IniDocumentConfigurationSpec
         [TestMethod]
         public void Throws_argument_null_exception_when_given_case_sensitivity_is_null()
         {
-            Assert.ThrowsException<ArgumentNullException>(() => Target.WithCaseSensitivity(null!));
+            Assert.Throws<ArgumentNullException>(() => Target.WithCaseSensitivity(null!));
         }
 
         [DataTestMethod]
@@ -357,7 +357,7 @@ public sealed class IniDocumentConfigurationSpec
         [TestMethod]
         public void Throws_argument_null_exception_when_given_newline_string_is_null()
         {
-            Assert.ThrowsException<ArgumentNullException>(() => Target.WithNewlineString(null!));
+            Assert.Throws<ArgumentNullException>(() => Target.WithNewlineString(null!));
         }
 
         [DataTestMethod]
@@ -384,7 +384,7 @@ public sealed class IniDocumentConfigurationSpec
         [TestMethod]
         public void Throws_argument_null_exception_when_given_section_beginning_delimiter_is_null()
         {
-            Assert.ThrowsException<ArgumentNullException>(() => Target.WithSectionBeginningDelimiter(null!));
+            Assert.Throws<ArgumentNullException>(() => Target.WithSectionBeginningDelimiter(null!));
         }
 
         [DataTestMethod]
@@ -410,7 +410,7 @@ public sealed class IniDocumentConfigurationSpec
         [TestMethod]
         public void Throws_argument_null_exception_when_given_section_end_delimiter_is_null()
         {
-            Assert.ThrowsException<ArgumentNullException>(() => Target.WithSectionEndDelimiter(null!));
+            Assert.Throws<ArgumentNullException>(() => Target.WithSectionEndDelimiter(null!));
         }
 
         [DataTestMethod]
@@ -436,7 +436,7 @@ public sealed class IniDocumentConfigurationSpec
         [TestMethod]
         public void Throws_argument_null_exception_when_given_section_regex_is_null()
         {
-            Assert.ThrowsException<ArgumentNullException>(() => Target.WithSectionNameRegex(null!));
+            Assert.Throws<ArgumentNullException>(() => Target.WithSectionNameRegex(null!));
         }
 
         [DataTestMethod]
@@ -462,7 +462,7 @@ public sealed class IniDocumentConfigurationSpec
         [TestMethod]
         public void Throws_argument_null_exception_when_given_duplicate_property_behavior_is_null()
         {
-            Assert.ThrowsException<ArgumentNullException>(() => Target.WithDuplicatePropertyBehavior(null!));
+            Assert.Throws<ArgumentNullException>(() => Target.WithDuplicatePropertyBehavior(null!));
         }
 
         [DataTestMethod]
@@ -488,7 +488,7 @@ public sealed class IniDocumentConfigurationSpec
         [TestMethod]
         public void Throws_argument_null_exception_when_given_duplicate_section_behavior_is_null()
         {
-            Assert.ThrowsException<ArgumentNullException>(() => Target.WithDuplicateSectionBehavior(null!));
+            Assert.Throws<ArgumentNullException>(() => Target.WithDuplicateSectionBehavior(null!));
         }
 
         [DataTestMethod]
@@ -514,7 +514,7 @@ public sealed class IniDocumentConfigurationSpec
         [TestMethod]
         public void Throws_argument_null_exception_when_given_invalid_line_behavior_is_null()
         {
-            Assert.ThrowsException<ArgumentNullException>(() => Target.WithInvalidLineBehavior(null!));
+            Assert.Throws<ArgumentNullException>(() => Target.WithInvalidLineBehavior(null!));
         }
 
         [DataTestMethod]
@@ -540,7 +540,7 @@ public sealed class IniDocumentConfigurationSpec
         [TestMethod]
         public void Throws_argument_null_exception_when_given_property_assignment_separator_is_null()
         {
-            Assert.ThrowsException<ArgumentNullException>(() => Target.WithPropertyAssignmentSeparator(null!));
+            Assert.Throws<ArgumentNullException>(() => Target.WithPropertyAssignmentSeparator(null!));
         }
 
         [DataTestMethod]
@@ -566,7 +566,7 @@ public sealed class IniDocumentConfigurationSpec
         [TestMethod]
         public void Throws_argument_null_exception_when_given_property_assignment_spacer_is_null()
         {
-            Assert.ThrowsException<ArgumentNullException>(() => Target.WithPropertyAssignmentSpacer(null!));
+            Assert.Throws<ArgumentNullException>(() => Target.WithPropertyAssignmentSpacer(null!));
         }
 
         [DataTestMethod]
@@ -592,7 +592,7 @@ public sealed class IniDocumentConfigurationSpec
         [TestMethod]
         public void Throws_argument_null_exception_when_given_property_enumeration_mode_is_null()
         {
-            Assert.ThrowsException<ArgumentNullException>(() => Target.WithPropertyEnumerationMode(null!));
+            Assert.Throws<ArgumentNullException>(() => Target.WithPropertyEnumerationMode(null!));
         }
 
         [DataTestMethod]
@@ -618,7 +618,7 @@ public sealed class IniDocumentConfigurationSpec
         [TestMethod]
         public void Throws_argument_null_exception_when_given_property_read_mode_is_null()
         {
-            Assert.ThrowsException<ArgumentNullException>(() => Target.WithPropertyReadMode(null!));
+            Assert.Throws<ArgumentNullException>(() => Target.WithPropertyReadMode(null!));
         }
 
         [DataTestMethod]
@@ -644,7 +644,7 @@ public sealed class IniDocumentConfigurationSpec
         [TestMethod]
         public void Throws_argument_null_exception_when_given_property_write_mode_is_null()
         {
-            Assert.ThrowsException<ArgumentNullException>(() => Target.WithPropertyWriteMode(null!));
+            Assert.Throws<ArgumentNullException>(() => Target.WithPropertyWriteMode(null!));
         }
 
         [DataTestMethod]
@@ -670,7 +670,7 @@ public sealed class IniDocumentConfigurationSpec
         [TestMethod]
         public void Throws_argument_null_exception_when_given_property_deletion_mode_is_null()
         {
-            Assert.ThrowsException<ArgumentNullException>(() => Target.WithPropertyDeletionMode(null!));
+            Assert.Throws<ArgumentNullException>(() => Target.WithPropertyDeletionMode(null!));
         }
 
         [DataTestMethod]
@@ -696,7 +696,7 @@ public sealed class IniDocumentConfigurationSpec
         [TestMethod]
         public void Throws_argument_null_exception_when_given_section_deletion_mode_is_null()
         {
-            Assert.ThrowsException<ArgumentNullException>(() => Target.WithSectionDeletionMode(null!));
+            Assert.Throws<ArgumentNullException>(() => Target.WithSectionDeletionMode(null!));
         }
 
         [DataTestMethod]
@@ -722,7 +722,7 @@ public sealed class IniDocumentConfigurationSpec
         [TestMethod]
         public void Throws_argument_null_exception_when_given_comment_string_is_null()
         {
-            Assert.ThrowsException<ArgumentNullException>(() => Target.WithCommentString(null!));
+            Assert.Throws<ArgumentNullException>(() => Target.WithCommentString(null!));
         }
 
         [DataTestMethod]
@@ -748,7 +748,7 @@ public sealed class IniDocumentConfigurationSpec
         [TestMethod]
         public void Throws_argument_null_exception_when_given_comment_read_mode_is_null()
         {
-            Assert.ThrowsException<ArgumentNullException>(() => Target.WithCommentReadMode(null!));
+            Assert.Throws<ArgumentNullException>(() => Target.WithCommentReadMode(null!));
         }
 
         [DataTestMethod]
@@ -774,7 +774,7 @@ public sealed class IniDocumentConfigurationSpec
         [TestMethod]
         public void Throws_argument_null_exception_when_given_comment_write_mode_is_null()
         {
-            Assert.ThrowsException<ArgumentNullException>(() => Target.WithCommentWriteMode(null!));
+            Assert.Throws<ArgumentNullException>(() => Target.WithCommentWriteMode(null!));
         }
 
         [DataTestMethod]

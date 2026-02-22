@@ -14,7 +14,7 @@ public sealed class PropertyReadModeSpec
     [TestMethod]
     public void Throws_argument_null_exception_when_fallback_property_value_is_null()
     {
-        Assert.ThrowsException<ArgumentNullException>(() => PropertyReadMode.CustomFallback(null));
+        Assert.Throws<ArgumentNullException>(() => PropertyReadMode.CustomFallback(null));
     }
 
     [DataTestMethod]

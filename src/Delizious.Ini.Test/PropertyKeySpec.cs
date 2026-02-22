@@ -15,19 +15,19 @@ public sealed class PropertyKeySpec
     [TestMethod]
     public void Throws_argument_null_exception_on_creation_when_given_property_key_is_null()
     {
-        Assert.ThrowsException<ArgumentNullException>(() => PropertyKey.Create(null));
+        Assert.Throws<ArgumentNullException>(() => PropertyKey.Create(null));
     }
 
     [TestMethod]
     public void Throws_argument_exception_on_creation_when_given_property_key_is_empty()
     {
-        Assert.ThrowsException<ArgumentException>(() => PropertyKey.Create(string.Empty));
+        Assert.Throws<ArgumentException>(() => PropertyKey.Create(string.Empty));
     }
 
     [TestMethod]
     public void Throws_argument_exception_on_creation_when_given_property_key_consists_only_of_white_space_characters()
     {
-        Assert.ThrowsException<ArgumentException>(() => PropertyKey.Create("   "));
+        Assert.Throws<ArgumentException>(() => PropertyKey.Create("   "));
     }
 
     [TestMethod]

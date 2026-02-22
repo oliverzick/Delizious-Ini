@@ -14,7 +14,7 @@ public sealed class CommentSpec
     [TestMethod]
     public void Throws_argument_null_exception_on_creation_when_given_comment_is_null()
     {
-        Assert.ThrowsException<ArgumentNullException>(() => Comment.Create(null));
+        Assert.Throws<ArgumentNullException>(() => Comment.Create(null));
     }
 
     [DataTestMethod]

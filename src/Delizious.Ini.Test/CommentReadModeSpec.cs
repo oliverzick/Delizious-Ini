@@ -14,7 +14,7 @@ public sealed class CommentReadModeSpec
     [TestMethod]
     public void Throws_argument_null_exception_when_fallback_comment_is_null()
     {
-        Assert.ThrowsException<ArgumentNullException>(() => CommentReadMode.CustomFallback(null));
+        Assert.Throws<ArgumentNullException>(() => CommentReadMode.CustomFallback(null));
     }
 
     [DataTestMethod]

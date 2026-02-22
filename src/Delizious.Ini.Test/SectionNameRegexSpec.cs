@@ -13,19 +13,19 @@ public sealed class SectionNameRegexSpec
     [TestMethod]
     public void Throws_argument_null_exception_on_creation_when_given_pattern_is_null()
     {
-        Assert.ThrowsException<ArgumentNullException>(() => SectionNameRegex.Create(null));
+        Assert.Throws<ArgumentNullException>(() => SectionNameRegex.Create(null));
     }
 
     [TestMethod]
     public void Throws_argument_exception_on_creation_when_given_pattern_is_empty()
     {
-        Assert.ThrowsException<ArgumentException>(() => SectionNameRegex.Create(string.Empty));
+        Assert.Throws<ArgumentException>(() => SectionNameRegex.Create(string.Empty));
     }
 
     [TestMethod]
     public void Throws_argument_exception_on_creation_when_given_pattern_is_invalid()
     {
-        Assert.ThrowsException<ArgumentException>(() => SectionNameRegex.Create(@"\"));
+        Assert.Throws<ArgumentException>(() => SectionNameRegex.Create(@"\"));
     }
 
     [DataTestMethod]

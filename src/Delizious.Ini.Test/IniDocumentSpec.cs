@@ -31,7 +31,7 @@ public sealed class IniDocumentSpec
         [TestMethod]
         public void Throws_argument_null_exception_when_configuration_is_null()
         {
-            Assert.ThrowsException<ArgumentNullException>(() => IniDocument.CreateEmpty(null));
+            Assert.Throws<ArgumentNullException>(() => IniDocument.CreateEmpty(null));
         }
 
         [TestMethod]
@@ -49,7 +49,7 @@ public sealed class IniDocumentSpec
         [TestMethod]
         public void Throws_argument_null_exception_when_text_reader_is_null()
         {
-            Assert.ThrowsException<ArgumentNullException>(() => IniDocument.LoadFrom(null, DefaultConfiguration));
+            Assert.Throws<ArgumentNullException>(() => IniDocument.LoadFrom(null, DefaultConfiguration));
         }
 
         [TestMethod]
@@ -57,7 +57,7 @@ public sealed class IniDocumentSpec
         {
             using var textReader = new StringReader(string.Empty);
 
-            Assert.ThrowsException<ArgumentNullException>(() => IniDocument.LoadFrom(textReader, null));
+            Assert.Throws<ArgumentNullException>(() => IniDocument.LoadFrom(textReader, null));
         }
 
         [TestMethod]
@@ -67,7 +67,7 @@ public sealed class IniDocumentSpec
             using var textReader = new StringReader(string.Empty);
             textReader.Close();
 
-            var actual = Assert.ThrowsException<PersistenceException>(() => IniDocument.LoadFrom(textReader, DefaultConfiguration));
+            var actual = Assert.Throws<PersistenceException>(() => IniDocument.LoadFrom(textReader, DefaultConfiguration));
 
             Assert.AreEqual(expected, actual);
         }
@@ -95,7 +95,7 @@ public sealed class IniDocumentSpec
                 {
                     using var reader = new StringReader(Ini);
 
-                    Assert.ThrowsException<PersistenceException>(() => IniDocument.LoadFrom(reader, Configuration));
+                    Assert.Throws<PersistenceException>(() => IniDocument.LoadFrom(reader, Configuration));
                 }
             }
 
@@ -220,7 +220,7 @@ public sealed class IniDocumentSpec
                 {
                     using var reader = new StringReader(Ini);
 
-                    Assert.ThrowsException<PersistenceException>(() => IniDocument.LoadFrom(reader, Configuration));
+                    Assert.Throws<PersistenceException>(() => IniDocument.LoadFrom(reader, Configuration));
                 }
             }
 
@@ -264,7 +264,7 @@ public sealed class IniDocumentSpec
                 {
                     using var textReader = new StringReader(Ini);
 
-                    Assert.ThrowsException<PersistenceException>(() => IniDocument.LoadFrom(textReader, Configuration));
+                    Assert.Throws<PersistenceException>(() => IniDocument.LoadFrom(textReader, Configuration));
                 }
             }
 
@@ -312,7 +312,7 @@ public sealed class IniDocumentSpec
                 {
                     using var textReader = new StringReader(Ini);
 
-                    Assert.ThrowsException<PersistenceException>(() => IniDocument.LoadFrom(textReader, Configuration));
+                    Assert.Throws<PersistenceException>(() => IniDocument.LoadFrom(textReader, Configuration));
                 }
             }
 
@@ -359,7 +359,7 @@ public sealed class IniDocumentSpec
                 {
                     using var textReader = new StringReader(Ini);
 
-                    Assert.ThrowsException<PersistenceException>(() => IniDocument.LoadFrom(textReader, Configuration));
+                    Assert.Throws<PersistenceException>(() => IniDocument.LoadFrom(textReader, Configuration));
                 }
             }
 
@@ -408,7 +408,7 @@ public sealed class IniDocumentSpec
         {
             var target = Make.EmptyTarget(Configuration);
 
-            Assert.ThrowsException<ArgumentNullException>(() => target.SaveTo(null));
+            Assert.Throws<ArgumentNullException>(() => target.SaveTo(null));
         }
 
         [TestMethod]
@@ -420,7 +420,7 @@ public sealed class IniDocumentSpec
 
             var target = Make.EmptyTarget(Configuration);
 
-            var actual = Assert.ThrowsException<PersistenceException>(() => target.SaveTo(textWriter));
+            var actual = Assert.Throws<PersistenceException>(() => target.SaveTo(textWriter));
 
             Assert.AreEqual(expected, actual);
         }
@@ -566,7 +566,7 @@ public sealed class IniDocumentSpec
             {
                 var target = Make.EmptyTarget(DefaultConfiguration);
 
-                Assert.ThrowsException<ArgumentNullException>(() => target.EnumerateProperties(null));
+                Assert.Throws<ArgumentNullException>(() => target.EnumerateProperties(null));
             }
 
             [TestMethod]
@@ -593,7 +593,7 @@ public sealed class IniDocumentSpec
 
                     var target = Make.EmptyTarget(Configuration);
 
-                    var actual = Assert.ThrowsException<SectionNotFoundException>(() => target.EnumerateProperties(sectionName));
+                    var actual = Assert.Throws<SectionNotFoundException>(() => target.EnumerateProperties(sectionName));
 
                     Assert.AreEqual(expected, actual);
                 }
@@ -630,7 +630,7 @@ public sealed class IniDocumentSpec
             {
                 var target = Make.EmptyTarget(Configuration);
 
-                Assert.ThrowsException<ArgumentNullException>(() => target.EnumerateProperties(null, DummyMode));
+                Assert.Throws<ArgumentNullException>(() => target.EnumerateProperties(null, DummyMode));
             }
 
             [TestMethod]
@@ -638,7 +638,7 @@ public sealed class IniDocumentSpec
             {
                 var target = Make.EmptyTarget(Configuration);
 
-                Assert.ThrowsException<ArgumentNullException>(() => target.EnumerateProperties(DummySectionName, null));
+                Assert.Throws<ArgumentNullException>(() => target.EnumerateProperties(DummySectionName, null));
             }
 
             [DataTestMethod]
@@ -669,7 +669,7 @@ public sealed class IniDocumentSpec
                 {
                     var target = Make.EmptyTarget(Configuration);
 
-                    Assert.ThrowsException<SectionNotFoundException>(() => target.EnumerateProperties(NonexistentSectionName, Mode));
+                    Assert.Throws<SectionNotFoundException>(() => target.EnumerateProperties(NonexistentSectionName, Mode));
                 }
             }
 
@@ -704,7 +704,7 @@ public sealed class IniDocumentSpec
             {
                 var target = Make.EmptyTarget(DefaultConfiguration);
 
-                Assert.ThrowsException<ArgumentNullException>(() => target.ReadProperty(null, DummyPropertyKey));
+                Assert.Throws<ArgumentNullException>(() => target.ReadProperty(null, DummyPropertyKey));
             }
 
             [TestMethod]
@@ -712,7 +712,7 @@ public sealed class IniDocumentSpec
             {
                 var target = Make.EmptyTarget(DefaultConfiguration);
 
-                Assert.ThrowsException<ArgumentNullException>(() => target.ReadProperty(DummySectionName, null));
+                Assert.Throws<ArgumentNullException>(() => target.ReadProperty(DummySectionName, null));
             }
 
             [DataTestMethod]
@@ -742,7 +742,7 @@ public sealed class IniDocumentSpec
 
                     var target = Make.EmptyTarget(Configuration);
 
-                    var actual = Assert.ThrowsException<SectionNotFoundException>(() => target.ReadProperty(sectionName, DefaultPropertyKey));
+                    var actual = Assert.Throws<SectionNotFoundException>(() => target.ReadProperty(sectionName, DefaultPropertyKey));
 
                     Assert.AreEqual(expected, actual);
                 }
@@ -755,7 +755,7 @@ public sealed class IniDocumentSpec
 
                     var target = Make.SingleDefaultPropertyTarget(Configuration, DefaultPropertyValue);
 
-                    var actual = Assert.ThrowsException<PropertyNotFoundException>(() => target.ReadProperty(DefaultSectionName, propertyKey));
+                    var actual = Assert.Throws<PropertyNotFoundException>(() => target.ReadProperty(DefaultSectionName, propertyKey));
 
                     Assert.AreEqual(expected, actual);
                 }
@@ -806,7 +806,7 @@ public sealed class IniDocumentSpec
             {
                 var target = Make.EmptyTarget(Configuration);
 
-                Assert.ThrowsException<ArgumentNullException>(() => target.ReadProperty(null, DummyPropertyKey, DummyMode));
+                Assert.Throws<ArgumentNullException>(() => target.ReadProperty(null, DummyPropertyKey, DummyMode));
             }
 
             [TestMethod]
@@ -814,7 +814,7 @@ public sealed class IniDocumentSpec
             {
                 var target = Make.EmptyTarget(Configuration);
 
-                Assert.ThrowsException<ArgumentNullException>(() => target.ReadProperty(DummySectionName, null, DummyMode));
+                Assert.Throws<ArgumentNullException>(() => target.ReadProperty(DummySectionName, null, DummyMode));
             }
 
             [TestMethod]
@@ -822,7 +822,7 @@ public sealed class IniDocumentSpec
             {
                 var target = Make.EmptyTarget(Configuration);
 
-                Assert.ThrowsException<ArgumentNullException>(() => target.ReadProperty(DummySectionName, DummyPropertyKey, null));
+                Assert.Throws<ArgumentNullException>(() => target.ReadProperty(DummySectionName, DummyPropertyKey, null));
             }
 
             [DataTestMethod]
@@ -855,7 +855,7 @@ public sealed class IniDocumentSpec
                 {
                     var target = Make.EmptyTarget(Configuration);
 
-                    Assert.ThrowsException<SectionNotFoundException>(() => target.ReadProperty(NonexistentSectionName, DefaultPropertyKey, Mode));
+                    Assert.Throws<SectionNotFoundException>(() => target.ReadProperty(NonexistentSectionName, DefaultPropertyKey, Mode));
                 }
 
                 [TestMethod]
@@ -863,7 +863,7 @@ public sealed class IniDocumentSpec
                 {
                     var target = Make.SingleDefaultPropertyTarget(Configuration, DefaultPropertyValue);
 
-                    Assert.ThrowsException<PropertyNotFoundException>(() => target.ReadProperty(DefaultSectionName, NonexistentPropertyKey, Mode));
+                    Assert.Throws<PropertyNotFoundException>(() => target.ReadProperty(DefaultSectionName, NonexistentPropertyKey, Mode));
                 }
             }
 
@@ -914,7 +914,7 @@ public sealed class IniDocumentSpec
             {
                 var target = Make.EmptyTarget(DefaultConfiguration);
 
-                Assert.ThrowsException<ArgumentNullException>(() => target.WriteProperty(null, DummyPropertyKey, DummyPropertyValue));
+                Assert.Throws<ArgumentNullException>(() => target.WriteProperty(null, DummyPropertyKey, DummyPropertyValue));
             }
 
             [TestMethod]
@@ -922,7 +922,7 @@ public sealed class IniDocumentSpec
             {
                 var target = Make.EmptyTarget(DefaultConfiguration);
 
-                Assert.ThrowsException<ArgumentNullException>(() => target.WriteProperty(DummySectionName, null, DummyPropertyValue));
+                Assert.Throws<ArgumentNullException>(() => target.WriteProperty(DummySectionName, null, DummyPropertyValue));
             }
 
             [TestMethod]
@@ -930,7 +930,7 @@ public sealed class IniDocumentSpec
             {
                 var target = Make.EmptyTarget(DefaultConfiguration);
 
-                Assert.ThrowsException<ArgumentNullException>(() => target.WriteProperty(DummySectionName, DummyPropertyKey, null));
+                Assert.Throws<ArgumentNullException>(() => target.WriteProperty(DummySectionName, DummyPropertyKey, null));
             }
 
             private static void Writes_property(IniDocument target)
@@ -973,7 +973,7 @@ public sealed class IniDocumentSpec
                     var expected = new SectionNotFoundExceptionAssertion(NonexistentSectionName);
                     var target = Make.EmptyTarget(Configuration);
 
-                    var actual = Assert.ThrowsException<SectionNotFoundException>(() => target.WriteProperty(NonexistentSectionName, DefaultPropertyKey, DefaultPropertyValue));
+                    var actual = Assert.Throws<SectionNotFoundException>(() => target.WriteProperty(NonexistentSectionName, DefaultPropertyKey, DefaultPropertyValue));
 
                     Assert.AreEqual(expected, actual);
                 }
@@ -984,7 +984,7 @@ public sealed class IniDocumentSpec
                     var expected = new PropertyNotFoundExceptionAssertion(NonexistentPropertyKey);
                     var target = Make.SingleDefaultPropertyTarget(Configuration, DefaultPropertyValue);
 
-                    var actual = Assert.ThrowsException<PropertyNotFoundException>(() => target.WriteProperty(DefaultSectionName, NonexistentPropertyKey, DefaultPropertyValue));
+                    var actual = Assert.Throws<PropertyNotFoundException>(() => target.WriteProperty(DefaultSectionName, NonexistentPropertyKey, DefaultPropertyValue));
 
                     Assert.AreEqual(expected, actual);
                 }
@@ -1007,7 +1007,7 @@ public sealed class IniDocumentSpec
             {
                 var target = Make.EmptyTarget(Configuration);
 
-                Assert.ThrowsException<ArgumentNullException>(() => target.WriteProperty(null, DummyPropertyKey, DummyPropertyValue, DummyMode));
+                Assert.Throws<ArgumentNullException>(() => target.WriteProperty(null, DummyPropertyKey, DummyPropertyValue, DummyMode));
             }
 
             [TestMethod]
@@ -1015,7 +1015,7 @@ public sealed class IniDocumentSpec
             {
                 var target = Make.EmptyTarget(Configuration);
 
-                Assert.ThrowsException<ArgumentNullException>(() => target.WriteProperty(DummySectionName, null, DummyPropertyValue, DummyMode));
+                Assert.Throws<ArgumentNullException>(() => target.WriteProperty(DummySectionName, null, DummyPropertyValue, DummyMode));
             }
 
             [TestMethod]
@@ -1023,7 +1023,7 @@ public sealed class IniDocumentSpec
             {
                 var target = Make.EmptyTarget(Configuration);
 
-                Assert.ThrowsException<ArgumentNullException>(() => target.WriteProperty(DummySectionName, DummyPropertyKey, null, DummyMode));
+                Assert.Throws<ArgumentNullException>(() => target.WriteProperty(DummySectionName, DummyPropertyKey, null, DummyMode));
             }
 
             [TestMethod]
@@ -1031,7 +1031,7 @@ public sealed class IniDocumentSpec
             {
                 var target = Make.EmptyTarget(Configuration);
 
-                Assert.ThrowsException<ArgumentNullException>(() => target.WriteProperty(DummySectionName, DummyPropertyKey, DummyPropertyValue, null));
+                Assert.Throws<ArgumentNullException>(() => target.WriteProperty(DummySectionName, DummyPropertyKey, DummyPropertyValue, null));
             }
 
             private static void Writes_property(IniDocument target, PropertyWriteMode mode)
@@ -1074,7 +1074,7 @@ public sealed class IniDocumentSpec
                     var expected = new SectionNotFoundExceptionAssertion(NonexistentSectionName);
                     var target = Make.EmptyTarget(Configuration);
 
-                    var actual = Assert.ThrowsException<SectionNotFoundException>(() => target.WriteProperty(NonexistentSectionName, DefaultPropertyKey, DefaultPropertyValue, Mode));
+                    var actual = Assert.Throws<SectionNotFoundException>(() => target.WriteProperty(NonexistentSectionName, DefaultPropertyKey, DefaultPropertyValue, Mode));
 
                     Assert.AreEqual(expected, actual);
                 }
@@ -1085,7 +1085,7 @@ public sealed class IniDocumentSpec
                     var expected = new PropertyNotFoundExceptionAssertion(NonexistentPropertyKey);
                     var target = Make.SingleDefaultPropertyTarget(Configuration, DefaultPropertyValue);
 
-                    var actual = Assert.ThrowsException<PropertyNotFoundException>(() => target.WriteProperty(DefaultSectionName, NonexistentPropertyKey, DefaultPropertyValue, Mode));
+                    var actual = Assert.Throws<PropertyNotFoundException>(() => target.WriteProperty(DefaultSectionName, NonexistentPropertyKey, DefaultPropertyValue, Mode));
 
                     Assert.AreEqual(expected, actual);
                 }
@@ -1118,7 +1118,7 @@ public sealed class IniDocumentSpec
             {
                 var target = Make.EmptyTarget(DefaultConfiguration);
 
-                Assert.ThrowsException<ArgumentNullException>(() => target.DeleteProperty(null, DummyPropertyKey));
+                Assert.Throws<ArgumentNullException>(() => target.DeleteProperty(null, DummyPropertyKey));
             }
 
             [TestMethod]
@@ -1126,7 +1126,7 @@ public sealed class IniDocumentSpec
             {
                 var target = Make.EmptyTarget(DefaultConfiguration);
 
-                Assert.ThrowsException<ArgumentNullException>(() => target.DeleteProperty(DummySectionName, null));
+                Assert.Throws<ArgumentNullException>(() => target.DeleteProperty(DummySectionName, null));
             }
 
             private static void DeletesProperty(IniDocumentConfiguration configuration)
@@ -1152,7 +1152,7 @@ public sealed class IniDocumentSpec
                     var expected = new SectionNotFoundExceptionAssertion(NonexistentSectionName);
                     var target = Make.EmptyTarget(Configuration);
 
-                    var actual = Assert.ThrowsException<SectionNotFoundException>(() => target.DeleteProperty(NonexistentSectionName, DummyPropertyKey));
+                    var actual = Assert.Throws<SectionNotFoundException>(() => target.DeleteProperty(NonexistentSectionName, DummyPropertyKey));
 
                     Assert.AreEqual(expected, actual);
                 }
@@ -1163,7 +1163,7 @@ public sealed class IniDocumentSpec
                     var expected = new PropertyNotFoundExceptionAssertion(NonexistentPropertyKey);
                     var target = Make.EmptySectionsTarget(Configuration, DefaultSectionName);
 
-                    var actual = Assert.ThrowsException<PropertyNotFoundException>(() => target.DeleteProperty(DefaultSectionName, NonexistentPropertyKey));
+                    var actual = Assert.Throws<PropertyNotFoundException>(() => target.DeleteProperty(DefaultSectionName, NonexistentPropertyKey));
 
                     Assert.AreEqual(expected, actual);
                 }
@@ -1212,7 +1212,7 @@ public sealed class IniDocumentSpec
             {
                 var target = Make.EmptyTarget(Configuration);
 
-                Assert.ThrowsException<ArgumentNullException>(() => target.DeleteProperty(null, DummyPropertyKey, DummyMode));
+                Assert.Throws<ArgumentNullException>(() => target.DeleteProperty(null, DummyPropertyKey, DummyMode));
             }
 
             [TestMethod]
@@ -1220,7 +1220,7 @@ public sealed class IniDocumentSpec
             {
                 var target = Make.EmptyTarget(Configuration);
 
-                Assert.ThrowsException<ArgumentNullException>(() => target.DeleteProperty(DummySectionName, null, DummyMode));
+                Assert.Throws<ArgumentNullException>(() => target.DeleteProperty(DummySectionName, null, DummyMode));
             }
 
             [TestMethod]
@@ -1228,7 +1228,7 @@ public sealed class IniDocumentSpec
             {
                 var target = Make.EmptyTarget(Configuration);
 
-                Assert.ThrowsException<ArgumentNullException>(() => target.DeleteProperty(DummySectionName, DummyPropertyKey, null));
+                Assert.Throws<ArgumentNullException>(() => target.DeleteProperty(DummySectionName, DummyPropertyKey, null));
             }
 
             private static void DeletesProperty(PropertyDeletionMode mode)
@@ -1254,7 +1254,7 @@ public sealed class IniDocumentSpec
                     var expected = new SectionNotFoundExceptionAssertion(NonexistentSectionName);
                     var target = Make.EmptyTarget(Configuration);
 
-                    var actual = Assert.ThrowsException<SectionNotFoundException>(() => target.DeleteProperty(NonexistentSectionName, DummyPropertyKey, Mode));
+                    var actual = Assert.Throws<SectionNotFoundException>(() => target.DeleteProperty(NonexistentSectionName, DummyPropertyKey, Mode));
 
                     Assert.AreEqual(expected, actual);
                 }
@@ -1265,7 +1265,7 @@ public sealed class IniDocumentSpec
                     var expected = new PropertyNotFoundExceptionAssertion(NonexistentPropertyKey);
                     var target = Make.EmptySectionsTarget(Configuration, DefaultSectionName);
 
-                    var actual = Assert.ThrowsException<PropertyNotFoundException>(() => target.DeleteProperty(DefaultSectionName, NonexistentPropertyKey, Mode));
+                    var actual = Assert.Throws<PropertyNotFoundException>(() => target.DeleteProperty(DefaultSectionName, NonexistentPropertyKey, Mode));
 
                     Assert.AreEqual(expected, actual);
                 }
@@ -1314,7 +1314,7 @@ public sealed class IniDocumentSpec
             {
                 var target = Make.EmptyTarget(DefaultConfiguration);
 
-                Assert.ThrowsException<ArgumentNullException>(() => target.DeleteSection(null));
+                Assert.Throws<ArgumentNullException>(() => target.DeleteSection(null));
             }
 
             private static void DeletesSection(IniDocumentConfiguration configuration)
@@ -1340,7 +1340,7 @@ public sealed class IniDocumentSpec
                     var expected = new SectionNotFoundExceptionAssertion(NonexistentSectionName);
                     var target = Make.EmptyTarget(Configuration);
 
-                    var actual = Assert.ThrowsException<SectionNotFoundException>(() => target.DeleteSection(NonexistentSectionName));
+                    var actual = Assert.Throws<SectionNotFoundException>(() => target.DeleteSection(NonexistentSectionName));
 
                     Assert.AreEqual(expected, actual);
                 }
@@ -1381,7 +1381,7 @@ public sealed class IniDocumentSpec
             {
                 var target = Make.EmptyTarget(Configuration);
 
-                Assert.ThrowsException<ArgumentNullException>(() => target.DeleteSection(null, DummyMode));
+                Assert.Throws<ArgumentNullException>(() => target.DeleteSection(null, DummyMode));
             }
 
             [TestMethod]
@@ -1389,7 +1389,7 @@ public sealed class IniDocumentSpec
             {
                 var target = Make.EmptyTarget(Configuration);
 
-                Assert.ThrowsException<ArgumentNullException>(() => target.DeleteSection(DummySectionName, null));
+                Assert.Throws<ArgumentNullException>(() => target.DeleteSection(DummySectionName, null));
             }
 
             private static void DeletesSection(SectionDeletionMode mode)
@@ -1415,7 +1415,7 @@ public sealed class IniDocumentSpec
                     var expected = new SectionNotFoundExceptionAssertion(NonexistentSectionName);
                     var target = Make.EmptyTarget(Configuration);
 
-                    var actual = Assert.ThrowsException<SectionNotFoundException>(() => target.DeleteSection(NonexistentSectionName, Mode));
+                    var actual = Assert.Throws<SectionNotFoundException>(() => target.DeleteSection(NonexistentSectionName, Mode));
 
                     Assert.AreEqual(expected, actual);
                 }
@@ -1467,7 +1467,7 @@ public sealed class IniDocumentSpec
             {
                 var target = Make.EmptyTarget(DefaultConfiguration);
 
-                Assert.ThrowsException<ArgumentNullException>(() => target.ReadComment(null));
+                Assert.Throws<ArgumentNullException>(() => target.ReadComment(null));
             }
 
             private static void ReadsComment(IniDocumentConfiguration configuration)
@@ -1498,7 +1498,7 @@ public sealed class IniDocumentSpec
                     var expected = new SectionNotFoundExceptionAssertion(NonexistentSectionName);
                     var target = Make.EmptyTarget(Configuration);
 
-                    var actual = Assert.ThrowsException<SectionNotFoundException>(() => target.ReadComment(NonexistentSectionName));
+                    var actual = Assert.Throws<SectionNotFoundException>(() => target.ReadComment(NonexistentSectionName));
 
                     Assert.AreEqual(expected, actual);
                 }
@@ -1556,7 +1556,7 @@ public sealed class IniDocumentSpec
             {
                 var target = Make.EmptyTarget(Configuration);
 
-                Assert.ThrowsException<ArgumentNullException>(() => target.ReadComment(null, DummyMode));
+                Assert.Throws<ArgumentNullException>(() => target.ReadComment(null, DummyMode));
             }
 
             [TestMethod]
@@ -1564,7 +1564,7 @@ public sealed class IniDocumentSpec
             {
                 var target = Make.EmptyTarget(Configuration);
 
-                Assert.ThrowsException<ArgumentNullException>(() => target.ReadComment(DummySectionName, null as CommentReadMode));
+                Assert.Throws<ArgumentNullException>(() => target.ReadComment(DummySectionName, null as CommentReadMode));
             }
 
             private static void ReadsComment(CommentReadMode mode)
@@ -1595,7 +1595,7 @@ public sealed class IniDocumentSpec
                     var expected = new SectionNotFoundExceptionAssertion(NonexistentSectionName);
                     var target = Make.EmptyTarget(Configuration);
 
-                    var actual = Assert.ThrowsException<SectionNotFoundException>(() => target.ReadComment(NonexistentSectionName, Mode));
+                    var actual = Assert.Throws<SectionNotFoundException>(() => target.ReadComment(NonexistentSectionName, Mode));
 
                     Assert.AreEqual(expected, actual);
                 }
@@ -1649,7 +1649,7 @@ public sealed class IniDocumentSpec
             {
                 var target = Make.EmptyTarget(DefaultConfiguration);
 
-                Assert.ThrowsException<ArgumentNullException>(() => target.ReadComment(null, DummyPropertyKey));
+                Assert.Throws<ArgumentNullException>(() => target.ReadComment(null, DummyPropertyKey));
             }
 
             [TestMethod]
@@ -1657,7 +1657,7 @@ public sealed class IniDocumentSpec
             {
                 var target = Make.EmptyTarget(DefaultConfiguration);
 
-                Assert.ThrowsException<ArgumentNullException>(() => target.ReadComment(DummySectionName, null as PropertyKey));
+                Assert.Throws<ArgumentNullException>(() => target.ReadComment(DummySectionName, null as PropertyKey));
             }
 
             private static void ReadsComment(IniDocumentConfiguration configuration)
@@ -1688,7 +1688,7 @@ public sealed class IniDocumentSpec
                     var expected = new SectionNotFoundExceptionAssertion(NonexistentSectionName);
                     var target = Make.EmptyTarget(Configuration);
 
-                    var actual = Assert.ThrowsException<SectionNotFoundException>(() => target.ReadComment(NonexistentSectionName, DefaultPropertyKey));
+                    var actual = Assert.Throws<SectionNotFoundException>(() => target.ReadComment(NonexistentSectionName, DefaultPropertyKey));
 
                     Assert.AreEqual(expected, actual);
                 }
@@ -1699,7 +1699,7 @@ public sealed class IniDocumentSpec
                     var expected = new PropertyNotFoundExceptionAssertion(NonexistentPropertyKey);
                     var target = Make.SingleDefaultPropertyTarget(Configuration, DefaultPropertyValue);
 
-                    var actual = Assert.ThrowsException<PropertyNotFoundException>(() => target.ReadComment(DefaultSectionName, NonexistentPropertyKey));
+                    var actual = Assert.Throws<PropertyNotFoundException>(() => target.ReadComment(DefaultSectionName, NonexistentPropertyKey));
 
                     Assert.AreEqual(expected, actual);
                 }
@@ -1769,7 +1769,7 @@ public sealed class IniDocumentSpec
             {
                 var target = Make.EmptyTarget(Configuration);
 
-                Assert.ThrowsException<ArgumentNullException>(() => target.ReadComment(null, DummyPropertyKey, DummyMode));
+                Assert.Throws<ArgumentNullException>(() => target.ReadComment(null, DummyPropertyKey, DummyMode));
             }
 
             [TestMethod]
@@ -1777,7 +1777,7 @@ public sealed class IniDocumentSpec
             {
                 var target = Make.EmptyTarget(Configuration);
 
-                Assert.ThrowsException<ArgumentNullException>(() => target.ReadComment(DummySectionName, null, DummyMode));
+                Assert.Throws<ArgumentNullException>(() => target.ReadComment(DummySectionName, null, DummyMode));
             }
 
             [TestMethod]
@@ -1785,7 +1785,7 @@ public sealed class IniDocumentSpec
             {
                 var target = Make.EmptyTarget(Configuration);
 
-                Assert.ThrowsException<ArgumentNullException>(() => target.ReadComment(DummySectionName, DummyPropertyKey, null));
+                Assert.Throws<ArgumentNullException>(() => target.ReadComment(DummySectionName, DummyPropertyKey, null));
             }
 
             private static void ReadsComment(CommentReadMode mode)
@@ -1816,7 +1816,7 @@ public sealed class IniDocumentSpec
                     var expected = new SectionNotFoundExceptionAssertion(NonexistentSectionName);
                     var target = Make.EmptyTarget(Configuration);
 
-                    var actual = Assert.ThrowsException<SectionNotFoundException>(() => target.ReadComment(NonexistentSectionName, DefaultPropertyKey, Mode));
+                    var actual = Assert.Throws<SectionNotFoundException>(() => target.ReadComment(NonexistentSectionName, DefaultPropertyKey, Mode));
 
                     Assert.AreEqual(expected, actual);
                 }
@@ -1827,7 +1827,7 @@ public sealed class IniDocumentSpec
                     var expected = new PropertyNotFoundExceptionAssertion(NonexistentPropertyKey);
                     var target = Make.SingleDefaultPropertyTarget(Configuration, DefaultPropertyValue);
 
-                    var actual = Assert.ThrowsException<PropertyNotFoundException>(() => target.ReadComment(DefaultSectionName, NonexistentPropertyKey, Mode));
+                    var actual = Assert.Throws<PropertyNotFoundException>(() => target.ReadComment(DefaultSectionName, NonexistentPropertyKey, Mode));
 
                     Assert.AreEqual(expected, actual);
                 }
@@ -1888,7 +1888,7 @@ public sealed class IniDocumentSpec
             {
                 var target = Make.EmptyTarget(DefaultConfiguration);
 
-                Assert.ThrowsException<ArgumentNullException>(() => target.WriteComment(null, DummyComment));
+                Assert.Throws<ArgumentNullException>(() => target.WriteComment(null, DummyComment));
             }
 
             [TestMethod]
@@ -1896,7 +1896,7 @@ public sealed class IniDocumentSpec
             {
                 var target = Make.EmptyTarget(DefaultConfiguration);
 
-                Assert.ThrowsException<ArgumentNullException>(() => target.WriteComment(DummySectionName, null));
+                Assert.Throws<ArgumentNullException>(() => target.WriteComment(DummySectionName, null));
             }
 
             private static void WritesComment(IniDocumentConfiguration configuration)
@@ -1944,7 +1944,7 @@ public sealed class IniDocumentSpec
                     var expected = new SectionNotFoundExceptionAssertion(NonexistentSectionName);
                     var target = Make.EmptyTarget(Configuration);
 
-                    var actual = Assert.ThrowsException<SectionNotFoundException>(() => target.WriteComment(NonexistentSectionName, DummyComment));
+                    var actual = Assert.Throws<SectionNotFoundException>(() => target.WriteComment(NonexistentSectionName, DummyComment));
 
                     Assert.AreEqual(expected, actual);
                 }
@@ -1987,7 +1987,7 @@ public sealed class IniDocumentSpec
             {
                 var target = Make.EmptyTarget(Configuration);
 
-                Assert.ThrowsException<ArgumentNullException>(() => target.WriteComment(null, DummyComment, DummyMode));
+                Assert.Throws<ArgumentNullException>(() => target.WriteComment(null, DummyComment, DummyMode));
             }
 
             [TestMethod]
@@ -1995,7 +1995,7 @@ public sealed class IniDocumentSpec
             {
                 var target = Make.EmptyTarget(Configuration);
 
-                Assert.ThrowsException<ArgumentNullException>(() => target.WriteComment(DummySectionName, null, DummyMode));
+                Assert.Throws<ArgumentNullException>(() => target.WriteComment(DummySectionName, null, DummyMode));
             }
 
             [TestMethod]
@@ -2003,7 +2003,7 @@ public sealed class IniDocumentSpec
             {
                 var target = Make.EmptyTarget(Configuration);
 
-                Assert.ThrowsException<ArgumentNullException>(() => target.WriteComment(DummySectionName, DummyComment, null));
+                Assert.Throws<ArgumentNullException>(() => target.WriteComment(DummySectionName, DummyComment, null));
             }
 
             private static void WritesComment(CommentWriteMode mode)
@@ -2051,7 +2051,7 @@ public sealed class IniDocumentSpec
                     var expected = new SectionNotFoundExceptionAssertion(NonexistentSectionName);
                     var target = Make.EmptyTarget(Configuration);
 
-                    var actual = Assert.ThrowsException<SectionNotFoundException>(() => target.WriteComment(NonexistentSectionName, DummyComment, Mode));
+                    var actual = Assert.Throws<SectionNotFoundException>(() => target.WriteComment(NonexistentSectionName, DummyComment, Mode));
 
                     Assert.AreEqual(expected, actual);
                 }
@@ -2090,7 +2090,7 @@ public sealed class IniDocumentSpec
             {
                 var target = Make.EmptyTarget(DefaultConfiguration);
 
-                Assert.ThrowsException<ArgumentNullException>(() => target.WriteComment(null, DummyPropertyKey, DummyComment));
+                Assert.Throws<ArgumentNullException>(() => target.WriteComment(null, DummyPropertyKey, DummyComment));
             }
 
             [TestMethod]
@@ -2098,7 +2098,7 @@ public sealed class IniDocumentSpec
             {
                 var target = Make.EmptyTarget(DefaultConfiguration);
 
-                Assert.ThrowsException<ArgumentNullException>(() => target.WriteComment(DummySectionName, null, DummyComment));
+                Assert.Throws<ArgumentNullException>(() => target.WriteComment(DummySectionName, null, DummyComment));
             }
 
             [TestMethod]
@@ -2106,7 +2106,7 @@ public sealed class IniDocumentSpec
             {
                 var target = Make.EmptyTarget(DefaultConfiguration);
 
-                Assert.ThrowsException<ArgumentNullException>(() => target.WriteComment(DummySectionName, DummyPropertyKey, null));
+                Assert.Throws<ArgumentNullException>(() => target.WriteComment(DummySectionName, DummyPropertyKey, null));
             }
 
             private static void WritesComment(IniDocumentConfiguration configuration)
@@ -2157,7 +2157,7 @@ public sealed class IniDocumentSpec
                     var expected = new SectionNotFoundExceptionAssertion(NonexistentSectionName);
                     var target = Make.EmptyTarget(Configuration);
 
-                    var actual = Assert.ThrowsException<SectionNotFoundException>(() => target.WriteComment(NonexistentSectionName, DummyPropertyKey, DummyComment));
+                    var actual = Assert.Throws<SectionNotFoundException>(() => target.WriteComment(NonexistentSectionName, DummyPropertyKey, DummyComment));
 
                     Assert.AreEqual(expected, actual);
                 }
@@ -2168,7 +2168,7 @@ public sealed class IniDocumentSpec
                     var expected = new PropertyNotFoundExceptionAssertion(NonexistentPropertyKey);
                     var target = Make.SingleDefaultPropertyTarget(Configuration, DefaultPropertyValue);
 
-                    var actual = Assert.ThrowsException<PropertyNotFoundException>(() => target.WriteComment(DefaultSectionName, NonexistentPropertyKey, DummyComment));
+                    var actual = Assert.Throws<PropertyNotFoundException>(() => target.WriteComment(DefaultSectionName, NonexistentPropertyKey, DummyComment));
 
                     Assert.AreEqual(expected, actual);
                 }
@@ -2219,7 +2219,7 @@ public sealed class IniDocumentSpec
             {
                 var target = Make.EmptyTarget(Configuration);
 
-                Assert.ThrowsException<ArgumentNullException>(() => target.WriteComment(null, DummyPropertyKey, DummyComment, DummyMode));
+                Assert.Throws<ArgumentNullException>(() => target.WriteComment(null, DummyPropertyKey, DummyComment, DummyMode));
             }
 
             [TestMethod]
@@ -2227,7 +2227,7 @@ public sealed class IniDocumentSpec
             {
                 var target = Make.EmptyTarget(Configuration);
 
-                Assert.ThrowsException<ArgumentNullException>(() => target.WriteComment(DummySectionName, null, DummyComment, DummyMode));
+                Assert.Throws<ArgumentNullException>(() => target.WriteComment(DummySectionName, null, DummyComment, DummyMode));
             }
 
             [TestMethod]
@@ -2235,7 +2235,7 @@ public sealed class IniDocumentSpec
             {
                 var target = Make.EmptyTarget(Configuration);
 
-                Assert.ThrowsException<ArgumentNullException>(() => target.WriteComment(DummySectionName, DummyPropertyKey, null, DummyMode));
+                Assert.Throws<ArgumentNullException>(() => target.WriteComment(DummySectionName, DummyPropertyKey, null, DummyMode));
             }
 
             [TestMethod]
@@ -2243,7 +2243,7 @@ public sealed class IniDocumentSpec
             {
                 var target = Make.EmptyTarget(Configuration);
 
-                Assert.ThrowsException<ArgumentNullException>(() => target.WriteComment(DummySectionName, DummyPropertyKey, DummyComment, null));
+                Assert.Throws<ArgumentNullException>(() => target.WriteComment(DummySectionName, DummyPropertyKey, DummyComment, null));
             }
 
             private static void WritesComment(CommentWriteMode mode)
@@ -2294,7 +2294,7 @@ public sealed class IniDocumentSpec
                     var expected = new SectionNotFoundExceptionAssertion(NonexistentSectionName);
                     var target = Make.EmptyTarget(Configuration);
 
-                    var actual = Assert.ThrowsException<SectionNotFoundException>(() => target.WriteComment(NonexistentSectionName, DummyPropertyKey, DummyComment, Mode));
+                    var actual = Assert.Throws<SectionNotFoundException>(() => target.WriteComment(NonexistentSectionName, DummyPropertyKey, DummyComment, Mode));
 
                     Assert.AreEqual(expected, actual);
                 }
@@ -2305,7 +2305,7 @@ public sealed class IniDocumentSpec
                     var expected = new PropertyNotFoundExceptionAssertion(NonexistentPropertyKey);
                     var target = Make.SingleDefaultPropertyTarget(Configuration, DefaultPropertyValue);
 
-                    var actual = Assert.ThrowsException<PropertyNotFoundException>(() => target.WriteComment(DefaultSectionName, NonexistentPropertyKey, DummyComment, Mode));
+                    var actual = Assert.Throws<PropertyNotFoundException>(() => target.WriteComment(DefaultSectionName, NonexistentPropertyKey, DummyComment, Mode));
 
                     Assert.AreEqual(expected, actual);
                 }

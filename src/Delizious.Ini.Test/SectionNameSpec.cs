@@ -15,19 +15,19 @@ public sealed class SectionNameSpec
     [TestMethod]
     public void Throws_argument_null_exception_on_creation_when_given_section_name_is_null()
     {
-        Assert.ThrowsException<ArgumentNullException>(() => SectionName.Create(null));
+        Assert.Throws<ArgumentNullException>(() => SectionName.Create(null));
     }
 
     [TestMethod]
     public void Throws_argument_exception_on_creation_when_given_section_name_is_empty()
     {
-        Assert.ThrowsException<ArgumentException>(() => SectionName.Create(string.Empty));
+        Assert.Throws<ArgumentException>(() => SectionName.Create(string.Empty));
     }
 
     [TestMethod]
     public void Throws_argument_exception_on_creation_when_given_section_name_consists_only_of_white_space_characters()
     {
-        Assert.ThrowsException<ArgumentException>(() => SectionName.Create("   "));
+        Assert.Throws<ArgumentException>(() => SectionName.Create("   "));
     }
 
     [TestMethod]

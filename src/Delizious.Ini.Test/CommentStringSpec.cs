@@ -14,19 +14,19 @@ public sealed class CommentStringSpec
     [TestMethod]
     public void Throws_argument_null_exception_on_creation_when_given_comment_string_is_null()
     {
-        Assert.ThrowsException<ArgumentNullException>(() => CommentString.Create(null));
+        Assert.Throws<ArgumentNullException>(() => CommentString.Create(null));
     }
 
     [TestMethod]
     public void Throws_argument_exception_on_creation_when_given_comment_string_is_empty()
     {
-        Assert.ThrowsException<ArgumentException>(() => CommentString.Create(string.Empty));
+        Assert.Throws<ArgumentException>(() => CommentString.Create(string.Empty));
     }
 
     [TestMethod]
     public void Throws_argument_exception_on_creation_when_given_comment_string_consists_only_of_white_space_characters()
     {
-        Assert.ThrowsException<ArgumentException>(() => CommentString.Create("   "));
+        Assert.Throws<ArgumentException>(() => CommentString.Create("   "));
     }
 
     [DataTestMethod]
