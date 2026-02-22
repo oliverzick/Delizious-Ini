@@ -35,7 +35,7 @@ public sealed class IniDocumentConfigurationSpec
     public sealed class Defaults
     {
         [TestMethod]
-        [DynamicData(nameof(Default_case_sensitivity_test_cases), DynamicDataSourceType.Method)]
+        [DynamicData(nameof(Default_case_sensitivity_test_cases))]
         public void Default_case_sensitivity(IniDocumentConfiguration target, CaseSensitivity expected)
         {
             var actual = target.CaseSensitivity;
@@ -51,7 +51,7 @@ public sealed class IniDocumentConfigurationSpec
         }
 
         [TestMethod]
-        [DynamicData(nameof(Default_newline_string_test_cases), DynamicDataSourceType.Method)]
+        [DynamicData(nameof(Default_newline_string_test_cases))]
         public void Default_newline_string(IniDocumentConfiguration target, NewlineString expected)
         {
             var actual = target.NewlineString;
@@ -67,7 +67,7 @@ public sealed class IniDocumentConfigurationSpec
         }
 
         [TestMethod]
-        [DynamicData(nameof(Default_section_beginning_delimiter_test_cases), DynamicDataSourceType.Method)]
+        [DynamicData(nameof(Default_section_beginning_delimiter_test_cases))]
         public void Default_section_beginning_delimiter(IniDocumentConfiguration target, SectionBeginningDelimiter expected)
         {
             var actual = target.SectionBeginningDelimiter;
@@ -83,7 +83,7 @@ public sealed class IniDocumentConfigurationSpec
         }
 
         [TestMethod]
-        [DynamicData(nameof(Default_section_end_delimiter_test_cases), DynamicDataSourceType.Method)]
+        [DynamicData(nameof(Default_section_end_delimiter_test_cases))]
         public void Default_section_end_delimiter(IniDocumentConfiguration target, SectionEndDelimiter expected)
         {
             var actual = target.SectionEndDelimiter;
@@ -99,7 +99,7 @@ public sealed class IniDocumentConfigurationSpec
         }
 
         [TestMethod]
-        [DynamicData(nameof(Default_section_name_regex_test_cases), DynamicDataSourceType.Method)]
+        [DynamicData(nameof(Default_section_name_regex_test_cases))]
         public void Default_section_name_regex(IniDocumentConfiguration target, SectionNameRegex expected)
         {
             var actual = target.SectionNameRegex;
@@ -115,7 +115,7 @@ public sealed class IniDocumentConfigurationSpec
         }
 
         [TestMethod]
-        [DynamicData(nameof(Default_duplicate_property_behavior_test_cases), DynamicDataSourceType.Method)]
+        [DynamicData(nameof(Default_duplicate_property_behavior_test_cases))]
         public void Default_duplicate_property_behavior(IniDocumentConfiguration target, DuplicatePropertyBehavior expected)
         {
             var actual = target.DuplicatePropertyBehavior;
@@ -131,7 +131,7 @@ public sealed class IniDocumentConfigurationSpec
         }
 
         [TestMethod]
-        [DynamicData(nameof(Default_duplicate_section_behavior_test_cases), DynamicDataSourceType.Method)]
+        [DynamicData(nameof(Default_duplicate_section_behavior_test_cases))]
         public void Default_duplicate_section_behavior(IniDocumentConfiguration target, DuplicateSectionBehavior expected)
         {
             var actual = target.DuplicateSectionBehavior;
@@ -147,7 +147,7 @@ public sealed class IniDocumentConfigurationSpec
         }
 
         [TestMethod]
-        [DynamicData(nameof(Default_invalid_line_behavior_test_cases), DynamicDataSourceType.Method)]
+        [DynamicData(nameof(Default_invalid_line_behavior_test_cases))]
         public void Default_invalid_line_behavior(IniDocumentConfiguration target, InvalidLineBehavior expected)
         {
             var actual = target.InvalidLineBehavior;
@@ -163,7 +163,7 @@ public sealed class IniDocumentConfigurationSpec
         }
 
         [TestMethod]
-        [DynamicData(nameof(Default_property_assignment_separator_test_cases), DynamicDataSourceType.Method)]
+        [DynamicData(nameof(Default_property_assignment_separator_test_cases))]
         public void Default_property_assignment_separator(IniDocumentConfiguration target, PropertyAssignmentSeparator expected)
         {
             var actual = target.PropertyAssignmentSeparator;
@@ -179,7 +179,7 @@ public sealed class IniDocumentConfigurationSpec
         }
 
         [TestMethod]
-        [DynamicData(nameof(Default_property_assignment_spacer_test_cases), DynamicDataSourceType.Method)]
+        [DynamicData(nameof(Default_property_assignment_spacer_test_cases))]
         public void Default_property_assignment_spacer(IniDocumentConfiguration target, PropertyAssignmentSpacer expected)
         {
             var actual = target.PropertyAssignmentSpacer;
@@ -195,7 +195,7 @@ public sealed class IniDocumentConfigurationSpec
         }
 
         [TestMethod]
-        [DynamicData(nameof(Default_property_enumeration_mode_test_cases), DynamicDataSourceType.Method)]
+        [DynamicData(nameof(Default_property_enumeration_mode_test_cases))]
         public void Default_property_enumeration_mode(IniDocumentConfiguration target, PropertyEnumerationMode expected)
         {
             var actual = target.PropertyEnumerationMode;
@@ -211,7 +211,7 @@ public sealed class IniDocumentConfigurationSpec
         }
 
         [TestMethod]
-        [DynamicData(nameof(Default_property_read_mode_test_cases), DynamicDataSourceType.Method)]
+        [DynamicData(nameof(Default_property_read_mode_test_cases))]
         public void Default_property_read_mode(IniDocumentConfiguration target, PropertyReadMode expected)
         {
             var actual = target.PropertyReadMode;
@@ -227,7 +227,7 @@ public sealed class IniDocumentConfigurationSpec
         }
 
         [TestMethod]
-        [DynamicData(nameof(Default_property_write_mode_test_cases), DynamicDataSourceType.Method)]
+        [DynamicData(nameof(Default_property_write_mode_test_cases))]
         public void Default_property_write_mode(IniDocumentConfiguration target, PropertyWriteMode expected)
         {
             var actual = target.PropertyWriteMode;
@@ -243,7 +243,7 @@ public sealed class IniDocumentConfigurationSpec
         }
 
         [TestMethod]
-        [DynamicData(nameof(Default_property_deletion_mode_test_cases), DynamicDataSourceType.Method)]
+        [DynamicData(nameof(Default_property_deletion_mode_test_cases))]
         public void Default_property_deletion_mode(IniDocumentConfiguration target, PropertyDeletionMode expected)
         {
             var actual = target.PropertyDeletionMode;
@@ -259,7 +259,7 @@ public sealed class IniDocumentConfigurationSpec
         }
 
         [TestMethod]
-        [DynamicData(nameof(Default_section_deletion_mode_test_cases), DynamicDataSourceType.Method)]
+        [DynamicData(nameof(Default_section_deletion_mode_test_cases))]
         public void Default_section_deletion_mode(IniDocumentConfiguration target, SectionDeletionMode expected)
         {
             var actual = target.SectionDeletionMode;
@@ -275,7 +275,7 @@ public sealed class IniDocumentConfigurationSpec
         }
 
         [TestMethod]
-        [DynamicData(nameof(Default_comment_string_test_cases), DynamicDataSourceType.Method)]
+        [DynamicData(nameof(Default_comment_string_test_cases))]
         public void Default_comment_string(IniDocumentConfiguration target, CommentString expected)
         {
             var actual = target.CommentString;
@@ -291,7 +291,7 @@ public sealed class IniDocumentConfigurationSpec
         }
 
         [TestMethod]
-        [DynamicData(nameof(Default_comment_read_mode_test_cases), DynamicDataSourceType.Method)]
+        [DynamicData(nameof(Default_comment_read_mode_test_cases))]
         public void Default_comment_read_mode(IniDocumentConfiguration target, CommentReadMode expected)
         {
             var actual = target.CommentReadMode;
@@ -307,7 +307,7 @@ public sealed class IniDocumentConfigurationSpec
         }
 
         [TestMethod]
-        [DynamicData(nameof(Default_comment_write_mode_test_cases), DynamicDataSourceType.Method)]
+        [DynamicData(nameof(Default_comment_write_mode_test_cases))]
         public void Default_comment_write_mode(IniDocumentConfiguration target, CommentWriteMode expected)
         {
             var actual = target.CommentWriteMode;
@@ -335,7 +335,7 @@ public sealed class IniDocumentConfigurationSpec
         }
 
         [TestMethod]
-        [DynamicData(nameof(Retains_remaining_settings_test_cases), DynamicDataSourceType.Method)]
+        [DynamicData(nameof(Retains_remaining_settings_test_cases))]
         public void Retains_remaining_settings(Setting setting)
         {
             var original = Target;
@@ -361,7 +361,7 @@ public sealed class IniDocumentConfigurationSpec
         }
 
         [TestMethod]
-        [DynamicData(nameof(Retains_remaining_settings_test_cases), DynamicDataSourceType.Method)]
+        [DynamicData(nameof(Retains_remaining_settings_test_cases))]
         public void Retains_remaining_settings(Setting setting)
         {
             var original = Target;
@@ -388,7 +388,7 @@ public sealed class IniDocumentConfigurationSpec
         }
 
         [TestMethod]
-        [DynamicData(nameof(Retains_remaining_settings_test_cases), DynamicDataSourceType.Method)]
+        [DynamicData(nameof(Retains_remaining_settings_test_cases))]
         public void Retains_remaining_settings(Setting setting)
         {
             var original = Target;
@@ -414,7 +414,7 @@ public sealed class IniDocumentConfigurationSpec
         }
 
         [TestMethod]
-        [DynamicData(nameof(Retains_remaining_settings_test_cases), DynamicDataSourceType.Method)]
+        [DynamicData(nameof(Retains_remaining_settings_test_cases))]
         public void Retains_remaining_settings(Setting setting)
         {
             var original = Target;
@@ -440,7 +440,7 @@ public sealed class IniDocumentConfigurationSpec
         }
 
         [TestMethod]
-        [DynamicData(nameof(Retains_remaining_settings_test_cases), DynamicDataSourceType.Method)]
+        [DynamicData(nameof(Retains_remaining_settings_test_cases))]
         public void Retains_remaining_settings(Setting setting)
         {
             var original = Target;
@@ -466,7 +466,7 @@ public sealed class IniDocumentConfigurationSpec
         }
 
         [TestMethod]
-        [DynamicData(nameof(Retains_remaining_settings_test_cases), DynamicDataSourceType.Method)]
+        [DynamicData(nameof(Retains_remaining_settings_test_cases))]
         public void Retains_remaining_settings(Setting setting)
         {
             var original = Target;
@@ -492,7 +492,7 @@ public sealed class IniDocumentConfigurationSpec
         }
 
         [TestMethod]
-        [DynamicData(nameof(Retains_remaining_settings_test_cases), DynamicDataSourceType.Method)]
+        [DynamicData(nameof(Retains_remaining_settings_test_cases))]
         public void Retains_remaining_settings(Setting setting)
         {
             var original = Target;
@@ -518,7 +518,7 @@ public sealed class IniDocumentConfigurationSpec
         }
 
         [TestMethod]
-        [DynamicData(nameof(Retains_remaining_settings_test_cases), DynamicDataSourceType.Method)]
+        [DynamicData(nameof(Retains_remaining_settings_test_cases))]
         public void Retains_remaining_settings(Setting setting)
         {
             var original = Target;
@@ -544,7 +544,7 @@ public sealed class IniDocumentConfigurationSpec
         }
 
         [TestMethod]
-        [DynamicData(nameof(Retains_remaining_settings_test_cases), DynamicDataSourceType.Method)]
+        [DynamicData(nameof(Retains_remaining_settings_test_cases))]
         public void Retains_remaining_settings(Setting setting)
         {
             var original = Target;
@@ -570,7 +570,7 @@ public sealed class IniDocumentConfigurationSpec
         }
 
         [TestMethod]
-        [DynamicData(nameof(Retains_remaining_settings_test_cases), DynamicDataSourceType.Method)]
+        [DynamicData(nameof(Retains_remaining_settings_test_cases))]
         public void Retains_remaining_settings(Setting setting)
         {
             var original = Target;
@@ -596,7 +596,7 @@ public sealed class IniDocumentConfigurationSpec
         }
 
         [TestMethod]
-        [DynamicData(nameof(Retains_remaining_settings_test_cases), DynamicDataSourceType.Method)]
+        [DynamicData(nameof(Retains_remaining_settings_test_cases))]
         public void Retains_remaining_settings(Setting setting)
         {
             var original = Target;
@@ -622,7 +622,7 @@ public sealed class IniDocumentConfigurationSpec
         }
 
         [TestMethod]
-        [DynamicData(nameof(Retains_remaining_settings_test_cases), DynamicDataSourceType.Method)]
+        [DynamicData(nameof(Retains_remaining_settings_test_cases))]
         public void Retains_remaining_settings(Setting setting)
         {
             var original = Target;
@@ -648,7 +648,7 @@ public sealed class IniDocumentConfigurationSpec
         }
 
         [TestMethod]
-        [DynamicData(nameof(Retains_remaining_settings_test_cases), DynamicDataSourceType.Method)]
+        [DynamicData(nameof(Retains_remaining_settings_test_cases))]
         public void Retains_remaining_settings(Setting setting)
         {
             var original = Target;
@@ -674,7 +674,7 @@ public sealed class IniDocumentConfigurationSpec
         }
 
         [TestMethod]
-        [DynamicData(nameof(Retains_remaining_settings_test_cases), DynamicDataSourceType.Method)]
+        [DynamicData(nameof(Retains_remaining_settings_test_cases))]
         public void Retains_remaining_settings(Setting setting)
         {
             var original = Target;
@@ -700,7 +700,7 @@ public sealed class IniDocumentConfigurationSpec
         }
 
         [TestMethod]
-        [DynamicData(nameof(Retains_remaining_settings_test_cases), DynamicDataSourceType.Method)]
+        [DynamicData(nameof(Retains_remaining_settings_test_cases))]
         public void Retains_remaining_settings(Setting setting)
         {
             var original = Target;
@@ -726,7 +726,7 @@ public sealed class IniDocumentConfigurationSpec
         }
 
         [TestMethod]
-        [DynamicData(nameof(Retains_remaining_settings_test_cases), DynamicDataSourceType.Method)]
+        [DynamicData(nameof(Retains_remaining_settings_test_cases))]
         public void Retains_remaining_settings(Setting setting)
         {
             var original = Target;
@@ -752,7 +752,7 @@ public sealed class IniDocumentConfigurationSpec
         }
 
         [TestMethod]
-        [DynamicData(nameof(Retains_remaining_settings_test_cases), DynamicDataSourceType.Method)]
+        [DynamicData(nameof(Retains_remaining_settings_test_cases))]
         public void Retains_remaining_settings(Setting setting)
         {
             var original = Target;
@@ -778,7 +778,7 @@ public sealed class IniDocumentConfigurationSpec
         }
 
         [TestMethod]
-        [DynamicData(nameof(Retains_remaining_settings_test_cases), DynamicDataSourceType.Method)]
+        [DynamicData(nameof(Retains_remaining_settings_test_cases))]
         public void Retains_remaining_settings(Setting setting)
         {
             var original = Target;
@@ -801,7 +801,7 @@ public sealed class IniDocumentConfigurationSpec
         private static IniDocumentConfiguration Strict => IniDocumentConfiguration.Strict;
 
         [TestMethod]
-        [DynamicData(nameof(Provides_string_representation_test_cases), DynamicDataSourceType.Method)]
+        [DynamicData(nameof(Provides_string_representation_test_cases))]
         public void Provides_string_representation(IniDocumentConfiguration target)
         {
             var expected = $"{nameof(IniDocumentConfiguration)} {{ {string.Join(", ", AllSettings.Select(setting => setting.BuildString(target)))} }}";
@@ -821,9 +821,9 @@ public sealed class IniDocumentConfigurationSpec
         }
 
         [TestMethod]
-        [DynamicData(nameof(Equality_operator_test_cases), DynamicDataSourceType.Method)]
-        [DynamicData(nameof(Equals_test_cases),            DynamicDataSourceType.Method)]
-        [DynamicData(nameof(Equals_null_test_cases),       DynamicDataSourceType.Method)]
+        [DynamicData(nameof(Equality_operator_test_cases))]
+        [DynamicData(nameof(Equals_test_cases))]
+        [DynamicData(nameof(Equals_null_test_cases))]
         public void Properly_implements_equality_operator(IniDocumentConfiguration left, IniDocumentConfiguration right, bool expected)
         {
             var actual = left == right;
@@ -832,9 +832,9 @@ public sealed class IniDocumentConfigurationSpec
         }
 
         [TestMethod]
-        [DynamicData(nameof(Equality_operator_test_cases), DynamicDataSourceType.Method)]
-        [DynamicData(nameof(Equals_test_cases),            DynamicDataSourceType.Method)]
-        [DynamicData(nameof(Equals_null_test_cases),       DynamicDataSourceType.Method)]
+        [DynamicData(nameof(Equality_operator_test_cases))]
+        [DynamicData(nameof(Equals_test_cases))]
+        [DynamicData(nameof(Equals_null_test_cases))]
         public void Properly_implements_inequality_operator(IniDocumentConfiguration left, IniDocumentConfiguration right, bool unexpected)
         {
             var expected = !unexpected;
@@ -845,8 +845,8 @@ public sealed class IniDocumentConfigurationSpec
         }
 
         [TestMethod]
-        [DynamicData(nameof(Equals_test_cases),      DynamicDataSourceType.Method)]
-        [DynamicData(nameof(Equals_null_test_cases), DynamicDataSourceType.Method)]
+        [DynamicData(nameof(Equals_test_cases))]
+        [DynamicData(nameof(Equals_null_test_cases))]
         public void Properly_implements_equals_method(IniDocumentConfiguration target, object other, bool expected)
         {
             var actual = target.Equals(other);
@@ -855,9 +855,9 @@ public sealed class IniDocumentConfigurationSpec
         }
 
         [TestMethod]
-        [DynamicData(nameof(General_equals_test_cases), DynamicDataSourceType.Method)]
-        [DynamicData(nameof(Equals_test_cases),         DynamicDataSourceType.Method)]
-        [DynamicData(nameof(Equals_null_test_cases),    DynamicDataSourceType.Method)]
+        [DynamicData(nameof(General_equals_test_cases))]
+        [DynamicData(nameof(Equals_test_cases))]
+        [DynamicData(nameof(Equals_null_test_cases))]
         public void Properly_implements_general_equals_method(IniDocumentConfiguration target, object other, bool expected)
         {
             var actual = target.Equals(other);
@@ -866,7 +866,7 @@ public sealed class IniDocumentConfigurationSpec
         }
 
         [TestMethod]
-        [DynamicData(nameof(Equals_test_cases), DynamicDataSourceType.Method)]
+        [DynamicData(nameof(Equals_test_cases))]
         public void Properly_implements_get_hash_code_method(IniDocumentConfiguration target, IniDocumentConfiguration other, bool expected)
         {
             var actual = target.GetHashCode() == other.GetHashCode();

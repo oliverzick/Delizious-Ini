@@ -426,7 +426,7 @@ public sealed class IniDocumentSpec
         }
 
         [TestMethod]
-        [DynamicData(nameof(Saves_the_ini_document_to_text_writer_test_cases), DynamicDataSourceType.Method)]
+        [DynamicData(nameof(Saves_the_ini_document_to_text_writer_test_cases))]
         public void Saves_the_ini_document_to_text_writer(IniDocumentConfiguration configuration)
         {
             var expected = Make.SampleString(configuration);
@@ -642,7 +642,7 @@ public sealed class IniDocumentSpec
             }
 
             [TestMethod]
-            [DynamicData(nameof(Modes), DynamicDataSourceType.Method)]
+            [DynamicData(nameof(Modes))]
             public void Enumerates_the_keys_of_all_properties_contained_in_the_specified_section(PropertyEnumerationMode mode)
             {
                 var expected = PropertyKeys;
@@ -826,7 +826,7 @@ public sealed class IniDocumentSpec
             }
 
             [TestMethod]
-            [DynamicData(nameof(Modes), DynamicDataSourceType.Method)]
+            [DynamicData(nameof(Modes))]
             public void Reads_the_value_of_the_property_contained_in_the_specified_section(PropertyValue expected, PropertyReadMode mode)
             {
                 var target = Make.SingleDefaultPropertyTarget(Configuration, expected);

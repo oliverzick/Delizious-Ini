@@ -55,9 +55,9 @@ public sealed class PropertyKeySpec
     }
 
     [TestMethod]
-    [DynamicData(nameof(Equality_operator_test_cases), DynamicDataSourceType.Method)]
-    [DynamicData(nameof(Equals_test_cases),            DynamicDataSourceType.Method)]
-    [DynamicData(nameof(Equals_null_test_cases),       DynamicDataSourceType.Method)]
+    [DynamicData(nameof(Equality_operator_test_cases))]
+    [DynamicData(nameof(Equals_test_cases))]
+    [DynamicData(nameof(Equals_null_test_cases))]
     public void Properly_implements_equality_operator(PropertyKey left, PropertyKey right, bool expected)
     {
         var actual = left == right;
@@ -66,9 +66,9 @@ public sealed class PropertyKeySpec
     }
 
     [TestMethod]
-    [DynamicData(nameof(Equality_operator_test_cases), DynamicDataSourceType.Method)]
-    [DynamicData(nameof(Equals_test_cases),            DynamicDataSourceType.Method)]
-    [DynamicData(nameof(Equals_null_test_cases),       DynamicDataSourceType.Method)]
+    [DynamicData(nameof(Equality_operator_test_cases))]
+    [DynamicData(nameof(Equals_test_cases))]
+    [DynamicData(nameof(Equals_null_test_cases))]
     public void Properly_implements_inequality_operator(PropertyKey left, PropertyKey right, bool unexpected)
     {
         var expected = !unexpected;
@@ -79,8 +79,8 @@ public sealed class PropertyKeySpec
     }
 
     [TestMethod]
-    [DynamicData(nameof(Equals_test_cases),      DynamicDataSourceType.Method)]
-    [DynamicData(nameof(Equals_null_test_cases), DynamicDataSourceType.Method)]
+    [DynamicData(nameof(Equals_test_cases))]
+    [DynamicData(nameof(Equals_null_test_cases))]
     public void Properly_implements_equals_method(PropertyKey target, object other, bool expected)
     {
         var actual = target.Equals(other);
@@ -89,9 +89,9 @@ public sealed class PropertyKeySpec
     }
 
     [TestMethod]
-    [DynamicData(nameof(General_equals_test_cases), DynamicDataSourceType.Method)]
-    [DynamicData(nameof(Equals_test_cases),         DynamicDataSourceType.Method)]
-    [DynamicData(nameof(Equals_null_test_cases),    DynamicDataSourceType.Method)]
+    [DynamicData(nameof(General_equals_test_cases))]
+    [DynamicData(nameof(Equals_test_cases))]
+    [DynamicData(nameof(Equals_null_test_cases))]
     public void Properly_implements_general_equals_method(PropertyKey target, object other, bool expected)
     {
         var actual = target.Equals(other);
@@ -100,7 +100,7 @@ public sealed class PropertyKeySpec
     }
 
     [TestMethod]
-    [DynamicData(nameof(Equals_test_cases), DynamicDataSourceType.Method)]
+    [DynamicData(nameof(Equals_test_cases))]
     public void Properly_implements_get_hash_code_method(PropertyKey target, PropertyKey other, bool expected)
     {
         var actual = target.GetHashCode() == other.GetHashCode();

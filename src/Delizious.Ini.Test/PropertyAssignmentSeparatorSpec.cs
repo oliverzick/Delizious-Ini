@@ -11,7 +11,7 @@ public sealed class PropertyAssignmentSeparatorSpec
     private static PropertyAssignmentSeparator Colon => ':';
 
     [TestMethod]
-    [DynamicData(nameof(Provides_string_representation_test_cases), DynamicDataSourceType.Method)]
+    [DynamicData(nameof(Provides_string_representation_test_cases))]
     public void Provides_string_representation(PropertyAssignmentSeparator target, string expected)
     {
         var actual = target.ToString();
@@ -27,9 +27,9 @@ public sealed class PropertyAssignmentSeparatorSpec
     }
 
     [TestMethod]
-    [DynamicData(nameof(Equality_operator_test_cases), DynamicDataSourceType.Method)]
-    [DynamicData(nameof(Equals_test_cases),            DynamicDataSourceType.Method)]
-    [DynamicData(nameof(Equals_null_test_cases),       DynamicDataSourceType.Method)]
+    [DynamicData(nameof(Equality_operator_test_cases))]
+    [DynamicData(nameof(Equals_test_cases))]
+    [DynamicData(nameof(Equals_null_test_cases))]
     public void Properly_implements_equality_operator(PropertyAssignmentSeparator left, PropertyAssignmentSeparator right, bool expected)
     {
         var actual = left == right;
@@ -38,9 +38,9 @@ public sealed class PropertyAssignmentSeparatorSpec
     }
 
     [TestMethod]
-    [DynamicData(nameof(Equality_operator_test_cases), DynamicDataSourceType.Method)]
-    [DynamicData(nameof(Equals_test_cases),            DynamicDataSourceType.Method)]
-    [DynamicData(nameof(Equals_null_test_cases),       DynamicDataSourceType.Method)]
+    [DynamicData(nameof(Equality_operator_test_cases))]
+    [DynamicData(nameof(Equals_test_cases))]
+    [DynamicData(nameof(Equals_null_test_cases))]
     public void Properly_implements_inequality_operator(PropertyAssignmentSeparator left, PropertyAssignmentSeparator right, bool unexpected)
     {
         var expected = !unexpected;
@@ -51,8 +51,8 @@ public sealed class PropertyAssignmentSeparatorSpec
     }
 
     [TestMethod]
-    [DynamicData(nameof(Equals_test_cases),      DynamicDataSourceType.Method)]
-    [DynamicData(nameof(Equals_null_test_cases), DynamicDataSourceType.Method)]
+    [DynamicData(nameof(Equals_test_cases))]
+    [DynamicData(nameof(Equals_null_test_cases))]
     public void Properly_implements_equals_method(PropertyAssignmentSeparator target, object other, bool expected)
     {
         var actual = target.Equals(other);
@@ -61,9 +61,9 @@ public sealed class PropertyAssignmentSeparatorSpec
     }
 
     [TestMethod]
-    [DynamicData(nameof(General_equals_test_cases), DynamicDataSourceType.Method)]
-    [DynamicData(nameof(Equals_test_cases),         DynamicDataSourceType.Method)]
-    [DynamicData(nameof(Equals_null_test_cases),    DynamicDataSourceType.Method)]
+    [DynamicData(nameof(General_equals_test_cases))]
+    [DynamicData(nameof(Equals_test_cases))]
+    [DynamicData(nameof(Equals_null_test_cases))]
     public void Properly_implements_general_equals_method(PropertyAssignmentSeparator target, object other, bool expected)
     {
         var actual = target.Equals(other);
@@ -72,7 +72,7 @@ public sealed class PropertyAssignmentSeparatorSpec
     }
 
     [TestMethod]
-    [DynamicData(nameof(Equals_test_cases), DynamicDataSourceType.Method)]
+    [DynamicData(nameof(Equals_test_cases))]
     public void Properly_implements_get_hash_code_method(PropertyAssignmentSeparator target, PropertyAssignmentSeparator other, bool expected)
     {
         var actual = target.GetHashCode() == other.GetHashCode();
