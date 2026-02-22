@@ -7,7 +7,7 @@
     <PackageId>Delizious.Ini</PackageId>
     <Authors>OliverZick</Authors>
     <Product>Delizious Ini</Product>
-    <Copyright>Copyright © 2024-2025 Oliver Zick. All rights reserved.</Copyright>
+    <Copyright>Copyright © 2024-2026 Oliver Zick. All rights reserved.</Copyright>
     <Description>A .NET standard library for reading and writing of INI data.</Description>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/oliverzick/Delizious-Ini</RepositoryUrl>
