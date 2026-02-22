@@ -13,23 +13,23 @@ public sealed class SectionNameRegexSpec
     [TestMethod]
     public void Throws_argument_null_exception_on_creation_when_given_pattern_is_null()
     {
-        Assert.ThrowsException<ArgumentNullException>(() => SectionNameRegex.Create(null));
+        Assert.Throws<ArgumentNullException>(() => SectionNameRegex.Create(null));
     }
 
     [TestMethod]
     public void Throws_argument_exception_on_creation_when_given_pattern_is_empty()
     {
-        Assert.ThrowsException<ArgumentException>(() => SectionNameRegex.Create(string.Empty));
+        Assert.Throws<ArgumentException>(() => SectionNameRegex.Create(string.Empty));
     }
 
     [TestMethod]
     public void Throws_argument_exception_on_creation_when_given_pattern_is_invalid()
     {
-        Assert.ThrowsException<ArgumentException>(() => SectionNameRegex.Create(@"\"));
+        Assert.Throws<ArgumentException>(() => SectionNameRegex.Create(@"\"));
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(Provides_string_representation_test_cases), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(Provides_string_representation_test_cases))]
     public void Provides_string_representation(SectionNameRegex target, string expected)
     {
         var actual = target.ToString();
@@ -43,10 +43,10 @@ public sealed class SectionNameRegexSpec
         yield return [Custom, @"\w+"];
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(Equality_operator_test_cases), DynamicDataSourceType.Method)]
-    [DynamicData(nameof(Equals_test_cases),            DynamicDataSourceType.Method)]
-    [DynamicData(nameof(Equals_null_test_cases),       DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(Equality_operator_test_cases))]
+    [DynamicData(nameof(Equals_test_cases))]
+    [DynamicData(nameof(Equals_null_test_cases))]
     public void Properly_implements_equality_operator(SectionNameRegex left, SectionNameRegex right, bool expected)
     {
         var actual = left == right;
@@ -54,10 +54,10 @@ public sealed class SectionNameRegexSpec
         Assert.AreEqual(expected, actual);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(Equality_operator_test_cases), DynamicDataSourceType.Method)]
-    [DynamicData(nameof(Equals_test_cases),            DynamicDataSourceType.Method)]
-    [DynamicData(nameof(Equals_null_test_cases),       DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(Equality_operator_test_cases))]
+    [DynamicData(nameof(Equals_test_cases))]
+    [DynamicData(nameof(Equals_null_test_cases))]
     public void Properly_implements_inequality_operator(SectionNameRegex left, SectionNameRegex right, bool unexpected)
     {
         var expected = !unexpected;
@@ -67,9 +67,9 @@ public sealed class SectionNameRegexSpec
         Assert.AreEqual(expected, actual);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(Equals_test_cases),      DynamicDataSourceType.Method)]
-    [DynamicData(nameof(Equals_null_test_cases), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(Equals_test_cases))]
+    [DynamicData(nameof(Equals_null_test_cases))]
     public void Properly_implements_equals_method(SectionNameRegex target, object other, bool expected)
     {
         var actual = target.Equals(other);
@@ -77,10 +77,10 @@ public sealed class SectionNameRegexSpec
         Assert.AreEqual(expected, actual);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(General_equals_test_cases), DynamicDataSourceType.Method)]
-    [DynamicData(nameof(Equals_test_cases),         DynamicDataSourceType.Method)]
-    [DynamicData(nameof(Equals_null_test_cases),    DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(General_equals_test_cases))]
+    [DynamicData(nameof(Equals_test_cases))]
+    [DynamicData(nameof(Equals_null_test_cases))]
     public void Properly_implements_general_equals_method(SectionNameRegex target, object other, bool expected)
     {
         var actual = target.Equals(other);
@@ -88,8 +88,8 @@ public sealed class SectionNameRegexSpec
         Assert.AreEqual(expected, actual);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(Equals_test_cases), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(Equals_test_cases))]
     public void Properly_implements_get_hash_code_method(SectionNameRegex target, SectionNameRegex other, bool expected)
     {
         var actual = target.GetHashCode() == other.GetHashCode();

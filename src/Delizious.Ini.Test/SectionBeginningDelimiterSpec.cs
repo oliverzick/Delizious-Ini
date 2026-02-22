@@ -10,8 +10,8 @@ public sealed class SectionBeginningDelimiterSpec
     private static SectionBeginningDelimiter Bracket => '[';
     private static SectionBeginningDelimiter Parentheses => '(';
 
-    [DataTestMethod]
-    [DynamicData(nameof(Provides_string_representation_test_cases), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(Provides_string_representation_test_cases))]
     public void Provides_string_representation(SectionBeginningDelimiter target, string expected)
     {
         var actual = target.ToString();
@@ -26,10 +26,10 @@ public sealed class SectionBeginningDelimiterSpec
         yield return [Parentheses, "("];
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(Equality_operator_test_cases), DynamicDataSourceType.Method)]
-    [DynamicData(nameof(Equals_test_cases),            DynamicDataSourceType.Method)]
-    [DynamicData(nameof(Equals_null_test_cases),       DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(Equality_operator_test_cases))]
+    [DynamicData(nameof(Equals_test_cases))]
+    [DynamicData(nameof(Equals_null_test_cases))]
     public void Properly_implements_equality_operator(SectionBeginningDelimiter left, SectionBeginningDelimiter right, bool expected)
     {
         var actual = left == right;
@@ -37,10 +37,10 @@ public sealed class SectionBeginningDelimiterSpec
         Assert.AreEqual(expected, actual);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(Equality_operator_test_cases), DynamicDataSourceType.Method)]
-    [DynamicData(nameof(Equals_test_cases),            DynamicDataSourceType.Method)]
-    [DynamicData(nameof(Equals_null_test_cases),       DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(Equality_operator_test_cases))]
+    [DynamicData(nameof(Equals_test_cases))]
+    [DynamicData(nameof(Equals_null_test_cases))]
     public void Properly_implements_inequality_operator(SectionBeginningDelimiter left, SectionBeginningDelimiter right, bool unexpected)
     {
         var expected = !unexpected;
@@ -50,9 +50,9 @@ public sealed class SectionBeginningDelimiterSpec
         Assert.AreEqual(expected, actual);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(Equals_test_cases),      DynamicDataSourceType.Method)]
-    [DynamicData(nameof(Equals_null_test_cases), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(Equals_test_cases))]
+    [DynamicData(nameof(Equals_null_test_cases))]
     public void Properly_implements_equals_method(SectionBeginningDelimiter target, object other, bool expected)
     {
         var actual = target.Equals(other);
@@ -60,10 +60,10 @@ public sealed class SectionBeginningDelimiterSpec
         Assert.AreEqual(expected, actual);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(General_equals_test_cases), DynamicDataSourceType.Method)]
-    [DynamicData(nameof(Equals_test_cases),         DynamicDataSourceType.Method)]
-    [DynamicData(nameof(Equals_null_test_cases),    DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(General_equals_test_cases))]
+    [DynamicData(nameof(Equals_test_cases))]
+    [DynamicData(nameof(Equals_null_test_cases))]
     public void Properly_implements_general_equals_method(SectionBeginningDelimiter target, object other, bool expected)
     {
         var actual = target.Equals(other);
@@ -71,8 +71,8 @@ public sealed class SectionBeginningDelimiterSpec
         Assert.AreEqual(expected, actual);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(Equals_test_cases), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(Equals_test_cases))]
     public void Properly_implements_get_hash_code_method(SectionBeginningDelimiter target, SectionBeginningDelimiter other, bool expected)
     {
         var actual = target.GetHashCode() == other.GetHashCode();

@@ -14,23 +14,23 @@ public sealed class CommentStringSpec
     [TestMethod]
     public void Throws_argument_null_exception_on_creation_when_given_comment_string_is_null()
     {
-        Assert.ThrowsException<ArgumentNullException>(() => CommentString.Create(null));
+        Assert.Throws<ArgumentNullException>(() => CommentString.Create(null));
     }
 
     [TestMethod]
     public void Throws_argument_exception_on_creation_when_given_comment_string_is_empty()
     {
-        Assert.ThrowsException<ArgumentException>(() => CommentString.Create(string.Empty));
+        Assert.Throws<ArgumentException>(() => CommentString.Create(string.Empty));
     }
 
     [TestMethod]
     public void Throws_argument_exception_on_creation_when_given_comment_string_consists_only_of_white_space_characters()
     {
-        Assert.ThrowsException<ArgumentException>(() => CommentString.Create("   "));
+        Assert.Throws<ArgumentException>(() => CommentString.Create("   "));
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(Provides_string_representation_test_cases), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(Provides_string_representation_test_cases))]
     public void Provides_string_representation(CommentString target, string expected)
     {
         var actual = target.ToString();
@@ -45,10 +45,10 @@ public sealed class CommentStringSpec
         yield return [Hashtag, "#"];
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(Equality_operator_test_cases), DynamicDataSourceType.Method)]
-    [DynamicData(nameof(Equals_test_cases),            DynamicDataSourceType.Method)]
-    [DynamicData(nameof(Equals_null_test_cases),       DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(Equality_operator_test_cases))]
+    [DynamicData(nameof(Equals_test_cases))]
+    [DynamicData(nameof(Equals_null_test_cases))]
     public void Properly_implements_equality_operator(CommentString left, CommentString right, bool expected)
     {
         var actual = left == right;
@@ -56,10 +56,10 @@ public sealed class CommentStringSpec
         Assert.AreEqual(expected, actual);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(Equality_operator_test_cases), DynamicDataSourceType.Method)]
-    [DynamicData(nameof(Equals_test_cases),            DynamicDataSourceType.Method)]
-    [DynamicData(nameof(Equals_null_test_cases),       DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(Equality_operator_test_cases))]
+    [DynamicData(nameof(Equals_test_cases))]
+    [DynamicData(nameof(Equals_null_test_cases))]
     public void Properly_implements_inequality_operator(CommentString left, CommentString right, bool unexpected)
     {
         var expected = !unexpected;
@@ -69,9 +69,9 @@ public sealed class CommentStringSpec
         Assert.AreEqual(expected, actual);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(Equals_test_cases),      DynamicDataSourceType.Method)]
-    [DynamicData(nameof(Equals_null_test_cases), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(Equals_test_cases))]
+    [DynamicData(nameof(Equals_null_test_cases))]
     public void Properly_implements_equals_method(CommentString target, object other, bool expected)
     {
         var actual = target.Equals(other);
@@ -79,10 +79,10 @@ public sealed class CommentStringSpec
         Assert.AreEqual(expected, actual);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(General_equals_test_cases), DynamicDataSourceType.Method)]
-    [DynamicData(nameof(Equals_test_cases),         DynamicDataSourceType.Method)]
-    [DynamicData(nameof(Equals_null_test_cases),    DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(General_equals_test_cases))]
+    [DynamicData(nameof(Equals_test_cases))]
+    [DynamicData(nameof(Equals_null_test_cases))]
     public void Properly_implements_general_equals_method(CommentString target, object other, bool expected)
     {
         var actual = target.Equals(other);
@@ -90,8 +90,8 @@ public sealed class CommentStringSpec
         Assert.AreEqual(expected, actual);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(Equals_test_cases), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(Equals_test_cases))]
     public void Properly_implements_get_hash_code_method(CommentString target, CommentString other, bool expected)
     {
         var actual = target.GetHashCode() == other.GetHashCode();

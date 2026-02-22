@@ -8,8 +8,8 @@ public sealed class SectionDeletionModeSpec
     private static SectionDeletionMode Fail => SectionDeletionMode.Fail;
     private static SectionDeletionMode Ignore => SectionDeletionMode.Ignore;
 
-    [DataTestMethod]
-    [DynamicData(nameof(Provides_string_representation_test_cases), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(Provides_string_representation_test_cases))]
     public void Provides_string_representation(SectionDeletionMode target, string expected)
     {
         var actual = target.ToString();
@@ -23,10 +23,10 @@ public sealed class SectionDeletionModeSpec
         yield return [Ignore, "Ignore"];
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(Equality_operator_test_cases), DynamicDataSourceType.Method)]
-    [DynamicData(nameof(Equals_test_cases),            DynamicDataSourceType.Method)]
-    [DynamicData(nameof(Equals_null_test_cases),       DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(Equality_operator_test_cases))]
+    [DynamicData(nameof(Equals_test_cases))]
+    [DynamicData(nameof(Equals_null_test_cases))]
     public void Properly_implements_equality_operator(SectionDeletionMode left, SectionDeletionMode right, bool expected)
     {
         var actual = left == right;
@@ -34,10 +34,10 @@ public sealed class SectionDeletionModeSpec
         Assert.AreEqual(expected, actual);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(Equality_operator_test_cases), DynamicDataSourceType.Method)]
-    [DynamicData(nameof(Equals_test_cases),            DynamicDataSourceType.Method)]
-    [DynamicData(nameof(Equals_null_test_cases),       DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(Equality_operator_test_cases))]
+    [DynamicData(nameof(Equals_test_cases))]
+    [DynamicData(nameof(Equals_null_test_cases))]
     public void Properly_implements_inequality_operator(SectionDeletionMode left, SectionDeletionMode right, bool unexpected)
     {
         var expected = !unexpected;
@@ -47,9 +47,9 @@ public sealed class SectionDeletionModeSpec
         Assert.AreEqual(expected, actual);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(Equals_test_cases),      DynamicDataSourceType.Method)]
-    [DynamicData(nameof(Equals_null_test_cases), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(Equals_test_cases))]
+    [DynamicData(nameof(Equals_null_test_cases))]
     public void Properly_implements_equals_method(SectionDeletionMode target, object other, bool expected)
     {
         var actual = target.Equals(other);
@@ -57,10 +57,10 @@ public sealed class SectionDeletionModeSpec
         Assert.AreEqual(expected, actual);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(General_equals_test_cases), DynamicDataSourceType.Method)]
-    [DynamicData(nameof(Equals_test_cases),         DynamicDataSourceType.Method)]
-    [DynamicData(nameof(Equals_null_test_cases),    DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(General_equals_test_cases))]
+    [DynamicData(nameof(Equals_test_cases))]
+    [DynamicData(nameof(Equals_null_test_cases))]
     public void Properly_implements_general_equals_method(SectionDeletionMode target, object other, bool expected)
     {
         var actual = target.Equals(other);
@@ -68,8 +68,8 @@ public sealed class SectionDeletionModeSpec
         Assert.AreEqual(expected, actual);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(Equals_test_cases), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(Equals_test_cases))]
     public void Properly_implements_get_hash_code_method(SectionDeletionMode target, SectionDeletionMode other, bool expected)
     {
         var actual = target.GetHashCode() == other.GetHashCode();

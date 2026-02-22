@@ -14,11 +14,11 @@ public sealed class PropertyValueSpec
     [TestMethod]
     public void Throws_argument_null_exception_on_creation_when_given_property_value_is_null()
     {
-        Assert.ThrowsException<ArgumentNullException>(() => PropertyValue.Create(null));
+        Assert.Throws<ArgumentNullException>(() => PropertyValue.Create(null));
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(Provides_string_representation_test_cases), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(Provides_string_representation_test_cases))]
     public void Provides_string_representation(PropertyValue target, string expected)
     {
         var actual = target.ToString();
@@ -33,10 +33,10 @@ public sealed class PropertyValueSpec
         yield return [B, "Value B"];
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(Equality_operator_test_cases), DynamicDataSourceType.Method)]
-    [DynamicData(nameof(Equals_test_cases),            DynamicDataSourceType.Method)]
-    [DynamicData(nameof(Equals_null_test_cases),       DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(Equality_operator_test_cases))]
+    [DynamicData(nameof(Equals_test_cases))]
+    [DynamicData(nameof(Equals_null_test_cases))]
     public void Properly_implements_equality_operator(PropertyValue left, PropertyValue right, bool expected)
     {
         var actual = left == right;
@@ -44,10 +44,10 @@ public sealed class PropertyValueSpec
         Assert.AreEqual(expected, actual);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(Equality_operator_test_cases), DynamicDataSourceType.Method)]
-    [DynamicData(nameof(Equals_test_cases),            DynamicDataSourceType.Method)]
-    [DynamicData(nameof(Equals_null_test_cases),       DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(Equality_operator_test_cases))]
+    [DynamicData(nameof(Equals_test_cases))]
+    [DynamicData(nameof(Equals_null_test_cases))]
     public void Properly_implements_inequality_operator(PropertyValue left, PropertyValue right, bool unexpected)
     {
         var expected = !unexpected;
@@ -57,9 +57,9 @@ public sealed class PropertyValueSpec
         Assert.AreEqual(expected, actual);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(Equals_test_cases),      DynamicDataSourceType.Method)]
-    [DynamicData(nameof(Equals_null_test_cases), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(Equals_test_cases))]
+    [DynamicData(nameof(Equals_null_test_cases))]
     public void Properly_implements_equals_method(PropertyValue target, object other, bool expected)
     {
         var actual = target.Equals(other);
@@ -67,10 +67,10 @@ public sealed class PropertyValueSpec
         Assert.AreEqual(expected, actual);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(General_equals_test_cases), DynamicDataSourceType.Method)]
-    [DynamicData(nameof(Equals_test_cases),         DynamicDataSourceType.Method)]
-    [DynamicData(nameof(Equals_null_test_cases),    DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(General_equals_test_cases))]
+    [DynamicData(nameof(Equals_test_cases))]
+    [DynamicData(nameof(Equals_null_test_cases))]
     public void Properly_implements_general_equals_method(PropertyValue target, object other, bool expected)
     {
         var actual = target.Equals(other);
@@ -78,8 +78,8 @@ public sealed class PropertyValueSpec
         Assert.AreEqual(expected, actual);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(Equals_test_cases), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(Equals_test_cases))]
     public void Properly_implements_get_hash_code_method(PropertyValue target, PropertyValue other, bool expected)
     {
         var actual = target.GetHashCode() == other.GetHashCode();

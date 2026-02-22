@@ -14,8 +14,8 @@ public sealed class IniDocumentCaseSensitivitySpec
     private static PropertyValue Value => "Value";
     private static PropertyValue FallbackValue => PropertyValue.None;
 
-    [DataTestMethod]
-    [DynamicData(nameof(Reads_the_property_with_configured_case_sensitivity_test_cases), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(Reads_the_property_with_configured_case_sensitivity_test_cases))]
     public void Reads_the_property_with_configured_case_sensitivity(CaseSensitivity caseSensitivity, SectionName sectionName, PropertyKey propertyKey, PropertyValue expected)
     {
         var configuration = IniDocumentConfiguration.Default.WithCaseSensitivity(caseSensitivity);

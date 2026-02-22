@@ -14,11 +14,11 @@ public sealed class CommentReadModeSpec
     [TestMethod]
     public void Throws_argument_null_exception_when_fallback_comment_is_null()
     {
-        Assert.ThrowsException<ArgumentNullException>(() => CommentReadMode.CustomFallback(null));
+        Assert.Throws<ArgumentNullException>(() => CommentReadMode.CustomFallback(null));
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(Provides_string_representation_test_cases), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(Provides_string_representation_test_cases))]
     public void Provides_string_representation(CommentReadMode target, string expected)
     {
         var actual = target.ToString();
@@ -33,10 +33,10 @@ public sealed class CommentReadModeSpec
         yield return [FallbackCustom, "Fallback"];
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(Equality_operator_test_cases), DynamicDataSourceType.Method)]
-    [DynamicData(nameof(Equals_test_cases),            DynamicDataSourceType.Method)]
-    [DynamicData(nameof(Equals_null_test_cases),       DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(Equality_operator_test_cases))]
+    [DynamicData(nameof(Equals_test_cases))]
+    [DynamicData(nameof(Equals_null_test_cases))]
     public void Properly_implements_equality_operator(CommentReadMode left, CommentReadMode right, bool expected)
     {
         var actual = left == right;
@@ -44,10 +44,10 @@ public sealed class CommentReadModeSpec
         Assert.AreEqual(expected, actual);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(Equality_operator_test_cases), DynamicDataSourceType.Method)]
-    [DynamicData(nameof(Equals_test_cases),            DynamicDataSourceType.Method)]
-    [DynamicData(nameof(Equals_null_test_cases),       DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(Equality_operator_test_cases))]
+    [DynamicData(nameof(Equals_test_cases))]
+    [DynamicData(nameof(Equals_null_test_cases))]
     public void Properly_implements_inequality_operator(CommentReadMode left, CommentReadMode right, bool unexpected)
     {
         var expected = !unexpected;
@@ -57,9 +57,9 @@ public sealed class CommentReadModeSpec
         Assert.AreEqual(expected, actual);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(Equals_test_cases),      DynamicDataSourceType.Method)]
-    [DynamicData(nameof(Equals_null_test_cases), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(Equals_test_cases))]
+    [DynamicData(nameof(Equals_null_test_cases))]
     public void Properly_implements_equals_method(CommentReadMode target, object other, bool expected)
     {
         var actual = target.Equals(other);
@@ -67,10 +67,10 @@ public sealed class CommentReadModeSpec
         Assert.AreEqual(expected, actual);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(General_equals_test_cases), DynamicDataSourceType.Method)]
-    [DynamicData(nameof(Equals_test_cases),         DynamicDataSourceType.Method)]
-    [DynamicData(nameof(Equals_null_test_cases),    DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(General_equals_test_cases))]
+    [DynamicData(nameof(Equals_test_cases))]
+    [DynamicData(nameof(Equals_null_test_cases))]
     public void Properly_implements_general_equals_method(CommentReadMode target, object other, bool expected)
     {
         var actual = target.Equals(other);
@@ -78,8 +78,8 @@ public sealed class CommentReadModeSpec
         Assert.AreEqual(expected, actual);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(Equals_test_cases), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(Equals_test_cases))]
     public void Properly_implements_get_hash_code_method(CommentReadMode target, CommentReadMode other, bool expected)
     {
         var actual = target.GetHashCode() == other.GetHashCode();

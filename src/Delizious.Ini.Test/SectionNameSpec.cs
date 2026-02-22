@@ -15,19 +15,19 @@ public sealed class SectionNameSpec
     [TestMethod]
     public void Throws_argument_null_exception_on_creation_when_given_section_name_is_null()
     {
-        Assert.ThrowsException<ArgumentNullException>(() => SectionName.Create(null));
+        Assert.Throws<ArgumentNullException>(() => SectionName.Create(null));
     }
 
     [TestMethod]
     public void Throws_argument_exception_on_creation_when_given_section_name_is_empty()
     {
-        Assert.ThrowsException<ArgumentException>(() => SectionName.Create(string.Empty));
+        Assert.Throws<ArgumentException>(() => SectionName.Create(string.Empty));
     }
 
     [TestMethod]
     public void Throws_argument_exception_on_creation_when_given_section_name_consists_only_of_white_space_characters()
     {
-        Assert.ThrowsException<ArgumentException>(() => SectionName.Create("   "));
+        Assert.Throws<ArgumentException>(() => SectionName.Create("   "));
     }
 
     [TestMethod]
@@ -54,10 +54,10 @@ public sealed class SectionNameSpec
         Assert.AreEqual(expected, actual);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(Equality_operator_test_cases), DynamicDataSourceType.Method)]
-    [DynamicData(nameof(Equals_test_cases),            DynamicDataSourceType.Method)]
-    [DynamicData(nameof(Equals_null_test_cases),       DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(Equality_operator_test_cases))]
+    [DynamicData(nameof(Equals_test_cases))]
+    [DynamicData(nameof(Equals_null_test_cases))]
     public void Properly_implements_equality_operator(SectionName left, SectionName right, bool expected)
     {
         var actual = left == right;
@@ -65,10 +65,10 @@ public sealed class SectionNameSpec
         Assert.AreEqual(expected, actual);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(Equality_operator_test_cases), DynamicDataSourceType.Method)]
-    [DynamicData(nameof(Equals_test_cases),            DynamicDataSourceType.Method)]
-    [DynamicData(nameof(Equals_null_test_cases),       DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(Equality_operator_test_cases))]
+    [DynamicData(nameof(Equals_test_cases))]
+    [DynamicData(nameof(Equals_null_test_cases))]
     public void Properly_implements_inequality_operator(SectionName left, SectionName right, bool unexpected)
     {
         var expected = !unexpected;
@@ -78,9 +78,9 @@ public sealed class SectionNameSpec
         Assert.AreEqual(expected, actual);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(Equals_test_cases),      DynamicDataSourceType.Method)]
-    [DynamicData(nameof(Equals_null_test_cases), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(Equals_test_cases))]
+    [DynamicData(nameof(Equals_null_test_cases))]
     public void Properly_implements_equals_method(SectionName target, object other, bool expected)
     {
         var actual = target.Equals(other);
@@ -88,10 +88,10 @@ public sealed class SectionNameSpec
         Assert.AreEqual(expected, actual);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(General_equals_test_cases), DynamicDataSourceType.Method)]
-    [DynamicData(nameof(Equals_test_cases),         DynamicDataSourceType.Method)]
-    [DynamicData(nameof(Equals_null_test_cases),    DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(General_equals_test_cases))]
+    [DynamicData(nameof(Equals_test_cases))]
+    [DynamicData(nameof(Equals_null_test_cases))]
     public void Properly_implements_general_equals_method(SectionName target, object other, bool expected)
     {
         var actual = target.Equals(other);
@@ -99,8 +99,8 @@ public sealed class SectionNameSpec
         Assert.AreEqual(expected, actual);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(Equals_test_cases), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(Equals_test_cases))]
     public void Properly_implements_get_hash_code_method(SectionName target, SectionName other, bool expected)
     {
         var actual = target.GetHashCode() == other.GetHashCode();
