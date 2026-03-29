@@ -1899,6 +1899,22 @@ public sealed class IniDocumentSpec
                 Assert.Throws<ArgumentNullException>(() => target.WriteComment(DummySectionName, null));
             }
 
+            [TestMethod]
+            public void Writes_none_comment_by_providing_no_comment_line_at_all()
+            {
+                const string ini = """
+                                   [Section]
+
+                                   """;
+
+                var target = Make.Target(ini, DefaultConfiguration);
+                target.WriteComment("Section", Comment.None);
+
+                var actual = Make.String(target);
+
+                Assert.AreEqual(ini, actual);
+            }
+
             private static void WritesComment(IniDocumentConfiguration configuration)
             {
                 const string ini = """
@@ -2006,6 +2022,22 @@ public sealed class IniDocumentSpec
                 Assert.Throws<ArgumentNullException>(() => target.WriteComment(DummySectionName, DummyComment, null));
             }
 
+            [TestMethod]
+            public void Writes_none_comment_by_providing_no_comment_line_at_all()
+            {
+                const string ini = """
+                                   [Section]
+
+                                   """;
+
+                var target = Make.Target(ini, DefaultConfiguration);
+                target.WriteComment("Section", Comment.None, CommentWriteMode.Fail);
+
+                var actual = Make.String(target);
+
+                Assert.AreEqual(ini, actual);
+            }
+
             private static void WritesComment(CommentWriteMode mode)
             {
                 const string ini = """
@@ -2107,6 +2139,23 @@ public sealed class IniDocumentSpec
                 var target = Make.EmptyTarget(DefaultConfiguration);
 
                 Assert.Throws<ArgumentNullException>(() => target.WriteComment(DummySectionName, DummyPropertyKey, null));
+            }
+
+            [TestMethod]
+            public void Writes_none_comment_by_providing_no_comment_line_at_all()
+            {
+                const string ini = """
+                                   [Section]
+                                   Property=Value
+                                   
+                                   """;
+
+                var target = Make.Target(ini, DefaultConfiguration);
+                target.WriteComment("Section", "Property", Comment.None);
+
+                var actual = Make.String(target);
+
+                Assert.AreEqual(ini, actual);
             }
 
             private static void WritesComment(IniDocumentConfiguration configuration)
@@ -2246,6 +2295,23 @@ public sealed class IniDocumentSpec
                 Assert.Throws<ArgumentNullException>(() => target.WriteComment(DummySectionName, DummyPropertyKey, DummyComment, null));
             }
 
+            [TestMethod]
+            public void Writes_none_comment_by_providing_no_comment_line_at_all()
+            {
+                const string ini = """
+                                   [Section]
+                                   Property=Value
+
+                                   """;
+
+                var target = Make.Target(ini, DefaultConfiguration);
+                target.WriteComment("Section", "Property", Comment.None, CommentWriteMode.Fail);
+
+                var actual = Make.String(target);
+
+                Assert.AreEqual(ini, actual);
+            }
+
             private static void WritesComment(CommentWriteMode mode)
             {
                 const string ini = """
@@ -2373,6 +2439,16 @@ public sealed class IniDocumentSpec
                                                     .AppendSectionLine("Section2")
                                                     .AppendPropertyLine("PropertyB", "Value B")
                                                     .ToString();
+
+        public static string String(IniDocument document)
+        {
+            using var writer = new StringWriter();
+
+            document.SaveTo(writer);
+
+            writer.Flush();
+            return writer.ToString();
+        }
 
         private static IniDocument Target(IniDocumentConfiguration configuration, params Section[] sections)
             => Target(configuration, sections.AsEnumerable());
