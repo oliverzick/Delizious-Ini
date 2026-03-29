@@ -83,6 +83,10 @@
             => this.comment;
 
         internal IEnumerable<string> Split()
-            => this.comment.Split(new[] { Separator }, StringSplitOptions.None);
+            => this.comment.Split(new[] { Separator }, this.StringSplitOptions);
+
+        private StringSplitOptions StringSplitOptions
+            // ToDo: StringSplitOptions - Resolve code duplication once check for none comment is done several times by using strategy based approach to get rid of branch statement
+            => this == None ? StringSplitOptions.RemoveEmptyEntries : StringSplitOptions.None;
     }
 }
