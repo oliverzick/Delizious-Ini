@@ -6,8 +6,8 @@ that comes with an intuitive API design applying [Domain-driven design (DDD)](ht
 It provides extensive configurability and allows to specify failure behaviors (e.g. throw a specific exception in case a section or property does not exist, or proceed with a fallback behavior) 
 for almost every operation on both instance and operation level.
 
-## New features in version 1.22.0
-* Provide no comment line in an INI document at all when none comment is written for section or property
+## New features in version 1.23.0
+* Enable merging an INI document with another INI document
 
 ## Features
 Delizious Ini provides the following features:
@@ -41,9 +41,6 @@ Delizious Ini provides the following features:
   * Regular expression pattern (regex) for section name
   * Newline string (`Environment`, `Windows` or `Unix`)
   * Comment string that indicates the beginning of a comment line (defaults to `;`)
-
-Upcoming features:
-* Merge two INI documents
 
 [&#8593;](#features)
 ---
