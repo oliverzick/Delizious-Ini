@@ -928,5 +928,48 @@
 
             this.iniDocument.WriteComment(sectionName, propertyKey, comment, mode);
         }
+
+        /// <summary>
+        /// <para>
+        /// Merges the contents of <paramref name="other"/> INI document into the current one.
+        /// </para>
+        /// <para>
+        /// The merge operation combines all sections and properties from the <paramref name="other"/> INI document into the current document.
+        /// When merging a section, its properties are merged individually.
+        /// An empty section without any contained property that only exists in the <see cref="other"/> INI document but not in the current instance, is not merged to the current instance.
+        /// </para>
+        /// <para>
+        /// When merging properties, existing properties are updated with the values and comments from <paramref name="other"/>, while new properties are added.
+        /// </para>
+        /// <para>
+        /// Comments associated with sections and properties are preserved and updated where applicable.
+        /// </para>
+        /// </summary>
+        /// <exception cref="ArgumentNullException">
+        /// <para><paramref name="other"/> is <c>null</c>.</para>
+        /// </exception>
+        public void Merge(IniDocument other)
+        {
+            if (other is null)
+            {
+                throw new ArgumentNullException(nameof(other));
+            }
+
+            Merge(other.iniDocument, this.iniDocument);
+        }
+
+        private static void Merge(IIniDocument source, IIniDocument target)
+        {
+            foreach (var section in source.EnumerateSections())
+            {
+                foreach (var property in source.EnumerateProperties(section, PropertyEnumerationMode.Fail))
+                {
+                    target.WriteProperty(section, property, source.ReadProperty(section, property, PropertyReadMode.Fail), PropertyWriteMode.Create);
+                    target.WriteComment(section, property, source.ReadComment(section, property, CommentReadMode.Fail), CommentWriteMode.Ignore);
+                }
+
+                target.WriteComment(section, source.ReadComment(section, CommentReadMode.Fail), CommentWriteMode.Ignore);
+            }
+        }
     }
 }

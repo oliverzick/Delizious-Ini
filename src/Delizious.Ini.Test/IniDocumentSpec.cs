@@ -2409,6 +2409,191 @@ public sealed class IniDocumentSpec
         }
     }
 
+    [TestClass]
+    public sealed class Merge
+    {
+        private static IniDocumentConfiguration Configuration => DefaultConfiguration;
+
+        [TestMethod]
+        public void Throws_argument_null_exception_when_other_is_null()
+        {
+            var target = Make.EmptyTarget(Configuration);
+
+            Assert.Throws<ArgumentNullException>(() => target.Merge(null));
+        }
+
+        [TestMethod]
+        [DataRow("""
+                 [ExistingSection]
+                 SourceProperty=Source
+                 """,
+                 """
+                 [ExistingSection]
+                 OtherProperty=Other
+                 """,
+                 """
+                 [ExistingSection]
+                 SourceProperty=Source
+                 OtherProperty=Other
+
+                 """,
+                 DisplayName = "Creates property in existent section")]
+        [DataRow("""
+                 [ExistingSection]
+                 SourceProperty=Source
+                 """,
+                 """
+                 [ExistingSection]
+                 SourceProperty=Other
+                 """,
+                 """
+                 [ExistingSection]
+                 SourceProperty=Other
+
+                 """,
+                 DisplayName = "Overrides property in existent section")]
+        [DataRow("""
+                 [ExistingSection]
+                 SourceProperty=Source
+                 """,
+                 """
+                 [NewSection]
+                 NewProperty=New
+                 """,
+                 """
+                 [ExistingSection]
+                 SourceProperty=Source
+
+                 [NewSection]
+                 NewProperty=New
+
+                 """,
+                 DisplayName = "Creates property in nonexistent section")]
+        [DataRow("""
+                 [Section]
+                 Property=Value
+                 """,
+                 """
+                 [Section]
+                 ; Sample comment
+                 ; of property
+                 Property=Value
+                 """,
+                 """
+                 [Section]
+
+                 ; Sample comment
+                 ; of property
+                 Property=Value
+
+                 """,
+                 DisplayName = "Creates comment for property")]
+        [DataRow("""
+                 [Section]
+                 ; Existing comment of property
+                 Property=Value
+                 """,
+                 """
+                 [Section]
+                 ; Overriden comment
+                 ; of property
+                 Property=Value
+                 """,
+                 """
+                 [Section]
+
+                 ; Overriden comment
+                 ; of property
+                 Property=Value
+
+                 """,
+                 DisplayName = "Overrides comment of property")]
+        [DataRow("""
+                 [Section]
+                 """,
+                 """
+                 ; Sample comment
+                 ; of section
+                 [Section]
+                 """,
+                 """
+                 ; Sample comment
+                 ; of section
+                 [Section]
+
+                 """,
+                 DisplayName = "Creates comment for section")]
+        [DataRow("""
+                 ; Existing comment of section
+                 [Section]
+                 """,
+                 """
+                 ; Overriden comment
+                 ; of section
+                 [Section]
+                 """,
+                 """
+                 ; Overriden comment
+                 ; of section
+                 [Section]
+
+                 """,
+                 DisplayName = "Overrides comment of section")]
+        [DataRow("""
+                 ; Existing comment of section
+                 [ExistingSection]
+                 SourceOnlyProperty=Value
+                 ; Existing comment of property
+                 ExistingProperty=Source
+                 """,
+                 """
+                 ; Sample comment
+                 ; of section
+                 [NewSection]
+                 ; Sample comment
+                 ; of property
+                 NewProperty=Other
+
+                 ; Overriden comment
+                 ; of section
+                 [ExistingSection]
+                 ; Overriden comment
+                 ; of property
+                 ExistingProperty=Other
+                 """,
+                 """
+                 ; Overriden comment
+                 ; of section
+                 [ExistingSection]
+                 SourceOnlyProperty=Value
+
+                 ; Overriden comment
+                 ; of property
+                 ExistingProperty=Other
+
+                 ; Sample comment
+                 ; of section
+                 [NewSection]
+
+                 ; Sample comment
+                 ; of property
+                 NewProperty=Other
+
+                 """,
+                 DisplayName = "Full merge")]
+        public void Merges(string ini, string otherIni, string expected)
+        {
+            var target = Make.Target(ini, Configuration);
+            var other = Make.Target(otherIni, Configuration);
+
+            target.Merge(other);
+
+            var actual = Make.String(target);
+
+            Assert.AreEqual(expected, actual);
+        }
+    }
+
     private static class Make
     {
         public static IniDocument Target(string ini, IniDocumentConfiguration configuration)
