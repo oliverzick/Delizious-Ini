@@ -13,6 +13,7 @@ Run(ReadSectionComment,   nameof(ReadSectionComment));
 Run(ReadPropertyComment,  nameof(ReadPropertyComment));
 Run(WriteSectionComment,  nameof(WriteSectionComment));
 Run(WritePropertyComment, nameof(WritePropertyComment));
+Run(Merge,                nameof(Merge));
 return;
 
 void QuickStart()
@@ -273,6 +274,49 @@ void WritePropertyComment()
     var iniDocument = IniDocument.LoadFrom(textReader, IniDocumentConfiguration.Default);
 
     iniDocument.WriteComment("Section", "Property", comment);
+
+    using var textWriter = new StringWriter();
+    iniDocument.SaveTo(textWriter);
+
+    textWriter.Flush();
+
+    Console.WriteLine(textWriter);
+}
+
+void Merge()
+{
+    const string ini = """
+                       [SourceOnlySection]
+                       Property=I reside here.
+
+                       [Section]
+                       SourceOnlyProperty=I'm kept.
+                       Property=I will be merged.
+
+                       ; I'm a section comment and will disappear on merging.
+                       [SectionWithComment]
+                       PropertyWithComment=Sample
+                       """;
+
+    const string other = """
+                         [Section]
+                         Property=I'm merged.
+
+                         [NewSection]
+                         NewProperty=I'm a new property from other and merged.
+
+                         [SectionWithComment]
+                         ; I'm a property comment from other and merged.
+                         PropertyWithComment=Sample
+                         """;
+
+    using var textReader = new StringReader(ini);
+    var iniDocument = IniDocument.LoadFrom(textReader, IniDocumentConfiguration.Default);
+
+    using var otherReader = new StringReader(other);
+    var otherDocument = IniDocument.LoadFrom(otherReader, IniDocumentConfiguration.Default);
+
+    iniDocument.Merge(otherDocument);
 
     using var textWriter = new StringWriter();
     iniDocument.SaveTo(textWriter);

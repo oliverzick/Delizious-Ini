@@ -7,7 +7,7 @@ It provides extensive configurability and allows to specify failure behaviors (e
 for almost every operation on both instance and operation level.
 
 ## New features in version 1.23.0
-* Enable merging an INI document with another INI document
+* [Enable merging an INI document with another INI document](#merging)
 
 ## Features
 Delizious Ini provides the following features:
@@ -22,6 +22,7 @@ Delizious Ini provides the following features:
 * [Writing the comment of a section](#writing-the-comment-of-a-section)
 * [Writing the comment of a property](#writing-the-comment-of-a-property)
 * Cloning an INI document
+* [Merging](#merging)
 * [Configurability](#configure-default-behavior-of-an-ini-document)
   * [Property enumeration mode](#enumeration-of-properties) (`Fail` or `Fallback`)
   * [Property read mode](#reading-of-a-property) (`Fail`, `Fallback` or `CustomFallback`)
@@ -430,6 +431,52 @@ Writing the comment of a property supports the following modes:
 |---------------------------|-------------|
 | `CommentWriteMode.Fail`   | Throw a `SectionNotFoundException` when the section does not exist, or throw a `PropertyNotFoundException` when the section exists but the property does not exist. |
 | `CommentWriteMode.Ignore` | Silently ignore if the section or the property does not exist. |
+
+[&#8593;](#features)
+---
+
+### Merging
+```cs
+const string ini = """
+                   [SourceOnlySection]
+                   Property=I reside here.
+
+                   [Section]
+                   SourceOnlyProperty=I'm kept.
+                   Property=I will be merged.
+
+                   ; I'm a section comment and will disappear on merging.
+                   [SectionWithComment]
+                   PropertyWithComment=Sample
+                   """;
+
+const string other = """
+                     [Section]
+                     Property=I'm merged.
+
+                     [NewSection]
+                     NewProperty=I'm a new property from other and merged.
+
+                     [SectionWithComment]
+                     ; I'm a property comment from other and merged.
+                     PropertyWithComment=Sample
+                     """;
+
+using var textReader = new StringReader(ini);
+var iniDocument = IniDocument.LoadFrom(textReader, IniDocumentConfiguration.Default);
+
+using var otherReader = new StringReader(other);
+var otherDocument = IniDocument.LoadFrom(otherReader, IniDocumentConfiguration.Default);
+
+iniDocument.Merge(otherDocument);
+
+using var textWriter = new StringWriter();
+iniDocument.SaveTo(textWriter);
+
+textWriter.Flush();
+
+Console.WriteLine(textWriter);
+```
 
 [&#8593;](#features)
 ---
