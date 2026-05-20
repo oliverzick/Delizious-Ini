@@ -291,10 +291,12 @@ void Merge()
 
                        [Section]
                        SourceOnlyProperty=I'm kept.
-                       Property=I will be merged.
+                       ; I'm a property comment and will be preserved.
+                       Property=I will be update.
 
-                       ; I'm a section comment and will disappear on merging.
+                       ; I'm a section comment and will be preserved.
                        [SectionWithComment]
+                       ; I'm a property comment from source and will be updated.
                        PropertyWithComment=Sample
                        """;
 
