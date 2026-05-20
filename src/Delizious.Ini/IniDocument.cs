@@ -960,17 +960,26 @@
 
         private static void Merge(IIniDocument source, IIniDocument target, MergeMode mode)
         {
-            foreach (var section in source.EnumerateSections())
+            foreach (var section in EnumerateSection(source))
             {
-                foreach (var property in source.EnumerateProperties(section, PropertyEnumerationMode.Fail))
+                foreach (var property in EnumerateProperties(source, section))
                 {
-                    target.WriteProperty(section, property, source.ReadProperty(section, property, PropertyReadMode.Fail), PropertyWriteMode.Create);
+                    MergeProperty(source, target, section, property);
                     MergePropertyComment(source, target, section, property, mode);
                 }
 
                 MergeSectionComment(source, target, section, mode);
             }
         }
+
+        private static IEnumerable<SectionName> EnumerateSection(IIniDocument iniDocument)
+            => iniDocument.EnumerateSections();
+
+        private static IEnumerable<PropertyKey> EnumerateProperties(IIniDocument iniDocument, SectionName sectionName)
+            => iniDocument.EnumerateProperties(sectionName, PropertyEnumerationMode.Fallback);
+
+        private static void MergeProperty(IIniDocument source, IIniDocument target, SectionName sectionName, PropertyKey propertyKey)
+            => target.WriteProperty(sectionName, propertyKey, source.ReadProperty(sectionName, propertyKey, PropertyReadMode.Fail), PropertyWriteMode.Create);
 
         private static void MergeSectionComment(IIniDocument source, IIniDocument target, SectionName sectionName, MergeMode mode)
         {
