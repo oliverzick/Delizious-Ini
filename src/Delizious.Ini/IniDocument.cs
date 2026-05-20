@@ -960,15 +960,15 @@
 
         private static void Merge(IIniDocument source, IIniDocument target, MergeMode mode)
         {
-            foreach (var section in EnumerateSection(source))
+            foreach (var sectionName in EnumerateSection(source))
             {
-                foreach (var property in EnumerateProperties(source, section))
+                foreach (var property in EnumerateProperties(source, sectionName))
                 {
-                    MergeProperty(source, target, section, property);
-                    MergePropertyComment(source, target, section, property, mode);
+                    MergeProperty(source, target, sectionName, property);
+                    MergePropertyComment(source, target, sectionName, property, mode);
                 }
 
-                MergeSectionComment(source, target, section, mode);
+                MergeSectionComment(source, target, sectionName, mode);
             }
         }
 
