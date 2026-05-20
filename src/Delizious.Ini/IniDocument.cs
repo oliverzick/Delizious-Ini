@@ -962,10 +962,10 @@
         {
             foreach (var sectionName in EnumerateSection(source))
             {
-                foreach (var property in EnumerateProperties(source, sectionName))
+                foreach (var propertyKey in EnumerateProperties(source, sectionName))
                 {
-                    MergeProperty(source, target, sectionName, property);
-                    MergePropertyComment(source, target, sectionName, property, mode);
+                    MergeProperty(source, target, sectionName, propertyKey);
+                    MergePropertyComment(source, target, sectionName, propertyKey, mode);
                 }
 
                 MergeSectionComment(source, target, sectionName, mode);
