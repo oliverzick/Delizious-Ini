@@ -955,21 +955,48 @@
                 throw new ArgumentNullException(nameof(other));
             }
 
-            Merge(other.iniDocument, this.iniDocument);
+            Merge(other.iniDocument, this.iniDocument, new MergeMode());
         }
 
-        private static void Merge(IIniDocument source, IIniDocument target)
+        private static void Merge(IIniDocument source, IIniDocument target, MergeMode mode)
         {
             foreach (var section in source.EnumerateSections())
             {
                 foreach (var property in source.EnumerateProperties(section, PropertyEnumerationMode.Fail))
                 {
                     target.WriteProperty(section, property, source.ReadProperty(section, property, PropertyReadMode.Fail), PropertyWriteMode.Create);
-                    target.WriteComment(section, property, source.ReadComment(section, property, CommentReadMode.Fail), CommentWriteMode.Ignore);
+                    MergePropertyComment(source, target, section, property, mode);
                 }
 
-                target.WriteComment(section, source.ReadComment(section, CommentReadMode.Fail), CommentWriteMode.Ignore);
+                MergeSectionComment(source, target, section, mode);
             }
+        }
+
+        private static void MergeSectionComment(IIniDocument source, IIniDocument target, SectionName sectionName, MergeMode mode)
+        {
+            var sourceComment = source.ReadComment(sectionName, CommentReadMode.Fallback);
+            var targetComment = target.ReadComment(sectionName, CommentReadMode.Fallback);
+
+            var comment = mode.MergeComment(sourceComment, targetComment);
+
+            target.WriteComment(sectionName, comment, CommentWriteMode.Ignore);
+        }
+
+        private static void MergePropertyComment(IIniDocument source, IIniDocument target, SectionName sectionName, PropertyKey propertyKey, MergeMode mode)
+        {
+            var sourceComment = source.ReadComment(sectionName, propertyKey, CommentReadMode.Fallback);
+            var targetComment = target.ReadComment(sectionName, propertyKey, CommentReadMode.Fallback);
+
+            var comment = mode.MergeComment(sourceComment, targetComment);
+
+            target.WriteComment(sectionName, propertyKey, comment, CommentWriteMode.Ignore);
+        }
+
+        private readonly struct MergeMode
+        {
+            public Comment MergeComment(Comment sourceComment, Comment targetComment)
+                // ToDo: MergeComment - Resolve code duplication once check for none comment is done several times by using strategy based approach to get rid of branch statement
+                => sourceComment == Comment.None ? targetComment : sourceComment;
         }
     }
 }

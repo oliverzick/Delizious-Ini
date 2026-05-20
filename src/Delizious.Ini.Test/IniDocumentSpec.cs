@@ -2510,6 +2510,23 @@ public sealed class IniDocumentSpec
                  DisplayName = "Overrides comment of property")]
         [DataRow("""
                  [Section]
+                 ; Preserved comment of property
+                 Property=Value
+                 """,
+                 """
+                 [Section]
+                 Property=Value
+                 """,
+                 """
+                 [Section]
+
+                 ; Preserved comment of property
+                 Property=Value
+
+                 """,
+                 DisplayName = "Preserves comment of property")]
+        [DataRow("""
+                 [Section]
                  """,
                  """
                  ; Sample comment
@@ -2539,6 +2556,19 @@ public sealed class IniDocumentSpec
 
                  """,
                  DisplayName = "Overrides comment of section")]
+        [DataRow("""
+                 ; Preserved comment of section
+                 [Section]
+                 """,
+                 """
+                 [Section]
+                 """,
+                 """
+                 ; Preserved comment of section
+                 [Section]
+
+                 """,
+                 DisplayName = "Preserves comment of section")]
         [DataRow("""
                  ; Existing comment of section
                  [ExistingSection]
