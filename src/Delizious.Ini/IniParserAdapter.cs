@@ -295,12 +295,12 @@
                 => this.owner.Sections.RemoveSection(this.sectionName.ToString());
 
             public Comment ReadComment()
-                => Comment.Create(this.sectionData.Comments);
+                => CreateComment(this.sectionData.Comments);
 
             public void WriteComment(Comment comment)
             {
                 this.sectionData.Comments.Clear();
-                this.sectionData.Comments.AddRange(comment.Split());
+                this.sectionData.Comments.AddRange(comment.Transform(new CommentLineSplitter()));
             }
 
             public ISection CreateProperty(PropertyKey propertyKey)
@@ -417,12 +417,12 @@
             }
 
             public Comment ReadComment()
-                => Comment.Create(this.keyData.Comments);
+                => CreateComment(this.keyData.Comments);
 
             public void WriteComment(Comment comment)
             {
                 this.keyData.Comments.Clear();
-                this.keyData.Comments.AddRange(comment.Split());
+                this.keyData.Comments.AddRange(comment.Transform(new CommentLineSplitter()));
             }
 
             public PropertyValue ReadValue()
@@ -508,6 +508,21 @@
                 => this.owner
                        .SelectSection(this.sectionName, new NonexistentSection(this.sectionName))
                        .SelectProperty(this.propertyKey, new NonexistentProperty(this.propertyKey));
+        }
+
+        private static string CommentLineSeparator
+            => Environment.NewLine;
+
+        private static Comment CreateComment(IEnumerable<string> comments)
+            => string.Join(CommentLineSeparator, comments);
+
+        private readonly struct CommentLineSplitter : ICommentTransformation<IEnumerable<string>>
+        {
+            public IEnumerable<string> None(Comment comment)
+                => Enumerable.Empty<string>();
+
+            public IEnumerable<string> Existent(Comment comment)
+                => comment.ToString().Split(new[] { CommentLineSeparator }, StringSplitOptions.None);
         }
     }
 }
