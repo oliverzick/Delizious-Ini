@@ -12,6 +12,9 @@
 
     internal sealed class IniParserAdapter : IIniDocument
     {
+        private static string CommentLineSeparator
+            => Environment.NewLine;
+
         private readonly IniData iniData;
 
         private IniParserAdapter(IniData iniData)
@@ -44,24 +47,24 @@
 
         private static IniParserConfiguration MakeIniParserConfiguration(IniDocumentConfiguration configuration)
             => new IniParserConfiguration
-               {
-                   AllowCreateSectionsOnFly = false,
-                   AllowDuplicateKeys = configuration.DuplicatePropertyBehavior.Transform(new AllowDuplicateKeysTransformation()),
-                   AllowDuplicateSections = configuration.DuplicateSectionBehavior.Transform(new AllowDuplicateSectionsTransformation()),
-                   AllowKeysWithoutSection = false,
-                   AssigmentSpacer = configuration.PropertyAssignmentSpacer.ToString(),
-                   CaseInsensitive = configuration.CaseSensitivity.Transform(new CaseSensitivityTransformation()),
-                   CommentString = configuration.CommentString.ToString(),
-                   ConcatenateDuplicateKeys = false,
-                   KeyValueAssigmentChar = configuration.PropertyAssignmentSeparator.ToChar(),
-                   NewLineStr = configuration.NewlineString.ToString(),
-                   OverrideDuplicateKeys = configuration.DuplicatePropertyBehavior.Transform(new OverrideDuplicateKeysTransformation()),
-                   SectionStartChar = configuration.SectionBeginningDelimiter.ToChar(),
-                   SectionEndChar = configuration.SectionEndDelimiter.ToChar(),
-                   SectionRegex = MakeSectionRegex(configuration), // Needs to be specified after SectionStartChar and SectionEndChar to prevent recreation of SectionRegex with default pattern
-                   SkipInvalidLines = configuration.InvalidLineBehavior.Transform(new InvalidLineBehaviorTransformation()),
-                   ThrowExceptionsOnError = true
-               };
+            {
+                AllowCreateSectionsOnFly = false,
+                AllowDuplicateKeys = configuration.DuplicatePropertyBehavior.Transform(new AllowDuplicateKeysTransformation()),
+                AllowDuplicateSections = configuration.DuplicateSectionBehavior.Transform(new AllowDuplicateSectionsTransformation()),
+                AllowKeysWithoutSection = false,
+                AssigmentSpacer = configuration.PropertyAssignmentSpacer.ToString(),
+                CaseInsensitive = configuration.CaseSensitivity.Transform(new CaseSensitivityTransformation()),
+                CommentString = configuration.CommentString.ToString(),
+                ConcatenateDuplicateKeys = false,
+                KeyValueAssigmentChar = configuration.PropertyAssignmentSeparator.ToChar(),
+                NewLineStr = configuration.NewlineString.ToString(),
+                OverrideDuplicateKeys = configuration.DuplicatePropertyBehavior.Transform(new OverrideDuplicateKeysTransformation()),
+                SectionStartChar = configuration.SectionBeginningDelimiter.ToChar(),
+                SectionEndChar = configuration.SectionEndDelimiter.ToChar(),
+                SectionRegex = MakeSectionRegex(configuration), // Needs to be specified after SectionStartChar and SectionEndChar to prevent recreation of SectionRegex with default pattern
+                SkipInvalidLines = configuration.InvalidLineBehavior.Transform(new InvalidLineBehaviorTransformation()),
+                ThrowExceptionsOnError = true
+            };
 
         private static Regex MakeSectionRegex(IniDocumentConfiguration configuration)
         {
@@ -300,7 +303,7 @@
             public void WriteComment(Comment comment)
             {
                 this.sectionData.Comments.Clear();
-                this.sectionData.Comments.AddRange(comment.Split());
+                this.sectionData.Comments.AddRange(comment.Transform(new CommentLineSplitter()));
             }
 
             public ISection CreateProperty(PropertyKey propertyKey)
@@ -422,7 +425,7 @@
             public void WriteComment(Comment comment)
             {
                 this.keyData.Comments.Clear();
-                this.keyData.Comments.AddRange(comment.Split());
+                this.keyData.Comments.AddRange(comment.Transform(new CommentLineSplitter()));
             }
 
             public PropertyValue ReadValue()
@@ -508,6 +511,15 @@
                 => this.owner
                        .SelectSection(this.sectionName, new NonexistentSection(this.sectionName))
                        .SelectProperty(this.propertyKey, new NonexistentProperty(this.propertyKey));
+        }
+
+        private readonly struct CommentLineSplitter : ICommentTransformation<IEnumerable<string>>
+        {
+            public IEnumerable<string> None(Comment comment)
+                => Enumerable.Empty<string>();
+
+            public IEnumerable<string> Existent(Comment comment)
+                => comment.ToString().Split(new[] { CommentLineSeparator }, StringSplitOptions.None);
         }
     }
 }
