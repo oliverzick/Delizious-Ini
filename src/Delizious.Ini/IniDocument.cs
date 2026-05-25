@@ -1009,8 +1009,23 @@
             private readonly struct MergeMode
             {
                 public Comment MergeComment(Comment sourceComment, Comment targetComment)
-                    // ToDo: MergeComment - Resolve code duplication once check for none comment is done several times by using strategy based approach to get rid of branch statement
-                    => sourceComment == Comment.None ? targetComment : sourceComment;
+                    => sourceComment.Transform(new CommentMerge(targetComment));
+            }
+
+            private sealed class CommentMerge : ICommentTransformation<Comment>
+            {
+                private readonly Comment targetComment;
+
+                public CommentMerge(Comment targetComment)
+                {
+                    this.targetComment = targetComment;
+                }
+
+                public Comment None(Comment comment)
+                    => this.targetComment;
+
+                public Comment Existent(Comment comment)
+                    => comment;
             }
         }
     }
