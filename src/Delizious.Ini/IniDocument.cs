@@ -961,19 +961,16 @@
         private static class MergeStrategy
         {
             public static void Merge(IIniDocument source, IIniDocument target)
-                => Merge(source, target, new MergeMode());
-
-            private static void Merge(IIniDocument source, IIniDocument target, MergeMode mode)
             {
                 foreach (var sectionName in EnumerateSection(source))
                 {
                     foreach (var propertyKey in EnumerateProperties(source, sectionName))
                     {
                         MergeProperty(source, target, sectionName, propertyKey);
-                        MergePropertyComment(source, target, sectionName, propertyKey, mode);
+                        MergePropertyComment(source, target, sectionName, propertyKey);
                     }
 
-                    MergeSectionComment(source, target, sectionName, mode);
+                    MergeSectionComment(source, target, sectionName);
                 }
             }
 
@@ -986,30 +983,24 @@
             private static void MergeProperty(IIniDocument source, IIniDocument target, SectionName sectionName, PropertyKey propertyKey)
                 => target.WriteProperty(sectionName, propertyKey, source.ReadProperty(sectionName, propertyKey, PropertyReadMode.Fail), PropertyWriteMode.Create);
 
-            private static void MergeSectionComment(IIniDocument source, IIniDocument target, SectionName sectionName, MergeMode mode)
+            private static void MergeSectionComment(IIniDocument source, IIniDocument target, SectionName sectionName)
             {
                 var sourceComment = source.ReadComment(sectionName, CommentReadMode.Fallback);
                 var targetComment = target.ReadComment(sectionName, CommentReadMode.Fallback);
 
-                var comment = mode.MergeComment(sourceComment, targetComment);
+                var comment = sourceComment.Transform(new CommentMerge(targetComment));
 
                 target.WriteComment(sectionName, comment, CommentWriteMode.Ignore);
             }
 
-            private static void MergePropertyComment(IIniDocument source, IIniDocument target, SectionName sectionName, PropertyKey propertyKey, MergeMode mode)
+            private static void MergePropertyComment(IIniDocument source, IIniDocument target, SectionName sectionName, PropertyKey propertyKey)
             {
                 var sourceComment = source.ReadComment(sectionName, propertyKey, CommentReadMode.Fallback);
                 var targetComment = target.ReadComment(sectionName, propertyKey, CommentReadMode.Fallback);
 
-                var comment = mode.MergeComment(sourceComment, targetComment);
+                var comment = sourceComment.Transform(new CommentMerge(targetComment));
 
                 target.WriteComment(sectionName, propertyKey, comment, CommentWriteMode.Ignore);
-            }
-
-            private readonly struct MergeMode
-            {
-                public Comment MergeComment(Comment sourceComment, Comment targetComment)
-                    => sourceComment.Transform(new CommentMerge(targetComment));
             }
 
             private sealed class CommentMerge : ICommentTransformation<Comment>
