@@ -44,24 +44,24 @@
 
         private static IniParserConfiguration MakeIniParserConfiguration(IniDocumentConfiguration configuration)
             => new IniParserConfiguration
-            {
-                AllowCreateSectionsOnFly = false,
-                AllowDuplicateKeys = configuration.DuplicatePropertyBehavior.Transform(new AllowDuplicateKeysTransformation()),
-                AllowDuplicateSections = configuration.DuplicateSectionBehavior.Transform(new AllowDuplicateSectionsTransformation()),
-                AllowKeysWithoutSection = false,
-                AssigmentSpacer = configuration.PropertyAssignmentSpacer.ToString(),
-                CaseInsensitive = configuration.CaseSensitivity.Transform(new CaseSensitivityTransformation()),
-                CommentString = configuration.CommentString.ToString(),
-                ConcatenateDuplicateKeys = false,
-                KeyValueAssigmentChar = configuration.PropertyAssignmentSeparator.ToChar(),
-                NewLineStr = configuration.NewlineString.ToString(),
-                OverrideDuplicateKeys = configuration.DuplicatePropertyBehavior.Transform(new OverrideDuplicateKeysTransformation()),
-                SectionStartChar = configuration.SectionBeginningDelimiter.ToChar(),
-                SectionEndChar = configuration.SectionEndDelimiter.ToChar(),
-                SectionRegex = MakeSectionRegex(configuration), // Needs to be specified after SectionStartChar and SectionEndChar to prevent recreation of SectionRegex with default pattern
-                SkipInvalidLines = configuration.InvalidLineBehavior.Transform(new InvalidLineBehaviorTransformation()),
-                ThrowExceptionsOnError = true
-            };
+               {
+                   AllowCreateSectionsOnFly = false,
+                   AllowDuplicateKeys = configuration.DuplicatePropertyBehavior.Transform(new AllowDuplicateKeysTransformation()),
+                   AllowDuplicateSections = configuration.DuplicateSectionBehavior.Transform(new AllowDuplicateSectionsTransformation()),
+                   AllowKeysWithoutSection = false,
+                   AssigmentSpacer = configuration.PropertyAssignmentSpacer.ToString(),
+                   CaseInsensitive = configuration.CaseSensitivity.Transform(new CaseSensitivityTransformation()),
+                   CommentString = configuration.CommentString.ToString(),
+                   ConcatenateDuplicateKeys = false,
+                   KeyValueAssigmentChar = configuration.PropertyAssignmentSeparator.ToChar(),
+                   NewLineStr = configuration.NewlineString.ToString(),
+                   OverrideDuplicateKeys = configuration.DuplicatePropertyBehavior.Transform(new OverrideDuplicateKeysTransformation()),
+                   SectionStartChar = configuration.SectionBeginningDelimiter.ToChar(),
+                   SectionEndChar = configuration.SectionEndDelimiter.ToChar(),
+                   SectionRegex = MakeSectionRegex(configuration), // Needs to be specified after SectionStartChar and SectionEndChar to prevent recreation of SectionRegex with default pattern
+                   SkipInvalidLines = configuration.InvalidLineBehavior.Transform(new InvalidLineBehaviorTransformation()),
+                   ThrowExceptionsOnError = true
+               };
 
         private static Regex MakeSectionRegex(IniDocumentConfiguration configuration)
         {
