@@ -82,11 +82,21 @@
         public override string ToString()
             => this.comment;
 
+        internal T Transform<T>(ICommentTransformation<T> transformation)
+            => this == None ? transformation.None(this) : transformation.Existent(this);
+
         internal IEnumerable<string> Split()
             => this.comment.Split(new[] { Separator }, this.StringSplitOptions);
 
         private StringSplitOptions StringSplitOptions
             // ToDo: StringSplitOptions - Resolve code duplication once check for none comment is done several times by using strategy based approach to get rid of branch statement
             => this == None ? StringSplitOptions.RemoveEmptyEntries : StringSplitOptions.None;
+    }
+
+    internal interface ICommentTransformation<out T>
+    {
+        T None(Comment comment);
+
+        T Existent(Comment comment);
     }
 }
