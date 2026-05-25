@@ -9,9 +9,6 @@
     [Serializable]
     public sealed class Comment : IEquatable<Comment>
     {
-        private static string Separator
-            => Environment.NewLine;
-
         private readonly string comment;
 
         private Comment(string comment)
@@ -40,9 +37,6 @@
 
             return new Comment(comment);
         }
-
-        internal static Comment Create(IEnumerable<string> comments)
-            => string.Join(Separator, comments);
 
         public static implicit operator Comment(string comment)
             => Create(comment);

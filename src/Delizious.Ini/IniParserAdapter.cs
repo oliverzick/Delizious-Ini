@@ -12,9 +12,6 @@
 
     internal sealed class IniParserAdapter : IIniDocument
     {
-        private static string CommentLineSeparator
-            => Environment.NewLine;
-
         private readonly IniData iniData;
 
         private IniParserAdapter(IniData iniData)
@@ -298,7 +295,7 @@
                 => this.owner.Sections.RemoveSection(this.sectionName.ToString());
 
             public Comment ReadComment()
-                => Comment.Create(this.sectionData.Comments);
+                => CreateComment(this.sectionData.Comments);
 
             public void WriteComment(Comment comment)
             {
@@ -420,7 +417,7 @@
             }
 
             public Comment ReadComment()
-                => Comment.Create(this.keyData.Comments);
+                => CreateComment(this.keyData.Comments);
 
             public void WriteComment(Comment comment)
             {
@@ -512,6 +509,12 @@
                        .SelectSection(this.sectionName, new NonexistentSection(this.sectionName))
                        .SelectProperty(this.propertyKey, new NonexistentProperty(this.propertyKey));
         }
+
+        private static string CommentLineSeparator
+            => Environment.NewLine;
+
+        private static Comment CreateComment(IEnumerable<string> comments)
+            => string.Join(CommentLineSeparator, comments);
 
         private readonly struct CommentLineSplitter : ICommentTransformation<IEnumerable<string>>
         {
